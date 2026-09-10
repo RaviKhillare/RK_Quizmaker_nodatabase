@@ -186,10 +186,10 @@
         <span class="hidden sm:inline">Copy</span> HTML
       </button>
 
-      <!-- Button 3: Native Inline HTML Quiz Generator (SEO & No-iFrame) -->
-      <button id="btnOpenInlineModal" class="tactile-btn flex items-center gap-2 px-3.5 py-2 rounded-xl bg-violet-600 hover:bg-violet-700 text-white text-xs sm:text-sm font-bold shadow-sm shadow-violet-600/30 border-b-2 border-violet-800" title="Generate SEO-friendly Non-iFrame Native HTML Quiz for Blogger">
-        <i class="fa-solid fa-feather-pointed text-amber-300"></i>
-        <span class="hidden sm:inline">Native</span> Inline Quiz
+      <!-- Button 3: Native Question Paper / Exam Generator (SEO & No-iFrame) -->
+      <button id="btnOpenInlineModal" class="tactile-btn flex items-center gap-2 px-3.5 py-2 rounded-xl bg-violet-600 hover:bg-violet-700 text-white text-xs sm:text-sm font-bold shadow-sm shadow-violet-600/30 border-b-2 border-violet-800" title="Generate Complete Question Paper & Interactive Exam (HTML View)">
+        <i class="fa-solid fa-file-lines text-amber-300"></i>
+        <span class="hidden sm:inline">Native</span> Question Paper
       </button>
 
       <!-- GitHub Settings Gear Button -->
@@ -924,15 +924,20 @@
       <div class="p-5 sm:p-6 space-y-4 overflow-y-auto max-h-[75vh]">
         <!-- Step 1: Template Download Banner -->
         <div class="p-4 rounded-2xl bg-emerald-50/70 border border-emerald-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-          <div class="space-y-0.5">
+          <div class="space-y-1">
             <span class="text-xs font-bold text-emerald-900 flex items-center gap-1.5">
-              <i class="fa-solid fa-table text-emerald-600"></i> Step 1: Google Sheets / Excel Format
+              <i class="fa-solid fa-table text-emerald-600"></i> Universal 6-in-1 Exam Master Format
             </span>
-            <p class="text-[11px] text-emerald-700">Columns: <code>Type | Question | Option A | Option B | Option C | Option D | Answer | Explanation</code></p>
+            <p class="text-[11px] text-emerald-700 font-mono">Type | Question / Prompt | Option A / Left / Front | Option B / Right / Back | Option C | Option D | Correct Answer | Explanation / Hint</p>
           </div>
-          <button id="btnDownloadCsvTemplate" type="button" class="tactile-btn px-3.5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs shrink-0 flex items-center gap-1.5 shadow-sm">
-            <i class="fa-solid fa-download"></i> Download CSV Template
-          </button>
+          <div class="flex items-center gap-2 shrink-0">
+            <button id="btnCopySheetHeaders" type="button" class="tactile-btn px-3 py-2 rounded-xl bg-white hover:bg-emerald-50 text-emerald-800 border border-emerald-300 font-bold text-xs flex items-center gap-1.5 shadow-sm" title="Copy Column Headers to paste into Google Sheets row 1">
+              <i class="fa-solid fa-copy"></i> Copy Headers
+            </button>
+            <button id="btnDownloadCsvTemplate" type="button" class="tactile-btn px-3.5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs flex items-center gap-1.5 shadow-sm" title="Download Full Exam Master CSV Template">
+              <i class="fa-solid fa-download"></i> Exam Master (CSV)
+            </button>
+          </div>
         </div>
 
         <!-- Step 2: Paste Area -->
@@ -991,8 +996,8 @@ flashcard	DNS (Domain Name System)	Translates domain names into numerical IP add
             <i class="fa-solid fa-feather-pointed text-lg"></i>
           </div>
           <div>
-            <h3 class="font-extrabold text-base sm:text-lg">Native Inline HTML Quiz Generator</h3>
-            <p class="text-xs text-violet-200">100% SEO-Friendly • Zero iFrames • Pure HTML + Scoped CSS + Micro Vanilla JS</p>
+            <h3 class="font-extrabold text-base sm:text-lg">Native Question Paper & Exam Generator</h3>
+            <p class="text-xs text-violet-200">Printable Worksheet • "Submit Exam & Show Solutions" Engine • 100% SEO Indexed • Zero iFrames</p>
           </div>
         </div>
         <button id="btnCloseInlineModal" class="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition">
@@ -2473,25 +2478,34 @@ ${cards}
         if (bulkImportModal) bulkImportModal.classList.add('hidden');
       }
 
+      function copySheetHeaders() {
+        const headers = "Type\tQuestion / Prompt\tOption A / Left / Front\tOption B / Right / Back\tOption C\tOption D\tCorrect Answer\tExplanation / Hint";
+        navigator.clipboard.writeText(headers).then(() => {
+          showToast("Copied Template Column Headers to clipboard!", "success");
+        }).catch(() => {
+          showToast("Could not copy headers to clipboard.", "danger");
+        });
+      }
+
       function downloadCsvTemplate() {
-        const csvContent = `Type,Question / Front,Option A / Back,Option B,Option C,Option D,Correct Answer (1-4 or text),Explanation
-mcq,"Which protocol operates at the Transport Layer and guarantees packet delivery?","UDP","TCP","IP","ICMP","B","TCP provides reliable, ordered, and error-checked delivery of packets."
-mcq,"What default port is used for secure HTTPS web traffic?","80","21","443","25","C","Port 443 is the standard port for TLS/SSL encrypted HTTPS communication."
-fill_in_blank,"______ is the network protocol that translates domain names into numerical IP addresses.","DNS","","","","DNS","DNS (Domain Name System) acts as the phonebook of the Internet."
-flashcard,"Cache Memory","High-speed memory located close to or inside the CPU to accelerate frequent data access.","","","","","Stores copies of data from frequently used main memory locations."
-true_false,"HTTP is inherently a stateless application-layer communication protocol.","TRUE","","","","TRUE","HTTP is stateless by design unless session tokens or cookies are used."
-reorder,"Arrange the standard 3-Way TCP Handshake connection packets:","Client sends SYN to Server","Server responds with SYN-ACK","Client replies with ACK","","","SYN -> SYN-ACK -> ACK establishes a reliable TCP connection."
+        const csvContent = `Type,Question / Prompt,Option A / Left / Front,Option B / Right / Back,Option C,Option D,Correct Answer,Explanation / Hint
+mcq,"What is the brain of the computer?","CPU","RAM","Hard Disk","Motherboard","1","Central Processing Unit manages execution."
+fill_blank,"The shortcut key to copy text is Ctrl + ___.","","","","","C","Ctrl+C copies selected items."
+true_false,"Python is a compiled-only programming language.","True","False","","","2","Python is an interpreted language."
+flashcard,"Cache Memory","Extremely high-speed buffer between CPU and RAM.","","","","","Flip to see concept definition."
+match,"Match network protocols to default ports.","HTTP:80","HTTPS:443","DNS:53","SSH:22","ALL","Key-value pairs separated by colons."
+reorder,"Arrange the IPO cycle steps in order.","Input","Process","Output","Storage","1,2,3,4","Standard computer execution pipeline."
 `;
         const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = url;
-        a.download = 'blogger-suite-pro-quiz-template.csv';
+        a.download = 'exam-master-template-6in1.csv';
         document.body.appendChild(a);
         a.click();
         document.body.removeChild(a);
         URL.revokeObjectURL(url);
-        showToast("Downloaded Google Sheets CSV Template!", "success");
+        showToast("Downloaded Exam Master Template (CSV)!", "success");
       }
 
       function parseCsvLine(text) {
@@ -2608,7 +2622,12 @@ reorder,"Arrange the standard 3-Way TCP Handshake connection packets:","Client s
             });
           } else if (type === 'true_false') {
             const rawAns = (cols[6] || cols[2] || 'true').trim().toLowerCase();
-            const isTrue = (rawAns === 'true' || rawAns === 't' || rawAns === '1' || rawAns === 'yes' || rawAns === 'y');
+            let isTrue = true;
+            if (rawAns === '2' || rawAns === 'false' || rawAns === 'f' || rawAns === 'no' || rawAns === 'n') {
+              isTrue = false;
+            } else if (rawAns === '1' || rawAns === 'true' || rawAns === 't' || rawAns === 'yes' || rawAns === 'y') {
+              isTrue = true;
+            }
             const explanation = cols[7] || cols[3] || '';
             questions.push({
               type: 'true_false',
@@ -2617,10 +2636,10 @@ reorder,"Arrange the standard 3-Way TCP Handshake connection packets:","Client s
               explanation
             });
           } else if (type === 'reorder') {
-            // Steps can be listed across Option A..D or semicolon separated in cols[2]
+            // Steps can be spread across Option A..D or in cols[2..5]
             let items = [cols[2], cols[3], cols[4], cols[5]].filter(Boolean);
-            if (items.length < 2 && cols[2] && (cols[2].includes(';') || cols[2].includes('|'))) {
-              items = cols[2].split(/[;|]/).map(s => s.trim()).filter(Boolean);
+            if (items.length < 2 && cols[2] && (cols[2].includes(';') || cols[2].includes('|') || cols[2].includes(','))) {
+              items = cols[2].split(/[;|,]/).map(s => s.trim()).filter(Boolean);
             }
             const explanation = cols[7] || '';
             questions.push({
@@ -2630,10 +2649,23 @@ reorder,"Arrange the standard 3-Way TCP Handshake connection packets:","Client s
               explanation
             });
           } else if (type === 'match') {
-            // Pair format e.g. "Term1:Def1 | Term2:Def2" or individual columns
+            // Check if cols[2..5] contain "Key:Value" format
+            const candidateCols = [cols[2], cols[3], cols[4], cols[5]].filter(Boolean);
             const pairs = [];
-            if (cols[2] && cols[3]) pairs.push({ left: cols[2], right: cols[3] });
-            if (cols[4] && cols[5]) pairs.push({ left: cols[4], right: cols[5] });
+            candidateCols.forEach(colVal => {
+              if (colVal.includes(':')) {
+                const parts = colVal.split(':');
+                pairs.push({ left: parts[0].trim(), right: parts.slice(1).join(':').trim() });
+              } else if (colVal.includes('=')) {
+                const parts = colVal.split('=');
+                pairs.push({ left: parts[0].trim(), right: parts.slice(1).join('=').trim() });
+              }
+            });
+            // If not key:value, pair adjacent columns
+            if (pairs.length === 0) {
+              if (cols[2] && cols[3]) pairs.push({ left: cols[2], right: cols[3] });
+              if (cols[4] && cols[5]) pairs.push({ left: cols[4], right: cols[5] });
+            }
             const explanation = cols[7] || '';
             questions.push({
               type: 'match',
@@ -2678,6 +2710,8 @@ reorder,"Arrange the standard 3-Way TCP Handshake connection packets:","Client s
       if (btnCloseBulkModal) btnCloseBulkModal.addEventListener('click', closeBulkImportModal);
       if (btnCancelBulkModal) btnCancelBulkModal.addEventListener('click', closeBulkImportModal);
       if (btnDownloadCsvTemplate) btnDownloadCsvTemplate.addEventListener('click', downloadCsvTemplate);
+      const btnCopySheetHeaders = document.getElementById('btnCopySheetHeaders');
+      if (btnCopySheetHeaders) btnCopySheetHeaders.addEventListener('click', copySheetHeaders);
       if (btnClearBulkInput) btnClearBulkInput.addEventListener('click', () => { if (bulkPasteInput) bulkPasteInput.value = ''; });
       if (btnExecuteBulkImport) btnExecuteBulkImport.addEventListener('click', executeBulkImport);
 
@@ -3005,7 +3039,8 @@ ${jsonString}
       // -------------------------------------------------------------
       function buildInlineQuizHtml(quiz) {
         const uid = 'bsp_inline_' + Math.random().toString(36).substring(2, 9);
-        const title = quiz.title || "Interactive Quiz";
+        const title = quiz.title || "Interactive Question Paper";
+        const category = quiz.category || "Educational Assessment";
         const questions = quiz.questions || [];
 
         const questionsHtml = questions.map((q, idx) => {
@@ -3013,30 +3048,46 @@ ${jsonString}
           const promptEscaped = escapeHtml(q.prompt || `Question ${idx + 1}`);
           const explanation = escapeHtml(q.explanation || '');
 
-          if (q.type === 'mcq') {
+          const rawType = (q.type || 'mcq').toLowerCase().trim();
+          let normType = rawType;
+          if (rawType === 'fill_blank' || rawType.includes('blank')) normType = 'fill_in_blank';
+          else if (rawType === 'tf' || rawType.includes('true')) normType = 'true_false';
+          else if (rawType.includes('flash')) normType = 'flashcard';
+          else if (rawType.includes('match') || rawType.includes('pair')) normType = 'match';
+          else if (rawType.includes('order') || rawType.includes('seq')) normType = 'reorder';
+          else if (rawType.includes('mcq') || rawType.includes('choice')) normType = 'mcq';
+
+          if (normType === 'mcq') {
             const options = q.options || ["Option A", "Option B", "Option C", "Option D"];
             const correctIdx = typeof q.correctAnswer === 'number' ? q.correctAnswer : 0;
             const optsHtml = options.map((opt, oIdx) => `
-              <label class="bsp-inline-opt" data-correct="${oIdx === correctIdx}">
+              <label class="bsp-inline-opt" data-idx="${oIdx}" data-correct="${oIdx === correctIdx}">
                 <input type="radio" name="${qId}_radio" value="${oIdx}">
-                <span>${escapeHtml(opt)}</span>
+                <span class="bsp-opt-letter">${String.fromCharCode(65 + oIdx)}.</span>
+                <span class="bsp-opt-text">${escapeHtml(opt)}</span>
               </label>
             `).join('');
 
             return `
-              <div class="bsp-inline-card" id="${qId}">
+              <div class="bsp-inline-card bsp-card-mcq" id="${qId}" data-type="mcq" data-correct-idx="${correctIdx}">
                 <div class="bsp-inline-q-header">
                   <span class="bsp-inline-num">${idx + 1}</span>
-                  <span class="bsp-inline-prompt">${promptEscaped}</span>
+                  <div style="flex:1;">
+                    <div style="display:flex; align-items:center; gap:8px; margin-bottom:4px; flex-wrap:wrap;">
+                      <span class="bsp-type-badge bsp-tb-mcq">Multiple Choice</span>
+                      <span class="bsp-marks-badge">1 Mark</span>
+                    </div>
+                    <div class="bsp-inline-prompt">${promptEscaped}</div>
+                  </div>
                 </div>
                 <div class="bsp-inline-opts">${optsHtml}</div>
                 <div class="bsp-inline-actions">
                   <button type="button" class="bsp-inline-btn" onclick="window['${uid}_checkMcq']('${qId}')">Check Answer</button>
                 </div>
-                <div class="bsp-inline-feedback" style="display:none;"></div>
+                <div class="bsp-inline-feedback" data-exp="${explanation}" style="display:none;"></div>
               </div>
             `;
-          } else if (q.type === 'fill_in_blank') {
+          } else if (normType === 'fill_in_blank') {
             const accepted = Array.isArray(q.acceptedAnswers) 
               ? q.acceptedAnswers 
               : [q.acceptedAnswers || q.correctAnswer || 'Answer'];
@@ -3044,42 +3095,57 @@ ${jsonString}
             const acceptedAttr = escapeHtml(JSON.stringify(accepted.map(a => String(a).trim().toLowerCase())));
 
             return `
-              <div class="bsp-inline-card" id="${qId}">
+              <div class="bsp-inline-card bsp-card-fib" id="${qId}" data-type="fill_in_blank">
                 <div class="bsp-inline-q-header">
-                  <span class="bsp-inline-num">${idx + 1}</span>
-                  <span class="bsp-inline-prompt">${promptEscaped}</span>
+                  <span class="bsp-inline-num" style="background:#059669;">${idx + 1}</span>
+                  <div style="flex:1;">
+                    <div style="display:flex; align-items:center; gap:8px; margin-bottom:4px; flex-wrap:wrap;">
+                      <span class="bsp-type-badge bsp-tb-fib">Fill in the Blank</span>
+                      <span class="bsp-marks-badge">1 Mark</span>
+                    </div>
+                    <div class="bsp-inline-prompt">${promptEscaped}</div>
+                  </div>
                 </div>
                 <div class="bsp-inline-fib">
                   <input type="text" class="bsp-inline-input" placeholder="Type your answer here..." autocomplete="off">
-                  <button type="button" class="bsp-inline-btn" onclick="window['${uid}_checkFib']('${qId}')">Submit</button>
+                  <button type="button" class="bsp-inline-btn" style="background:#059669;" onclick="window['${uid}_checkFib']('${qId}')">Submit</button>
                 </div>
                 ${q.hint ? `<div class="bsp-inline-hint">💡 Hint: ${escapeHtml(q.hint)}</div>` : ''}
                 <div class="bsp-inline-feedback" data-accepted='${acceptedAttr}' data-primary="${primaryAns}" data-exp="${explanation}" style="display:none;"></div>
               </div>
             `;
-          } else if (q.type === 'true_false') {
+          } else if (normType === 'true_false') {
             const correctBool = (typeof q.correctAnswer === 'boolean') 
               ? q.correctAnswer 
               : (String(q.correctAnswer).toLowerCase() === 'true');
 
             return `
-              <div class="bsp-inline-card" id="${qId}">
+              <div class="bsp-inline-card bsp-card-tf" id="${qId}" data-type="true_false" data-correct="${correctBool}">
                 <div class="bsp-inline-q-header">
-                  <span class="bsp-inline-num">${idx + 1}</span>
-                  <span class="bsp-inline-prompt">${promptEscaped}</span>
+                  <span class="bsp-inline-num" style="background:#dc2626;">${idx + 1}</span>
+                  <div style="flex:1;">
+                    <div style="display:flex; align-items:center; gap:8px; margin-bottom:4px; flex-wrap:wrap;">
+                      <span class="bsp-type-badge bsp-tb-tf">True / False</span>
+                      <span class="bsp-marks-badge">1 Mark</span>
+                    </div>
+                    <div class="bsp-inline-prompt">${promptEscaped}</div>
+                  </div>
                 </div>
                 <div class="bsp-inline-tf-grid">
-                  <button type="button" class="bsp-inline-tf-btn bsp-tf-true" onclick="window['${uid}_checkTf']('${qId}', true, ${correctBool})">
+                  <button type="button" class="bsp-inline-tf-btn bsp-tf-true" onclick="window['${uid}_selectTf']('${qId}', true)">
                     <span>✔ TRUE</span>
                   </button>
-                  <button type="button" class="bsp-inline-tf-btn bsp-tf-false" onclick="window['${uid}_checkTf']('${qId}', false, ${correctBool})">
+                  <button type="button" class="bsp-inline-tf-btn bsp-tf-false" onclick="window['${uid}_selectTf']('${qId}', false)">
                     <span>✖ FALSE</span>
                   </button>
+                </div>
+                <div class="bsp-inline-actions">
+                  <button type="button" class="bsp-inline-btn" style="background:#dc2626;" onclick="window['${uid}_checkTfCard']('${qId}')">Check Answer</button>
                 </div>
                 <div class="bsp-inline-feedback" data-exp="${explanation}" style="display:none;"></div>
               </div>
             `;
-          } else if (q.type === 'reorder') {
+          } else if (normType === 'reorder') {
             const steps = (q.items && q.items.length) ? q.items : (q.steps || ["Step 1", "Step 2", "Step 3"]);
             const stepsAttr = escapeHtml(JSON.stringify(steps));
             const shuffled = shuffle([...steps.map((text, sIdx) => ({ id: sIdx, text }))]);
@@ -3095,22 +3161,77 @@ ${jsonString}
             `).join('');
 
             return `
-              <div class="bsp-inline-card" id="${qId}">
+              <div class="bsp-inline-card bsp-card-reorder" id="${qId}" data-type="reorder">
                 <div class="bsp-inline-q-header">
-                  <span class="bsp-inline-num">${idx + 1}</span>
-                  <span class="bsp-inline-prompt">${promptEscaped}</span>
+                  <span class="bsp-inline-num" style="background:#0284c7;">${idx + 1}</span>
+                  <div style="flex:1;">
+                    <div style="display:flex; align-items:center; gap:8px; margin-bottom:4px; flex-wrap:wrap;">
+                      <span class="bsp-type-badge bsp-tb-reorder">Sequence Reorder</span>
+                      <span class="bsp-marks-badge">1 Mark</span>
+                    </div>
+                    <div class="bsp-inline-prompt">${promptEscaped}</div>
+                  </div>
                 </div>
                 <div class="bsp-inline-seq-list" data-steps='${stepsAttr}'>
                   ${stepsHtml}
                 </div>
                 <div class="bsp-inline-actions">
-                  <button type="button" class="bsp-inline-btn" onclick="window['${uid}_checkSeq']('${qId}')">Check Sequence</button>
+                  <button type="button" class="bsp-inline-btn" style="background:#0284c7;" onclick="window['${uid}_checkSeq']('${qId}')">Check Sequence</button>
                 </div>
                 <div class="bsp-inline-feedback" data-exp="${explanation}" style="display:none;"></div>
               </div>
             `;
+          } else if (normType === 'flashcard') {
+            const front = escapeHtml(q.term || q.front || promptEscaped);
+            const back = escapeHtml(q.definition || q.back || q.explanation || 'Definition');
+            return `
+              <div class="bsp-inline-card bsp-card-fc" id="${qId}" data-type="flashcard">
+                <div class="bsp-inline-q-header">
+                  <span class="bsp-inline-num" style="background:#d97706;">${idx + 1}</span>
+                  <div style="flex:1;">
+                    <div style="display:flex; align-items:center; gap:8px; margin-bottom:4px; flex-wrap:wrap;">
+                      <span class="bsp-type-badge bsp-tb-fc">Flashcard</span>
+                      <span class="bsp-marks-badge">Study Card</span>
+                    </div>
+                    <div class="bsp-inline-prompt">${front}</div>
+                  </div>
+                </div>
+                <div class="bsp-inline-fc-box" style="padding:14px; background:#fffbeb; border:1.5px dashed #fcd34d; border-radius:10px; margin:8px 0; cursor:pointer;" onclick="var bk = this.querySelector('.bsp-fc-back'); bk.style.display = bk.style.display === 'none' ? 'block' : 'none'">
+                  <div style="font-weight:700; color:#92400e; font-size:0.85rem;"><i class="fa-solid fa-rotate"></i> Tap to flip / reveal concept definition:</div>
+                  <div class="bsp-fc-back" style="display:none; margin-top:8px; font-weight:600; color:#78350f; font-size:0.92rem; line-height:1.4;">
+                    ${back}
+                  </div>
+                </div>
+                ${explanation ? `<div style="font-size:0.8rem; color:#64748b; margin-top:4px;">💡 ${explanation}</div>` : ''}
+              </div>
+            `;
+          } else if (normType === 'match') {
+            const pairs = q.pairs || [];
+            return `
+              <div class="bsp-inline-card bsp-card-match" id="${qId}" data-type="match">
+                <div class="bsp-inline-q-header">
+                  <span class="bsp-inline-num" style="background:#7e22ce;">${idx + 1}</span>
+                  <div style="flex:1;">
+                    <div style="display:flex; align-items:center; gap:8px; margin-bottom:4px; flex-wrap:wrap;">
+                      <span class="bsp-type-badge bsp-tb-match">Match the Pair</span>
+                      <span class="bsp-marks-badge">1 Mark</span>
+                    </div>
+                    <div class="bsp-inline-prompt">${promptEscaped}</div>
+                  </div>
+                </div>
+                <div class="bsp-inline-match-grid" style="display:flex; flex-direction:column; gap:8px; margin:8px 0;">
+                  ${pairs.map(p => `
+                    <div style="display:flex; align-items:center; gap:8px; background:#faf5ff; border:1px solid #e9d5ff; padding:8px 12px; border-radius:8px; font-size:0.88rem; font-weight:600;">
+                      <span style="color:#6b21a8; font-weight:700;">${escapeHtml(p.left)}</span>
+                      <span style="color:#a855f7;">➔</span>
+                      <span style="color:#3b0764;">${escapeHtml(p.right)}</span>
+                    </div>
+                  `).join('')}
+                </div>
+                ${explanation ? `<div style="font-size:0.8rem; color:#64748b; margin-top:4px;">ℹ️ ${explanation}</div>` : ''}
+              </div>
+            `;
           } else {
-            // Fallback for flashcard or match
             return `
               <div class="bsp-inline-card" id="${qId}">
                 <div class="bsp-inline-q-header">
@@ -3123,13 +3244,13 @@ ${jsonString}
           }
         }).join('');
 
-        return `<!-- Blogger Suite Pro: Native Inline HTML Quiz (No iFrame • 100% SEO Indexed) -->
+        return `<!-- Blogger Suite Pro: Native Question Paper & Interactive Exam (100% SEO Indexed • Zero iFrames) -->
 <div class="bsp-inline-quiz" id="${uid}">
   <style>
     #${uid} {
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-      max-width: 680px;
-      margin: 24px auto;
+      max-width: 720px;
+      margin: 28px auto;
       background: #ffffff;
       border: 2px solid #e2e8f0;
       border-radius: 20px;
@@ -3139,6 +3260,12 @@ ${jsonString}
       color: #0f172a;
     }
     #${uid} * { box-sizing: border-box; }
+    
+    /* Printable Classroom Header */
+    #${uid} .bsp-print-header {
+      display: none;
+    }
+
     #${uid} .bsp-inline-header {
       border-bottom: 2px solid #f1f5f9;
       padding-bottom: 14px;
@@ -3146,12 +3273,20 @@ ${jsonString}
       display: flex;
       align-items: center;
       justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
     }
     #${uid} .bsp-inline-title {
-      font-size: 1.18rem;
+      font-size: 1.25rem;
       font-weight: 800;
-      color: #3730a3;
+      color: #1e1b4b;
       margin: 0;
+      line-height: 1.3;
+    }
+    #${uid} .bsp-inline-badges {
+      display: flex;
+      align-items: center;
+      gap: 6px;
     }
     #${uid} .bsp-inline-badge {
       font-size: 0.72rem;
@@ -3162,38 +3297,70 @@ ${jsonString}
       padding: 4px 10px;
       border-radius: 9999px;
     }
+    #${uid} .bsp-badge-cat {
+      background: #f1f5f9;
+      color: #475569;
+    }
+
+    /* Question Cards */
     #${uid} .bsp-inline-card {
       background: #f8fafc;
-      border: 1px solid #e2e8f0;
+      border: 1.5px solid #e2e8f0;
       border-radius: 14px;
-      padding: 16px;
-      margin-bottom: 16px;
+      padding: 18px;
+      margin-bottom: 18px;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
     }
     #${uid} .bsp-inline-q-header {
       display: flex;
       align-items: flex-start;
-      gap: 10px;
+      gap: 12px;
       margin-bottom: 12px;
     }
     #${uid} .bsp-inline-num {
-      width: 26px;
-      height: 26px;
+      width: 28px;
+      height: 28px;
       border-radius: 50%;
       background: #4f46e5;
       color: #ffffff;
-      font-size: 0.78rem;
+      font-size: 0.82rem;
       font-weight: 800;
       display: flex;
       align-items: center;
       justify-content: center;
       flex-shrink: 0;
     }
+    #${uid} .bsp-type-badge {
+      font-size: 0.68rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      padding: 2.5px 8px;
+      border-radius: 6px;
+      letter-spacing: 0.03em;
+    }
+    #${uid} .bsp-tb-mcq { background: #e0e7ff; color: #4338ca; }
+    #${uid} .bsp-tb-fib { background: #dcfce7; color: #15803d; }
+    #${uid} .bsp-tb-tf { background: #fee2e2; color: #b91c1c; }
+    #${uid} .bsp-tb-fc { background: #fef3c7; color: #b45309; }
+    #${uid} .bsp-tb-match { background: #f3e8ff; color: #7e22ce; }
+    #${uid} .bsp-tb-reorder { background: #e0f2fe; color: #0369a1; }
+    #${uid} .bsp-marks-badge {
+      font-size: 0.68rem;
+      font-weight: 700;
+      background: #f1f5f9;
+      color: #64748b;
+      padding: 2px 7px;
+      border-radius: 6px;
+    }
+
     #${uid} .bsp-inline-prompt {
-      font-size: 0.96rem;
+      font-size: 0.98rem;
       font-weight: 700;
       line-height: 1.45;
       color: #0f172a;
     }
+
+    /* MCQ Options */
     #${uid} .bsp-inline-opts {
       display: flex;
       flex-direction: column;
@@ -3216,25 +3383,45 @@ ${jsonString}
       border-color: #4f46e5;
       background: #eef2ff;
     }
+    #${uid} .bsp-opt-letter {
+      font-weight: 800;
+      color: #64748b;
+      min-width: 18px;
+    }
+    #${uid} .bsp-opt-text { flex: 1; }
+    #${uid} .bsp-opt-correct {
+      border-color: #16a34a !important;
+      background: #f0fdf4 !important;
+      color: #166534 !important;
+    }
+    #${uid} .bsp-opt-incorrect {
+      border-color: #dc2626 !important;
+      background: #fef2f2 !important;
+      color: #991b1b !important;
+    }
+
+    /* Actions & Buttons */
     #${uid} .bsp-inline-actions {
       margin-top: 12px;
       display: flex;
       justify-content: flex-end;
     }
     #${uid} .bsp-inline-btn {
-      padding: 9px 18px;
+      padding: 8px 16px;
       background: #4f46e5;
       color: #ffffff;
-      font-size: 0.85rem;
+      font-size: 0.82rem;
       font-weight: 700;
       border: none;
       border-radius: 8px;
       cursor: pointer;
-      transition: background 0.15s ease;
+      transition: filter 0.15s ease;
     }
     #${uid} .bsp-inline-btn:hover {
-      background: #3730a3;
+      filter: brightness(0.9);
     }
+
+    /* FIB */
     #${uid} .bsp-inline-fib {
       display: flex;
       gap: 8px;
@@ -3257,6 +3444,8 @@ ${jsonString}
       margin-top: 6px;
       font-style: italic;
     }
+
+    /* True / False */
     #${uid} .bsp-inline-tf-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -3275,6 +3464,14 @@ ${jsonString}
     }
     #${uid} .bsp-tf-true:hover { border-color: #16a34a; background: #f0fdf4; color: #15803d; }
     #${uid} .bsp-tf-false:hover { border-color: #dc2626; background: #fef2f2; color: #b91c1c; }
+    #${uid} .bsp-tf-active {
+      border-color: #4f46e5 !important;
+      background: #eef2ff !important;
+      color: #4338ca !important;
+      box-shadow: 0 0 0 2px rgba(79, 70, 229, 0.2);
+    }
+
+    /* Reorder */
     #${uid} .bsp-inline-seq-list {
       display: flex;
       flex-direction: column;
@@ -3313,6 +3510,8 @@ ${jsonString}
       border-radius: 4px;
       margin-left: 2px;
     }
+
+    /* Feedback */
     #${uid} .bsp-inline-feedback {
       margin-top: 10px;
       padding: 10px 14px;
@@ -3323,29 +3522,247 @@ ${jsonString}
     }
     #${uid} .bsp-fb-ok { background: #dcfce7; color: #166534; border: 1px solid #bbf7d0; }
     #${uid} .bsp-fb-err { background: #fee2e2; color: #991b1b; border: 1px solid #fecaca; }
+
+    /* Bottom Exam Controls */
+    #${uid} .bsp-exam-footer {
+      margin-top: 24px;
+      padding-top: 20px;
+      border-top: 2px dashed #cbd5e1;
+    }
+    #${uid} .bsp-exam-controls {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    #${uid} .bsp-exam-submit-btn {
+      padding: 12px 24px;
+      background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+      color: #ffffff;
+      font-size: 0.95rem;
+      font-weight: 800;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      box-shadow: 0 4px 14px rgba(79, 70, 229, 0.35);
+      transition: all 0.15s ease;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    #${uid} .bsp-exam-submit-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 18px rgba(79, 70, 229, 0.45);
+    }
+    #${uid} .bsp-exam-aux-group {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    #${uid} .bsp-exam-aux-btn {
+      padding: 10px 16px;
+      background: #ffffff;
+      border: 1.5px solid #cbd5e1;
+      color: #334155;
+      font-size: 0.85rem;
+      font-weight: 700;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    #${uid} .bsp-exam-aux-btn:hover {
+      background: #f8fafc;
+      border-color: #94a3b8;
+    }
+
+    /* Scorecard */
+    #${uid} .bsp-exam-scorecard {
+      margin-top: 20px;
+      padding: 20px;
+      border-radius: 18px;
+      background: linear-gradient(135deg, #f8fafc 0%, #eef2ff 100%);
+      border: 2px solid #818cf8;
+      box-shadow: 0 8px 20px -4px rgba(79, 70, 229, 0.15);
+      animation: bspFadeIn 0.3s ease-out;
+    }
+    @keyframes bspFadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    #${uid} .bsp-scorecard-inner {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      flex-wrap: wrap;
+    }
+    #${uid} .bsp-score-badge-circle {
+      width: 68px;
+      height: 68px;
+      border-radius: 50%;
+      background: #4f46e5;
+      color: #ffffff;
+      font-size: 1.35rem;
+      font-weight: 900;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+      flex-shrink: 0;
+    }
+    #${uid} .bsp-score-info { flex: 1; }
+    #${uid} .bsp-score-title {
+      font-size: 1.12rem;
+      font-weight: 800;
+      color: #1e1b4b;
+      margin: 0 0 4px 0;
+    }
+    #${uid} .bsp-score-summary {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: #475569;
+      margin: 0 0 8px 0;
+    }
+    #${uid} .bsp-score-stats {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    #${uid} .bsp-stat-pill {
+      font-size: 0.75rem;
+      font-weight: 800;
+      padding: 3px 9px;
+      border-radius: 9999px;
+    }
+    #${uid} .bsp-stat-ok { background: #dcfce7; color: #166534; }
+    #${uid} .bsp-stat-err { background: #fee2e2; color: #991b1b; }
+    #${uid} .bsp-stat-skip { background: #f1f5f9; color: #475569; }
+
+    /* Media Print Stylesheet for Physical Paper / Worksheets */
+    @media print {
+      body { background: #ffffff !important; }
+      #${uid} {
+        border: none !important;
+        box-shadow: none !important;
+        max-width: 100% !important;
+        padding: 0 !important;
+        margin: 0 !important;
+      }
+      #${uid} .bsp-inline-actions,
+      #${uid} .bsp-exam-footer,
+      #${uid} .bsp-inline-seq-arrows,
+      #${uid} .bsp-footer-branding {
+        display: none !important;
+      }
+      #${uid} .bsp-print-header {
+        display: block !important;
+        margin-bottom: 24px;
+        padding-bottom: 14px;
+        border-bottom: 2px solid #0f172a;
+      }
+      #${uid} .bsp-print-row {
+        display: flex;
+        justify-content: space-between;
+        font-size: 13px;
+        font-weight: 600;
+        color: #0f172a;
+        margin-bottom: 8px;
+      }
+      #${uid} .bsp-inline-card {
+        break-inside: avoid !important;
+        page-break-inside: avoid !important;
+        border: 1px solid #94a3b8 !important;
+        background: #ffffff !important;
+        margin-bottom: 18px !important;
+      }
+      #${uid} .bsp-inline-opt {
+        border: 1px solid #cbd5e1 !important;
+      }
+      #${uid} .bsp-fc-back {
+        display: block !important;
+      }
+    }
   </style>
 
+  <!-- Printable Worksheet Header (Only visible when printed or saved as PDF) -->
+  <div class="bsp-print-header">
+    <div class="bsp-print-row">
+      <span><strong>Student Name:</strong> ________________________________</span>
+      <span><strong>Date:</strong> _________________</span>
+      <span><strong>Roll / ID:</strong> ____________</span>
+    </div>
+    <div class="bsp-print-row" style="margin-top: 6px;">
+      <span><strong>Subject:</strong> ${escapeHtml(category)}</span>
+      <span><strong>Total Questions:</strong> ${questions.length}</span>
+      <span><strong>Max Marks:</strong> ${questions.length}</span>
+      <span><strong>Marks Obtained:</strong> _____ / ${questions.length}</span>
+    </div>
+  </div>
+
   <div class="bsp-inline-header">
-    <h3 class="bsp-inline-title">${escapeHtml(title)}</h3>
-    <span class="bsp-inline-badge">${questions.length} Questions</span>
+    <div>
+      <h3 class="bsp-inline-title">${escapeHtml(title)}</h3>
+      <span style="font-size:0.8rem; color:#64748b; font-weight:600;">${escapeHtml(category)}</span>
+    </div>
+    <div class="bsp-inline-badges">
+      <span class="bsp-inline-badge">${questions.length} Questions</span>
+      <span class="bsp-inline-badge bsp-badge-cat">Max: ${questions.length} Pts</span>
+    </div>
   </div>
 
   <div class="bsp-inline-body">
     ${questionsHtml}
   </div>
 
-  <div style="margin-top: 14px; text-align: center; font-size: 0.75rem; color: #94a3b8; font-weight: 600;">
+  <!-- Bottom Action & Master Exam Controls -->
+  <div class="bsp-exam-footer">
+    <div class="bsp-exam-controls">
+      <button type="button" class="bsp-exam-submit-btn" onclick="window['${uid}_submitExam']()">
+        <i class="fa-solid fa-square-check"></i> Submit Exam & Show Solutions
+      </button>
+      <div class="bsp-exam-aux-group">
+        <button type="button" class="bsp-exam-aux-btn" onclick="window['${uid}_resetExam']()">
+          <i class="fa-solid fa-rotate-left"></i> Reset
+        </button>
+        <button type="button" class="bsp-exam-aux-btn" onclick="window.print()">
+          <i class="fa-solid fa-print"></i> Print Worksheet
+        </button>
+      </div>
+    </div>
+
+    <!-- Master Exam Scorecard Banner (Revealed upon Submission) -->
+    <div class="bsp-exam-scorecard" id="${uid}_scorecard" style="display:none;">
+      <div class="bsp-scorecard-inner">
+        <div class="bsp-score-badge-circle" id="${uid}_scorePct">0%</div>
+        <div class="bsp-score-info">
+          <h4 class="bsp-score-title" id="${uid}_scoreTitle">Exam Completed!</h4>
+          <p class="bsp-score-summary" id="${uid}_scoreSummary">You scored 0 out of 0 points.</p>
+          <div class="bsp-score-stats" id="${uid}_scoreStats"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="bsp-footer-branding" style="margin-top: 16px; text-align: center; font-size: 0.75rem; color: #94a3b8; font-weight: 600;">
     ⚡ Powered by <a href="https://github.com/RaviKhillare/RK_Quizmaker_nodatabase" target="_blank" rel="noopener" style="color: #4f46e5; text-decoration: none;">Blogger Suite Pro</a>
   </div>
 </div>
 
 <script>
 (function() {
+  var rootId = '${uid}';
+
+  // 1. MCQ Individual Check
   window['${uid}_checkMcq'] = function(qId) {
     var card = document.getElementById(qId);
     if (!card) return;
     var selected = card.querySelector('input[type="radio"]:checked');
     var fb = card.querySelector('.bsp-inline-feedback');
+    var exp = fb.getAttribute('data-exp') || '';
     if (!selected) {
       alert("Please choose an answer before checking!");
       return;
@@ -3353,9 +3770,10 @@ ${jsonString}
     var isCorrect = selected.closest('.bsp-inline-opt').getAttribute('data-correct') === 'true';
     fb.style.display = 'block';
     fb.className = 'bsp-inline-feedback ' + (isCorrect ? 'bsp-fb-ok' : 'bsp-fb-err');
-    fb.innerHTML = isCorrect ? '✔ Correct! Well done.' : '✖ Incorrect. Review the question carefully.';
+    fb.innerHTML = (isCorrect ? '✔ Correct! Well done.' : '✖ Incorrect. Review the question carefully.') + (exp ? '<div style="margin-top:4px; font-weight:500;">' + exp + '</div>' : '');
   };
 
+  // 2. FIB Individual Check
   window['${uid}_checkFib'] = function(qId) {
     var card = document.getElementById(qId);
     if (!card) return;
@@ -3372,20 +3790,39 @@ ${jsonString}
     var isCorrect = accepted.indexOf(val) !== -1;
     fb.style.display = 'block';
     fb.className = 'bsp-inline-feedback ' + (isCorrect ? 'bsp-fb-ok' : 'bsp-fb-err');
-    fb.innerHTML = isCorrect ? ('✔ Spot on! ' + (exp ? '<em>' + exp + '</em>' : '')) : ('✖ Incorrect. Correct answer: <strong>' + primary + '</strong>' + (exp ? '. ' + exp : ''));
+    fb.innerHTML = (isCorrect ? ('✔ Spot on! ' + (exp ? '<em>' + exp + '</em>' : '')) : ('✖ Incorrect. Correct answer: <strong>' + primary + '</strong>' + (exp ? '. ' + exp : '')));
   };
 
-  window['${uid}_checkTf'] = function(qId, chosenBool, correctBool) {
+  // 3. True / False Selection & Check
+  window['${uid}_selectTf'] = function(qId, chosenBool) {
     var card = document.getElementById(qId);
     if (!card) return;
+    card.setAttribute('data-tf-selected', chosenBool ? 'true' : 'false');
+    var btnTrue = card.querySelector('.bsp-tf-true');
+    var btnFalse = card.querySelector('.bsp-tf-false');
+    if (btnTrue) btnTrue.classList.toggle('bsp-tf-active', chosenBool === true);
+    if (btnFalse) btnFalse.classList.toggle('bsp-tf-active', chosenBool === false);
+  };
+
+  window['${uid}_checkTfCard'] = function(qId) {
+    var card = document.getElementById(qId);
+    if (!card) return;
+    var sel = card.getAttribute('data-tf-selected');
+    if (sel === null) {
+      alert("Please select True or False first!");
+      return;
+    }
+    var chosenBool = (sel === 'true');
+    var correctBool = (card.getAttribute('data-correct') === 'true');
     var fb = card.querySelector('.bsp-inline-feedback');
     var exp = fb.getAttribute('data-exp') || '';
     var isCorrect = (chosenBool === correctBool);
     fb.style.display = 'block';
     fb.className = 'bsp-inline-feedback ' + (isCorrect ? 'bsp-fb-ok' : 'bsp-fb-err');
-    fb.innerHTML = (isCorrect ? '✔ Correct! ' : '✖ Incorrect. ') + (exp ? exp : ('Answer is ' + (correctBool ? 'TRUE' : 'FALSE')));
+    fb.innerHTML = (isCorrect ? '✔ Correct! ' : '✖ Incorrect. ') + (exp ? exp : ('Correct statement is ' + (correctBool ? 'TRUE' : 'FALSE')));
   };
 
+  // 4. Sequence Reorder
   window['${uid}_moveSeq'] = function(qId, btn, dir) {
     var item = btn.closest('.bsp-inline-seq-item');
     var list = item.parentNode;
@@ -3421,19 +3858,246 @@ ${jsonString}
     fb.className = 'bsp-inline-feedback ' + (isFull ? 'bsp-fb-ok' : 'bsp-fb-err');
     fb.innerHTML = (isFull ? '✔ Outstanding! Entire sequence is correct.' : ('✖ ' + correctCount + ' of ' + items.length + ' in right position.')) + (exp ? ' ' + exp : '');
   };
+
+  // 5. MASTER SUBMIT EXAM & SHOW SOLUTIONS
+  window['${uid}_submitExam'] = function() {
+    var root = document.getElementById(rootId);
+    if (!root) return;
+    var cards = root.querySelectorAll('.bsp-inline-card');
+    var totalQuestions = cards.length;
+    var score = 0;
+    var correctCount = 0;
+    var incorrectCount = 0;
+    var unattemptedCount = 0;
+
+    cards.forEach(function(card) {
+      var type = card.getAttribute('data-type');
+      var fb = card.querySelector('.bsp-inline-feedback');
+      var exp = fb ? (fb.getAttribute('data-exp') || '') : '';
+
+      if (type === 'mcq') {
+        var selected = card.querySelector('input[type="radio"]:checked');
+        var opts = card.querySelectorAll('.bsp-inline-opt');
+        opts.forEach(function(opt) {
+          if (opt.getAttribute('data-correct') === 'true') {
+            opt.classList.add('bsp-opt-correct');
+          }
+        });
+        if (!selected) {
+          unattemptedCount++;
+          if (fb) {
+            fb.style.display = 'block';
+            fb.className = 'bsp-inline-feedback bsp-fb-err';
+            fb.innerHTML = '⚪ Unattempted. The correct answer is highlighted in green.' + (exp ? ' <em>' + exp + '</em>' : '');
+          }
+        } else {
+          var isOk = selected.closest('.bsp-inline-opt').getAttribute('data-correct') === 'true';
+          if (isOk) {
+            score++;
+            correctCount++;
+            if (fb) {
+              fb.style.display = 'block';
+              fb.className = 'bsp-inline-feedback bsp-fb-ok';
+              fb.innerHTML = '✔ Correct!' + (exp ? ' <em>' + exp + '</em>' : '');
+            }
+          } else {
+            incorrectCount++;
+            selected.closest('.bsp-inline-opt').classList.add('bsp-opt-incorrect');
+            if (fb) {
+              fb.style.display = 'block';
+              fb.className = 'bsp-inline-feedback bsp-fb-err';
+              fb.innerHTML = '✖ Incorrect. The correct option is highlighted in green.' + (exp ? ' <em>' + exp + '</em>' : '');
+            }
+          }
+        }
+      } else if (type === 'fill_in_blank') {
+        var input = card.querySelector('.bsp-inline-input');
+        var val = (input && input.value ? input.value : '').trim().toLowerCase();
+        var accepted = JSON.parse(fb ? fb.getAttribute('data-accepted') || '[]' : '[]');
+        var primary = fb ? fb.getAttribute('data-primary') || '' : '';
+        if (!val) {
+          unattemptedCount++;
+          if (input) input.style.borderColor = '#cbd5e1';
+          if (fb) {
+            fb.style.display = 'block';
+            fb.className = 'bsp-inline-feedback bsp-fb-err';
+            fb.innerHTML = '⚪ Unattempted. Correct answer: <strong>' + primary + '</strong>' + (exp ? '. ' + exp : '');
+          }
+        } else {
+          var isOk = accepted.indexOf(val) !== -1;
+          if (isOk) {
+            score++;
+            correctCount++;
+            if (input) input.style.borderColor = '#16a34a';
+            if (fb) {
+              fb.style.display = 'block';
+              fb.className = 'bsp-inline-feedback bsp-fb-ok';
+              fb.innerHTML = '✔ Correct!' + (exp ? ' <em>' + exp + '</em>' : '');
+            }
+          } else {
+            incorrectCount++;
+            if (input) input.style.borderColor = '#dc2626';
+            if (fb) {
+              fb.style.display = 'block';
+              fb.className = 'bsp-inline-feedback bsp-fb-err';
+              fb.innerHTML = '✖ Incorrect. Correct answer: <strong>' + primary + '</strong>' + (exp ? '. ' + exp : '');
+            }
+          }
+        }
+      } else if (type === 'true_false') {
+        var sel = card.getAttribute('data-tf-selected');
+        var correctBool = (card.getAttribute('data-correct') === 'true');
+        var btnTrue = card.querySelector('.bsp-tf-true');
+        var btnFalse = card.querySelector('.bsp-tf-false');
+        if (correctBool && btnTrue) btnTrue.classList.add('bsp-opt-correct');
+        if (!correctBool && btnFalse) btnFalse.classList.add('bsp-opt-correct');
+
+        if (sel === null) {
+          unattemptedCount++;
+          if (fb) {
+            fb.style.display = 'block';
+            fb.className = 'bsp-inline-feedback bsp-fb-err';
+            fb.innerHTML = '⚪ Unattempted. Correct value is <strong>' + (correctBool ? 'TRUE' : 'FALSE') + '</strong>' + (exp ? '. ' + exp : '');
+          }
+        } else {
+          var chosenBool = (sel === 'true');
+          if (chosenBool === correctBool) {
+            score++;
+            correctCount++;
+            if (fb) {
+              fb.style.display = 'block';
+              fb.className = 'bsp-inline-feedback bsp-fb-ok';
+              fb.innerHTML = '✔ Correct!' + (exp ? ' <em>' + exp + '</em>' : '');
+            }
+          } else {
+            incorrectCount++;
+            if (chosenBool && btnTrue) btnTrue.classList.add('bsp-opt-incorrect');
+            if (!chosenBool && btnFalse) btnFalse.classList.add('bsp-opt-incorrect');
+            if (fb) {
+              fb.style.display = 'block';
+              fb.className = 'bsp-inline-feedback bsp-fb-err';
+              fb.innerHTML = '✖ Incorrect. Correct value is <strong>' + (correctBool ? 'TRUE' : 'FALSE') + '</strong>' + (exp ? '. ' + exp : '');
+            }
+          }
+        }
+      } else if (type === 'reorder') {
+        var list = card.querySelector('.bsp-inline-seq-list');
+        var items = list ? list.querySelectorAll('.bsp-inline-seq-item') : [];
+        var seqOk = 0;
+        items.forEach(function(it, idx) {
+          if (parseInt(it.getAttribute('data-id')) === idx) {
+            seqOk++;
+            it.style.borderColor = '#16a34a';
+            it.style.background = '#f0fdf4';
+          } else {
+            it.style.borderColor = '#dc2626';
+            it.style.background = '#fef2f2';
+          }
+        });
+        if (seqOk === items.length && items.length > 0) {
+          score++;
+          correctCount++;
+          if (fb) {
+            fb.style.display = 'block';
+            fb.className = 'bsp-inline-feedback bsp-fb-ok';
+            fb.innerHTML = '✔ Perfect! Sequence arranged correctly.' + (exp ? ' ' + exp : '');
+          }
+        } else {
+          incorrectCount++;
+          if (fb) {
+            fb.style.display = 'block';
+            fb.className = 'bsp-inline-feedback bsp-fb-err';
+            fb.innerHTML = '✖ Sequence incomplete (' + seqOk + ' of ' + items.length + ' in right position).' + (exp ? ' ' + exp : '');
+          }
+        }
+      } else if (type === 'flashcard') {
+        // Reveal flashcard definition
+        var bk = card.querySelector('.bsp-fc-back');
+        if (bk) bk.style.display = 'block';
+        score++;
+        correctCount++;
+      } else if (type === 'match') {
+        score++;
+        correctCount++;
+      }
+    });
+
+    // Calculate score percentage
+    var pct = totalQuestions > 0 ? Math.round((score / totalQuestions) * 100) : 100;
+    var scCard = document.getElementById(rootId + '_scorecard');
+    var scPct = document.getElementById(rootId + '_scorePct');
+    var scTitle = document.getElementById(rootId + '_scoreTitle');
+    var scSumm = document.getElementById(rootId + '_scoreSummary');
+    var scStats = document.getElementById(rootId + '_scoreStats');
+
+    if (scPct) {
+      scPct.textContent = pct + '%';
+      if (pct >= 80) scPct.style.background = '#16a34a';
+      else if (pct >= 50) scPct.style.background = '#4f46e5';
+      else scPct.style.background = '#dc2626';
+    }
+    if (scTitle) {
+      if (pct >= 85) scTitle.textContent = '🌟 Outstanding Performance!';
+      else if (pct >= 60) scTitle.textContent = '👍 Good Job! Test Passed.';
+      else scTitle.textContent = '📚 Keep Practicing & Review Solutions';
+    }
+    if (scSumm) {
+      scSumm.textContent = 'You answered ' + score + ' out of ' + totalQuestions + ' questions correctly (' + pct + '%).';
+    }
+    if (scStats) {
+      scStats.innerHTML = '<span class="bsp-stat-pill bsp-stat-ok">✔ ' + correctCount + ' Correct</span>' +
+                          '<span class="bsp-stat-pill bsp-stat-err">✖ ' + incorrectCount + ' Incorrect</span>' +
+                          (unattemptedCount > 0 ? '<span class="bsp-stat-pill bsp-stat-skip">⚪ ' + unattemptedCount + ' Skipped</span>' : '');
+    }
+    if (scCard) {
+      scCard.style.display = 'block';
+      scCard.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+  };
+
+  // 6. MASTER RESET EXAM
+  window['${uid}_resetExam'] = function() {
+    var root = document.getElementById(rootId);
+    if (!root) return;
+    // Clear radios
+    root.querySelectorAll('input[type="radio"]').forEach(function(r) { r.checked = false; });
+    // Clear options styling
+    root.querySelectorAll('.bsp-inline-opt').forEach(function(o) {
+      o.classList.remove('bsp-opt-correct', 'bsp-opt-incorrect');
+    });
+    // Clear text inputs
+    root.querySelectorAll('.bsp-inline-input').forEach(function(i) {
+      i.value = '';
+      i.style.borderColor = '#cbd5e1';
+    });
+    // Clear True/False states
+    root.querySelectorAll('.bsp-inline-card[data-type="true_false"]').forEach(function(c) {
+      c.removeAttribute('data-tf-selected');
+      c.querySelectorAll('.bsp-inline-tf-btn').forEach(function(b) {
+        b.classList.remove('bsp-tf-active', 'bsp-opt-correct', 'bsp-opt-incorrect');
+      });
+    });
+    // Clear feedbacks
+    root.querySelectorAll('.bsp-inline-feedback').forEach(function(f) {
+      f.style.display = 'none';
+      f.innerHTML = '';
+    });
+    // Hide scorecard
+    var sc = document.getElementById(rootId + '_scorecard');
+    if (sc) sc.style.display = 'none';
+  };
 })();
 <\\/script>`;
       }
 
       function openInlineQuizModal() {
         if (!inlineQuizModal) return;
-        const compiledHtml = buildInlineQuizHtml(currentQuiz);
+        const compiledHtml = buildInlineQuizHtml(currentQuiz).replace(/<\\\/script>/g, '<' + '/script>');
         if (inlineQuizCodeOutput) inlineQuizCodeOutput.value = compiledHtml;
         if (inlineCodeStats) inlineCodeStats.textContent = `${currentQuiz.questions.length} Questions Compiled`;
 
         if (inlineQuizLiveContainer) {
-          // Embed sanitized iframe or container preview
-          inlineQuizLiveContainer.innerHTML = compiledHtml.replace(/<\\\/script>/g, '<' + '/script>');
+          inlineQuizLiveContainer.innerHTML = compiledHtml;
         }
         inlineQuizModal.classList.remove('hidden');
       }
@@ -3443,18 +4107,18 @@ ${jsonString}
       }
 
       async function copyInlineQuizHtmlCode() {
-        const code = inlineQuizCodeOutput ? inlineQuizCodeOutput.value.replace(/<\\\/script>/g, '<' + '/script>') : '';
+        const code = inlineQuizCodeOutput ? inlineQuizCodeOutput.value : '';
         if (!code) return;
         try {
           await navigator.clipboard.writeText(code);
-          showToast("Copied Native Inline Quiz HTML to clipboard!", "success");
+          showToast("Copied Native Question Paper HTML to clipboard!", "success");
         } catch (e) {
           showToast("Clipboard copy failed.", "danger");
         }
       }
 
       async function copyInlineQuizForCompose() {
-        const code = inlineQuizCodeOutput ? inlineQuizCodeOutput.value.replace(/<\\\/script>/g, '<' + '/script>') : '';
+        const code = inlineQuizCodeOutput ? inlineQuizCodeOutput.value : '';
         if (!code) return;
         try {
           const htmlBlob = new Blob([code], { type: 'text/html' });
@@ -3466,14 +4130,14 @@ ${jsonString}
                 'text/plain': textBlob
               })
             ]);
-            showToast("Copied for Blogger Compose View! Simply Ctrl+V into your post.", "success");
+            showToast("Copied Question Paper for Blogger Compose View! Press Ctrl+V in your post.", "success");
           } else {
             await navigator.clipboard.writeText(code);
             showToast("Copied HTML! (ClipboardItem unsupported)", "info");
           }
         } catch (e) {
           await navigator.clipboard.writeText(code);
-          showToast("Copied HTML to clipboard!", "success");
+          showToast("Copied Question Paper HTML to clipboard!", "success");
         }
       }
 

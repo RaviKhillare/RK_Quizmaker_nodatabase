@@ -216,7 +216,16 @@
       letter-spacing: 0.05em;
       color: var(--primary);
       margin-bottom: 6px;
+      padding: 4px 10px;
+      border-radius: 9999px;
+      background: var(--primary-light);
     }
+    .badge-mcq { background: #e0e7ff; color: #4338ca; }
+    .badge-fib { background: #dcfce7; color: #15803d; }
+    .badge-fc { background: #fef3c7; color: #b45309; }
+    .badge-match { background: #f3e8ff; color: #7e22ce; }
+    .badge-tf { background: #fee2e2; color: #b91c1c; }
+    .badge-reorder { background: #e0f2fe; color: #0369a1; }
 
     .prompt-text {
       font-size: 1.18rem;
@@ -1489,7 +1498,16 @@
         const progressPct = ((state.currentIndex) / total) * 100;
         progressFill.style.width = `${progressPct}%`;
 
-        switch (currentQ.type) {
+        const rawType = (currentQ.type || 'mcq').toLowerCase().trim();
+        let normalizedType = rawType;
+        if (rawType === 'fill_blank' || rawType.includes('blank')) normalizedType = 'fill_in_blank';
+        else if (rawType === 'tf' || rawType.includes('true')) normalizedType = 'true_false';
+        else if (rawType.includes('flash')) normalizedType = 'flashcard';
+        else if (rawType.includes('match') || rawType.includes('pair')) normalizedType = 'match';
+        else if (rawType.includes('order') || rawType.includes('seq')) normalizedType = 'reorder';
+        else if (rawType.includes('mcq') || rawType.includes('choice')) normalizedType = 'mcq';
+
+        switch (normalizedType) {
           case 'mcq':
             renderMCQ(currentQ);
             break;
@@ -1528,7 +1546,7 @@
 
         quizViewport.innerHTML = `
           <div>
-            <span class="badge-pill"><i class="fa-regular fa-circle-question"></i> Multiple Choice</span>
+            <span class="badge-pill badge-mcq"><i class="fa-regular fa-circle-question"></i> Multiple Choice</span>
             <h2 class="prompt-text">${escapeHtml(q.prompt)}</h2>
             <div class="mcq-grid" id="mcqGrid">${optionsHtml}</div>
           </div>
@@ -1580,7 +1598,7 @@
       function renderFillInBlank(q) {
         quizViewport.innerHTML = `
           <div>
-            <span class="badge-pill"><i class="fa-solid fa-pen-to-square"></i> Fill in the Blank</span>
+            <span class="badge-pill badge-fib"><i class="fa-solid fa-pen-to-square"></i> Fill in the Blank</span>
             <h2 class="prompt-text">${escapeHtml(q.prompt)}</h2>
             <div class="fib-box">
               <div class="fib-input-wrapper">
@@ -1645,7 +1663,7 @@
       function renderFlashcard(q) {
         quizViewport.innerHTML = `
           <div>
-            <span class="badge-pill"><i class="fa-regular fa-clone"></i> Flashcard</span>
+            <span class="badge-pill badge-fc"><i class="fa-regular fa-clone"></i> Flashcard</span>
             <h2 class="prompt-text">${escapeHtml(q.prompt || "Review the study card below:")}</h2>
             
             <div class="flashcard-wrapper">
@@ -1734,7 +1752,7 @@
 
         quizViewport.innerHTML = `
           <div>
-            <span class="badge-pill"><i class="fa-solid fa-diagram-project"></i> Match the Pair</span>
+            <span class="badge-pill badge-match"><i class="fa-solid fa-diagram-project"></i> Match the Pair</span>
             <h2 class="prompt-text">${escapeHtml(q.prompt)}</h2>
             <div class="match-columns">
               <div class="match-col">${leftHtml}</div>
@@ -1827,7 +1845,7 @@
       function renderTrueFalse(q) {
         quizViewport.innerHTML = `
           <div>
-            <span class="badge-pill"><i class="fa-solid fa-circle-check"></i> True / False</span>
+            <span class="badge-pill badge-tf"><i class="fa-solid fa-circle-check"></i> True / False</span>
             <h2 class="prompt-text">${escapeHtml(q.prompt)}</h2>
             <div class="tf-grid">
               <button class="tactile-btn tf-btn tf-btn-true" id="btnTfTrue" data-val="true">
@@ -1936,7 +1954,7 @@
 
         quizViewport.innerHTML = `
           <div>
-            <span class="badge-pill"><i class="fa-solid fa-arrow-down-1-9"></i> Sequence Reorder</span>
+            <span class="badge-pill badge-reorder"><i class="fa-solid fa-arrow-down-1-9"></i> Sequence Reorder</span>
             <h2 class="prompt-text">${escapeHtml(q.prompt || "Arrange the following items in the correct order:")}</h2>
             <div class="reorder-list" id="reorderListContainer">
               ${renderListHtml()}
