@@ -1085,20 +1085,27 @@
 
         try {
           if (base64Data) {
-            // Option 1: Base64 / URI encoded JSON
+            // Option 1: Base64 / URI encoded JSON (Instant Standalone Embed)
             state.quizData = decodeBase64Payload(base64Data);
           } else if (fileParam) {
             renderLoadingSkeleton();
-            // Option 2: Asynchronous file or remote URL fetch with cache-busting to bypass GitHub Pages CDN cache delays
-            const cacheBustParam = (fileParam.includes('?') ? '&' : '?') + '_t=' + Date.now();
-            const fetchUrl = fileParam + cacheBustParam;
+            // Option 2: Asynchronous file or remote URL fetch with cache-busting
+            let targetUrl = fileParam.trim();
+            // If relative path, resolve safely against page origin
+            if (!targetUrl.startsWith('http://') && !targetUrl.startsWith('https://')) {
+              targetUrl = new URL(fileParam, window.location.href).href;
+            }
+            const cacheBustParam = (targetUrl.includes('?') ? '&' : '?') + '_t=' + Date.now();
+            const fetchUrl = targetUrl + cacheBustParam;
             const response = await fetch(fetchUrl, {
               cache: 'no-store',
               headers: {
                 'Accept': 'application/json'
               }
             });
-            if (!response.ok) throw new Error(`HTTP ${response.status}: Unable to load quiz file "${fileParam}". Make sure the file exists and is accessible.`);
+            if (!response.ok) {
+              throw new Error(`HTTP ${response.status}: Unable to load quiz file "${fileParam}". Ensure the file is deployed on GitHub Pages.`);
+            }
             state.quizData = await response.json();
           } else {
             // Option 3: Fallback demo mock quiz
@@ -1109,7 +1116,7 @@
           startQuizSession();
         } catch (err) {
           console.error("Quiz bootstrap error:", err);
-          renderErrorScreen(err.message);
+          renderErrorScreen(err.message, fileParam);
         }
       }
 
@@ -1117,11 +1124,15 @@
         let text = raw;
         try { text = decodeURIComponent(raw); } catch (e) { text = raw; }
 
-        // Try direct JSON
+        // Try direct JSON first
         try { return JSON.parse(text); } catch (e) {}
 
-        // Handle Base64 URL character replacement and UTF-8 decoding
-        const base64Str = text.replace(/ /g, '+');
+        // Handle URL-safe Base64 and padding
+        let base64Str = text.replace(/-/g, '+').replace(/_/g, '/').replace(/ /g, '+');
+        while (base64Str.length % 4) {
+          base64Str += '=';
+        }
+
         try {
           const binary = atob(base64Str);
           const bytes = new Uint8Array(binary.length);
@@ -1610,20 +1621,39 @@
         `;
       }
 
-      function renderErrorScreen(msg) {
+      function renderErrorScreen(msg, requestedFile) {
         topNav.style.display = 'none';
         closeFeedbackDrawer();
         quizViewport.innerHTML = `
-          <div class="state-container">
-            <i class="fa-solid fa-triangle-exclamation" style="font-size: 3rem; color: var(--danger);"></i>
-            <h3 style="font-size: 1.25rem; font-weight: 800;">Quiz Load Error</h3>
-            <p style="color: var(--text-muted); font-size: 0.9rem; max-width: 380px;">${escapeHtml(msg)}</p>
-            <button class="tactile-btn retake-quiz-btn" id="demoFallbackBtn" style="margin-top: 14px;">
-              <i class="fa-solid fa-play" style="margin-right: 8px;"></i> Load Demo Quiz
-            </button>
+          <div class="state-container" style="text-align: center; padding: 24px 16px;">
+            <div style="width: 54px; height: 54px; border-radius: 50%; background: #fee2e2; color: #dc2626; display: flex; align-items: center; justify-content: center; margin: 0 auto 12px; font-size: 1.5rem;">
+              <i class="fa-solid fa-triangle-exclamation"></i>
+            </div>
+            <h3 style="font-size: 1.18rem; font-weight: 800; color: #0f172a; margin-bottom: 6px;">Quiz Load Error</h3>
+            <p style="color: #64748b; font-size: 0.85rem; max-width: 420px; margin: 0 auto 12px; line-height: 1.5;">${escapeHtml(msg)}</p>
+            ${requestedFile ? `
+              <div style="background: #f8fafc; border: 1px dashed #cbd5e1; border-radius: 12px; padding: 10px 14px; margin-bottom: 14px; text-align: left; max-width: 440px; margin-left: auto; margin-right: auto;">
+                <span style="font-size: 0.72rem; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: 0.05em;">Target File Path:</span>
+                <p style="font-family: monospace; font-size: 0.75rem; color: #334155; word-break: break-all; margin-top: 2px;">${escapeHtml(requestedFile)}</p>
+                <div style="margin-top: 8px; font-size: 0.73rem; color: #475569; line-height: 1.4; border-top: 1px solid #e2e8f0; pt-2;">
+                  ⚡ <strong>Tip:</strong> If you recently committed this file, GitHub Pages may take 30–60s to deploy. Alternatively, select <em>Instant Standalone Embed</em> in the Dashboard to bypass file hosting completely.
+                </div>
+              </div>
+            ` : ''}
+            <div style="display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; margin-top: 8px;">
+              <button class="tactile-btn" id="retryLoadBtn" style="padding: 10px 18px; border-radius: 12px; background: var(--primary); color: white; font-weight: 700; font-size: 0.82rem; border: none; cursor: pointer;">
+                <i class="fa-solid fa-rotate-right" style="margin-right: 6px;"></i> Retry Load
+              </button>
+              <button class="tactile-btn" id="demoFallbackBtn" style="padding: 10px 18px; border-radius: 12px; background: #e2e8f0; color: #334155; font-weight: 700; font-size: 0.82rem; border: none; cursor: pointer;">
+                <i class="fa-solid fa-play" style="margin-right: 6px;"></i> Load Demo Quiz
+              </button>
+            </div>
           </div>
         `;
-        document.getElementById('demoFallbackBtn').addEventListener('click', () => {
+        document.getElementById('retryLoadBtn')?.addEventListener('click', () => {
+          bootstrapQuizEngine();
+        });
+        document.getElementById('demoFallbackBtn')?.addEventListener('click', () => {
           state.quizData = MOCK_QUIZ;
           startQuizSession();
         });

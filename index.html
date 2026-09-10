@@ -223,6 +223,13 @@
           <i class="fa-solid fa-file-code text-base w-5 text-center"></i>
           <span class="hidden md:inline">JSON Manager</span>
         </button>
+
+        <!-- Tab 4: Saved Quizzes Library -->
+        <button id="tabBtnLibrary" class="sidebar-tab w-full flex items-center gap-3 px-3 py-2.5 rounded-xl font-bold text-sm text-slate-600 hover:bg-slate-50 transition-colors">
+          <i class="fa-solid fa-bookmark text-base w-5 text-center text-amber-500"></i>
+          <span class="hidden md:inline">Saved Quizzes</span>
+          <span id="libraryCountBadge" class="hidden md:inline-flex ml-auto text-[10px] font-extrabold px-1.5 py-0.5 rounded-full bg-primary-light text-primary">0</span>
+        </button>
       </div>
 
       <!-- Quick Tips Box -->
@@ -309,6 +316,19 @@
               <input type="checkbox" id="metaToggleFeedback" checked class="w-4 h-4 rounded text-emerald-600 focus:ring-emerald-500">
             </label>
           </div>
+
+          <!-- Quick Action Bar: Google Sheets Bulk Import & Save to Library -->
+          <div class="flex flex-wrap items-center gap-2 pt-2 border-t border-border-light">
+            <button id="btnOpenBulkImport" type="button" class="tactile-btn px-3 py-1.5 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-emerald-700 font-bold text-xs flex items-center gap-1.5 border border-emerald-200 shadow-sm transition">
+              <i class="fa-solid fa-file-excel text-emerald-600"></i> Google Sheets / Bulk Import
+            </button>
+            <button id="btnSaveCurrentToLibrary" type="button" class="tactile-btn px-3 py-1.5 rounded-xl bg-indigo-50 hover:bg-indigo-100 text-primary font-bold text-xs flex items-center gap-1.5 border border-indigo-200 shadow-sm transition">
+              <i class="fa-solid fa-floppy-disk"></i> Save to Library
+            </button>
+            <button id="btnNewBlankQuiz" type="button" class="tactile-btn px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs flex items-center gap-1.5 border border-border-light transition ml-auto">
+              <i class="fa-solid fa-plus"></i> New Blank Quiz
+            </button>
+          </div>
         </div>
 
         <!-- Questions Dynamic List Container -->
@@ -316,11 +336,15 @@
           <!-- Rendered dynamically by JS -->
         </div>
 
-        <!-- Add Question Floating/Prominent Button -->
-        <div class="flex justify-center pt-2 pb-6">
+        <!-- Add Question Floating/Prominent Action Bar -->
+        <div class="flex flex-wrap items-center justify-center gap-3 pt-2 pb-6">
           <button id="btnAddQuestion" class="tactile-btn flex items-center gap-2 px-6 py-3.5 rounded-full bg-white hover:bg-slate-50 text-primary font-bold text-sm shadow-md border border-border-light hover:border-primary/30">
             <i class="fa-solid fa-plus-circle text-lg text-primary"></i>
-            <span>Add New Question</span>
+            <span>Add Question Card</span>
+          </button>
+          <button id="btnOpenBulkImportBottom" class="tactile-btn flex items-center gap-2 px-5 py-3.5 rounded-full bg-emerald-50 hover:bg-emerald-100 text-emerald-700 font-bold text-sm shadow-md border border-emerald-200">
+            <i class="fa-solid fa-file-excel text-lg text-emerald-600"></i>
+            <span>Google Sheets Bulk Import</span>
           </button>
         </div>
 
@@ -340,54 +364,176 @@
           <p class="text-indigo-100 text-sm">Create conversion-optimized social buttons, educational callouts, and study resource grids. Copy and paste directly into Blogger Compose View without writing code!</p>
         </div>
 
-        <!-- Widget A: Gradient Social Media Follow Buttons -->
+        <!-- Widget A: Multi-Button Social Media Bar Generator -->
         <div class="bg-white p-6 rounded-2xl border border-border-light shadow-sm space-y-5">
           <div class="flex items-center justify-between border-b border-border-light pb-3">
             <div class="flex items-center gap-2">
               <i class="fa-solid fa-share-nodes text-primary text-lg"></i>
-              <h3 class="font-extrabold text-base text-slate-900">A. Gradient Social Media Follow Buttons</h3>
+              <div>
+                <h3 class="font-extrabold text-base text-slate-900">A. Multi-Button Social Media Bar Builder</h3>
+                <p class="text-xs text-slate-500">Combine YouTube, Telegram, WhatsApp, Instagram, Facebook, and Website into a unified bar</p>
+              </div>
             </div>
-            <span class="text-xs font-bold text-slate-500">Live Generator</span>
+            <span class="text-xs font-bold text-slate-500 bg-slate-100 px-2.5 py-1 rounded-full">Bar Generator</span>
           </div>
 
-          <!-- Inputs -->
-          <div class="grid grid-cols-1 sm:grid-cols-3 gap-3.5">
+          <!-- Controls: Layout & Style Switchers -->
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-3.5 bg-slate-50 p-4 rounded-2xl border border-border-light">
+            <!-- Layout Switcher -->
             <div>
-              <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Select Platform</label>
-              <select id="socPlatformSelect" class="w-full px-3 py-2 rounded-xl border border-border-light bg-slate-50 text-xs font-bold text-slate-700 outline-none focus:border-primary">
-                <option value="youtube">YouTube (Red Gradient)</option>
-                <option value="telegram" selected>Telegram (Sky Blue Gradient)</option>
-                <option value="whatsapp">WhatsApp Channel (Emerald)</option>
-                <option value="website">Website / Blog (Indigo Gradient)</option>
-                <option value="instagram">Instagram (Pink/Rose Gradient)</option>
+              <label class="block text-[11px] font-bold text-slate-600 uppercase mb-1.5">Bar Layout</label>
+              <div class="flex items-center gap-2">
+                <label class="flex-1 flex items-center justify-center gap-1.5 p-2 rounded-xl border border-border-light bg-white cursor-pointer hover:border-primary text-xs font-bold text-slate-700 select-none">
+                  <input type="radio" name="socLayout" value="horizontal" checked class="text-primary focus:ring-primary">
+                  <span>Horizontal</span>
+                </label>
+                <label class="flex-1 flex items-center justify-center gap-1.5 p-2 rounded-xl border border-border-light bg-white cursor-pointer hover:border-primary text-xs font-bold text-slate-700 select-none">
+                  <input type="radio" name="socLayout" value="vertical" class="text-primary focus:ring-primary">
+                  <span>Vertical</span>
+                </label>
+              </div>
+            </div>
+
+            <!-- Button Style -->
+            <div>
+              <label class="block text-[11px] font-bold text-slate-600 uppercase mb-1.5">Button Style</label>
+              <select id="socStyleSelect" class="w-full px-3 py-2 rounded-xl border border-border-light bg-white text-xs font-bold text-slate-700 outline-none focus:border-primary">
+                <option value="gradient" selected>Gradient Glow (Vibrant)</option>
+                <option value="pill">Modern Pill (Solid)</option>
+                <option value="minimal">Minimal Rounded (Clean Tint)</option>
               </select>
             </div>
+
+            <!-- Content Format -->
             <div>
-              <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Button Label</label>
-              <input type="text" id="socLabelInput" class="w-full px-3 py-2 rounded-xl border border-border-light bg-slate-50 text-xs font-semibold focus:border-primary outline-none" value="Join Telegram Community">
+              <label class="block text-[11px] font-bold text-slate-600 uppercase mb-1.5">Display Format</label>
+              <select id="socFormatSelect" class="w-full px-3 py-2 rounded-xl border border-border-light bg-white text-xs font-bold text-slate-700 outline-none focus:border-primary">
+                <option value="both" selected>Icon + Label Text</option>
+                <option value="icon_only">Icon Only (Compact Badges)</option>
+              </select>
             </div>
-            <div>
-              <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Channel / Profile URL</label>
-              <input type="text" id="socUrlInput" class="w-full px-3 py-2 rounded-xl border border-border-light bg-slate-50 text-xs font-semibold focus:border-primary outline-none" value="https://t.me/yourchannel">
+          </div>
+
+          <!-- Platform Toggles & Links -->
+          <div class="space-y-3">
+            <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider">Include Platforms & URLs</label>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-3" id="socPlatformsContainer">
+              <!-- YouTube -->
+              <div class="p-3 rounded-xl border border-border-light bg-slate-50/70 space-y-2">
+                <div class="flex items-center justify-between">
+                  <label class="flex items-center gap-2 cursor-pointer">
+                    <input type="checkbox" id="soc_yt_enable" checked class="soc-toggle w-4 h-4 rounded text-red-600 focus:ring-red-500">
+                    <span class="text-xs font-bold text-slate-800 flex items-center gap-1.5">
+                      <i class="fa-brands fa-youtube text-red-600 text-sm"></i> YouTube
+                    </span>
+                  </label>
+                </div>
+                <div class="grid grid-cols-2 gap-2">
+                  <input type="text" id="soc_yt_label" class="soc-input px-2.5 py-1.5 rounded-lg border border-border-light bg-white text-xs font-semibold focus:border-primary outline-none" value="YouTube" placeholder="Label">
+                  <input type="text" id="soc_yt_url" class="soc-input px-2.5 py-1.5 rounded-lg border border-border-light bg-white text-xs font-semibold focus:border-primary outline-none" value="https://youtube.com/@yourchannel" placeholder="URL">
+                </div>
+              </div>
+
+              <!-- Telegram -->
+              <div class="p-3 rounded-xl border border-border-light bg-slate-50/70 space-y-2">
+                <div class="flex items-center justify-between">
+                  <label class="flex items-center gap-2 cursor-pointer">
+                    <input type="checkbox" id="soc_tg_enable" checked class="soc-toggle w-4 h-4 rounded text-sky-500 focus:ring-sky-500">
+                    <span class="text-xs font-bold text-slate-800 flex items-center gap-1.5">
+                      <i class="fa-brands fa-telegram text-sky-500 text-sm"></i> Telegram
+                    </span>
+                  </label>
+                </div>
+                <div class="grid grid-cols-2 gap-2">
+                  <input type="text" id="soc_tg_label" class="soc-input px-2.5 py-1.5 rounded-lg border border-border-light bg-white text-xs font-semibold focus:border-primary outline-none" value="Telegram" placeholder="Label">
+                  <input type="text" id="soc_tg_url" class="soc-input px-2.5 py-1.5 rounded-lg border border-border-light bg-white text-xs font-semibold focus:border-primary outline-none" value="https://t.me/yourchannel" placeholder="URL">
+                </div>
+              </div>
+
+              <!-- WhatsApp -->
+              <div class="p-3 rounded-xl border border-border-light bg-slate-50/70 space-y-2">
+                <div class="flex items-center justify-between">
+                  <label class="flex items-center gap-2 cursor-pointer">
+                    <input type="checkbox" id="soc_wa_enable" checked class="soc-toggle w-4 h-4 rounded text-emerald-600 focus:ring-emerald-500">
+                    <span class="text-xs font-bold text-slate-800 flex items-center gap-1.5">
+                      <i class="fa-brands fa-whatsapp text-emerald-600 text-sm"></i> WhatsApp Channel
+                    </span>
+                  </label>
+                </div>
+                <div class="grid grid-cols-2 gap-2">
+                  <input type="text" id="soc_wa_label" class="soc-input px-2.5 py-1.5 rounded-lg border border-border-light bg-white text-xs font-semibold focus:border-primary outline-none" value="WhatsApp" placeholder="Label">
+                  <input type="text" id="soc_wa_url" class="soc-input px-2.5 py-1.5 rounded-lg border border-border-light bg-white text-xs font-semibold focus:border-primary outline-none" value="https://whatsapp.com/channel/yourchannel" placeholder="URL">
+                </div>
+              </div>
+
+              <!-- Instagram -->
+              <div class="p-3 rounded-xl border border-border-light bg-slate-50/70 space-y-2">
+                <div class="flex items-center justify-between">
+                  <label class="flex items-center gap-2 cursor-pointer">
+                    <input type="checkbox" id="soc_ig_enable" checked class="soc-toggle w-4 h-4 rounded text-pink-600 focus:ring-pink-500">
+                    <span class="text-xs font-bold text-slate-800 flex items-center gap-1.5">
+                      <i class="fa-brands fa-instagram text-pink-600 text-sm"></i> Instagram
+                    </span>
+                  </label>
+                </div>
+                <div class="grid grid-cols-2 gap-2">
+                  <input type="text" id="soc_ig_label" class="soc-input px-2.5 py-1.5 rounded-lg border border-border-light bg-white text-xs font-semibold focus:border-primary outline-none" value="Instagram" placeholder="Label">
+                  <input type="text" id="soc_ig_url" class="soc-input px-2.5 py-1.5 rounded-lg border border-border-light bg-white text-xs font-semibold focus:border-primary outline-none" value="https://instagram.com/yourhandle" placeholder="URL">
+                </div>
+              </div>
+
+              <!-- Facebook -->
+              <div class="p-3 rounded-xl border border-border-light bg-slate-50/70 space-y-2">
+                <div class="flex items-center justify-between">
+                  <label class="flex items-center gap-2 cursor-pointer">
+                    <input type="checkbox" id="soc_fb_enable" class="soc-toggle w-4 h-4 rounded text-blue-600 focus:ring-blue-500">
+                    <span class="text-xs font-bold text-slate-800 flex items-center gap-1.5">
+                      <i class="fa-brands fa-facebook text-blue-600 text-sm"></i> Facebook
+                    </span>
+                  </label>
+                </div>
+                <div class="grid grid-cols-2 gap-2">
+                  <input type="text" id="soc_fb_label" class="soc-input px-2.5 py-1.5 rounded-lg border border-border-light bg-white text-xs font-semibold focus:border-primary outline-none" value="Facebook" placeholder="Label">
+                  <input type="text" id="soc_fb_url" class="soc-input px-2.5 py-1.5 rounded-lg border border-border-light bg-white text-xs font-semibold focus:border-primary outline-none" value="https://facebook.com/yourpage" placeholder="URL">
+                </div>
+              </div>
+
+              <!-- Website / Blog -->
+              <div class="p-3 rounded-xl border border-border-light bg-slate-50/70 space-y-2">
+                <div class="flex items-center justify-between">
+                  <label class="flex items-center gap-2 cursor-pointer">
+                    <input type="checkbox" id="soc_web_enable" checked class="soc-toggle w-4 h-4 rounded text-indigo-600 focus:ring-indigo-500">
+                    <span class="text-xs font-bold text-slate-800 flex items-center gap-1.5">
+                      <i class="fa-solid fa-globe text-indigo-600 text-sm"></i> Website / Blog
+                    </span>
+                  </label>
+                </div>
+                <div class="grid grid-cols-2 gap-2">
+                  <input type="text" id="soc_web_label" class="soc-input px-2.5 py-1.5 rounded-lg border border-border-light bg-white text-xs font-semibold focus:border-primary outline-none" value="Official Site" placeholder="Label">
+                  <input type="text" id="soc_web_url" class="soc-input px-2.5 py-1.5 rounded-lg border border-border-light bg-white text-xs font-semibold focus:border-primary outline-none" value="https://yourblog.blogspot.com" placeholder="URL">
+                </div>
+              </div>
             </div>
           </div>
 
           <!-- Live Visual Preview Box -->
-          <div class="p-6 rounded-xl bg-slate-50 border border-border-light flex flex-col items-center justify-center min-h-[90px]">
-            <div id="socLivePreview">
+          <div class="p-5 rounded-2xl bg-slate-100 border border-border-light flex flex-col items-center justify-center min-h-[100px]">
+            <span class="text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-2">Live Social Bar Preview</span>
+            <div id="socLivePreview" class="w-full flex justify-center">
               <!-- Live preview rendered by JS -->
             </div>
           </div>
 
           <!-- Action Buttons -->
-          <div class="flex items-center justify-end gap-2.5 pt-1">
+          <div class="flex flex-wrap items-center justify-end gap-2.5 pt-1">
             <button id="btnCopySocCompose" class="tactile-btn flex items-center gap-2 px-4 py-2.5 rounded-xl bg-primary hover:bg-primary-dark text-white text-xs font-bold shadow-sm shadow-primary/20">
               <i class="fa-solid fa-wand-magic-sparkles text-yellow-300"></i>
               <span>Copy for Blogger (Compose View)</span>
             </button>
-            <button id="btnCopySocHtml" class="tactile-btn flex items-center gap-1.5 px-3.5 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold border border-border-light">
+            <button id="btnCopySocHtml" class="tactile-btn flex items-center gap-1.5 px-3.5 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold border border-border-light" title="Copy clean inline HTML for Blogger Sidebar Gadget">
               <i class="fa-solid fa-code text-primary"></i>
-              <span>Copy HTML</span>
+              <span>Copy Clean HTML (Sidebar Gadget)</span>
             </button>
           </div>
         </div>
@@ -550,6 +696,56 @@
         </div>
       </div>
 
+      <!-- ============================================================= -->
+      <!-- MODULE D: SAVED QUIZZES LIBRARY VIEW                          -->
+      <!-- ============================================================= -->
+      <div id="viewSavedQuizzes" class="tab-view hidden space-y-6 max-w-4xl mx-auto">
+        
+        <!-- Header Banner -->
+        <div class="bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 p-6 rounded-2xl text-white shadow-md flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div>
+            <h2 class="text-xl font-extrabold mb-1 flex items-center gap-2.5">
+              <i class="fa-solid fa-bookmark text-yellow-400"></i> My Saved Quizzes Library
+            </h2>
+            <p class="text-slate-300 text-xs sm:text-sm">Manage quizzes stored in your local browser library. Load, export, or create standalone backups.</p>
+          </div>
+          <div class="flex items-center gap-2.5 shrink-0 flex-wrap">
+            <button id="btnBackupLibraryHtml" type="button" class="tactile-btn px-3.5 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs flex items-center gap-1.5 shadow-sm">
+              <i class="fa-solid fa-cloud-arrow-down"></i> Export Standalone HTML Backup
+            </button>
+            <button id="btnNewQuizFromLibrary" type="button" class="tactile-btn px-3.5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs flex items-center gap-1.5 shadow-sm">
+              <i class="fa-solid fa-plus"></i> New Quiz
+            </button>
+          </div>
+        </div>
+
+        <!-- Filter & Search Bar -->
+        <div class="flex flex-col sm:flex-row items-center gap-3 bg-white p-3.5 rounded-2xl border border-border-light shadow-sm">
+          <div class="flex items-center gap-2.5 flex-1 w-full px-2">
+            <i class="fa-solid fa-magnifying-glass text-slate-400"></i>
+            <input type="text" id="librarySearchInput" class="w-full text-xs font-semibold text-slate-800 bg-transparent outline-none placeholder:text-slate-400" placeholder="Search saved quizzes by title or category...">
+          </div>
+          <button id="btnSaveCurrentQuick" type="button" class="tactile-btn shrink-0 w-full sm:w-auto px-4 py-2 rounded-xl bg-primary-bg text-primary hover:bg-primary hover:text-white font-bold text-xs transition flex items-center justify-center gap-1.5">
+            <i class="fa-solid fa-floppy-disk"></i> Save Current Quiz to Library
+          </button>
+        </div>
+
+        <!-- Quizzes Grid -->
+        <div id="savedQuizzesGrid" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <!-- Populated dynamically by JS -->
+        </div>
+
+        <!-- Empty State Container (Hidden when quizzes exist) -->
+        <div id="libraryEmptyState" class="hidden bg-white rounded-2xl border border-border-light p-10 text-center space-y-3">
+          <div class="w-12 h-12 mx-auto rounded-2xl bg-amber-50 text-amber-500 flex items-center justify-center text-xl">
+            <i class="fa-solid fa-box-open"></i>
+          </div>
+          <h3 class="font-extrabold text-sm text-slate-800">No Saved Quizzes Found</h3>
+          <p class="text-xs text-slate-500 max-w-sm mx-auto">Create a quiz in Quiz Builder and click "Save to Library" to build your local collection.</p>
+        </div>
+
+      </div>
+
     </main>
 
     <!-- 3. Right Sidebar: Real-time Live Mobile Preview (Desktop View) -->
@@ -686,10 +882,94 @@
             <i class="fa-solid fa-code text-primary"></i>
             <span>Copy iFrame HTML</span>
           </button>
+          <button id="modalQuickCopyInstantBtn" type="button" class="tactile-btn p-3 rounded-2xl bg-amber-500 hover:bg-amber-600 text-white font-bold text-xs sm:text-sm flex items-center justify-center gap-2 col-span-1 sm:col-span-2 shadow-md shadow-amber-500/20">
+            <i class="fa-solid fa-bolt"></i>
+            <span>⚡ Quick Copy: Instant Standalone Embed (Zero Uploads - No 404s!)</span>
+          </button>
         </div>
 
       </div>
 
+    </div>
+  </div>
+
+  <!-- ============================================================= -->
+  <!-- MODAL: GOOGLE SHEETS / BULK QUIZ IMPORTER                     -->
+  <!-- ============================================================= -->
+  <div id="bulkImportModal" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm hidden flex items-center justify-center p-4">
+    <div class="bg-white w-full max-w-2xl rounded-3xl shadow-2xl border border-border-light overflow-hidden flex flex-col animate-[fadeIn_0.2s_ease-out]">
+      <!-- Header -->
+      <div class="p-5 bg-gradient-to-r from-emerald-800 to-teal-900 text-white flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 flex items-center justify-center">
+            <i class="fa-solid fa-file-excel text-lg"></i>
+          </div>
+          <div>
+            <h3 class="font-extrabold text-base sm:text-lg">Google Sheets & CSV Bulk Importer</h3>
+            <p class="text-xs text-emerald-200">Convert spreadsheet rows into interactive quiz cards instantly</p>
+          </div>
+        </div>
+        <button id="btnCloseBulkModal" class="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition">
+          <i class="fa-solid fa-times"></i>
+        </button>
+      </div>
+
+      <!-- Body -->
+      <div class="p-5 sm:p-6 space-y-4 overflow-y-auto max-h-[75vh]">
+        <!-- Step 1: Template Download Banner -->
+        <div class="p-4 rounded-2xl bg-emerald-50/70 border border-emerald-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div class="space-y-0.5">
+            <span class="text-xs font-bold text-emerald-900 flex items-center gap-1.5">
+              <i class="fa-solid fa-table text-emerald-600"></i> Step 1: Google Sheets / Excel Format
+            </span>
+            <p class="text-[11px] text-emerald-700">Columns: <code>Type | Question | Option A | Option B | Option C | Option D | Answer | Explanation</code></p>
+          </div>
+          <button id="btnDownloadCsvTemplate" type="button" class="tactile-btn px-3.5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs shrink-0 flex items-center gap-1.5 shadow-sm">
+            <i class="fa-solid fa-download"></i> Download CSV Template
+          </button>
+        </div>
+
+        <!-- Step 2: Paste Area -->
+        <div class="space-y-2">
+          <div class="flex items-center justify-between">
+            <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider">
+              Step 2: Copy Cells & Paste Below (TSV / CSV)
+            </label>
+            <span class="text-[11px] text-slate-500 font-medium">Select cells in Google Sheets, Ctrl+C, paste here</span>
+          </div>
+          <textarea id="bulkPasteInput" rows="7" class="w-full p-3.5 rounded-2xl border border-border-light bg-slate-50 font-mono text-xs text-slate-800 focus:bg-white focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 outline-none leading-relaxed resize-y" placeholder="mcq	Which layer of OSI model handles routing?	Transport Layer	Network Layer	Data Link Layer	Application Layer	B	Network Layer handles IP addressing and routing packets.
+fill_in_blank	HTTP stands for Hypertext ______ Protocol	Transfer				Transfer	Hypertext Transfer Protocol is the foundation of the Web.
+flashcard	DNS (Domain Name System)	Translates domain names into numerical IP addresses.				Internet directory service."></textarea>
+        </div>
+
+        <!-- Options -->
+        <div class="flex flex-wrap items-center justify-between gap-3 pt-1">
+          <div class="flex items-center gap-4 text-xs font-bold text-slate-700">
+            <label class="flex items-center gap-1.5 cursor-pointer">
+              <input type="radio" name="bulkImportMode" value="append" checked class="text-emerald-600 focus:ring-emerald-500">
+              <span>Append to current questions</span>
+            </label>
+            <label class="flex items-center gap-1.5 cursor-pointer">
+              <input type="radio" name="bulkImportMode" value="replace" class="text-emerald-600 focus:ring-emerald-500">
+              <span>Replace existing questions</span>
+            </label>
+          </div>
+          <button id="btnClearBulkInput" type="button" class="text-xs font-semibold text-slate-400 hover:text-slate-600">
+            Clear Text
+          </button>
+        </div>
+      </div>
+
+      <!-- Footer -->
+      <div class="p-4 sm:p-5 bg-slate-50 border-t border-border-light flex items-center justify-end gap-3">
+        <button id="btnCancelBulkModal" class="tactile-btn px-4 py-2.5 rounded-xl bg-white hover:bg-slate-100 text-slate-700 font-bold text-xs border border-border-light">
+          Cancel
+        </button>
+        <button id="btnExecuteBulkImport" class="tactile-btn px-5 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs flex items-center gap-2 shadow-md shadow-emerald-600/20">
+          <i class="fa-solid fa-wand-magic-sparkles text-yellow-300"></i>
+          <span>Convert & Import Questions</span>
+        </button>
+      </div>
     </div>
   </div>
 
@@ -794,14 +1074,40 @@
       const modalCopyHtmlBtn = document.getElementById('modalCopyHtmlBtn');
       const labelModeJson = document.getElementById('labelModeJson');
       const labelModeData = document.getElementById('labelModeData');
+      const modalQuickCopyInstantBtn = document.getElementById('modalQuickCopyInstantBtn');
 
-      // Tabs
+      // Tabs & Views
       const tabBtnQuiz = document.getElementById('tabBtnQuiz');
       const tabBtnWidgets = document.getElementById('tabBtnWidgets');
       const tabBtnJson = document.getElementById('tabBtnJson');
+      const tabBtnLibrary = document.getElementById('tabBtnLibrary');
+      const libraryCountBadge = document.getElementById('libraryCountBadge');
+
       const viewQuizBuilder = document.getElementById('viewQuizBuilder');
       const viewBloggerWidgets = document.getElementById('viewBloggerWidgets');
       const viewJsonManager = document.getElementById('viewJsonManager');
+      const viewSavedQuizzes = document.getElementById('viewSavedQuizzes');
+
+      // Bulk Import Elements
+      const btnOpenBulkImport = document.getElementById('btnOpenBulkImport');
+      const btnOpenBulkImportBottom = document.getElementById('btnOpenBulkImportBottom');
+      const bulkImportModal = document.getElementById('bulkImportModal');
+      const btnCloseBulkModal = document.getElementById('btnCloseBulkModal');
+      const btnCancelBulkModal = document.getElementById('btnCancelBulkModal');
+      const btnDownloadCsvTemplate = document.getElementById('btnDownloadCsvTemplate');
+      const bulkPasteInput = document.getElementById('bulkPasteInput');
+      const btnClearBulkInput = document.getElementById('btnClearBulkInput');
+      const btnExecuteBulkImport = document.getElementById('btnExecuteBulkImport');
+
+      // Library Elements
+      const btnSaveCurrentToLibrary = document.getElementById('btnSaveCurrentToLibrary');
+      const btnSaveCurrentQuick = document.getElementById('btnSaveCurrentQuick');
+      const btnNewBlankQuiz = document.getElementById('btnNewBlankQuiz');
+      const btnNewQuizFromLibrary = document.getElementById('btnNewQuizFromLibrary');
+      const btnBackupLibraryHtml = document.getElementById('btnBackupLibraryHtml');
+      const librarySearchInput = document.getElementById('librarySearchInput');
+      const savedQuizzesGrid = document.getElementById('savedQuizzesGrid');
+      const libraryEmptyState = document.getElementById('libraryEmptyState');
 
       // JSON Manager elements
       const jsonRawEditor = document.getElementById('jsonRawEditor');
@@ -843,7 +1149,8 @@
 
         if (activeMode === 'file') {
           const slug = getQuizSlug();
-          return `${baseHost}?file=quizzes/${slug}.json`;
+          const absoluteJsonUrl = `https://${ghUsername}.github.io/${ghRepo}/quizzes/${slug}.json`;
+          return `${baseHost}?file=${encodeURIComponent(absoluteJsonUrl)}`;
         } else {
           const jsonString = JSON.stringify(currentQuiz);
           const base64Payload = encodeUtf8Base64(jsonString);
@@ -967,6 +1274,12 @@
         executeCopyHtml();
         closePublishModal();
       });
+      if (modalQuickCopyInstantBtn) {
+        modalQuickCopyInstantBtn.addEventListener('click', () => {
+          executeCopyCompose('data');
+          closePublishModal();
+        });
+      }
 
       // -------------------------------------------------------------
       // 5. Automatic Quiz JSON Downloader
@@ -994,11 +1307,15 @@
       // 6. Tab Navigation
       // -------------------------------------------------------------
       function switchTab(target) {
-        [tabBtnQuiz, tabBtnWidgets, tabBtnJson].forEach(b => {
+        [tabBtnQuiz, tabBtnWidgets, tabBtnJson, tabBtnLibrary].forEach(b => {
+          if (!b) return;
           b.classList.remove('active', 'bg-primary-bg', 'text-primary');
           b.classList.add('text-slate-600');
         });
-        [viewQuizBuilder, viewBloggerWidgets, viewJsonManager].forEach(v => v.classList.add('hidden'));
+        [viewQuizBuilder, viewBloggerWidgets, viewJsonManager, viewSavedQuizzes].forEach(v => {
+          if (!v) return;
+          v.classList.add('hidden');
+        });
 
         if (target === 'quiz') {
           tabBtnQuiz.classList.add('active', 'bg-primary-bg', 'text-primary');
@@ -1014,12 +1331,18 @@
           tabBtnJson.classList.remove('text-slate-600');
           viewJsonManager.classList.remove('hidden');
           syncJsonEditor();
+        } else if (target === 'library') {
+          tabBtnLibrary.classList.add('active', 'bg-primary-bg', 'text-primary');
+          tabBtnLibrary.classList.remove('text-slate-600');
+          viewSavedQuizzes.classList.remove('hidden');
+          renderSavedQuizzesList();
         }
       }
 
       tabBtnQuiz.addEventListener('click', () => switchTab('quiz'));
       tabBtnWidgets.addEventListener('click', () => switchTab('widgets'));
       tabBtnJson.addEventListener('click', () => switchTab('json'));
+      if (tabBtnLibrary) tabBtnLibrary.addEventListener('click', () => switchTab('library'));
 
       // -------------------------------------------------------------
       // 7. Dynamic Question Cards Renderer (Quiz Builder)
@@ -1386,85 +1709,172 @@
       // 9. BLOGGER WIDGETS INTERACTIVE GENERATOR
       // -------------------------------------------------------------
 
-      // --- WIDGET A: Social Media Follow Button ---
-      const socPlatformSelect = document.getElementById('socPlatformSelect');
-      const socLabelInput = document.getElementById('socLabelInput');
-      const socUrlInput = document.getElementById('socUrlInput');
+      // --- WIDGET A: Multi-Button Social Media Bar Builder ---
+      const socStyleSelect = document.getElementById('socStyleSelect');
+      const socFormatSelect = document.getElementById('socFormatSelect');
       const socLivePreview = document.getElementById('socLivePreview');
       const btnCopySocCompose = document.getElementById('btnCopySocCompose');
       const btnCopySocHtml = document.getElementById('btnCopySocHtml');
 
-      const socialConfigs = {
-        youtube: {
-          gradient: 'linear-gradient(135deg, #dc2626 0%, #e11d48 100%)',
-          shadow: 'rgba(220, 38, 38, 0.35)',
-          icon: '<i class="fa-brands fa-youtube" style="font-size: 16px;"></i>',
-          defaultLabel: 'Subscribe on YouTube',
-          defaultUrl: 'https://youtube.com/@yourchannel'
+      const socialPlatforms = {
+        yt: {
+          key: 'youtube',
+          name: 'YouTube',
+          color: '#ff0000',
+          gradient: 'linear-gradient(135deg, #ff0000 0%, #cc0000 100%)',
+          shadow: 'rgba(255, 0, 0, 0.35)',
+          lightBg: '#fef2f2',
+          borderColor: '#fca5a5',
+          faClass: 'fa-brands fa-youtube',
+          svg: '<svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" style="display:inline-block;vertical-align:middle;flex-shrink:0;"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>'
         },
-        telegram: {
-          gradient: 'linear-gradient(135deg, #0284c7 0%, #2563eb 100%)',
-          shadow: 'rgba(2, 132, 199, 0.35)',
-          icon: '<i class="fa-brands fa-telegram" style="font-size: 16px;"></i>',
-          defaultLabel: 'Join Telegram Community',
-          defaultUrl: 'https://t.me/yourchannel'
+        tg: {
+          key: 'telegram',
+          name: 'Telegram',
+          color: '#2AABEE',
+          gradient: 'linear-gradient(135deg, #2AABEE 0%, #229ED9 100%)',
+          shadow: 'rgba(42, 171, 238, 0.35)',
+          lightBg: '#f0f9ff',
+          borderColor: '#7dd3fc',
+          faClass: 'fa-brands fa-telegram',
+          svg: '<svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" style="display:inline-block;vertical-align:middle;flex-shrink:0;"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.894 8.221l-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.446 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.121l-6.871 4.326-2.962-.924c-.643-.204-.657-.643.136-.953l11.57-4.461c.537-.194 1.006.131.832.942z"/></svg>'
         },
-        whatsapp: {
-          gradient: 'linear-gradient(135deg, #059669 0%, #10b981 100%)',
-          shadow: 'rgba(5, 150, 105, 0.35)',
-          icon: '<i class="fa-brands fa-whatsapp" style="font-size: 16px;"></i>',
-          defaultLabel: 'Follow on WhatsApp Channel',
-          defaultUrl: 'https://whatsapp.com/channel/yourchannel'
+        wa: {
+          key: 'whatsapp',
+          name: 'WhatsApp',
+          color: '#25D366',
+          gradient: 'linear-gradient(135deg, #25D366 0%, #128C7E 100%)',
+          shadow: 'rgba(37, 211, 102, 0.35)',
+          lightBg: '#f0fdf4',
+          borderColor: '#86efac',
+          faClass: 'fa-brands fa-whatsapp',
+          svg: '<svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" style="display:inline-block;vertical-align:middle;flex-shrink:0;"><path d="M12.031 0C5.385 0 0 5.385 0 12.031c0 2.115.546 4.182 1.583 6.01L.062 24l6.143-1.612a11.954 11.954 0 0 0 5.826 1.493h.005c6.646 0 12.031-5.385 12.031-12.031 0-3.214-1.252-6.234-3.524-8.508A11.954 11.954 0 0 0 12.031 0zm-.005 21.942a9.923 9.923 0 0 1-5.059-1.385l-.363-.215-3.762.987 1.004-3.667-.236-.376A9.927 9.927 0 0 1 2.086 12.03c0-5.483 4.46-9.945 9.945-9.945 2.656 0 5.152 1.033 7.03 2.911a9.889 9.889 0 0 1 2.906 7.035c0 5.484-4.46 9.946-9.941 9.946zm5.45-7.442c-.299-.15-1.771-.873-2.046-.973-.274-.1-.474-.15-.673.15-.199.299-.772.973-.946 1.172-.175.199-.349.224-.648.075-.299-.15-1.262-.465-2.404-1.484-.888-.792-1.488-1.77-1.662-2.069-.174-.299-.019-.461.131-.61.135-.134.299-.349.448-.523.15-.175.199-.299.299-.499.1-.199.05-.374-.025-.523-.075-.15-.673-1.62-.922-2.219-.243-.583-.49-.504-.673-.513l-.573-.01c-.199 0-.523.075-.797.374-.274.299-1.047 1.022-1.047 2.493s1.072 2.892 1.221 3.091c.15.199 2.11 3.222 5.111 4.52.714.309 1.272.493 1.707.631.718.228 1.371.196 1.888.119.577-.086 1.771-.724 2.02-1.421.25-.698.25-1.296.175-1.421-.075-.125-.274-.199-.573-.349z"/></svg>'
         },
-        website: {
-          gradient: 'linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%)',
+        ig: {
+          key: 'instagram',
+          name: 'Instagram',
+          color: '#E1306C',
+          gradient: 'linear-gradient(135deg, #833AB4 0%, #FD1D1D 50%, #FCB045 100%)',
+          shadow: 'rgba(225, 48, 108, 0.35)',
+          lightBg: '#fdf2f8',
+          borderColor: '#f472b6',
+          faClass: 'fa-brands fa-instagram',
+          svg: '<svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" style="display:inline-block;vertical-align:middle;flex-shrink:0;"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>'
+        },
+        fb: {
+          key: 'facebook',
+          name: 'Facebook',
+          color: '#1877F2',
+          gradient: 'linear-gradient(135deg, #1877F2 0%, #0C63D4 100%)',
+          shadow: 'rgba(24, 119, 242, 0.35)',
+          lightBg: '#eff6ff',
+          borderColor: '#93c5fd',
+          faClass: 'fa-brands fa-facebook',
+          svg: '<svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" style="display:inline-block;vertical-align:middle;flex-shrink:0;"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>'
+        },
+        web: {
+          key: 'website',
+          name: 'Website',
+          color: '#4F46E5',
+          gradient: 'linear-gradient(135deg, #4F46E5 0%, #3730A3 100%)',
           shadow: 'rgba(79, 70, 229, 0.35)',
-          icon: '<i class="fa-solid fa-globe" style="font-size: 16px;"></i>',
-          defaultLabel: 'Visit Official Study Portal',
-          defaultUrl: 'https://yourwebsite.com'
-        },
-        instagram: {
-          gradient: 'linear-gradient(135deg, #c026d3 0%, #f43f5e 100%)',
-          shadow: 'rgba(244, 63, 94, 0.35)',
-          icon: '<i class="fa-brands fa-instagram" style="font-size: 16px;"></i>',
-          defaultLabel: 'Follow on Instagram',
-          defaultUrl: 'https://instagram.com/yourhandle'
+          lightBg: '#eef2ff',
+          borderColor: '#a5b4fc',
+          faClass: 'fa-solid fa-globe',
+          svg: '<svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" style="display:inline-block;vertical-align:middle;flex-shrink:0;"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm1 2.055c3.923.493 7.085 3.468 7.828 7.351h-3.325c-.347-2.616-1.944-5.341-4.503-7.351zm-2 0C8.444 4.066 6.847 6.791 6.5 9.406H3.172C3.915 5.523 7.077 2.548 11 2.055zM2.055 13h4.496C6.91 16.36 8.847 19.866 11 21.945 7.077 21.452 3.915 18.477 3.172 14.594H2.055zm10.945 8.945c2.153-2.079 4.09-5.585 4.449-8.945h4.496c-.743 3.883-3.905 6.858-7.828 7.351zM8.528 11.406c.074-1.207.319-2.392.748-3.406h5.448c.429 1.014.674 2.199.748 3.406H8.528zm0 2h6.944c-.074 1.207-.319 2.392-.748 3.406H9.276c-.429-1.014-.674-2.199-.748-3.406z"/></svg>'
         }
       };
 
-      socPlatformSelect.addEventListener('change', () => {
-        const cfg = socialConfigs[socPlatformSelect.value] || socialConfigs.telegram;
-        socLabelInput.value = cfg.defaultLabel;
-        socUrlInput.value = cfg.defaultUrl;
-        updateSocialPreview();
-      });
-      socLabelInput.addEventListener('input', updateSocialPreview);
-      socUrlInput.addEventListener('input', updateSocialPreview);
+      function getSocialBarState() {
+        const layout = (document.querySelector('input[name="socLayout"]:checked')?.value) || 'horizontal';
+        const style = socStyleSelect ? socStyleSelect.value : 'gradient';
+        const format = socFormatSelect ? socFormatSelect.value : 'both';
 
-      function generateSocialButtonHtml() {
-        const platform = socPlatformSelect.value;
-        const cfg = socialConfigs[platform] || socialConfigs.telegram;
-        const label = escapeHtml(socLabelInput.value.trim() || cfg.defaultLabel);
-        const url = escapeHtml(socUrlInput.value.trim() || cfg.defaultUrl);
+        const items = [];
+        ['yt', 'tg', 'wa', 'ig', 'fb', 'web'].forEach(k => {
+          const enabled = document.getElementById(`soc_${k}_enable`)?.checked;
+          if (enabled) {
+            const label = document.getElementById(`soc_${k}_label`)?.value.trim() || socialPlatforms[k].name;
+            const url = document.getElementById(`soc_${k}_url`)?.value.trim() || '#';
+            items.push({
+              ...socialPlatforms[k],
+              label,
+              url
+            });
+          }
+        });
+        return { layout, style, format, items };
+      }
 
-        return `<div class="bsp-widget-social" style="text-align: center; margin: 20px auto; width: 100%;">
-  <a href="${url}" target="_blank" rel="noopener noreferrer" style="display: inline-flex; align-items: center; justify-content: center; gap: 10px; padding: 13px 30px; border-radius: 50px; background: ${cfg.gradient}; color: #ffffff; text-decoration: none; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-weight: 700; font-size: 14px; letter-spacing: 0.02em; box-shadow: 0 4px 18px ${cfg.shadow};">
-    ${cfg.icon}
-    <span>${label}</span>
-  </a>
+      function generateSocialBarHtml() {
+        const { layout, style, format, items } = getSocialBarState();
+        if (items.length === 0) {
+          return `<div class="bsp-social-bar" style="padding: 16px; text-align: center; color: #94a3b8; font-size: 13px;">No social platforms enabled. Check at least one above.</div>`;
+        }
+
+        const isVert = (layout === 'vertical');
+        const isIconOnly = (format === 'icon_only');
+
+        const wrapperStyle = isVert 
+          ? `display: flex; flex-direction: column; gap: 8px; width: 100%; max-width: 360px; margin: 16px auto; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;` 
+          : `display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 10px; width: 100%; margin: 16px auto; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;`;
+
+        const buttonsHtml = items.map(item => {
+          let btnStyle = '';
+          let borderRadius = (style === 'minimal' ? '12px' : '9999px');
+          let width = isVert ? 'width: 100%;' : '';
+
+          if (isIconOnly) {
+            borderRadius = '50%';
+            width = 'width: 44px; height: 44px;';
+          }
+
+          if (style === 'gradient') {
+            btnStyle = `background: ${item.gradient}; color: #ffffff !important; box-shadow: 0 4px 14px ${item.shadow}; border: none;`;
+          } else if (style === 'pill') {
+            btnStyle = `background: ${item.color}; color: #ffffff !important; box-shadow: 0 2px 6px rgba(0,0,0,0.12); border: none;`;
+          } else if (style === 'minimal') {
+            btnStyle = `background: ${item.lightBg}; color: ${item.color} !important; border: 1.5px solid ${item.borderColor}; box-shadow: 0 1px 3px rgba(0,0,0,0.05);`;
+          }
+
+          const padding = isIconOnly ? 'padding: 0;' : (isVert ? 'padding: 12px 20px;' : 'padding: 10px 20px;');
+
+          return `<a class="bsp-social-btn bsp-btn-${item.key}" href="${escapeHtml(item.url)}" target="_blank" rel="noopener noreferrer" style="${width} ${padding} border-radius: ${borderRadius}; display: inline-flex; align-items: center; justify-content: center; gap: 8px; text-decoration: none !important; font-size: 13px !important; font-weight: 700 !important; letter-spacing: 0.02em; transition: transform 0.15s ease, opacity 0.15s ease; box-sizing: border-box; cursor: pointer; ${btnStyle}">
+  ${item.svg}
+  ${!isIconOnly ? `<span>${escapeHtml(item.label)}</span>` : ''}
+</a>`;
+        }).join(isVert ? '\n' : '\n  ');
+
+        return `<div class="bsp-social-bar bsp-social-bar-${layout}" style="${wrapperStyle}">
+  ${buttonsHtml}
 </div>`;
       }
 
       function updateSocialPreview() {
-        socLivePreview.innerHTML = generateSocialButtonHtml();
+        if (socLivePreview) {
+          socLivePreview.innerHTML = generateSocialBarHtml();
+        }
       }
 
-      btnCopySocCompose.addEventListener('click', () => {
-        copyWidgetToBlogger(generateSocialButtonHtml(), "Social Button");
+      // Add change & input listeners to social bar builder elements
+      document.querySelectorAll('input[name="socLayout"]').forEach(r => r.addEventListener('change', updateSocialPreview));
+      if (socStyleSelect) socStyleSelect.addEventListener('change', updateSocialPreview);
+      if (socFormatSelect) socFormatSelect.addEventListener('change', updateSocialPreview);
+      document.querySelectorAll('.soc-toggle, .soc-input').forEach(el => {
+        el.addEventListener('input', updateSocialPreview);
+        el.addEventListener('change', updateSocialPreview);
       });
-      btnCopySocHtml.addEventListener('click', () => {
-        copyWidgetRawHtml(generateSocialButtonHtml(), "Social Button");
-      });
+
+      if (btnCopySocCompose) {
+        btnCopySocCompose.addEventListener('click', () => {
+          copyWidgetToBlogger(generateSocialBarHtml(), "Social Media Bar");
+        });
+      }
+      if (btnCopySocHtml) {
+        btnCopySocHtml.addEventListener('click', () => {
+          copyWidgetRawHtml(generateSocialBarHtml(), "Social Media Bar");
+        });
+      }
 
       // --- WIDGET B: Educational Alert / Callout Boxes ---
       const calloutTypeSelect = document.getElementById('calloutTypeSelect');
@@ -1873,7 +2283,511 @@ ${cards}
         }, 3000);
       }
 
+      // -------------------------------------------------------------
+      // 10. GOOGLE SHEETS & CSV BULK QUIZ IMPORTER
+      // -------------------------------------------------------------
+      function openBulkImportModal() {
+        if (bulkPasteInput) bulkPasteInput.value = '';
+        if (bulkImportModal) bulkImportModal.classList.remove('hidden');
+      }
+
+      function closeBulkImportModal() {
+        if (bulkImportModal) bulkImportModal.classList.add('hidden');
+      }
+
+      function downloadCsvTemplate() {
+        const csvContent = `Type,Question / Front,Option A / Back,Option B,Option C,Option D,Correct Answer (1-4 or text),Explanation
+mcq,"Which protocol operates at the Transport Layer and guarantees packet delivery?","UDP","TCP","IP","ICMP","B","TCP provides reliable, ordered, and error-checked delivery of packets."
+mcq,"What default port is used for secure HTTPS web traffic?","80","21","443","25","C","Port 443 is the standard port for TLS/SSL encrypted HTTPS communication."
+fill_in_blank,"______ is the network protocol that translates domain names into numerical IP addresses.","DNS","","","","DNS","DNS (Domain Name System) acts as the phonebook of the Internet."
+flashcard,"Cache Memory","High-speed memory located close to or inside the CPU to accelerate frequent data access.","","","","","Stores copies of data from frequently used main memory locations."
+`;
+        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'blogger-suite-pro-quiz-template.csv';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+        showToast("Downloaded Google Sheets CSV Template!", "success");
+      }
+
+      function parseCsvLine(text) {
+        const result = [];
+        let cur = '';
+        let inQuotes = false;
+        for (let i = 0; i < text.length; i++) {
+          const ch = text[i];
+          if (ch === '"') {
+            if (inQuotes && text[i + 1] === '"') {
+              cur += '"';
+              i++;
+            } else {
+              inQuotes = !inQuotes;
+            }
+          } else if (ch === ',' && !inQuotes) {
+            result.push(cur.trim());
+            cur = '';
+          } else {
+            cur += ch;
+          }
+        }
+        result.push(cur.trim());
+        return result;
+      }
+
+      function parseSheetsBulkText(rawText) {
+        if (!rawText || !rawText.trim()) return [];
+        const lines = rawText.trim().split(/\r?\n/);
+        const questions = [];
+
+        for (let i = 0; i < lines.length; i++) {
+          const line = lines[i].trim();
+          if (!line) continue;
+
+          let cols = [];
+          if (line.includes('\t')) {
+            cols = line.split('\t').map(c => c.trim().replace(/^["']|["']$/g, ''));
+          } else {
+            cols = parseCsvLine(line).map(c => c.replace(/^["']|["']$/g, ''));
+          }
+
+          if (cols.length < 2) continue;
+
+          const firstCol = (cols[0] || '').toLowerCase();
+          if (i === 0 && (firstCol === 'type' || firstCol.includes('question') || (cols[1] || '').toLowerCase().includes('question'))) {
+            continue;
+          }
+
+          let type = 'mcq';
+          if (firstCol.includes('fill') || firstCol.includes('blank')) {
+            type = 'fill_in_blank';
+          } else if (firstCol.includes('flash') || firstCol.includes('card')) {
+            type = 'flashcard';
+          } else if (firstCol.includes('match') || firstCol.includes('pair')) {
+            type = 'match';
+          } else {
+            type = 'mcq';
+          }
+
+          const prompt = cols[1] || '';
+          if (!prompt) continue;
+
+          if (type === 'mcq') {
+            const optA = cols[2] || 'Option A';
+            const optB = cols[3] || 'Option B';
+            const optC = cols[4] || 'Option C';
+            const optD = cols[5] || 'Option D';
+            const options = [optA, optB, optC, optD].filter(Boolean);
+
+            let correctRaw = (cols[6] || 'A').trim().toUpperCase();
+            let correctIdx = 0;
+            if (correctRaw === '1' || correctRaw === 'A') correctIdx = 0;
+            else if (correctRaw === '2' || correctRaw === 'B') correctIdx = 1;
+            else if (correctRaw === '3' || correctRaw === 'C') correctIdx = 2;
+            else if (correctRaw === '4' || correctRaw === 'D') correctIdx = 3;
+            else {
+              const found = options.findIndex(o => o.trim().toLowerCase() === correctRaw.toLowerCase());
+              if (found !== -1) correctIdx = found;
+            }
+
+            const explanation = cols[7] || '';
+            questions.push({
+              type: 'mcq',
+              prompt,
+              options: options.length >= 2 ? options : [optA, optB, "Option 3", "Option 4"],
+              correctAnswer: correctIdx,
+              explanation
+            });
+          } else if (type === 'fill_in_blank') {
+            const rawAns = cols[6] || cols[2] || '';
+            const acceptedAnswers = rawAns.split(/[,;/]/).map(a => a.trim()).filter(Boolean);
+            const explanation = cols[7] || cols[3] || '';
+            questions.push({
+              type: 'fill_in_blank',
+              prompt,
+              acceptedAnswers: acceptedAnswers.length ? acceptedAnswers : ['Answer'],
+              hint: cols[3] || '',
+              explanation
+            });
+          } else if (type === 'flashcard') {
+            const backDef = cols[2] || cols[3] || '';
+            const explanation = cols[7] || cols[4] || '';
+            questions.push({
+              type: 'flashcard',
+              prompt: "Review the study card below:",
+              term: prompt,
+              definition: backDef || "Definition text",
+              explanation
+            });
+          }
+        }
+        return questions;
+      }
+
+      function executeBulkImport() {
+        const raw = bulkPasteInput ? bulkPasteInput.value.trim() : '';
+        if (!raw) {
+          showToast("Please paste rows from Google Sheets or CSV first!", "warning");
+          return;
+        }
+
+        const parsed = parseSheetsBulkText(raw);
+        if (parsed.length === 0) {
+          showToast("No valid questions found. Check expected column layout!", "danger");
+          return;
+        }
+
+        const mode = document.querySelector('input[name="bulkImportMode"]:checked')?.value || 'append';
+        if (mode === 'replace') {
+          currentQuiz.questions = parsed;
+        } else {
+          currentQuiz.questions = currentQuiz.questions.concat(parsed);
+        }
+
+        renderAllQuestions();
+        triggerPreviewUpdate();
+        saveCurrentQuizToLibrary(false);
+        closeBulkImportModal();
+        showToast(`Successfully imported ${parsed.length} questions from Google Sheets!`, "success");
+      }
+
+      if (btnOpenBulkImport) btnOpenBulkImport.addEventListener('click', openBulkImportModal);
+      if (btnOpenBulkImportBottom) btnOpenBulkImportBottom.addEventListener('click', openBulkImportModal);
+      if (btnCloseBulkModal) btnCloseBulkModal.addEventListener('click', closeBulkImportModal);
+      if (btnCancelBulkModal) btnCancelBulkModal.addEventListener('click', closeBulkImportModal);
+      if (btnDownloadCsvTemplate) btnDownloadCsvTemplate.addEventListener('click', downloadCsvTemplate);
+      if (btnClearBulkInput) btnClearBulkInput.addEventListener('click', () => { if (bulkPasteInput) bulkPasteInput.value = ''; });
+      if (btnExecuteBulkImport) btnExecuteBulkImport.addEventListener('click', executeBulkImport);
+
+      // -------------------------------------------------------------
+      // 11. IN-TOOL LOCAL STORAGE LIBRARY ("MY SAVED QUIZZES")
+      // -------------------------------------------------------------
+      const SAVED_QUIZZES_KEY = 'bsp_saved_quizzes';
+
+      function getSavedQuizzes() {
+        try {
+          const raw = localStorage.getItem(SAVED_QUIZZES_KEY);
+          if (!raw) return [];
+          const parsed = JSON.parse(raw);
+          return Array.isArray(parsed) ? parsed : [];
+        } catch (e) {
+          console.error("Error reading saved quizzes:", e);
+          return [];
+        }
+      }
+
+      function setSavedQuizzes(list) {
+        try {
+          localStorage.setItem(SAVED_QUIZZES_KEY, JSON.stringify(list));
+          updateLibraryCountBadge();
+        } catch (e) {
+          console.error("Error saving quizzes:", e);
+          showToast("Storage quota exceeded! Export a backup.", "danger");
+        }
+      }
+
+      function updateLibraryCountBadge() {
+        const list = getSavedQuizzes();
+        if (libraryCountBadge) {
+          libraryCountBadge.textContent = list.length;
+        }
+      }
+
+      function saveCurrentQuizToLibrary(notify = true) {
+        const list = getSavedQuizzes();
+        const currentTitle = (currentQuiz.title || 'Untitled Quiz').trim();
+        const currentSlug = getQuizSlug();
+
+        const existingIndex = list.findIndex(item => item.slug === currentSlug || item.title.trim().toLowerCase() === currentTitle.toLowerCase());
+        const entry = {
+          id: existingIndex !== -1 ? list[existingIndex].id : 'quiz_' + Date.now(),
+          title: currentTitle,
+          category: currentQuiz.category || 'General',
+          slug: currentSlug,
+          updatedAt: new Date().toISOString(),
+          questionCount: currentQuiz.questions.length,
+          data: JSON.parse(JSON.stringify(currentQuiz))
+        };
+
+        if (existingIndex !== -1) {
+          list[existingIndex] = entry;
+        } else {
+          list.unshift(entry);
+        }
+
+        setSavedQuizzes(list);
+        if (notify) {
+          showToast(`Saved "${currentTitle}" to your local library!`, "success");
+        }
+      }
+
+      function deleteQuizFromLibrary(id) {
+        if (!confirm("Are you sure you want to delete this quiz from your local library?")) return;
+        let list = getSavedQuizzes();
+        list = list.filter(item => item.id !== id);
+        setSavedQuizzes(list);
+        renderSavedQuizzesList();
+        showToast("Quiz deleted from library", "info");
+      }
+
+      function loadQuizIntoEditor(id) {
+        const list = getSavedQuizzes();
+        const item = list.find(q => q.id === id);
+        if (!item || !item.data) {
+          showToast("Could not load quiz data!", "danger");
+          return;
+        }
+
+        currentQuiz = JSON.parse(JSON.stringify(item.data));
+        metaQuizTitle.value = currentQuiz.title || '';
+        metaCategory.value = currentQuiz.category || '';
+        metaToggleTimer.checked = !!currentQuiz.timer;
+        metaToggleFeedback.checked = (currentQuiz.instantFeedback !== false);
+
+        renderAllQuestions();
+        triggerPreviewUpdate();
+        switchTab('quiz');
+        showToast(`Loaded "${currentQuiz.title}" into Quiz Builder!`, "success");
+      }
+
+      function renderSavedQuizzesList(filterTerm = '') {
+        if (!savedQuizzesGrid) return;
+        const list = getSavedQuizzes();
+        const term = (filterTerm || (librarySearchInput ? librarySearchInput.value : '')).trim().toLowerCase();
+
+        const filtered = list.filter(q => {
+          if (!term) return true;
+          return (q.title && q.title.toLowerCase().includes(term)) ||
+                 (q.category && q.category.toLowerCase().includes(term));
+        });
+
+        if (filtered.length === 0) {
+          savedQuizzesGrid.innerHTML = '';
+          if (libraryEmptyState) libraryEmptyState.classList.remove('hidden');
+          return;
+        }
+
+        if (libraryEmptyState) libraryEmptyState.classList.add('hidden');
+
+        savedQuizzesGrid.innerHTML = filtered.map(item => {
+          const dateStr = new Date(item.updatedAt).toLocaleDateString(undefined, {
+            month: 'short',
+            day: 'numeric',
+            year: 'numeric'
+          });
+
+          return `
+            <div class="bg-white p-5 rounded-2xl border border-border-light shadow-sm hover:shadow-md transition flex flex-col justify-between space-y-4">
+              <div class="space-y-2">
+                <div class="flex items-start justify-between gap-2">
+                  <span class="px-2.5 py-0.5 rounded-full bg-indigo-50 text-primary text-[11px] font-extrabold uppercase tracking-wide">
+                    ${escapeHtml(item.category || 'General')}
+                  </span>
+                  <span class="text-[11px] text-slate-400 font-semibold flex items-center gap-1">
+                    <i class="fa-regular fa-clock"></i> ${dateStr}
+                  </span>
+                </div>
+                <h4 class="font-extrabold text-sm sm:text-base text-slate-900 leading-snug line-clamp-2">
+                  ${escapeHtml(item.title)}
+                </h4>
+                <div class="flex items-center gap-2 text-xs text-slate-500 font-medium">
+                  <span class="font-bold text-slate-700">${item.questionCount}</span> Questions
+                  <span>•</span>
+                  <span class="font-mono text-[11px] text-indigo-600 truncate">quizzes/${escapeHtml(item.slug || 'quiz')}.json</span>
+                </div>
+              </div>
+
+              <div class="pt-3 border-t border-border-light flex flex-wrap items-center gap-2">
+                <button onclick="window.bspLoadQuiz('${item.id}')" class="tactile-btn flex-1 min-w-[90px] py-1.5 px-2.5 rounded-xl bg-primary text-white text-xs font-bold hover:bg-primary-dark flex items-center justify-center gap-1.5 shadow-sm">
+                  <i class="fa-solid fa-pen-to-square"></i> Load
+                </button>
+                <button onclick="window.bspEmbedQuiz('${item.id}')" class="tactile-btn py-1.5 px-2.5 rounded-xl bg-amber-500 text-white text-xs font-bold hover:bg-amber-600 flex items-center justify-center gap-1 shadow-sm" title="Get Blogger Embed Code">
+                  <i class="fa-solid fa-code"></i> Embed
+                </button>
+                <button onclick="window.bspExportQuizJson('${item.id}')" class="tactile-btn py-1.5 px-2.5 rounded-xl bg-slate-100 text-slate-700 text-xs font-bold hover:bg-slate-200 flex items-center justify-center gap-1 border border-border-light" title="Download JSON">
+                  <i class="fa-solid fa-download"></i>
+                </button>
+                <button onclick="window.bspDeleteQuiz('${item.id}')" class="tactile-btn py-1.5 px-2.5 rounded-xl bg-red-50 text-red-600 text-xs font-bold hover:bg-red-100 flex items-center justify-center gap-1 border border-red-200" title="Delete">
+                  <i class="fa-solid fa-trash-can"></i>
+                </button>
+              </div>
+            </div>
+          `;
+        }).join('');
+      }
+
+      window.bspLoadQuiz = loadQuizIntoEditor;
+      window.bspDeleteQuiz = deleteQuizFromLibrary;
+      window.bspEmbedQuiz = (id) => {
+        loadQuizIntoEditor(id);
+        openPublishModal();
+      };
+      window.bspExportQuizJson = (id) => {
+        const list = getSavedQuizzes();
+        const item = list.find(q => q.id === id);
+        if (!item || !item.data) return;
+        const jsonStr = JSON.stringify(item.data, null, 2);
+        const blob = new Blob([jsonStr], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `${item.slug || 'quiz'}.json`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+        showToast(`Downloaded "${item.slug}.json"`, "success");
+      };
+
+      function exportLibraryAsStandaloneHtmlBackup() {
+        const list = getSavedQuizzes();
+        if (list.length === 0) {
+          showToast("No quizzes in library to export!", "warning");
+          return;
+        }
+
+        const backupDate = new Date().toISOString().split('T')[0];
+        const jsonString = JSON.stringify(list, null, 2);
+
+        const htmlContent = `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Blogger Suite Pro - Offline Quiz Library Backup (${backupDate})</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Plus Jakarta Sans', sans-serif; background: #f8fafc; color: #0f172a; margin: 0; padding: 24px 16px; }
+    .container { max-width: 900px; margin: 0 auto; }
+    .header { background: linear-gradient(135deg, #1e1b4b, #312e81); color: white; padding: 28px; border-radius: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); margin-bottom: 24px; }
+    .header h1 { margin: 0 0 8px; font-size: 1.5rem; font-weight: 800; display: flex; align-items: center; gap: 10px; }
+    .header p { margin: 0; font-size: 0.85rem; color: #c7d2fe; }
+    .stats { display: flex; gap: 16px; margin-top: 16px; }
+    .stat-pill { background: rgba(255,255,255,0.15); padding: 6px 14px; border-radius: 9999px; font-size: 0.75rem; font-weight: 700; }
+    .search-box { width: 100%; box-sizing: border-box; padding: 14px 18px; border-radius: 14px; border: 1px solid #cbd5e1; background: white; font-size: 0.88rem; outline: none; margin-bottom: 20px; font-family: inherit; font-weight: 600; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; }
+    .card { background: white; border: 1px solid #e2e8f0; border-radius: 16px; padding: 20px; display: flex; flex-direction: column; justify-content: space-between; box-shadow: 0 2px 8px rgba(0,0,0,0.04); }
+    .card h3 { margin: 8px 0; font-size: 1rem; font-weight: 800; color: #0f172a; }
+    .badge { display: inline-block; padding: 4px 10px; border-radius: 9999px; font-size: 0.7rem; font-weight: 800; text-transform: uppercase; background: #e0e7ff; color: #4338ca; }
+    .btn { display: inline-flex; align-items: center; gap: 6px; padding: 8px 14px; border-radius: 10px; font-size: 0.78rem; font-weight: 700; cursor: pointer; text-decoration: none; border: none; font-family: inherit; }
+    .btn-primary { background: #4f46e5; color: white; }
+    .btn-secondary { background: #f1f5f9; color: #334155; border: 1px solid #cbd5e1; }
+    .actions { display: flex; gap: 8px; margin-top: 16px; border-top: 1px solid #f1f5f9; padding-top: 14px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1><i class="fa-solid fa-box-archive"></i> Blogger Suite Pro — Offline Backup</h1>
+      <p>Self-contained offline backup archive created on ${backupDate}. Contains ${list.length} quiz definition(s).</p>
+      <div class="stats">
+        <span class="stat-pill"><i class="fa-solid fa-layer-group"></i> ${list.length} Quizzes</span>
+        <span class="stat-pill"><i class="fa-solid fa-circle-check"></i> 100% Offline Accessible</span>
+      </div>
+    </div>
+    <input type="text" id="offlineSearch" class="search-box" placeholder="Search quizzes by title or subject..." oninput="filterQuizzes()">
+    <div id="quizContainer" class="grid"></div>
+  </div>
+  <script id="bsp-backup-data" type="application/json">
+${jsonString}
+  <\/script>
+  <script>
+    const quizzes = JSON.parse(document.getElementById('bsp-backup-data').textContent);
+    function render(items) {
+      const container = document.getElementById('quizContainer');
+      container.innerHTML = items.map(q => \`
+        <div class="card">
+          <div>
+            <span class="badge">\${q.category || 'General'}</span>
+            <h3>\${q.title}</h3>
+            <p style="font-size:0.75rem; color:#64748b; margin:4px 0;">\${q.questionCount || (q.data && q.data.questions ? q.data.questions.length : 0)} Questions • \${q.slug}.json</p>
+          </div>
+          <div class="actions">
+            <button class="btn btn-primary" onclick="downloadSingle('\${q.id}')"><i class="fa-solid fa-download"></i> Download JSON</button>
+            <button class="btn btn-secondary" onclick="copySingleJson('\${q.id}')"><i class="fa-solid fa-copy"></i> Copy</button>
+          </div>
+        </div>
+      \`).join('');
+    }
+    function filterQuizzes() {
+      const term = document.getElementById('offlineSearch').value.toLowerCase();
+      render(quizzes.filter(q => (q.title && q.title.toLowerCase().includes(term)) || (q.category && q.category.toLowerCase().includes(term))));
+    }
+    function downloadSingle(id) {
+      const q = quizzes.find(item => item.id === id);
+      if (!q) return;
+      const blob = new Blob([JSON.stringify(q.data, null, 2)], { type: 'application/json' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = (q.slug || 'quiz') + '.json';
+      a.click();
+    }
+    function copySingleJson(id) {
+      const q = quizzes.find(item => item.id === id);
+      if (!q) return;
+      navigator.clipboard.writeText(JSON.stringify(q.data, null, 2)).then(() => alert('Copied JSON for "' + q.title + '"!'));
+    }
+    render(quizzes);
+  <\/script>
+</body>
+</html>`;
+
+        const blob = new Blob([htmlContent], { type: 'text/html;charset=utf-8;' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `blogger-suite-pro-backup-${backupDate}.html`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+        showToast(`Exported complete library backup (${list.length} quizzes)!`, "success");
+      }
+
+      function createBlankQuiz() {
+        currentQuiz = {
+          title: "New Interactive Quiz",
+          category: "Education",
+          timer: true,
+          instantFeedback: true,
+          questions: [
+            {
+              type: "mcq",
+              prompt: "Enter your first question prompt here:",
+              options: ["Option A", "Option B", "Option C", "Option D"],
+              correctAnswer: 0,
+              explanation: "Add explanation text to explain the correct answer."
+            }
+          ]
+        };
+        metaQuizTitle.value = currentQuiz.title;
+        metaCategory.value = currentQuiz.category;
+        metaToggleTimer.checked = true;
+        metaToggleFeedback.checked = true;
+        renderAllQuestions();
+        triggerPreviewUpdate();
+        switchTab('quiz');
+        showToast("Started new blank quiz!", "info");
+      }
+
+      if (btnSaveCurrentToLibrary) btnSaveCurrentToLibrary.addEventListener('click', () => saveCurrentQuizToLibrary(true));
+      if (btnSaveCurrentQuick) btnSaveCurrentQuick.addEventListener('click', () => saveCurrentQuizToLibrary(true));
+      if (btnNewBlankQuiz) btnNewBlankQuiz.addEventListener('click', createBlankQuiz);
+      if (btnNewQuizFromLibrary) btnNewQuizFromLibrary.addEventListener('click', createBlankQuiz);
+      if (btnBackupLibraryHtml) btnBackupLibraryHtml.addEventListener('click', exportLibraryAsStandaloneHtmlBackup);
+      if (librarySearchInput) librarySearchInput.addEventListener('input', (e) => renderSavedQuizzesList(e.target.value));
+
       // Initial Boot
+      const existingSaved = getSavedQuizzes();
+      if (existingSaved.length === 0) {
+        saveCurrentQuizToLibrary(false);
+      }
+      updateLibraryCountBadge();
+
       renderAllQuestions();
       updateIframePreview();
       updateAllWidgetPreviews();
