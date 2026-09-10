@@ -121,6 +121,12 @@
       position: relative;
     }
 
+    /* Drag and Drop hover state */
+    .drop-zone-active {
+      border-color: #4f46e5 !important;
+      background-color: #eef2ff !important;
+    }
+
     /* Toast notification */
     #toastContainer {
       position: fixed;
@@ -165,7 +171,7 @@
       <!-- Button: Publish / Get Link (Opens Publish Hub) -->
       <button id="btnOpenPublishModal" class="tactile-btn flex items-center gap-2 px-3.5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs sm:text-sm font-bold shadow-sm shadow-emerald-600/30 border-b-2 border-emerald-800">
         <i class="fa-solid fa-cloud-arrow-up text-white"></i>
-        <span>Publish / Get Link</span>
+        <span>Publish & Embed</span>
       </button>
 
       <!-- Button 1: Copy for Blogger (Compose View) -->
@@ -326,128 +332,168 @@
       <!-- ============================================================= -->
       <div id="viewBloggerWidgets" class="tab-view hidden space-y-8 max-w-4xl mx-auto">
         
+        <!-- Header Banner -->
         <div class="bg-gradient-to-r from-primary via-indigo-600 to-indigo-800 p-6 rounded-2xl text-white shadow-md">
-          <h2 class="text-xl font-extrabold mb-1">Blogger Widget Generator</h2>
-          <p class="text-indigo-100 text-sm">Create professional, conversion-friendly callouts and social badges ready to paste directly into your Blogger posts.</p>
+          <h2 class="text-xl font-extrabold mb-1 flex items-center gap-2.5">
+            <i class="fa-solid fa-cubes"></i> Blogger Widget Generator
+          </h2>
+          <p class="text-indigo-100 text-sm">Create conversion-optimized social buttons, educational callouts, and study resource grids. Copy and paste directly into Blogger Compose View without writing code!</p>
         </div>
 
-        <!-- Section 1: Social Media Channel Buttons -->
-        <div class="bg-white p-6 rounded-2xl border border-border-light shadow-sm space-y-4">
+        <!-- Widget A: Gradient Social Media Follow Buttons -->
+        <div class="bg-white p-6 rounded-2xl border border-border-light shadow-sm space-y-5">
           <div class="flex items-center justify-between border-b border-border-light pb-3">
             <div class="flex items-center gap-2">
               <i class="fa-solid fa-share-nodes text-primary text-lg"></i>
-              <h3 class="font-extrabold text-base text-slate-900">Gradient Social Media Badges</h3>
+              <h3 class="font-extrabold text-base text-slate-900">A. Gradient Social Media Follow Buttons</h3>
             </div>
-            <span class="text-xs font-bold text-slate-500">3 Presets</span>
+            <span class="text-xs font-bold text-slate-500">Live Generator</span>
           </div>
 
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-            
-            <!-- YouTube Subscribe Widget -->
-            <div class="p-4 rounded-xl border border-border-light bg-slate-50 space-y-3">
-              <div class="text-xs font-bold text-slate-700 flex items-center gap-1.5">
-                <i class="fa-brands fa-youtube text-red-600 text-base"></i> YouTube Subscribe
-              </div>
-              <div class="p-3 bg-white rounded-lg border text-center">
-                <a href="#" class="inline-flex items-center gap-2 px-4 py-2 rounded-xl font-bold text-xs text-white bg-gradient-to-r from-red-600 to-rose-600 shadow-sm" style="text-decoration: none;">
-                  <i class="fa-brands fa-youtube"></i> Subscribe on YouTube
-                </a>
-              </div>
-              <div class="flex gap-2">
-                <button onclick="copyWidgetCompose('yt')" class="flex-1 py-1.5 rounded-lg bg-red-50 hover:bg-red-100 text-red-700 text-xs font-bold border border-red-200">
-                  Copy (Compose)
-                </button>
-                <button onclick="copyWidgetHtml('yt')" class="px-2.5 py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold">
-                  HTML
-                </button>
-              </div>
+          <!-- Inputs -->
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-3.5">
+            <div>
+              <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Select Platform</label>
+              <select id="socPlatformSelect" class="w-full px-3 py-2 rounded-xl border border-border-light bg-slate-50 text-xs font-bold text-slate-700 outline-none focus:border-primary">
+                <option value="youtube">YouTube (Red Gradient)</option>
+                <option value="telegram" selected>Telegram (Sky Blue Gradient)</option>
+                <option value="whatsapp">WhatsApp Channel (Emerald)</option>
+                <option value="website">Website / Blog (Indigo Gradient)</option>
+                <option value="instagram">Instagram (Pink/Rose Gradient)</option>
+              </select>
             </div>
-
-            <!-- Telegram Channel Join Widget -->
-            <div class="p-4 rounded-xl border border-border-light bg-slate-50 space-y-3">
-              <div class="text-xs font-bold text-slate-700 flex items-center gap-1.5">
-                <i class="fa-brands fa-telegram text-sky-500 text-base"></i> Telegram Channel
-              </div>
-              <div class="p-3 bg-white rounded-lg border text-center">
-                <a href="#" class="inline-flex items-center gap-2 px-4 py-2 rounded-xl font-bold text-xs text-white bg-gradient-to-r from-sky-500 to-blue-600 shadow-sm" style="text-decoration: none;">
-                  <i class="fa-brands fa-telegram"></i> Join Telegram Group
-                </a>
-              </div>
-              <div class="flex gap-2">
-                <button onclick="copyWidgetCompose('tg')" class="flex-1 py-1.5 rounded-lg bg-sky-50 hover:bg-sky-100 text-sky-700 text-xs font-bold border border-sky-200">
-                  Copy (Compose)
-                </button>
-                <button onclick="copyWidgetHtml('tg')" class="px-2.5 py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold">
-                  HTML
-                </button>
-              </div>
+            <div>
+              <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Button Label</label>
+              <input type="text" id="socLabelInput" class="w-full px-3 py-2 rounded-xl border border-border-light bg-slate-50 text-xs font-semibold focus:border-primary outline-none" value="Join Telegram Community">
             </div>
-
-            <!-- WhatsApp Community Widget -->
-            <div class="p-4 rounded-xl border border-border-light bg-slate-50 space-y-3">
-              <div class="text-xs font-bold text-slate-700 flex items-center gap-1.5">
-                <i class="fa-brands fa-whatsapp text-emerald-500 text-base"></i> WhatsApp Community
-              </div>
-              <div class="p-3 bg-white rounded-lg border text-center">
-                <a href="#" class="inline-flex items-center gap-2 px-4 py-2 rounded-xl font-bold text-xs text-white bg-gradient-to-r from-emerald-500 to-green-600 shadow-sm" style="text-decoration: none;">
-                  <i class="fa-brands fa-whatsapp"></i> Join WhatsApp Channel
-                </a>
-              </div>
-              <div class="flex gap-2">
-                <button onclick="copyWidgetCompose('wa')" class="flex-1 py-1.5 rounded-lg bg-emerald-50 hover:bg-emerald-100 text-emerald-700 text-xs font-bold border border-emerald-200">
-                  Copy (Compose)
-                </button>
-                <button onclick="copyWidgetHtml('wa')" class="px-2.5 py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold">
-                  HTML
-                </button>
-              </div>
+            <div>
+              <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Channel / Profile URL</label>
+              <input type="text" id="socUrlInput" class="w-full px-3 py-2 rounded-xl border border-border-light bg-slate-50 text-xs font-semibold focus:border-primary outline-none" value="https://t.me/yourchannel">
             </div>
+          </div>
 
+          <!-- Live Visual Preview Box -->
+          <div class="p-6 rounded-xl bg-slate-50 border border-border-light flex flex-col items-center justify-center min-h-[90px]">
+            <div id="socLivePreview">
+              <!-- Live preview rendered by JS -->
+            </div>
+          </div>
+
+          <!-- Action Buttons -->
+          <div class="flex items-center justify-end gap-2.5 pt-1">
+            <button id="btnCopySocCompose" class="tactile-btn flex items-center gap-2 px-4 py-2.5 rounded-xl bg-primary hover:bg-primary-dark text-white text-xs font-bold shadow-sm shadow-primary/20">
+              <i class="fa-solid fa-wand-magic-sparkles text-yellow-300"></i>
+              <span>Copy for Blogger (Compose View)</span>
+            </button>
+            <button id="btnCopySocHtml" class="tactile-btn flex items-center gap-1.5 px-3.5 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold border border-border-light">
+              <i class="fa-solid fa-code text-primary"></i>
+              <span>Copy HTML</span>
+            </button>
           </div>
         </div>
 
-        <!-- Section 2: Modern Notice / Callout Boxes -->
-        <div class="bg-white p-6 rounded-2xl border border-border-light shadow-sm space-y-4">
+        <!-- Widget B: Educational Alert / Callout Boxes -->
+        <div class="bg-white p-6 rounded-2xl border border-border-light shadow-sm space-y-5">
           <div class="flex items-center justify-between border-b border-border-light pb-3">
             <div class="flex items-center gap-2">
               <i class="fa-solid fa-bullhorn text-amber-500 text-lg"></i>
-              <h3 class="font-extrabold text-base text-slate-900">Notice & Callout Alert Boxes</h3>
+              <h3 class="font-extrabold text-base text-slate-900">B. Educational Alert & Callout Boxes</h3>
             </div>
-            <span class="text-xs font-bold text-slate-500">Ready to Paste</span>
+            <span class="text-xs font-bold text-slate-500">Notice Box</span>
           </div>
 
-          <div class="space-y-4">
-            <!-- Alert 1: Info Note -->
-            <div class="p-4 rounded-xl border border-border-light bg-slate-50 flex flex-col md:flex-row md:items-center justify-between gap-4">
-              <div class="flex-1 p-3.5 rounded-xl bg-blue-50 border-l-4 border-blue-600 text-blue-900 text-xs font-semibold leading-relaxed">
-                <strong class="font-bold flex items-center gap-1.5 text-blue-800 mb-0.5"><i class="fa-solid fa-circle-info"></i> Important Student Instruction</strong>
-                Attempt all questions in one sitting. Once submitted, your scores and review notes will appear on the final screen.
-              </div>
-              <div class="flex items-center gap-2 shrink-0">
-                <button onclick="copyCalloutCompose('info')" class="px-3 py-2 rounded-xl bg-blue-600 text-white text-xs font-bold hover:bg-blue-700">
-                  Copy for Compose
-                </button>
-                <button onclick="copyCalloutHtml('info')" class="px-3 py-2 rounded-xl bg-slate-200 text-slate-700 text-xs font-bold hover:bg-slate-300">
-                  HTML
-                </button>
-              </div>
+          <!-- Inputs -->
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-3.5">
+            <div>
+              <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Callout Type</label>
+              <select id="calloutTypeSelect" class="w-full px-3 py-2 rounded-xl border border-border-light bg-slate-50 text-xs font-bold text-slate-700 outline-none focus:border-primary">
+                <option value="info" selected>Important Note (Blue)</option>
+                <option value="warning">Warning / Caution (Amber)</option>
+                <option value="download">Download Resource / Notes (Emerald)</option>
+              </select>
             </div>
+            <div class="sm:col-span-2">
+              <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Callout Title</label>
+              <input type="text" id="calloutTitleInput" class="w-full px-3 py-2 rounded-xl border border-border-light bg-slate-50 text-xs font-bold focus:border-primary outline-none" value="📌 Important Student Instruction">
+            </div>
+          </div>
 
-            <!-- Alert 2: PDF Download Note -->
-            <div class="p-4 rounded-xl border border-border-light bg-slate-50 flex flex-col md:flex-row md:items-center justify-between gap-4">
-              <div class="flex-1 p-3.5 rounded-xl bg-emerald-50 border-l-4 border-emerald-600 text-emerald-900 text-xs font-semibold leading-relaxed">
-                <strong class="font-bold flex items-center gap-1.5 text-emerald-800 mb-0.5"><i class="fa-solid fa-file-pdf"></i> Download PDF Solutions</strong>
-                Want to revise offline? Click the download button below to get the official chapter PDF with answers.
-              </div>
-              <div class="flex items-center gap-2 shrink-0">
-                <button onclick="copyCalloutCompose('pdf')" class="px-3 py-2 rounded-xl bg-emerald-600 text-white text-xs font-bold hover:bg-emerald-700">
-                  Copy for Compose
-                </button>
-                <button onclick="copyCalloutHtml('pdf')" class="px-3 py-2 rounded-xl bg-slate-200 text-slate-700 text-xs font-bold hover:bg-slate-300">
-                  HTML
-                </button>
-              </div>
+          <div>
+            <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Message Content</label>
+            <textarea id="calloutMessageInput" rows="2" class="w-full p-3 rounded-xl border border-border-light bg-slate-50 text-xs font-medium focus:border-primary outline-none resize-none leading-relaxed">Attempt all questions in this session before checking your final score. Review notes will appear immediately after completion.</textarea>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+            <div>
+              <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Optional Action Button Text</label>
+              <input type="text" id="calloutBtnTextInput" class="w-full px-3 py-2 rounded-xl border border-border-light bg-slate-50 text-xs font-semibold focus:border-primary outline-none" placeholder="e.g. Download Chapter PDF ➔" value="Download PDF Notes ➔">
             </div>
+            <div>
+              <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Action Button URL</label>
+              <input type="text" id="calloutBtnUrlInput" class="w-full px-3 py-2 rounded-xl border border-border-light bg-slate-50 text-xs font-semibold focus:border-primary outline-none" placeholder="https://yourblog.com/notes.pdf" value="https://example.com/download.pdf">
+            </div>
+          </div>
+
+          <!-- Live Visual Preview Box -->
+          <div class="p-4 rounded-xl bg-slate-50 border border-border-light">
+            <div id="calloutLivePreview">
+              <!-- Live preview rendered by JS -->
+            </div>
+          </div>
+
+          <!-- Action Buttons -->
+          <div class="flex items-center justify-end gap-2.5 pt-1">
+            <button id="btnCopyCalloutCompose" class="tactile-btn flex items-center gap-2 px-4 py-2.5 rounded-xl bg-primary hover:bg-primary-dark text-white text-xs font-bold shadow-sm shadow-primary/20">
+              <i class="fa-solid fa-wand-magic-sparkles text-yellow-300"></i>
+              <span>Copy for Blogger (Compose View)</span>
+            </button>
+            <button id="btnCopyCalloutHtml" class="tactile-btn flex items-center gap-1.5 px-3.5 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold border border-border-light">
+              <i class="fa-solid fa-code text-primary"></i>
+              <span>Copy HTML</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Widget C: Resource & Subject Link Grid -->
+        <div class="bg-white p-6 rounded-2xl border border-border-light shadow-sm space-y-5">
+          <div class="flex items-center justify-between border-b border-border-light pb-3">
+            <div class="flex items-center gap-2">
+              <i class="fa-solid fa-table-cells-large text-emerald-600 text-lg"></i>
+              <h3 class="font-extrabold text-base text-slate-900">C. Resource & Subject Link Grid</h3>
+            </div>
+            <button id="btnAddGridItem" type="button" class="px-3 py-1 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-emerald-700 font-bold text-xs flex items-center gap-1 border border-emerald-200">
+              <i class="fa-solid fa-plus-circle"></i> Add Link Card
+            </button>
+          </div>
+
+          <div>
+            <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Section Heading</label>
+            <input type="text" id="gridHeadingInput" class="w-full px-3 py-2 rounded-xl border border-border-light bg-slate-50 text-xs font-bold focus:border-primary outline-none" value="📚 Recommended Study Materials & Papers">
+          </div>
+
+          <!-- Dynamic Resource Cards Editor List -->
+          <div id="gridItemsContainer" class="space-y-3">
+            <!-- Rendered by JS -->
+          </div>
+
+          <!-- Live Visual Preview Box -->
+          <div class="p-4 rounded-xl bg-slate-50 border border-border-light">
+            <div class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Live Grid Preview:</div>
+            <div id="gridLivePreview">
+              <!-- Live preview rendered by JS -->
+            </div>
+          </div>
+
+          <!-- Action Buttons -->
+          <div class="flex items-center justify-end gap-2.5 pt-1">
+            <button id="btnCopyGridCompose" class="tactile-btn flex items-center gap-2 px-4 py-2.5 rounded-xl bg-primary hover:bg-primary-dark text-white text-xs font-bold shadow-sm shadow-primary/20">
+              <i class="fa-solid fa-wand-magic-sparkles text-yellow-300"></i>
+              <span>Copy for Blogger (Compose View)</span>
+            </button>
+            <button id="btnCopyGridHtml" class="tactile-btn flex items-center gap-1.5 px-3.5 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold border border-border-light">
+              <i class="fa-solid fa-code text-primary"></i>
+              <span>Copy HTML</span>
+            </button>
           </div>
         </div>
 
@@ -458,35 +504,47 @@
       <!-- MODULE C: JSON MANAGER VIEW                                   -->
       <!-- ============================================================= -->
       <div id="viewJsonManager" class="tab-view hidden space-y-6 max-w-4xl mx-auto">
+        
+        <!-- Drag-and-Drop Import Zone -->
+        <div id="jsonDropZone" class="border-2 border-dashed border-border-dark hover:border-primary rounded-2xl p-6 sm:p-8 text-center cursor-pointer transition-all bg-white hover:bg-indigo-50/40 shadow-sm space-y-2">
+          <input type="file" id="jsonFileInput" accept=".json" class="hidden">
+          <div class="w-12 h-12 mx-auto rounded-2xl bg-indigo-50 text-primary flex items-center justify-center text-xl shadow-sm">
+            <i class="fa-solid fa-cloud-arrow-up"></i>
+          </div>
+          <h3 class="font-extrabold text-sm text-slate-800">Import Existing Quiz JSON</h3>
+          <p class="text-xs text-slate-500">Drag & drop your saved <code>.json</code> file here, or <span class="text-primary font-bold underline">click to browse</span></p>
+          <p class="text-[11px] text-slate-400">Instantly restores all questions and settings directly into the Quiz Builder!</p>
+        </div>
+
+        <!-- Direct Raw JSON Editor -->
         <div class="bg-white p-6 rounded-2xl border border-border-light shadow-sm space-y-4">
           <div class="flex items-center justify-between border-b border-border-light pb-3">
             <div class="flex items-center gap-2.5">
               <i class="fa-solid fa-code text-primary text-lg"></i>
               <div>
-                <h3 class="font-extrabold text-base text-slate-900">Quiz JSON Definition</h3>
-                <p class="text-xs text-slate-500 font-medium">Export, import, or manually modify the quiz schema</p>
+                <h3 class="font-extrabold text-base text-slate-900">Direct JSON Definition Editor</h3>
+                <p class="text-xs text-slate-500 font-medium">View, modify, or copy the active quiz schema</p>
               </div>
             </div>
 
             <div class="flex items-center gap-2">
-              <input type="file" id="jsonFileInput" accept=".json" class="hidden">
-              <button onclick="document.getElementById('jsonFileInput').click()" class="px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold flex items-center gap-1.5">
-                <i class="fa-solid fa-upload"></i> Import File
+              <button id="btnCopyJsonText" class="px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold flex items-center gap-1.5 transition">
+                <i class="fa-solid fa-copy"></i> Copy JSON
               </button>
-              <button id="btnFormatJson" class="px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold">
-                Prettify
+              <button id="btnFormatJson" class="px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold transition">
+                <i class="fa-solid fa-align-left mr-1"></i> Prettify
               </button>
             </div>
           </div>
 
-          <textarea id="jsonRawEditor" rows="18" class="w-full p-4 rounded-xl bg-slate-900 text-emerald-400 font-mono text-xs outline-none leading-relaxed border border-slate-700 shadow-inner" placeholder="Paste or view JSON here..."></textarea>
+          <textarea id="jsonRawEditor" rows="16" class="w-full p-4 rounded-xl bg-slate-900 text-emerald-400 font-mono text-xs outline-none leading-relaxed border border-slate-700 shadow-inner" placeholder="Paste or view JSON here..."></textarea>
 
           <div class="flex items-center justify-between pt-2">
             <button id="btnApplyJson" class="tactile-btn px-5 py-2.5 rounded-xl bg-primary text-white font-bold text-sm shadow-sm hover:bg-primary-dark">
-              <i class="fa-solid fa-check-double mr-1.5"></i> Apply JSON to Builder
+              <i class="fa-solid fa-check-double mr-1.5"></i> Apply Changes to Quiz Builder
             </button>
             <button id="btnDownloadJsonFile" class="tactile-btn px-5 py-2.5 rounded-xl bg-emerald-600 text-white font-bold text-sm shadow-sm hover:bg-emerald-700">
-              <i class="fa-solid fa-download mr-1.5"></i> Download Quiz JSON
+              <i class="fa-solid fa-download mr-1.5"></i> Save & Download .json
             </button>
           </div>
         </div>
@@ -750,7 +808,9 @@
       const btnApplyJson = document.getElementById('btnApplyJson');
       const btnDownloadJsonFile = document.getElementById('btnDownloadJsonFile');
       const btnFormatJson = document.getElementById('btnFormatJson');
+      const btnCopyJsonText = document.getElementById('btnCopyJsonText');
       const jsonFileInput = document.getElementById('jsonFileInput');
+      const jsonDropZone = document.getElementById('jsonDropZone');
 
       // Initialize Inputs with saved Settings
       modalGhUsername.value = ghUsername;
@@ -768,8 +828,8 @@
       function updateSlugDisplay() {
         const slug = getQuizSlug();
         const fullRel = `quizzes/${slug}.json`;
-        metaSlugPreview.textContent = fullRel;
-        downloadSlugName.textContent = `${slug}.json`;
+        if (metaSlugPreview) metaSlugPreview.textContent = fullRel;
+        if (downloadSlugName) downloadSlugName.textContent = `${slug}.json`;
       }
 
       function getSelectedEmbedMode() {
@@ -785,7 +845,6 @@
           const slug = getQuizSlug();
           return `${baseHost}?file=quizzes/${slug}.json`;
         } else {
-          // Direct base64 mode
           const jsonString = JSON.stringify(currentQuiz);
           const base64Payload = encodeUtf8Base64(jsonString);
           return `${baseHost}?data=${encodeURIComponent(base64Payload)}`;
@@ -804,7 +863,6 @@
         }
       }
 
-      // Save GitHub Settings Changes
       function handleGhSettingsChange() {
         ghUsername = modalGhUsername.value.trim() || 'RaviKhillare';
         ghRepo = modalGhRepo.value.trim() || 'RK_Quizmaker_nodatabase';
@@ -817,7 +875,6 @@
       modalGhUsername.addEventListener('input', handleGhSettingsChange);
       modalGhRepo.addEventListener('input', handleGhSettingsChange);
 
-      // Embed Mode Selector Radios
       document.querySelectorAll('input[name="embedMode"]').forEach(radio => {
         radio.addEventListener('change', () => {
           const mode = radio.value;
@@ -836,7 +893,6 @@
         });
       });
 
-      // Modal Show/Hide
       function openPublishModal() {
         updateSlugDisplay();
         updateModalUrlPreview();
@@ -857,7 +913,7 @@
       });
 
       // -------------------------------------------------------------
-      // 4. True Blogger Compose View Clipboard Engine
+      // 4. True Blogger Compose View Clipboard Engine (Quiz Player)
       // -------------------------------------------------------------
       function generateBloggerEmbedHtml(mode = null) {
         const livePlayerUrl = buildProductionPlayerUrl(mode);
@@ -900,11 +956,9 @@
         }
       }
 
-      // Top Bar Direct Click Handlers
       btnCopyCompose.addEventListener('click', () => executeCopyCompose());
       btnCopyHtml.addEventListener('click', () => executeCopyHtml());
 
-      // Modal Click Handlers
       modalCopyComposeBtn.addEventListener('click', () => {
         executeCopyCompose();
         closePublishModal();
@@ -954,6 +1008,7 @@
           tabBtnWidgets.classList.add('active', 'bg-primary-bg', 'text-primary');
           tabBtnWidgets.classList.remove('text-slate-600');
           viewBloggerWidgets.classList.remove('hidden');
+          updateAllWidgetPreviews();
         } else if (target === 'json') {
           tabBtnJson.classList.add('active', 'bg-primary-bg', 'text-primary');
           tabBtnJson.classList.remove('text-slate-600');
@@ -967,7 +1022,7 @@
       tabBtnJson.addEventListener('click', () => switchTab('json'));
 
       // -------------------------------------------------------------
-      // 7. Dynamic Question Cards Renderer
+      // 7. Dynamic Question Cards Renderer (Quiz Builder)
       // -------------------------------------------------------------
       function renderAllQuestions() {
         questionsContainer.innerHTML = '';
@@ -1114,7 +1169,6 @@
       function attachQuestionCardEvents(card, qIndex) {
         const q = currentQuiz.questions[qIndex];
 
-        // Type Change
         const typeSelect = card.querySelector('.q-type-select');
         typeSelect.addEventListener('change', (e) => {
           const newType = e.target.value;
@@ -1134,21 +1188,18 @@
           triggerPreviewUpdate();
         });
 
-        // Prompt Input
         const promptInput = card.querySelector('.q-prompt-input');
         promptInput.addEventListener('input', (e) => {
           q.prompt = e.target.value;
           triggerPreviewUpdate();
         });
 
-        // Explanation Input
         const expInput = card.querySelector('.q-explanation-input');
         expInput.addEventListener('input', (e) => {
           q.explanation = e.target.value;
           triggerPreviewUpdate();
         });
 
-        // Move Up / Down / Delete
         const btnUp = card.querySelector('.btn-move-up');
         if (btnUp) {
           btnUp.addEventListener('click', () => {
@@ -1189,7 +1240,6 @@
           });
         }
 
-        // Specific Type Inputs Bindings
         if (q.type === 'mcq') {
           const optInputs = card.querySelectorAll('.mcq-opt-input');
           optInputs.forEach(inp => {
@@ -1280,7 +1330,6 @@
         }
       }
 
-      // Add New Question Button
       btnAddQuestion.addEventListener('click', () => {
         currentQuiz.questions.push({
           type: "mcq",
@@ -1295,7 +1344,6 @@
         window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
       });
 
-      // Metadata Changes
       metaQuizTitle.addEventListener('input', (e) => {
         currentQuiz.title = e.target.value;
         updateSlugDisplay();
@@ -1335,59 +1383,365 @@
       });
 
       // -------------------------------------------------------------
-      // 9. Blogger Widgets Module Generator Functions
+      // 9. BLOGGER WIDGETS INTERACTIVE GENERATOR
       // -------------------------------------------------------------
-      const widgetTemplates = {
-        yt: `<div style="text-align: center; margin: 18px auto;"><a href="https://youtube.com" target="_blank" rel="noopener noreferrer" style="display: inline-flex; align-items: center; gap: 8px; padding: 12px 24px; border-radius: 50px; background: linear-gradient(135deg, #dc2626, #e11d48); color: #ffffff; text-decoration: none; font-family: sans-serif; font-weight: 700; font-size: 14px; box-shadow: 0 4px 15px rgba(220,38,38,0.3);"><i class="fa-brands fa-youtube"></i> Subscribe on YouTube</a></div>`,
-        tg: `<div style="text-align: center; margin: 18px auto;"><a href="https://t.me" target="_blank" rel="noopener noreferrer" style="display: inline-flex; align-items: center; gap: 8px; padding: 12px 24px; border-radius: 50px; background: linear-gradient(135deg, #0284c7, #2563eb); color: #ffffff; text-decoration: none; font-family: sans-serif; font-weight: 700; font-size: 14px; box-shadow: 0 4px 15px rgba(2,132,199,0.3);"><i class="fa-brands fa-telegram"></i> Join Telegram Channel</a></div>`,
-        wa: `<div style="text-align: center; margin: 18px auto;"><a href="https://whatsapp.com" target="_blank" rel="noopener noreferrer" style="display: inline-flex; align-items: center; gap: 8px; padding: 12px 24px; border-radius: 50px; background: linear-gradient(135deg, #059669, #10b981); color: #ffffff; text-decoration: none; font-family: sans-serif; font-weight: 700; font-size: 14px; box-shadow: 0 4px 15px rgba(5,150,105,0.3);"><i class="fa-brands fa-whatsapp"></i> Join WhatsApp Community</a></div>`,
-        info: `<div style="margin: 20px auto; max-width: 640px; padding: 16px 20px; border-radius: 16px; background-color: #eff6ff; border-left: 5px solid #2563eb; color: #1e3a8a; font-family: sans-serif; font-size: 14px; line-height: 1.5; box-shadow: 0 2px 8px rgba(0,0,0,0.04);"><strong style="display: block; margin-bottom: 4px; font-size: 15px; color: #1d4ed8;">📌 Notice for Students</strong>Please read each question thoroughly before submitting your responses. All results are tabulated instantly.</div>`,
-        pdf: `<div style="margin: 20px auto; max-width: 640px; padding: 16px 20px; border-radius: 16px; background-color: #ecfdf5; border-left: 5px solid #059669; color: #064e3b; font-family: sans-serif; font-size: 14px; line-height: 1.5; box-shadow: 0 2px 8px rgba(0,0,0,0.04);"><strong style="display: block; margin-bottom: 4px; font-size: 15px; color: #047857;">📥 Download Study Materials</strong>Official practice notes and reference solutions are available in PDF format. Keep practicing daily!</div>`
-      };
 
-      window.copyWidgetCompose = async function (type) {
-        const html = widgetTemplates[type] || '';
-        try {
-          if (navigator.clipboard && window.ClipboardItem) {
-            const htmlBlob = new Blob([html], { type: 'text/html' });
-            const textBlob = new Blob([html], { type: 'text/plain' });
-            await navigator.clipboard.write([new ClipboardItem({ 'text/html': htmlBlob, 'text/plain': textBlob })]);
-            showToast("Widget copied for Blogger Compose! Paste with Ctrl+V.", "success");
-          } else {
-            await navigator.clipboard.writeText(html);
-            showToast("HTML copied!", "success");
-          }
-        } catch (e) {
-          fallbackCopyText(html);
-          showToast("Widget copied!", "success");
+      // --- WIDGET A: Social Media Follow Button ---
+      const socPlatformSelect = document.getElementById('socPlatformSelect');
+      const socLabelInput = document.getElementById('socLabelInput');
+      const socUrlInput = document.getElementById('socUrlInput');
+      const socLivePreview = document.getElementById('socLivePreview');
+      const btnCopySocCompose = document.getElementById('btnCopySocCompose');
+      const btnCopySocHtml = document.getElementById('btnCopySocHtml');
+
+      const socialConfigs = {
+        youtube: {
+          gradient: 'linear-gradient(135deg, #dc2626 0%, #e11d48 100%)',
+          shadow: 'rgba(220, 38, 38, 0.35)',
+          icon: '<i class="fa-brands fa-youtube" style="font-size: 16px;"></i>',
+          defaultLabel: 'Subscribe on YouTube',
+          defaultUrl: 'https://youtube.com/@yourchannel'
+        },
+        telegram: {
+          gradient: 'linear-gradient(135deg, #0284c7 0%, #2563eb 100%)',
+          shadow: 'rgba(2, 132, 199, 0.35)',
+          icon: '<i class="fa-brands fa-telegram" style="font-size: 16px;"></i>',
+          defaultLabel: 'Join Telegram Community',
+          defaultUrl: 'https://t.me/yourchannel'
+        },
+        whatsapp: {
+          gradient: 'linear-gradient(135deg, #059669 0%, #10b981 100%)',
+          shadow: 'rgba(5, 150, 105, 0.35)',
+          icon: '<i class="fa-brands fa-whatsapp" style="font-size: 16px;"></i>',
+          defaultLabel: 'Follow on WhatsApp Channel',
+          defaultUrl: 'https://whatsapp.com/channel/yourchannel'
+        },
+        website: {
+          gradient: 'linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%)',
+          shadow: 'rgba(79, 70, 229, 0.35)',
+          icon: '<i class="fa-solid fa-globe" style="font-size: 16px;"></i>',
+          defaultLabel: 'Visit Official Study Portal',
+          defaultUrl: 'https://yourwebsite.com'
+        },
+        instagram: {
+          gradient: 'linear-gradient(135deg, #c026d3 0%, #f43f5e 100%)',
+          shadow: 'rgba(244, 63, 94, 0.35)',
+          icon: '<i class="fa-brands fa-instagram" style="font-size: 16px;"></i>',
+          defaultLabel: 'Follow on Instagram',
+          defaultUrl: 'https://instagram.com/yourhandle'
         }
       };
 
-      window.copyWidgetHtml = async function (type) {
-        const html = widgetTemplates[type] || '';
-        await navigator.clipboard.writeText(html);
-        showToast("HTML code copied!", "success");
+      socPlatformSelect.addEventListener('change', () => {
+        const cfg = socialConfigs[socPlatformSelect.value] || socialConfigs.telegram;
+        socLabelInput.value = cfg.defaultLabel;
+        socUrlInput.value = cfg.defaultUrl;
+        updateSocialPreview();
+      });
+      socLabelInput.addEventListener('input', updateSocialPreview);
+      socUrlInput.addEventListener('input', updateSocialPreview);
+
+      function generateSocialButtonHtml() {
+        const platform = socPlatformSelect.value;
+        const cfg = socialConfigs[platform] || socialConfigs.telegram;
+        const label = escapeHtml(socLabelInput.value.trim() || cfg.defaultLabel);
+        const url = escapeHtml(socUrlInput.value.trim() || cfg.defaultUrl);
+
+        return `<div class="bsp-widget-social" style="text-align: center; margin: 20px auto; width: 100%;">
+  <a href="${url}" target="_blank" rel="noopener noreferrer" style="display: inline-flex; align-items: center; justify-content: center; gap: 10px; padding: 13px 30px; border-radius: 50px; background: ${cfg.gradient}; color: #ffffff; text-decoration: none; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-weight: 700; font-size: 14px; letter-spacing: 0.02em; box-shadow: 0 4px 18px ${cfg.shadow};">
+    ${cfg.icon}
+    <span>${label}</span>
+  </a>
+</div>`;
+      }
+
+      function updateSocialPreview() {
+        socLivePreview.innerHTML = generateSocialButtonHtml();
+      }
+
+      btnCopySocCompose.addEventListener('click', () => {
+        copyWidgetToBlogger(generateSocialButtonHtml(), "Social Button");
+      });
+      btnCopySocHtml.addEventListener('click', () => {
+        copyWidgetRawHtml(generateSocialButtonHtml(), "Social Button");
+      });
+
+      // --- WIDGET B: Educational Alert / Callout Boxes ---
+      const calloutTypeSelect = document.getElementById('calloutTypeSelect');
+      const calloutTitleInput = document.getElementById('calloutTitleInput');
+      const calloutMessageInput = document.getElementById('calloutMessageInput');
+      const calloutBtnTextInput = document.getElementById('calloutBtnTextInput');
+      const calloutBtnUrlInput = document.getElementById('calloutBtnUrlInput');
+      const calloutLivePreview = document.getElementById('calloutLivePreview');
+      const btnCopyCalloutCompose = document.getElementById('btnCopyCalloutCompose');
+      const btnCopyCalloutHtml = document.getElementById('btnCopyCalloutHtml');
+
+      const calloutPresets = {
+        info: {
+          bg: '#eff6ff',
+          border: '#2563eb',
+          titleColor: '#1e40af',
+          textColor: '#1e3a8a',
+          btnBg: '#2563eb',
+          icon: '<i class="fa-solid fa-circle-info" style="color: #2563eb;"></i>',
+          defaultTitle: '📌 Important Student Instruction',
+          defaultMsg: 'Attempt all questions in this session before checking your final score. Review notes will appear immediately after completion.'
+        },
+        warning: {
+          bg: '#fffbeb',
+          border: '#d97706',
+          titleColor: '#92400e',
+          textColor: '#78350f',
+          btnBg: '#d97706',
+          icon: '<i class="fa-solid fa-triangle-exclamation" style="color: #d97706;"></i>',
+          defaultTitle: '⚠️ Examination Warning & Guidelines',
+          defaultMsg: 'This practice paper is timed for 60 seconds per question. Ensure you do not refresh the page during the live quiz.'
+        },
+        download: {
+          bg: '#ecfdf5',
+          border: '#059669',
+          titleColor: '#065f46',
+          textColor: '#064e3b',
+          btnBg: '#059669',
+          icon: '<i class="fa-solid fa-file-pdf" style="color: #059669;"></i>',
+          defaultTitle: '📥 Official Study Material & Chapter Notes',
+          defaultMsg: 'Download the complete chapter revision handbook with step-by-step solutions to practice offline.'
+        }
       };
 
-      window.copyCalloutCompose = function (type) {
-        window.copyWidgetCompose(type);
-      };
-      window.copyCalloutHtml = function (type) {
-        window.copyWidgetHtml(type);
-      };
+      calloutTypeSelect.addEventListener('change', () => {
+        const p = calloutPresets[calloutTypeSelect.value] || calloutPresets.info;
+        calloutTitleInput.value = p.defaultTitle;
+        calloutMessageInput.value = p.defaultMsg;
+        updateCalloutPreview();
+      });
+
+      [calloutTitleInput, calloutMessageInput, calloutBtnTextInput, calloutBtnUrlInput].forEach(inp => {
+        inp.addEventListener('input', updateCalloutPreview);
+      });
+
+      function generateCalloutHtml() {
+        const type = calloutTypeSelect.value;
+        const p = calloutPresets[type] || calloutPresets.info;
+        const title = escapeHtml(calloutTitleInput.value.trim());
+        const msg = escapeHtml(calloutMessageInput.value.trim());
+        const btnText = escapeHtml(calloutBtnTextInput.value.trim());
+        const btnUrl = escapeHtml(calloutBtnUrlInput.value.trim());
+
+        const buttonSnippet = (btnText && btnUrl) ? `
+        <div style="margin-top: 12px;">
+          <a href="${btnUrl}" target="_blank" rel="noopener noreferrer" style="display: inline-flex; align-items: center; gap: 6px; padding: 7px 18px; border-radius: 8px; background: ${p.btnBg}; color: #ffffff; text-decoration: none; font-size: 12px; font-weight: 700; font-family: sans-serif;">
+            ${btnText}
+          </a>
+        </div>` : '';
+
+        return `<div class="bsp-widget-callout" style="margin: 24px auto; max-width: 680px; width: 100%; box-sizing: border-box; padding: 18px 22px; border-radius: 16px; background-color: ${p.bg}; border-left: 5px solid ${p.border}; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; box-shadow: 0 2px 10px rgba(0,0,0,0.04);">
+  <div style="display: flex; align-items: flex-start; gap: 14px;">
+    <div style="font-size: 22px; line-height: 1; flex-shrink: 0; margin-top: 2px;">
+      ${p.icon}
+    </div>
+    <div style="flex: 1;">
+      <strong style="display: block; font-size: 15px; font-weight: 800; margin-bottom: 4px; color: ${p.titleColor};">${title}</strong>
+      <div style="font-size: 13px; line-height: 1.55; color: ${p.textColor};">${msg}</div>
+      ${buttonSnippet}
+    </div>
+  </div>
+</div>`;
+      }
+
+      function updateCalloutPreview() {
+        calloutLivePreview.innerHTML = generateCalloutHtml();
+      }
+
+      btnCopyCalloutCompose.addEventListener('click', () => {
+        copyWidgetToBlogger(generateCalloutHtml(), "Callout Box");
+      });
+      btnCopyCalloutHtml.addEventListener('click', () => {
+        copyWidgetRawHtml(generateCalloutHtml(), "Callout Box");
+      });
+
+      // --- WIDGET C: Resource & Subject Link Grid ---
+      const gridHeadingInput = document.getElementById('gridHeadingInput');
+      const gridItemsContainer = document.getElementById('gridItemsContainer');
+      const btnAddGridItem = document.getElementById('btnAddGridItem');
+      const gridLivePreview = document.getElementById('gridLivePreview');
+      const btnCopyGridCompose = document.getElementById('btnCopyGridCompose');
+      const btnCopyGridHtml = document.getElementById('btnCopyGridHtml');
+
+      let gridItems = [
+        {
+          title: "Class 10 IT 402 Complete Notes",
+          description: "Chapter-wise theory, solved questions, and practical tips.",
+          url: "https://example.com/it402-notes",
+          icon: "fa-book-open"
+        },
+        {
+          title: "Official Sample Question Papers",
+          description: "Curated model question papers with step-by-step marking scheme.",
+          url: "https://example.com/sample-papers",
+          icon: "fa-file-lines"
+        },
+        {
+          title: "Online Interactive MCQ Practice",
+          description: "Topic-wise mock tests with real-time scoring and instant answers.",
+          url: "https://example.com/mcq-tests",
+          icon: "fa-graduation-cap"
+        }
+      ];
+
+      function renderGridEditorItems() {
+        gridItemsContainer.innerHTML = '';
+        gridItems.forEach((item, idx) => {
+          const row = document.createElement('div');
+          row.className = 'p-3.5 rounded-xl bg-slate-50 border border-border-light space-y-2';
+          row.innerHTML = `
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-extrabold text-slate-700 flex items-center gap-1.5">
+                <i class="fa-solid fa-link text-indigo-500"></i> Card ${idx + 1}
+              </span>
+              <button type="button" class="btn-del-grid-item p-1 text-slate-400 hover:text-rose-500 rounded" data-index="${idx}" ${gridItems.length <= 1 ? 'disabled style="opacity:0.3"' : ''}>
+                <i class="fa-solid fa-trash-can text-xs"></i>
+              </button>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+              <input type="text" class="grid-title-inp px-3 py-1.5 rounded-lg border border-border-light bg-white text-xs font-bold text-slate-800" value="${escapeHtml(item.title)}" placeholder="Title">
+              <input type="text" class="grid-url-inp px-3 py-1.5 rounded-lg border border-border-light bg-white text-xs font-semibold text-slate-700" value="${escapeHtml(item.url)}" placeholder="Target URL">
+            </div>
+            <input type="text" class="grid-desc-inp w-full px-3 py-1.5 rounded-lg border border-border-light bg-white text-xs text-slate-600" value="${escapeHtml(item.description)}" placeholder="Short 1-line description">
+          `;
+          gridItemsContainer.appendChild(row);
+
+          row.querySelector('.grid-title-inp').addEventListener('input', (e) => {
+            item.title = e.target.value;
+            updateGridPreview();
+          });
+          row.querySelector('.grid-url-inp').addEventListener('input', (e) => {
+            item.url = e.target.value;
+            updateGridPreview();
+          });
+          row.querySelector('.grid-desc-inp').addEventListener('input', (e) => {
+            item.description = e.target.value;
+            updateGridPreview();
+          });
+          row.querySelector('.btn-del-grid-item').addEventListener('click', () => {
+            if (gridItems.length <= 1) return;
+            gridItems.splice(idx, 1);
+            renderGridEditorItems();
+            updateGridPreview();
+          });
+        });
+      }
+
+      btnAddGridItem.addEventListener('click', () => {
+        gridItems.push({
+          title: `Study Resource ${gridItems.length + 1}`,
+          description: "Important notes and practice exercises for revision.",
+          url: "https://example.com/resource",
+          icon: "fa-book-open"
+        });
+        renderGridEditorItems();
+        updateGridPreview();
+      });
+
+      gridHeadingInput.addEventListener('input', updateGridPreview);
+
+      function generateGridHtml() {
+        const heading = escapeHtml(gridHeadingInput.value.trim() || 'Study Resources');
+        const cards = gridItems.map(item => `
+    <a href="${escapeHtml(item.url)}" target="_blank" rel="noopener noreferrer" style="display: block; box-sizing: border-box; padding: 18px 20px; border-radius: 16px; background: #ffffff; border: 1.5px solid #e2e8f0; text-decoration: none; box-shadow: 0 4px 12px rgba(15,23,42,0.04); transition: transform 0.2s ease;">
+      <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 6px;">
+        <span style="display: inline-flex; align-items: center; justify-content: center; width: 34px; height: 34px; border-radius: 10px; background: #e0e7ff; color: #4f46e5; font-size: 15px;">
+          <i class="fa-solid ${item.icon || 'fa-book-open'}"></i>
+        </span>
+        <strong style="font-size: 14px; font-weight: 700; color: #0f172a; line-height: 1.35;">${escapeHtml(item.title)}</strong>
+      </div>
+      <p style="font-size: 12px; color: #64748b; margin: 0 0 10px 0; line-height: 1.5;">${escapeHtml(item.description)}</p>
+      <span style="display: inline-flex; align-items: center; gap: 5px; font-size: 11px; font-weight: 800; color: #4f46e5;">Access Material ➔</span>
+    </a>`).join('\n');
+
+        return `<div class="bsp-widget-grid" style="margin: 28px auto; max-width: 720px; width: 100%; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
+  <h3 style="font-size: 17px; font-weight: 800; color: #0f172a; margin: 0 0 16px 0; display: flex; align-items: center; gap: 8px;">
+    ${heading}
+  </h3>
+  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px;">
+${cards}
+  </div>
+</div>`;
+      }
+
+      function updateGridPreview() {
+        gridLivePreview.innerHTML = generateGridHtml();
+      }
+
+      btnCopyGridCompose.addEventListener('click', () => {
+        copyWidgetToBlogger(generateGridHtml(), "Resource Grid");
+      });
+      btnCopyGridHtml.addEventListener('click', () => {
+        copyWidgetRawHtml(generateGridHtml(), "Resource Grid");
+      });
+
+      function updateAllWidgetPreviews() {
+        updateSocialPreview();
+        updateCalloutPreview();
+        renderGridEditorItems();
+        updateGridPreview();
+      }
+
+      // Universal Widget Copy Helpers
+      async function copyWidgetToBlogger(htmlContent, name) {
+        try {
+          if (navigator.clipboard && window.ClipboardItem) {
+            const htmlBlob = new Blob([htmlContent], { type: 'text/html' });
+            const textBlob = new Blob([htmlContent], { type: 'text/plain' });
+            await navigator.clipboard.write([
+              new ClipboardItem({
+                'text/html': htmlBlob,
+                'text/plain': textBlob
+              })
+            ]);
+            showToast(`${name} copied! Press Ctrl+V directly in Blogger Compose View`, "success");
+          } else {
+            await navigator.clipboard.writeText(htmlContent);
+            showToast(`${name} copied! Press Ctrl+V directly in Blogger Compose View`, "success");
+          }
+        } catch (e) {
+          fallbackCopyText(htmlContent);
+          showToast(`${name} copied! Press Ctrl+V directly in Blogger Compose View`, "success");
+        }
+      }
+
+      async function copyWidgetRawHtml(htmlContent, name) {
+        try {
+          await navigator.clipboard.writeText(htmlContent);
+          showToast(`${name} HTML code copied!`, "success");
+        } catch (e) {
+          fallbackCopyText(htmlContent);
+          showToast(`${name} HTML copied!`, "success");
+        }
+      }
 
       // -------------------------------------------------------------
-      // 10. JSON Manager Module
+      // 10. JSON Manager Module (Drag & Drop + Editor + Format)
       // -------------------------------------------------------------
       function syncJsonEditor() {
         jsonRawEditor.value = JSON.stringify(currentQuiz, null, 2);
       }
 
+      btnCopyJsonText.addEventListener('click', async () => {
+        try {
+          await navigator.clipboard.writeText(jsonRawEditor.value);
+          showToast("JSON copied to clipboard!", "success");
+        } catch (e) {
+          fallbackCopyText(jsonRawEditor.value);
+          showToast("JSON copied!", "success");
+        }
+      });
+
       btnFormatJson.addEventListener('click', () => {
         try {
           const parsed = JSON.parse(jsonRawEditor.value);
           jsonRawEditor.value = JSON.stringify(parsed, null, 2);
-          showToast("JSON formatted cleanly", "info");
+          showToast("JSON prettified cleanly", "info");
         } catch (e) {
           showToast("Invalid JSON syntax: " + e.message, "danger");
         }
@@ -1411,25 +1765,49 @@
         }
       });
 
-      jsonFileInput.addEventListener('change', (e) => {
-        const file = e.target.files[0];
+      function handleJsonFileImport(file) {
         if (!file) return;
         const reader = new FileReader();
         reader.onload = (event) => {
           try {
             const parsed = JSON.parse(event.target.result);
+            if (!parsed.questions || !Array.isArray(parsed.questions)) {
+              throw new Error("Invalid quiz format: 'questions' array missing.");
+            }
             currentQuiz = parsed;
             jsonRawEditor.value = JSON.stringify(parsed, null, 2);
             metaQuizTitle.value = currentQuiz.title || '';
+            metaCategory.value = currentQuiz.category || '';
             renderAllQuestions();
             triggerPreviewUpdate();
             switchTab('quiz');
-            showToast(`Loaded ${file.name}!`, "success");
+            showToast(`Successfully imported "${file.name}" into Quiz Builder!`, "success");
           } catch (err) {
-            showToast("Failed to parse JSON file", "danger");
+            showToast("Failed to parse JSON file: " + err.message, "danger");
           }
         };
         reader.readAsText(file);
+      }
+
+      jsonFileInput.addEventListener('change', (e) => {
+        handleJsonFileImport(e.target.files[0]);
+      });
+
+      // Drag and drop events
+      jsonDropZone.addEventListener('click', () => jsonFileInput.click());
+      jsonDropZone.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        jsonDropZone.classList.add('drop-zone-active');
+      });
+      jsonDropZone.addEventListener('dragleave', () => {
+        jsonDropZone.classList.remove('drop-zone-active');
+      });
+      jsonDropZone.addEventListener('drop', (e) => {
+        e.preventDefault();
+        jsonDropZone.classList.remove('drop-zone-active');
+        if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+          handleJsonFileImport(e.dataTransfer.files[0]);
+        }
       });
 
       // -------------------------------------------------------------
@@ -1498,6 +1876,7 @@
       // Initial Boot
       renderAllQuestions();
       updateIframePreview();
+      updateAllWidgetPreviews();
     })();
   </script>
 </body>
