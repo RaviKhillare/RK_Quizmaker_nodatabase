@@ -174,14 +174,14 @@
         <span>Publish & Embed</span>
       </button>
 
-      <!-- Button 1: Copy for Blogger (Compose View) -->
-      <button id="btnCopyCompose" class="tactile-btn flex items-center gap-2 px-3.5 py-2 rounded-xl bg-primary hover:bg-primary-dark text-white text-xs sm:text-sm font-bold shadow-sm shadow-primary/30 border-b-2 border-primary-dark" title="Copies rich-text iframe to paste directly into Blogger Compose View (Ctrl+V)">
+      <!-- Button 1: Copy for Blogger (Compose View) - Instant Standalone Default -->
+      <button id="btnCopyCompose" class="tactile-btn flex items-center gap-2 px-3.5 py-2 rounded-xl bg-primary hover:bg-primary-dark text-white text-xs sm:text-sm font-bold shadow-sm shadow-primary/30 border-b-2 border-primary-dark" title="Copies 100% reliable Instant Standalone Quiz to paste directly into Blogger Compose View (Ctrl+V)">
         <i class="fa-solid fa-wand-magic-sparkles text-yellow-300"></i>
         <span class="hidden sm:inline">Copy for Blogger</span> (Compose)
       </button>
 
       <!-- Button 2: Copy iFrame HTML -->
-      <button id="btnCopyHtml" class="tactile-btn flex items-center gap-2 px-3 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs sm:text-sm font-bold border border-border-light" title="Copy raw HTML for Blogger HTML View">
+      <button id="btnCopyHtml" class="tactile-btn flex items-center gap-2 px-3 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs sm:text-sm font-bold border border-border-light" title="Copy raw Instant Standalone iFrame HTML for Blogger HTML View">
         <i class="fa-solid fa-code text-primary"></i>
         <span class="hidden sm:inline">Copy</span> HTML
       </button>
@@ -836,34 +836,43 @@
           
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
             
-            <!-- Mode 1: Remote JSON (Standard GitHub Pages) -->
-            <label class="p-3.5 rounded-2xl border-2 cursor-pointer transition flex flex-col justify-between mode-card border-primary bg-primary-bg/40" id="labelModeJson">
-              <div class="space-y-1">
+            <!-- Mode A (Recommended): Instant Standalone Embed (Zero-Setup, 100% Reliable, No 404) -->
+            <label class="p-3.5 rounded-2xl border-2 cursor-pointer transition flex flex-col justify-between mode-card border-primary bg-primary-bg/40" id="labelModeData">
+              <div class="space-y-1.5">
                 <div class="flex items-center justify-between">
                   <span class="font-extrabold text-xs text-primary flex items-center gap-1.5">
-                    <i class="fa-regular fa-file-code"></i> Remote JSON File
+                    <i class="fa-solid fa-bolt text-amber-500"></i> Mode A: Instant Embed
                   </span>
-                  <input type="radio" name="embedMode" value="file" checked class="text-primary focus:ring-primary">
+                  <span class="px-2 py-0.5 rounded-full text-[10px] font-extrabold bg-emerald-100 text-emerald-800 border border-emerald-300">Recommended (No 404)</span>
+                  <input type="radio" name="embedMode" value="data" checked class="text-primary focus:ring-primary">
                 </div>
-                <p class="text-[11px] text-slate-600 leading-relaxed">Loads asynchronously from your repo's <code>quizzes/</code> folder.</p>
+                <p class="text-[11px] text-slate-600 leading-relaxed">
+                  <strong>Zero-Setup, 100% Reliable:</strong> Encodes quiz data directly into the URL. Works immediately in Blogger with no Git commit or file hosting!
+                </p>
               </div>
-              <button id="modalBtnDownloadJson" type="button" class="mt-2.5 w-full py-1.5 px-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-[11px] font-bold flex items-center justify-center gap-1.5 shadow-sm">
-                <i class="fa-solid fa-download"></i> Download <span id="downloadSlugName" class="font-mono">sample.json</span>
-              </button>
+              <span class="mt-2.5 text-[10px] text-emerald-700 font-bold flex items-center gap-1">
+                <i class="fa-solid fa-circle-check"></i> Ready to paste in Blogger Compose View
+              </span>
             </label>
 
-            <!-- Mode 2: Instant Base64 Data (Zero Uploads) -->
-            <label class="p-3.5 rounded-2xl border-2 cursor-pointer transition flex flex-col justify-between mode-card border-border-light bg-slate-50 hover:bg-slate-100" id="labelModeData">
-              <div class="space-y-1">
+            <!-- Mode B: Remote GitHub File Sync (?file=https://...) -->
+            <label class="p-3.5 rounded-2xl border-2 cursor-pointer transition flex flex-col justify-between mode-card border-border-light bg-slate-50 hover:bg-slate-100" id="labelModeJson">
+              <div class="space-y-1.5">
                 <div class="flex items-center justify-between">
                   <span class="font-extrabold text-xs text-slate-800 flex items-center gap-1.5">
-                    <i class="fa-solid fa-bolt text-amber-500"></i> Instant Base64
+                    <i class="fa-regular fa-file-code text-slate-600"></i> Mode B: Remote File Sync
                   </span>
-                  <input type="radio" name="embedMode" value="data" class="text-primary focus:ring-primary">
+                  <input type="radio" name="embedMode" value="file" class="text-primary focus:ring-primary">
                 </div>
-                <p class="text-[11px] text-slate-600 leading-relaxed">Embeds quiz data directly into the link. No GitHub file commit needed!</p>
+                <p class="text-[11px] text-slate-600 leading-relaxed">Loads remotely via <code>?file=quizzes/...json</code>.</p>
+                <div class="p-2 rounded-xl bg-amber-50 border border-amber-200 text-[10px] text-amber-900 leading-snug flex items-start gap-1.5">
+                  <i class="fa-solid fa-triangle-exclamation text-amber-600 mt-0.5 shrink-0"></i>
+                  <span><strong>Warning:</strong> Requires pushing the JSON file to your GitHub repository first.</span>
+                </div>
               </div>
-              <span class="mt-2.5 text-[10px] text-slate-400 font-semibold block text-center">Ready instantly</span>
+              <button id="modalBtnDownloadJson" type="button" class="mt-2.5 w-full py-1.5 px-2.5 rounded-xl bg-slate-700 hover:bg-slate-800 text-white text-[11px] font-bold flex items-center justify-center gap-1.5 shadow-sm">
+                <i class="fa-solid fa-download"></i> Download <span id="downloadSlugName" class="font-mono">sample.json</span>
+              </button>
             </label>
 
           </div>
@@ -1454,11 +1463,11 @@
 
       function getSelectedEmbedMode() {
         const checked = document.querySelector('input[name="embedMode"]:checked');
-        return checked ? checked.value : 'file';
+        return checked ? checked.value : 'data';
       }
 
       function buildProductionPlayerUrl(mode = null) {
-        const activeMode = mode || getSelectedEmbedMode();
+        const activeMode = mode || getSelectedEmbedMode() || 'data';
         const baseHost = `https://${ghUsername}.github.io/${ghRepo}/quiz-player.html`;
 
         if (activeMode === 'file') {
@@ -1548,12 +1557,14 @@
       // 4. True Blogger Compose View Clipboard Engine (Quiz Player)
       // -------------------------------------------------------------
       function generateBloggerEmbedHtml(mode = null) {
-        const livePlayerUrl = buildProductionPlayerUrl(mode);
-        return `<div class="blogger-quiz-embed" style="max-width: 720px; margin: 24px auto; width: 100%;"><iframe src="${livePlayerUrl}" width="100%" height="580" frameborder="0" style="border: none; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); width: 100%; display: block;" allowfullscreen loading="lazy"></iframe></div>`;
+        const activeMode = mode || getSelectedEmbedMode() || 'data';
+        const livePlayerUrl = buildProductionPlayerUrl(activeMode);
+        return `<div class="blogger-quiz-embed" style="max-width: 720px; margin: 24px auto; width: 100%;"><iframe src="${livePlayerUrl}" width="100%" height="600" frameborder="0" style="border: none; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); width: 100%; display: block;" allowfullscreen loading="lazy"></iframe></div>`;
       }
 
       async function executeCopyCompose(mode = null) {
-        const richSnippet = generateBloggerEmbedHtml(mode);
+        const activeMode = mode || getSelectedEmbedMode() || 'data';
+        const richSnippet = generateBloggerEmbedHtml(activeMode);
         const fallbackPlainText = richSnippet;
 
         try {
@@ -1566,7 +1577,9 @@
                 'text/plain': textBlob
               })
             ]);
-            showToast("Copied! Press Ctrl+V directly in Blogger Compose View", "success");
+            showToast(activeMode === 'data' 
+              ? "Copied Instant Quiz Embed! Press Ctrl+V directly in Blogger Compose View" 
+              : "Copied Remote Quiz Embed! Press Ctrl+V directly in Blogger Compose View", "success");
           } else {
             await navigator.clipboard.writeText(richSnippet);
             showToast("Copied! Press Ctrl+V directly in Blogger Compose View", "success");
@@ -1578,10 +1591,13 @@
       }
 
       async function executeCopyHtml(mode = null) {
-        const htmlSnippet = generateBloggerEmbedHtml(mode);
+        const activeMode = mode || getSelectedEmbedMode() || 'data';
+        const htmlSnippet = generateBloggerEmbedHtml(activeMode);
         try {
           await navigator.clipboard.writeText(htmlSnippet);
-          showToast("iFrame HTML code copied for HTML View!", "success");
+          showToast(activeMode === 'data'
+            ? "Instant iFrame HTML code copied for HTML View!"
+            : "Remote iFrame HTML code copied for HTML View!", "success");
         } catch (err) {
           fallbackCopyText(htmlSnippet);
           showToast("iFrame HTML copied!", "success");

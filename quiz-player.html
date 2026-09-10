@@ -1399,6 +1399,48 @@
       // -------------------------------------------------------------
       // 4. Data Loading & Auto-Update Engine
       // -------------------------------------------------------------
+      const LAST_QUIZ_CACHE_KEY = 'bsp_last_active_quiz';
+
+      function cacheQuizLocally(quizObj) {
+        try {
+          if (quizObj && Array.isArray(quizObj.questions) && quizObj.questions.length > 0) {
+            localStorage.setItem(LAST_QUIZ_CACHE_KEY, JSON.stringify(quizObj));
+          }
+        } catch (e) {
+          console.warn("Could not cache quiz to localStorage", e);
+        }
+      }
+
+      function getCachedQuiz() {
+        try {
+          const raw = localStorage.getItem(LAST_QUIZ_CACHE_KEY);
+          if (!raw) return null;
+          const parsed = JSON.parse(raw);
+          if (parsed && Array.isArray(parsed.questions) && parsed.questions.length > 0) {
+            return parsed;
+          }
+        } catch (e) {
+          console.warn("Could not parse cached quiz", e);
+        }
+        return null;
+      }
+
+      function resolveQuizFileUrl(filePath) {
+        if (!filePath) return '';
+        const trimmed = filePath.trim();
+        // If already an absolute HTTP/HTTPS URL, return directly
+        if (trimmed.startsWith('http://') || trimmed.startsWith('https://')) {
+          return trimmed;
+        }
+
+        // Relative path provided (e.g. "quizzes/sample-quiz.json" or "/quizzes/sample-quiz.json"):
+        // Strip leading slashes so it doesn't strip GitHub Pages subfolder
+        const cleanPath = trimmed.replace(/^\/+/, '');
+        // Base directory of quiz-player.html itself (ensures resolving against player origin/repo, not Blogger origin)
+        const playerDir = window.location.origin + window.location.pathname.substring(0, window.location.pathname.lastIndexOf('/') + 1);
+        return playerDir + cleanPath;
+      }
+
       async function bootstrapQuizEngine() {
         const urlParams = new URLSearchParams(window.location.search);
         const base64Data = urlParams.get('data');
@@ -1408,14 +1450,11 @@
           if (base64Data) {
             // Option 1: Base64 / URI encoded JSON (Instant Standalone Embed)
             state.quizData = decodeBase64Payload(base64Data);
+            cacheQuizLocally(state.quizData);
           } else if (fileParam) {
             renderLoadingSkeleton();
-            // Option 2: Asynchronous file or remote URL fetch with cache-busting
-            let targetUrl = fileParam.trim();
-            // If relative path, resolve safely against page origin
-            if (!targetUrl.startsWith('http://') && !targetUrl.startsWith('https://')) {
-              targetUrl = new URL(fileParam, window.location.href).href;
-            }
+            // Option 2: Asynchronous file or remote URL fetch with safe origin resolution and cache-busting
+            const targetUrl = resolveQuizFileUrl(fileParam);
             const cacheBustParam = (targetUrl.includes('?') ? '&' : '?') + '_t=' + Date.now();
             const fetchUrl = targetUrl + cacheBustParam;
             const response = await fetch(fetchUrl, {
@@ -1428,6 +1467,7 @@
               throw new Error(`HTTP ${response.status}: Unable to load quiz file "${fileParam}". Ensure the file is deployed on GitHub Pages.`);
             }
             state.quizData = await response.json();
+            cacheQuizLocally(state.quizData);
           } else {
             // Option 3: Fallback demo mock quiz
             state.quizData = MOCK_QUIZ;
@@ -2185,6 +2225,10 @@
       function renderErrorScreen(msg, requestedFile) {
         topNav.style.display = 'none';
         closeFeedbackDrawer();
+
+        const cachedQuiz = getCachedQuiz();
+        const resolvedUrl = requestedFile ? resolveQuizFileUrl(requestedFile) : '';
+
         quizViewport.innerHTML = `
           <div class="state-container" style="text-align: center; padding: 24px 16px;">
             <div style="width: 54px; height: 54px; border-radius: 50%; background: #fee2e2; color: #dc2626; display: flex; align-items: center; justify-content: center; margin: 0 auto 12px; font-size: 1.5rem;">
@@ -2194,10 +2238,12 @@
             <p style="color: #64748b; font-size: 0.85rem; max-width: 420px; margin: 0 auto 12px; line-height: 1.5;">${escapeHtml(msg)}</p>
             ${requestedFile ? `
               <div style="background: #f8fafc; border: 1px dashed #cbd5e1; border-radius: 12px; padding: 10px 14px; margin-bottom: 14px; text-align: left; max-width: 440px; margin-left: auto; margin-right: auto;">
-                <span style="font-size: 0.72rem; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: 0.05em;">Target File Path:</span>
-                <p style="font-family: monospace; font-size: 0.75rem; color: #334155; word-break: break-all; margin-top: 2px;">${escapeHtml(requestedFile)}</p>
-                <div style="margin-top: 8px; font-size: 0.73rem; color: #475569; line-height: 1.4; border-top: 1px solid #e2e8f0; pt-2;">
-                  ⚡ <strong>Tip:</strong> If you recently committed this file, GitHub Pages may take 30–60s to deploy. Alternatively, select <em>Instant Standalone Embed</em> in the Dashboard to bypass file hosting completely.
+                <span style="font-size: 0.72rem; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: 0.05em;">Target File Parameter:</span>
+                <p style="font-family: monospace; font-size: 0.75rem; color: #334155; word-break: break-all; margin: 2px 0 6px 0;">${escapeHtml(requestedFile)}</p>
+                <span style="font-size: 0.72rem; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: 0.05em;">Resolved Target URL:</span>
+                <p style="font-family: monospace; font-size: 0.73rem; color: #0284c7; word-break: break-all; margin: 2px 0 8px 0;">${escapeHtml(resolvedUrl)}</p>
+                <div style="margin-top: 6px; font-size: 0.73rem; color: #475569; line-height: 1.4; border-top: 1px solid #e2e8f0; padding-top: 6px;">
+                  ⚡ <strong>100% Fix:</strong> Use <em>Instant Standalone Embed</em> in Blogger Suite Pro Dashboard to bypass file hosting and 404 errors completely.
                 </div>
               </div>
             ` : ''}
@@ -2205,14 +2251,27 @@
               <button class="tactile-btn" id="retryLoadBtn" style="padding: 10px 18px; border-radius: 12px; background: var(--primary); color: white; font-weight: 700; font-size: 0.82rem; border: none; cursor: pointer;">
                 <i class="fa-solid fa-rotate-right" style="margin-right: 6px;"></i> Retry Load
               </button>
+              ${cachedQuiz ? `
+                <button class="tactile-btn" id="restoreCacheBtn" style="padding: 10px 18px; border-radius: 12px; background: #059669; color: white; font-weight: 700; font-size: 0.82rem; border: none; cursor: pointer; display: inline-flex; align-items: center; gap: 6px;">
+                  <i class="fa-solid fa-clock-rotate-left"></i> Restore from Local Cache
+                </button>
+              ` : ''}
               <button class="tactile-btn" id="demoFallbackBtn" style="padding: 10px 18px; border-radius: 12px; background: #e2e8f0; color: #334155; font-weight: 700; font-size: 0.82rem; border: none; cursor: pointer;">
-                <i class="fa-solid fa-play" style="margin-right: 6px;"></i> Load Demo Quiz
+                <i class="fa-solid fa-play" style="margin-right: 6px;"></i> Load Demo Questions
               </button>
             </div>
           </div>
         `;
         document.getElementById('retryLoadBtn')?.addEventListener('click', () => {
           bootstrapQuizEngine();
+        });
+        document.getElementById('restoreCacheBtn')?.addEventListener('click', () => {
+          const cached = getCachedQuiz();
+          if (cached) {
+            state.quizData = cached;
+            assertValidQuiz(state.quizData);
+            startQuizSession();
+          }
         });
         document.getElementById('demoFallbackBtn')?.addEventListener('click', () => {
           state.quizData = MOCK_QUIZ;
