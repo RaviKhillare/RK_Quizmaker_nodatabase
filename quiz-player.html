@@ -817,6 +817,26 @@
       animation: spinRound 0.75s linear infinite;
     }
 
+    .skeleton-loader {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      padding: 10px 0;
+    }
+
+    .skeleton-bar {
+      background: linear-gradient(90deg, #f1f5f9 25%, #e2e8f0 50%, #f1f5f9 75%);
+      background-size: 200% 100%;
+      animation: skeletonShimmer 1.5s infinite;
+      border-radius: var(--radius-md);
+    }
+
+    @keyframes skeletonShimmer {
+      0% { background-position: 200% 0; }
+      100% { background-position: -200% 0; }
+    }
+
     /* -------------------------------------------------------------
        Animations
        ------------------------------------------------------------- */
@@ -1068,6 +1088,7 @@
             // Option 1: Base64 / URI encoded JSON
             state.quizData = decodeBase64Payload(base64Data);
           } else if (fileParam) {
+            renderLoadingSkeleton();
             // Option 2: Asynchronous file or remote URL fetch with cache-busting to bypass GitHub Pages CDN cache delays
             const cacheBustParam = (fileParam.includes('?') ? '&' : '?') + '_t=' + Date.now();
             const fetchUrl = fileParam + cacheBustParam;
@@ -1574,6 +1595,21 @@
       // -------------------------------------------------------------
       // Helper Utilities & Error Handling
       // -------------------------------------------------------------
+      function renderLoadingSkeleton() {
+        topNav.style.display = 'none';
+        closeFeedbackDrawer();
+        quizViewport.innerHTML = `
+          <div class="skeleton-loader">
+            <div class="skeleton-bar" style="height: 16px; width: 110px; margin-bottom: 4px;"></div>
+            <div class="skeleton-bar" style="height: 28px; width: 85%; margin-bottom: 16px;"></div>
+            <div class="skeleton-bar" style="height: 52px; width: 100%; border-radius: var(--radius-lg);"></div>
+            <div class="skeleton-bar" style="height: 52px; width: 100%; border-radius: var(--radius-lg);"></div>
+            <div class="skeleton-bar" style="height: 52px; width: 100%; border-radius: var(--radius-lg);"></div>
+            <div class="skeleton-bar" style="height: 52px; width: 100%; border-radius: var(--radius-lg);"></div>
+          </div>
+        `;
+      }
+
       function renderErrorScreen(msg) {
         topNav.style.display = 'none';
         closeFeedbackDrawer();
