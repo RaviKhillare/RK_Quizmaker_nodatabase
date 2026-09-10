@@ -370,178 +370,248 @@
           <p class="text-indigo-100 text-sm">Create conversion-optimized social buttons, educational callouts, and study resource grids. Copy and paste directly into Blogger Compose View without writing code!</p>
         </div>
 
-        <!-- Widget A: Multi-Button Social Media Bar Generator -->
-        <div class="bg-white p-6 rounded-2xl border border-border-light shadow-sm space-y-5">
-          <div class="flex items-center justify-between border-b border-border-light pb-3">
-            <div class="flex items-center gap-2">
-              <i class="fa-solid fa-share-nodes text-primary text-lg"></i>
+        <!-- ============================================================= -->
+        <!-- 1. GLOBAL SOCIAL PROFILES STORE (PERSISTENT LINKS)            -->
+        <!-- ============================================================= -->
+        <div class="bg-white p-5 rounded-2xl border border-border-light shadow-sm space-y-4">
+          <div class="flex flex-wrap items-center justify-between gap-2 border-b border-border-light pb-3">
+            <div class="flex items-center gap-2.5">
+              <div class="w-9 h-9 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center font-bold">
+                <i class="fa-solid fa-address-card text-base"></i>
+              </div>
               <div>
-                <h3 class="font-extrabold text-base text-slate-900">A. Multi-Button Social Media Bar Builder</h3>
-                <p class="text-xs text-slate-500">Combine YouTube, Telegram, WhatsApp, Instagram, Facebook, and Website into a unified bar</p>
+                <h3 class="font-extrabold text-sm sm:text-base text-slate-900">My Social Profiles (Global Store)</h3>
+                <p class="text-xs text-slate-500">Save once, auto-fill everywhere across all custom button groups</p>
               </div>
             </div>
-            <span class="text-xs font-bold text-slate-500 bg-slate-100 px-2.5 py-1 rounded-full">Bar Generator</span>
-          </div>
-
-          <!-- Controls: Layout & Style Switchers -->
-          <div class="grid grid-cols-1 sm:grid-cols-3 gap-3.5 bg-slate-50 p-4 rounded-2xl border border-border-light">
-            <!-- Layout Switcher -->
-            <div>
-              <label class="block text-[11px] font-bold text-slate-600 uppercase mb-1.5">Bar Layout</label>
-              <div class="flex items-center gap-2">
-                <label class="flex-1 flex items-center justify-center gap-1.5 p-2 rounded-xl border border-border-light bg-white cursor-pointer hover:border-primary text-xs font-bold text-slate-700 select-none">
-                  <input type="radio" name="socLayout" value="horizontal" checked class="text-primary focus:ring-primary">
-                  <span>Horizontal</span>
-                </label>
-                <label class="flex-1 flex items-center justify-center gap-1.5 p-2 rounded-xl border border-border-light bg-white cursor-pointer hover:border-primary text-xs font-bold text-slate-700 select-none">
-                  <input type="radio" name="socLayout" value="vertical" class="text-primary focus:ring-primary">
-                  <span>Vertical</span>
-                </label>
-              </div>
-            </div>
-
-            <!-- Button Style -->
-            <div>
-              <label class="block text-[11px] font-bold text-slate-600 uppercase mb-1.5">Button Style</label>
-              <select id="socStyleSelect" class="w-full px-3 py-2 rounded-xl border border-border-light bg-white text-xs font-bold text-slate-700 outline-none focus:border-primary">
-                <option value="gradient" selected>Gradient Glow (Vibrant)</option>
-                <option value="pill">Modern Pill (Solid)</option>
-                <option value="minimal">Minimal Rounded (Clean Tint)</option>
-              </select>
-            </div>
-
-            <!-- Content Format -->
-            <div>
-              <label class="block text-[11px] font-bold text-slate-600 uppercase mb-1.5">Display Format</label>
-              <select id="socFormatSelect" class="w-full px-3 py-2 rounded-xl border border-border-light bg-white text-xs font-bold text-slate-700 outline-none focus:border-primary">
-                <option value="both" selected>Icon + Label Text</option>
-                <option value="icon_only">Icon Only (Compact Badges)</option>
-              </select>
+            <div class="flex items-center gap-2">
+              <span id="globalProfilesStatusBadge" class="text-[11px] font-bold text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-full border border-emerald-200/60 flex items-center gap-1">
+                <i class="fa-solid fa-circle-check text-emerald-600"></i> Saved & Synced
+              </span>
+              <button id="btnToggleGlobalProfiles" type="button" class="tactile-btn px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs flex items-center gap-1.5">
+                <i class="fa-solid fa-pen-to-square"></i> <span id="toggleGlobalProfilesText">Edit Profiles</span>
+              </button>
             </div>
           </div>
 
-          <!-- Platform Toggles & Links -->
-          <div class="space-y-3">
-            <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider">Include Platforms & URLs</label>
-            
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-3" id="socPlatformsContainer">
+          <!-- Collapsible Global Profiles Inputs Panel -->
+          <div id="globalProfilesPanel" class="space-y-3.5">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
               <!-- YouTube -->
-              <div class="p-3 rounded-xl border border-border-light bg-slate-50/70 space-y-2">
-                <div class="flex items-center justify-between">
-                  <label class="flex items-center gap-2 cursor-pointer">
-                    <input type="checkbox" id="soc_yt_enable" checked class="soc-toggle w-4 h-4 rounded text-red-600 focus:ring-red-500">
-                    <span class="text-xs font-bold text-slate-800 flex items-center gap-1.5">
-                      <i class="fa-brands fa-youtube text-red-600 text-sm"></i> YouTube
-                    </span>
-                  </label>
-                </div>
-                <div class="grid grid-cols-2 gap-2">
-                  <input type="text" id="soc_yt_label" class="soc-input px-2.5 py-1.5 rounded-lg border border-border-light bg-white text-xs font-semibold focus:border-primary outline-none" value="YouTube" placeholder="Label">
-                  <input type="text" id="soc_yt_url" class="soc-input px-2.5 py-1.5 rounded-lg border border-border-light bg-white text-xs font-semibold focus:border-primary outline-none" value="https://youtube.com/@yourchannel" placeholder="URL">
-                </div>
+              <div class="p-2.5 rounded-xl border border-border-light bg-slate-50/70 space-y-1">
+                <label class="block text-[11px] font-bold text-slate-700 flex items-center gap-1.5">
+                  <i class="fa-brands fa-youtube text-red-600"></i> YouTube Channel URL
+                </label>
+                <input type="url" id="global_soc_yt" class="w-full px-2.5 py-1.5 rounded-lg border border-border-light bg-white text-xs font-semibold focus:border-primary outline-none" placeholder="https://youtube.com/@yourchannel">
               </div>
 
               <!-- Telegram -->
-              <div class="p-3 rounded-xl border border-border-light bg-slate-50/70 space-y-2">
-                <div class="flex items-center justify-between">
-                  <label class="flex items-center gap-2 cursor-pointer">
-                    <input type="checkbox" id="soc_tg_enable" checked class="soc-toggle w-4 h-4 rounded text-sky-500 focus:ring-sky-500">
-                    <span class="text-xs font-bold text-slate-800 flex items-center gap-1.5">
-                      <i class="fa-brands fa-telegram text-sky-500 text-sm"></i> Telegram
-                    </span>
-                  </label>
-                </div>
-                <div class="grid grid-cols-2 gap-2">
-                  <input type="text" id="soc_tg_label" class="soc-input px-2.5 py-1.5 rounded-lg border border-border-light bg-white text-xs font-semibold focus:border-primary outline-none" value="Telegram" placeholder="Label">
-                  <input type="text" id="soc_tg_url" class="soc-input px-2.5 py-1.5 rounded-lg border border-border-light bg-white text-xs font-semibold focus:border-primary outline-none" value="https://t.me/yourchannel" placeholder="URL">
-                </div>
+              <div class="p-2.5 rounded-xl border border-border-light bg-slate-50/70 space-y-1">
+                <label class="block text-[11px] font-bold text-slate-700 flex items-center gap-1.5">
+                  <i class="fa-brands fa-telegram text-sky-500"></i> Telegram Channel / Group
+                </label>
+                <input type="url" id="global_soc_tg" class="w-full px-2.5 py-1.5 rounded-lg border border-border-light bg-white text-xs font-semibold focus:border-primary outline-none" placeholder="https://t.me/yourchannel">
               </div>
 
               <!-- WhatsApp -->
-              <div class="p-3 rounded-xl border border-border-light bg-slate-50/70 space-y-2">
-                <div class="flex items-center justify-between">
-                  <label class="flex items-center gap-2 cursor-pointer">
-                    <input type="checkbox" id="soc_wa_enable" checked class="soc-toggle w-4 h-4 rounded text-emerald-600 focus:ring-emerald-500">
-                    <span class="text-xs font-bold text-slate-800 flex items-center gap-1.5">
-                      <i class="fa-brands fa-whatsapp text-emerald-600 text-sm"></i> WhatsApp Channel
-                    </span>
-                  </label>
-                </div>
-                <div class="grid grid-cols-2 gap-2">
-                  <input type="text" id="soc_wa_label" class="soc-input px-2.5 py-1.5 rounded-lg border border-border-light bg-white text-xs font-semibold focus:border-primary outline-none" value="WhatsApp" placeholder="Label">
-                  <input type="text" id="soc_wa_url" class="soc-input px-2.5 py-1.5 rounded-lg border border-border-light bg-white text-xs font-semibold focus:border-primary outline-none" value="https://whatsapp.com/channel/yourchannel" placeholder="URL">
-                </div>
+              <div class="p-2.5 rounded-xl border border-border-light bg-slate-50/70 space-y-1">
+                <label class="block text-[11px] font-bold text-slate-700 flex items-center gap-1.5">
+                  <i class="fa-brands fa-whatsapp text-emerald-600"></i> WhatsApp Channel / Group
+                </label>
+                <input type="url" id="global_soc_wa" class="w-full px-2.5 py-1.5 rounded-lg border border-border-light bg-white text-xs font-semibold focus:border-primary outline-none" placeholder="https://whatsapp.com/channel/yourchannel">
               </div>
 
               <!-- Instagram -->
-              <div class="p-3 rounded-xl border border-border-light bg-slate-50/70 space-y-2">
-                <div class="flex items-center justify-between">
-                  <label class="flex items-center gap-2 cursor-pointer">
-                    <input type="checkbox" id="soc_ig_enable" checked class="soc-toggle w-4 h-4 rounded text-pink-600 focus:ring-pink-500">
-                    <span class="text-xs font-bold text-slate-800 flex items-center gap-1.5">
-                      <i class="fa-brands fa-instagram text-pink-600 text-sm"></i> Instagram
-                    </span>
-                  </label>
-                </div>
-                <div class="grid grid-cols-2 gap-2">
-                  <input type="text" id="soc_ig_label" class="soc-input px-2.5 py-1.5 rounded-lg border border-border-light bg-white text-xs font-semibold focus:border-primary outline-none" value="Instagram" placeholder="Label">
-                  <input type="text" id="soc_ig_url" class="soc-input px-2.5 py-1.5 rounded-lg border border-border-light bg-white text-xs font-semibold focus:border-primary outline-none" value="https://instagram.com/yourhandle" placeholder="URL">
-                </div>
+              <div class="p-2.5 rounded-xl border border-border-light bg-slate-50/70 space-y-1">
+                <label class="block text-[11px] font-bold text-slate-700 flex items-center gap-1.5">
+                  <i class="fa-brands fa-instagram text-pink-600"></i> Instagram Profile URL
+                </label>
+                <input type="url" id="global_soc_ig" class="w-full px-2.5 py-1.5 rounded-lg border border-border-light bg-white text-xs font-semibold focus:border-primary outline-none" placeholder="https://instagram.com/yourhandle">
               </div>
 
               <!-- Facebook -->
-              <div class="p-3 rounded-xl border border-border-light bg-slate-50/70 space-y-2">
-                <div class="flex items-center justify-between">
-                  <label class="flex items-center gap-2 cursor-pointer">
-                    <input type="checkbox" id="soc_fb_enable" class="soc-toggle w-4 h-4 rounded text-blue-600 focus:ring-blue-500">
-                    <span class="text-xs font-bold text-slate-800 flex items-center gap-1.5">
-                      <i class="fa-brands fa-facebook text-blue-600 text-sm"></i> Facebook
-                    </span>
-                  </label>
-                </div>
-                <div class="grid grid-cols-2 gap-2">
-                  <input type="text" id="soc_fb_label" class="soc-input px-2.5 py-1.5 rounded-lg border border-border-light bg-white text-xs font-semibold focus:border-primary outline-none" value="Facebook" placeholder="Label">
-                  <input type="text" id="soc_fb_url" class="soc-input px-2.5 py-1.5 rounded-lg border border-border-light bg-white text-xs font-semibold focus:border-primary outline-none" value="https://facebook.com/yourpage" placeholder="URL">
-                </div>
+              <div class="p-2.5 rounded-xl border border-border-light bg-slate-50/70 space-y-1">
+                <label class="block text-[11px] font-bold text-slate-700 flex items-center gap-1.5">
+                  <i class="fa-brands fa-facebook text-blue-600"></i> Facebook Page / Group
+                </label>
+                <input type="url" id="global_soc_fb" class="w-full px-2.5 py-1.5 rounded-lg border border-border-light bg-white text-xs font-semibold focus:border-primary outline-none" placeholder="https://facebook.com/yourpage">
               </div>
 
               <!-- Website / Blog -->
-              <div class="p-3 rounded-xl border border-border-light bg-slate-50/70 space-y-2">
-                <div class="flex items-center justify-between">
-                  <label class="flex items-center gap-2 cursor-pointer">
-                    <input type="checkbox" id="soc_web_enable" checked class="soc-toggle w-4 h-4 rounded text-indigo-600 focus:ring-indigo-500">
-                    <span class="text-xs font-bold text-slate-800 flex items-center gap-1.5">
-                      <i class="fa-solid fa-globe text-indigo-600 text-sm"></i> Website / Blog
-                    </span>
-                  </label>
+              <div class="p-2.5 rounded-xl border border-border-light bg-slate-50/70 space-y-1">
+                <label class="block text-[11px] font-bold text-slate-700 flex items-center gap-1.5">
+                  <i class="fa-solid fa-globe text-indigo-600"></i> Website / Main Blog URL
+                </label>
+                <input type="url" id="global_soc_web" class="w-full px-2.5 py-1.5 rounded-lg border border-border-light bg-white text-xs font-semibold focus:border-primary outline-none" placeholder="https://yourblog.blogspot.com">
+              </div>
+            </div>
+
+            <div class="flex items-center justify-end gap-2 pt-1">
+              <button id="btnSaveGlobalProfiles" type="button" class="tactile-btn px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs flex items-center gap-1.5 shadow-sm shadow-indigo-600/20">
+                <i class="fa-solid fa-floppy-disk"></i> Save Profiles to Global Store
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- ============================================================= -->
+        <!-- 2. MULTI-GROUP CUSTOM BUTTON BUILDER (GROUP MANAGER)          -->
+        <!-- ============================================================= -->
+        <div class="bg-white p-6 rounded-2xl border border-border-light shadow-sm space-y-6">
+          
+          <!-- Top Header: Title + Group Tabs Bar -->
+          <div class="space-y-3 border-b border-border-light pb-4">
+            <div class="flex flex-wrap items-center justify-between gap-3">
+              <div class="flex items-center gap-2.5">
+                <div class="w-9 h-9 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center font-bold">
+                  <i class="fa-solid fa-layer-group text-base"></i>
                 </div>
-                <div class="grid grid-cols-2 gap-2">
-                  <input type="text" id="soc_web_label" class="soc-input px-2.5 py-1.5 rounded-lg border border-border-light bg-white text-xs font-semibold focus:border-primary outline-none" value="Official Site" placeholder="Label">
-                  <input type="text" id="soc_web_url" class="soc-input px-2.5 py-1.5 rounded-lg border border-border-light bg-white text-xs font-semibold focus:border-primary outline-none" value="https://yourblog.blogspot.com" placeholder="URL">
+                <div>
+                  <h3 class="font-extrabold text-base text-slate-900">Custom Button Groups & Social Link Manager</h3>
+                  <p class="text-xs text-slate-500">Create and export independent button bars with custom layouts & styles</p>
                 </div>
+              </div>
+
+              <!-- Create New Group Button -->
+              <button id="btnAddButtonGroup" type="button" class="tactile-btn px-3.5 py-2 rounded-xl bg-primary hover:bg-primary-dark text-white font-bold text-xs flex items-center gap-1.5 shadow-sm shadow-primary/20">
+                <i class="fa-solid fa-plus"></i> New Button Group
+              </button>
+            </div>
+
+            <!-- Group Tabs Row -->
+            <div class="flex items-center gap-2 overflow-x-auto pb-1.5 pt-1" id="btnGroupTabsContainer">
+              <!-- Rendered dynamically by JS -->
+            </div>
+          </div>
+
+          <!-- Active Group Header Bar & Rename / Delete Controls -->
+          <div class="flex flex-wrap items-center justify-between gap-3 p-3.5 bg-slate-50 rounded-2xl border border-border-light">
+            <div class="flex items-center gap-2 flex-1 min-w-[240px]">
+              <span class="text-xs font-bold text-slate-500 uppercase shrink-0">Group Name:</span>
+              <input type="text" id="activeGroupNameInput" class="flex-1 px-3 py-1.5 rounded-xl border border-border-light bg-white text-xs font-bold text-slate-800 focus:border-primary outline-none" placeholder="e.g. Top Social Follow Bar">
+            </div>
+            <div class="flex items-center gap-2 shrink-0">
+              <button id="btnDuplicateGroup" type="button" class="tactile-btn px-3 py-1.5 rounded-xl bg-white hover:bg-slate-100 text-slate-700 font-bold text-xs border border-border-light flex items-center gap-1" title="Duplicate this group">
+                <i class="fa-regular fa-copy"></i> Duplicate
+              </button>
+              <button id="btnDeleteGroup" type="button" class="tactile-btn px-3 py-1.5 rounded-xl bg-white hover:bg-rose-50 text-rose-600 font-bold text-xs border border-rose-200 flex items-center gap-1" title="Delete this group">
+                <i class="fa-solid fa-trash-can"></i> Delete
+              </button>
+            </div>
+          </div>
+
+          <!-- Display & Styling Controls for Active Group -->
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-3.5 bg-slate-50/80 p-4 rounded-2xl border border-border-light">
+            <!-- 1. Layout Orientation -->
+            <div>
+              <label class="block text-[11px] font-bold text-slate-600 uppercase mb-1.5">Layout Orientation</label>
+              <div class="grid grid-cols-3 gap-1.5" id="grpLayoutRadiosContainer">
+                <label class="grp-layout-option flex flex-col items-center justify-center p-2 rounded-xl border border-primary bg-primary-bg/30 cursor-pointer text-center select-none transition">
+                  <input type="radio" name="grpLayout" value="horizontal" checked class="sr-only">
+                  <i class="fa-solid fa-arrows-left-right text-xs text-primary mb-1"></i>
+                  <span class="text-[11px] font-bold text-primary">Horizontal</span>
+                </label>
+                <label class="grp-layout-option flex flex-col items-center justify-center p-2 rounded-xl border border-border-light bg-white cursor-pointer hover:border-slate-300 text-center select-none transition">
+                  <input type="radio" name="grpLayout" value="vertical" class="sr-only">
+                  <i class="fa-solid fa-bars text-xs text-slate-500 mb-1"></i>
+                  <span class="text-[11px] font-bold text-slate-700">Vertical</span>
+                </label>
+                <label class="grp-layout-option flex flex-col items-center justify-center p-2 rounded-xl border border-border-light bg-white cursor-pointer hover:border-slate-300 text-center select-none transition">
+                  <input type="radio" name="grpLayout" value="grid2" class="sr-only">
+                  <i class="fa-solid fa-table-cells-large text-xs text-slate-500 mb-1"></i>
+                  <span class="text-[11px] font-bold text-slate-700">2-Col Grid</span>
+                </label>
+              </div>
+            </div>
+
+            <!-- 2. Button Style -->
+            <div>
+              <label class="block text-[11px] font-bold text-slate-600 uppercase mb-1.5">Styling Style</label>
+              <select id="grpStyleSelect" class="w-full px-3 py-2.5 rounded-xl border border-border-light bg-white text-xs font-bold text-slate-700 outline-none focus:border-primary">
+                <option value="pill_glow" selected>Modern Pill with Glow</option>
+                <option value="minimal_solid">Minimal Solid</option>
+                <option value="outlined">Outlined Border</option>
+                <option value="gradient">Gradient Accent</option>
+              </select>
+            </div>
+
+            <!-- 3. Display Format -->
+            <div>
+              <label class="block text-[11px] font-bold text-slate-600 uppercase mb-1.5">Display Format</label>
+              <select id="grpFormatSelect" class="w-full px-3 py-2.5 rounded-xl border border-border-light bg-white text-xs font-bold text-slate-700 outline-none focus:border-primary">
+                <option value="both" selected>Icon + Label Text</option>
+                <option value="icon_only">Icon Only (Compact)</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Buttons in Active Group -->
+          <div class="space-y-3">
+            <div class="flex flex-wrap items-center justify-between gap-2">
+              <span class="text-xs font-bold text-slate-700 uppercase tracking-wider flex items-center gap-1.5">
+                <i class="fa-solid fa-list-check text-indigo-500"></i> Buttons in this Group (<span id="grpButtonsCount">0</span>)
+              </span>
+              <div class="flex items-center gap-2">
+                <button id="btnOpenPresetModal" type="button" class="tactile-btn px-3 py-1.5 rounded-xl bg-indigo-50 hover:bg-indigo-100 text-indigo-700 font-bold text-xs flex items-center gap-1.5 border border-indigo-200">
+                  <i class="fa-solid fa-bolt text-amber-500"></i> Add Preset Social Button
+                </button>
+                <button id="btnAddCustomBtn" type="button" class="tactile-btn px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs flex items-center gap-1.5 border border-border-light">
+                  <i class="fa-solid fa-plus-circle text-primary"></i> Add Custom Link Button
+                </button>
+              </div>
+            </div>
+
+            <!-- Buttons List (Cards) Container -->
+            <div id="groupButtonsListContainer" class="space-y-2.5">
+              <!-- Rendered by JS -->
+            </div>
+          </div>
+
+          <!-- Live Responsive Visual Preview Box -->
+          <div class="p-5 rounded-2xl bg-slate-100 border border-border-light space-y-2">
+            <div class="flex items-center justify-between">
+              <span class="text-[11px] font-bold text-slate-500 uppercase tracking-wider flex items-center gap-1.5">
+                <i class="fa-solid fa-eye text-indigo-500"></i> Live Group Preview
+              </span>
+              <span id="previewGroupBadge" class="text-[10px] font-bold text-slate-400 font-mono">Real-Time</span>
+            </div>
+            <div class="p-4 rounded-xl bg-white border border-slate-200/80 min-h-[100px] flex items-center justify-center">
+              <div id="groupLivePreview" class="w-full flex justify-center">
+                <!-- Live preview rendered by JS -->
               </div>
             </div>
           </div>
 
-          <!-- Live Visual Preview Box -->
-          <div class="p-5 rounded-2xl bg-slate-100 border border-border-light flex flex-col items-center justify-center min-h-[100px]">
-            <span class="text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-2">Live Social Bar Preview</span>
-            <div id="socLivePreview" class="w-full flex justify-center">
-              <!-- Live preview rendered by JS -->
+          <!-- Dedicated Group Export Action Bar -->
+          <div class="p-4 rounded-2xl bg-slate-900 text-white space-y-3">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-bold text-slate-300 uppercase tracking-wider flex items-center gap-1.5">
+                <i class="fa-solid fa-cloud-arrow-down text-emerald-400"></i> Export Active Group for Blogger
+              </span>
+              <span class="text-[10px] text-slate-400">100% Self-Contained Inline Styles</span>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+              <!-- Button A: Blogger Layout Gadget -->
+              <button id="btnCopyGroupGadget" type="button" class="tactile-btn p-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold flex items-center justify-center gap-2 shadow-sm" title="Copy clean HTML ready for Blogger Layout -> Add a Gadget -> HTML/JavaScript">
+                <i class="fa-solid fa-table-columns text-emerald-200"></i>
+                <span>Copy for Layout Gadget</span>
+              </button>
+
+              <!-- Button B: Blogger Compose View -->
+              <button id="btnCopyGroupCompose" type="button" class="tactile-btn p-3 rounded-xl bg-primary hover:bg-primary-dark text-white text-xs font-bold flex items-center justify-center gap-2 shadow-sm shadow-primary/20" title="Copy visual HTML to paste directly in Blogger Post Compose View (Ctrl+V)">
+                <i class="fa-solid fa-wand-magic-sparkles text-yellow-300"></i>
+                <span>Copy for Compose View</span>
+              </button>
+
+              <!-- Button C: Clean HTML -->
+              <button id="btnCopyGroupHtml" type="button" class="tactile-btn p-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold flex items-center justify-center gap-2 border border-slate-700" title="Copy raw HTML snippet">
+                <i class="fa-solid fa-code text-indigo-400"></i>
+                <span>Copy Clean HTML</span>
+              </button>
             </div>
           </div>
 
-          <!-- Action Buttons -->
-          <div class="flex flex-wrap items-center justify-end gap-2.5 pt-1">
-            <button id="btnCopySocCompose" class="tactile-btn flex items-center gap-2 px-4 py-2.5 rounded-xl bg-primary hover:bg-primary-dark text-white text-xs font-bold shadow-sm shadow-primary/20">
-              <i class="fa-solid fa-wand-magic-sparkles text-yellow-300"></i>
-              <span>Copy for Blogger (Compose View)</span>
-            </button>
-            <button id="btnCopySocHtml" class="tactile-btn flex items-center gap-1.5 px-3.5 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold border border-border-light" title="Copy clean inline HTML for Blogger Sidebar Gadget">
-              <i class="fa-solid fa-code text-primary"></i>
-              <span>Copy Clean HTML (Sidebar Gadget)</span>
-            </button>
-          </div>
         </div>
 
         <!-- Widget B: Educational Alert / Callout Boxes -->
@@ -1198,6 +1268,33 @@
             <i class="fa-brands fa-google-drive text-emerald-100"></i>
             <span>Make a Copy in Google Sheets</span>
           </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================= -->
+  <!-- MODAL: ADD PRESET SOCIAL BUTTON PICKER                        -->
+  <!-- ============================================================= -->
+  <div id="presetSocialModal" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm hidden flex items-center justify-center p-4">
+    <div class="bg-white w-full max-w-md rounded-3xl shadow-2xl border border-border-light overflow-hidden flex flex-col animate-[fadeIn_0.2s_ease-out]">
+      <div class="p-4 bg-slate-900 text-white flex items-center justify-between">
+        <div class="flex items-center gap-2.5">
+          <div class="w-8 h-8 rounded-xl bg-amber-500/20 text-amber-400 flex items-center justify-center">
+            <i class="fa-solid fa-bolt text-sm"></i>
+          </div>
+          <div>
+            <h4 class="font-extrabold text-sm">Add Preset Social Button</h4>
+            <p class="text-[11px] text-slate-400">Pulls URL from your Global Store automatically</p>
+          </div>
+        </div>
+        <button id="btnClosePresetModal" type="button" class="w-7 h-7 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition">
+          <i class="fa-solid fa-times text-xs"></i>
+        </button>
+      </div>
+      <div class="p-4 sm:p-5 space-y-3">
+        <div class="grid grid-cols-2 gap-2.5" id="presetPlatformPickers">
+          <!-- Populated by JS with 6 platforms -->
         </div>
       </div>
     </div>
@@ -2145,16 +2242,25 @@
       // 9. BLOGGER WIDGETS INTERACTIVE GENERATOR
       // -------------------------------------------------------------
 
-      // --- WIDGET A: Multi-Button Social Media Bar Builder ---
-      const socStyleSelect = document.getElementById('socStyleSelect');
-      const socFormatSelect = document.getElementById('socFormatSelect');
-      const socLivePreview = document.getElementById('socLivePreview');
-      const btnCopySocCompose = document.getElementById('btnCopySocCompose');
-      const btnCopySocHtml = document.getElementById('btnCopySocHtml');
+      // =============================================================
+      // 9. CUSTOM BUTTON GROUPS & SOCIAL LINK MANAGER ENGINE
+      // =============================================================
 
-      const socialPlatforms = {
+      const SOCIAL_PROFILES_KEY = 'bsp_social_profiles';
+      const BUTTON_GROUPS_KEY = 'bsp_button_groups';
+
+      const DEFAULT_SOCIAL_PROFILES = {
+        yt: "https://youtube.com/@yourchannel",
+        tg: "https://t.me/yourchannel",
+        wa: "https://whatsapp.com/channel/yourchannel",
+        ig: "https://instagram.com/yourhandle",
+        fb: "https://facebook.com/yourpage",
+        web: "https://yourblog.blogspot.com"
+      };
+
+      const SOCIAL_PLATFORMS = {
         yt: {
-          key: 'youtube',
+          key: 'yt',
           name: 'YouTube',
           color: '#ff0000',
           gradient: 'linear-gradient(135deg, #ff0000 0%, #cc0000 100%)',
@@ -2162,21 +2268,23 @@
           lightBg: '#fef2f2',
           borderColor: '#fca5a5',
           faClass: 'fa-brands fa-youtube',
+          defaultLabel: 'Subscribe on YouTube',
           svg: '<svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" style="display:inline-block;vertical-align:middle;flex-shrink:0;"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>'
         },
         tg: {
-          key: 'telegram',
+          key: 'tg',
           name: 'Telegram',
-          color: '#2AABEE',
+          color: '#229ED9',
           gradient: 'linear-gradient(135deg, #2AABEE 0%, #229ED9 100%)',
-          shadow: 'rgba(42, 171, 238, 0.35)',
+          shadow: 'rgba(34, 158, 217, 0.35)',
           lightBg: '#f0f9ff',
           borderColor: '#7dd3fc',
           faClass: 'fa-brands fa-telegram',
+          defaultLabel: 'Join Telegram Channel',
           svg: '<svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" style="display:inline-block;vertical-align:middle;flex-shrink:0;"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.894 8.221l-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.446 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.121l-6.871 4.326-2.962-.924c-.643-.204-.657-.643.136-.953l11.57-4.461c.537-.194 1.006.131.832.942z"/></svg>'
         },
         wa: {
-          key: 'whatsapp',
+          key: 'wa',
           name: 'WhatsApp',
           color: '#25D366',
           gradient: 'linear-gradient(135deg, #25D366 0%, #128C7E 100%)',
@@ -2184,10 +2292,11 @@
           lightBg: '#f0fdf4',
           borderColor: '#86efac',
           faClass: 'fa-brands fa-whatsapp',
+          defaultLabel: 'WhatsApp Updates',
           svg: '<svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" style="display:inline-block;vertical-align:middle;flex-shrink:0;"><path d="M12.031 0C5.385 0 0 5.385 0 12.031c0 2.115.546 4.182 1.583 6.01L.062 24l6.143-1.612a11.954 11.954 0 0 0 5.826 1.493h.005c6.646 0 12.031-5.385 12.031-12.031 0-3.214-1.252-6.234-3.524-8.508A11.954 11.954 0 0 0 12.031 0zm-.005 21.942a9.923 9.923 0 0 1-5.059-1.385l-.363-.215-3.762.987 1.004-3.667-.236-.376A9.927 9.927 0 0 1 2.086 12.03c0-5.483 4.46-9.945 9.945-9.945 2.656 0 5.152 1.033 7.03 2.911a9.889 9.889 0 0 1 2.906 7.035c0 5.484-4.46 9.946-9.941 9.946zm5.45-7.442c-.299-.15-1.771-.873-2.046-.973-.274-.1-.474-.15-.673.15-.199.299-.772.973-.946 1.172-.175.199-.349.224-.648.075-.299-.15-1.262-.465-2.404-1.484-.888-.792-1.488-1.77-1.662-2.069-.174-.299-.019-.461.131-.61.135-.134.299-.349.448-.523.15-.175.199-.299.299-.499.1-.199.05-.374-.025-.523-.075-.15-.673-1.62-.922-2.219-.243-.583-.49-.504-.673-.513l-.573-.01c-.199 0-.523.075-.797.374-.274.299-1.047 1.022-1.047 2.493s1.072 2.892 1.221 3.091c.15.199 2.11 3.222 5.111 4.52.714.309 1.272.493 1.707.631.718.228 1.371.196 1.888.119.577-.086 1.771-.724 2.02-1.421.25-.698.25-1.296.175-1.421-.075-.125-.274-.199-.573-.349z"/></svg>'
         },
         ig: {
-          key: 'instagram',
+          key: 'ig',
           name: 'Instagram',
           color: '#E1306C',
           gradient: 'linear-gradient(135deg, #833AB4 0%, #FD1D1D 50%, #FCB045 100%)',
@@ -2195,10 +2304,11 @@
           lightBg: '#fdf2f8',
           borderColor: '#f472b6',
           faClass: 'fa-brands fa-instagram',
+          defaultLabel: 'Follow on Instagram',
           svg: '<svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" style="display:inline-block;vertical-align:middle;flex-shrink:0;"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>'
         },
         fb: {
-          key: 'facebook',
+          key: 'fb',
           name: 'Facebook',
           color: '#1877F2',
           gradient: 'linear-gradient(135deg, #1877F2 0%, #0C63D4 100%)',
@@ -2206,10 +2316,11 @@
           lightBg: '#eff6ff',
           borderColor: '#93c5fd',
           faClass: 'fa-brands fa-facebook',
+          defaultLabel: 'Join on Facebook',
           svg: '<svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" style="display:inline-block;vertical-align:middle;flex-shrink:0;"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>'
         },
         web: {
-          key: 'website',
+          key: 'web',
           name: 'Website',
           color: '#4F46E5',
           gradient: 'linear-gradient(135deg, #4F46E5 0%, #3730A3 100%)',
@@ -2217,100 +2328,874 @@
           lightBg: '#eef2ff',
           borderColor: '#a5b4fc',
           faClass: 'fa-solid fa-globe',
+          defaultLabel: 'Visit Official Website',
           svg: '<svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" style="display:inline-block;vertical-align:middle;flex-shrink:0;"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm1 2.055c3.923.493 7.085 3.468 7.828 7.351h-3.325c-.347-2.616-1.944-5.341-4.503-7.351zm-2 0C8.444 4.066 6.847 6.791 6.5 9.406H3.172C3.915 5.523 7.077 2.548 11 2.055zM2.055 13h4.496C6.91 16.36 8.847 19.866 11 21.945 7.077 21.452 3.915 18.477 3.172 14.594H2.055zm10.945 8.945c2.153-2.079 4.09-5.585 4.449-8.945h4.496c-.743 3.883-3.905 6.858-7.828 7.351zM8.528 11.406c.074-1.207.319-2.392.748-3.406h5.448c.429 1.014.674 2.199.748 3.406H8.528zm0 2h6.944c-.074 1.207-.319 2.392-.748 3.406H9.276c-.429-1.014-.674-2.199-.748-3.406z"/></svg>'
         }
       };
 
-      function getSocialBarState() {
-        const layout = (document.querySelector('input[name="socLayout"]:checked')?.value) || 'horizontal';
-        const style = socStyleSelect ? socStyleSelect.value : 'gradient';
-        const format = socFormatSelect ? socFormatSelect.value : 'both';
+      const CUSTOM_COLOR_PRESETS = [
+        { id: 'indigo', name: 'Indigo', color: '#4f46e5', gradient: 'linear-gradient(135deg, #6366f1 0%, #4338ca 100%)', shadow: 'rgba(79, 70, 229, 0.35)', lightBg: '#eef2ff', borderColor: '#a5b4fc' },
+        { id: 'emerald', name: 'Emerald', color: '#059669', gradient: 'linear-gradient(135deg, #10b981 0%, #047857 100%)', shadow: 'rgba(5, 150, 105, 0.35)', lightBg: '#ecfdf5', borderColor: '#6ee7b7' },
+        { id: 'amber', name: 'Amber', color: '#d97706', gradient: 'linear-gradient(135deg, #f59e0b 0%, #b45309 100%)', shadow: 'rgba(217, 119, 6, 0.35)', lightBg: '#fffbeb', borderColor: '#fcd34d' },
+        { id: 'rose', name: 'Rose', color: '#e11d48', gradient: 'linear-gradient(135deg, #f43f5e 0%, #be123c 100%)', shadow: 'rgba(225, 29, 72, 0.35)', lightBg: '#fff1f2', borderColor: '#fda4af' },
+        { id: 'sky', name: 'Sky', color: '#0284c7', gradient: 'linear-gradient(135deg, #0ea5e9 0%, #0369a1 100%)', shadow: 'rgba(2, 132, 199, 0.35)', lightBg: '#f0f9ff', borderColor: '#7dd3fc' },
+        { id: 'purple', name: 'Purple', color: '#7c3aed', gradient: 'linear-gradient(135deg, #8b5cf6 0%, #6d28d9 100%)', shadow: 'rgba(124, 58, 237, 0.35)', lightBg: '#f5f3ff', borderColor: '#c4b5fd' },
+        { id: 'slate', name: 'Slate', color: '#334155', gradient: 'linear-gradient(135deg, #475569 0%, #1e293b 100%)', shadow: 'rgba(51, 65, 85, 0.35)', lightBg: '#f8fafc', borderColor: '#cbd5e1' }
+      ];
 
-        const items = [];
-        ['yt', 'tg', 'wa', 'ig', 'fb', 'web'].forEach(k => {
-          const enabled = document.getElementById(`soc_${k}_enable`)?.checked;
-          if (enabled) {
-            const label = document.getElementById(`soc_${k}_label`)?.value.trim() || socialPlatforms[k].name;
-            const url = document.getElementById(`soc_${k}_url`)?.value.trim() || '#';
-            items.push({
-              ...socialPlatforms[k],
-              label,
-              url
-            });
-          }
-        });
-        return { layout, style, format, items };
+      const POPULAR_CUSTOM_ICONS = [
+        { cls: 'fa-solid fa-download', label: 'Download' },
+        { cls: 'fa-solid fa-file-pdf', label: 'PDF File' },
+        { cls: 'fa-solid fa-graduation-cap', label: 'Exam / Quiz' },
+        { cls: 'fa-solid fa-book-open', label: 'Study Notes' },
+        { cls: 'fa-solid fa-comments', label: 'Discussion' },
+        { cls: 'fa-solid fa-arrow-up-right-from-square', label: 'Link' },
+        { cls: 'fa-solid fa-bell', label: 'Notification' },
+        { cls: 'fa-solid fa-star', label: 'Featured' },
+        { cls: 'fa-solid fa-play', label: 'Video' },
+        { cls: 'fa-solid fa-folder-open', label: 'Drive' }
+      ];
+
+      function getSocialProfiles() {
+        try {
+          const raw = localStorage.getItem(SOCIAL_PROFILES_KEY);
+          if (!raw) return { ...DEFAULT_SOCIAL_PROFILES };
+          const parsed = JSON.parse(raw);
+          return { ...DEFAULT_SOCIAL_PROFILES, ...parsed };
+        } catch (e) {
+          console.error("Error reading social profiles:", e);
+          return { ...DEFAULT_SOCIAL_PROFILES };
+        }
       }
 
-      function generateSocialBarHtml() {
-        const { layout, style, format, items } = getSocialBarState();
-        if (items.length === 0) {
-          return `<div class="bsp-social-bar" style="padding: 16px; text-align: center; color: #94a3b8; font-size: 13px;">No social platforms enabled. Check at least one above.</div>`;
+      function saveSocialProfiles(profs) {
+        try {
+          localStorage.setItem(SOCIAL_PROFILES_KEY, JSON.stringify(profs));
+        } catch (e) {
+          console.error("Error saving social profiles:", e);
+        }
+      }
+
+      function getDefaultButtonGroups() {
+        const profs = getSocialProfiles();
+        return [
+          {
+            id: 'grp_top_social',
+            name: 'Top Social Follow Bar',
+            layout: 'horizontal',
+            style: 'pill_glow',
+            format: 'both',
+            buttons: [
+              {
+                id: 'btn_yt_' + Date.now(),
+                type: 'social',
+                platform: 'yt',
+                label: 'YouTube Channel',
+                url: profs.yt,
+                color: SOCIAL_PLATFORMS.yt.color,
+                gradient: SOCIAL_PLATFORMS.yt.gradient,
+                shadow: SOCIAL_PLATFORMS.yt.shadow,
+                lightBg: SOCIAL_PLATFORMS.yt.lightBg,
+                borderColor: SOCIAL_PLATFORMS.yt.borderColor,
+                icon: SOCIAL_PLATFORMS.yt.faClass
+              },
+              {
+                id: 'btn_tg_' + Date.now(),
+                type: 'social',
+                platform: 'tg',
+                label: 'Telegram Community',
+                url: profs.tg,
+                color: SOCIAL_PLATFORMS.tg.color,
+                gradient: SOCIAL_PLATFORMS.tg.gradient,
+                shadow: SOCIAL_PLATFORMS.tg.shadow,
+                lightBg: SOCIAL_PLATFORMS.tg.lightBg,
+                borderColor: SOCIAL_PLATFORMS.tg.borderColor,
+                icon: SOCIAL_PLATFORMS.tg.faClass
+              },
+              {
+                id: 'btn_wa_' + Date.now(),
+                type: 'social',
+                platform: 'wa',
+                label: 'WhatsApp Channel',
+                url: profs.wa,
+                color: SOCIAL_PLATFORMS.wa.color,
+                gradient: SOCIAL_PLATFORMS.wa.gradient,
+                shadow: SOCIAL_PLATFORMS.wa.shadow,
+                lightBg: SOCIAL_PLATFORMS.wa.lightBg,
+                borderColor: SOCIAL_PLATFORMS.wa.borderColor,
+                icon: SOCIAL_PLATFORMS.wa.faClass
+              },
+              {
+                id: 'btn_web_' + Date.now(),
+                type: 'social',
+                platform: 'web',
+                label: 'Official Blog',
+                url: profs.web,
+                color: SOCIAL_PLATFORMS.web.color,
+                gradient: SOCIAL_PLATFORMS.web.gradient,
+                shadow: SOCIAL_PLATFORMS.web.shadow,
+                lightBg: SOCIAL_PLATFORMS.web.lightBg,
+                borderColor: SOCIAL_PLATFORMS.web.borderColor,
+                icon: SOCIAL_PLATFORMS.web.faClass
+              }
+            ]
+          },
+          {
+            id: 'grp_downloads',
+            name: 'Subject Download Links',
+            layout: 'grid2',
+            style: 'gradient',
+            format: 'both',
+            buttons: [
+              {
+                id: 'btn_c1_' + Date.now(),
+                type: 'custom',
+                label: 'Download Chapter Notes (PDF)',
+                url: 'https://example.com/ch1-notes.pdf',
+                color: '#059669',
+                gradient: 'linear-gradient(135deg, #10b981 0%, #047857 100%)',
+                shadow: 'rgba(5, 150, 105, 0.35)',
+                lightBg: '#ecfdf5',
+                borderColor: '#6ee7b7',
+                icon: 'fa-solid fa-file-pdf'
+              },
+              {
+                id: 'btn_c2_' + Date.now(),
+                type: 'custom',
+                label: 'Practice Online Question Bank',
+                url: 'https://example.com/quiz',
+                color: '#4f46e5',
+                gradient: 'linear-gradient(135deg, #6366f1 0%, #4338ca 100%)',
+                shadow: 'rgba(79, 70, 229, 0.35)',
+                lightBg: '#eef2ff',
+                borderColor: '#a5b4fc',
+                icon: 'fa-solid fa-graduation-cap'
+              },
+              {
+                id: 'btn_c3_' + Date.now(),
+                type: 'custom',
+                label: 'Join Live Discussion Room',
+                url: 'https://example.com/forum',
+                color: '#d97706',
+                gradient: 'linear-gradient(135deg, #f59e0b 0%, #b45309 100%)',
+                shadow: 'rgba(217, 119, 6, 0.35)',
+                lightBg: '#fffbeb',
+                borderColor: '#fcd34d',
+                icon: 'fa-solid fa-comments'
+              },
+              {
+                id: 'btn_c4_' + Date.now(),
+                type: 'social',
+                platform: 'tg',
+                label: 'Instant Support on Telegram',
+                url: profs.tg,
+                color: SOCIAL_PLATFORMS.tg.color,
+                gradient: SOCIAL_PLATFORMS.tg.gradient,
+                shadow: SOCIAL_PLATFORMS.tg.shadow,
+                lightBg: SOCIAL_PLATFORMS.tg.lightBg,
+                borderColor: SOCIAL_PLATFORMS.tg.borderColor,
+                icon: SOCIAL_PLATFORMS.tg.faClass
+              }
+            ]
+          },
+          {
+            id: 'grp_sidebar',
+            name: 'Sidebar Quick Follow',
+            layout: 'vertical',
+            style: 'minimal_solid',
+            format: 'both',
+            buttons: [
+              {
+                id: 'btn_s1_' + Date.now(),
+                type: 'social',
+                platform: 'tg',
+                label: 'Join Telegram Channel',
+                url: profs.tg,
+                color: SOCIAL_PLATFORMS.tg.color,
+                gradient: SOCIAL_PLATFORMS.tg.gradient,
+                shadow: SOCIAL_PLATFORMS.tg.shadow,
+                lightBg: SOCIAL_PLATFORMS.tg.lightBg,
+                borderColor: SOCIAL_PLATFORMS.tg.borderColor,
+                icon: SOCIAL_PLATFORMS.tg.faClass
+              },
+              {
+                id: 'btn_s2_' + Date.now(),
+                type: 'social',
+                platform: 'wa',
+                label: 'Follow WhatsApp Channel',
+                url: profs.wa,
+                color: SOCIAL_PLATFORMS.wa.color,
+                gradient: SOCIAL_PLATFORMS.wa.gradient,
+                shadow: SOCIAL_PLATFORMS.wa.shadow,
+                lightBg: SOCIAL_PLATFORMS.wa.lightBg,
+                borderColor: SOCIAL_PLATFORMS.wa.borderColor,
+                icon: SOCIAL_PLATFORMS.wa.faClass
+              },
+              {
+                id: 'btn_s3_' + Date.now(),
+                type: 'social',
+                platform: 'yt',
+                label: 'Subscribe on YouTube',
+                url: profs.yt,
+                color: SOCIAL_PLATFORMS.yt.color,
+                gradient: SOCIAL_PLATFORMS.yt.gradient,
+                shadow: SOCIAL_PLATFORMS.yt.shadow,
+                lightBg: SOCIAL_PLATFORMS.yt.lightBg,
+                borderColor: SOCIAL_PLATFORMS.yt.borderColor,
+                icon: SOCIAL_PLATFORMS.yt.faClass
+              }
+            ]
+          }
+        ];
+      }
+
+      function getButtonGroups() {
+        try {
+          const raw = localStorage.getItem(BUTTON_GROUPS_KEY);
+          if (!raw) return getDefaultButtonGroups();
+          const parsed = JSON.parse(raw);
+          return (Array.isArray(parsed) && parsed.length > 0) ? parsed : getDefaultButtonGroups();
+        } catch (e) {
+          console.error("Error reading button groups:", e);
+          return getDefaultButtonGroups();
+        }
+      }
+
+      function saveButtonGroups(groups) {
+        try {
+          localStorage.setItem(BUTTON_GROUPS_KEY, JSON.stringify(groups));
+        } catch (e) {
+          console.error("Error saving button groups:", e);
+        }
+      }
+
+      // DOM Handles for Custom Button Groups & Global Store
+      let currentButtonGroups = getButtonGroups();
+      let activeGroupId = currentButtonGroups[0]?.id || 'grp_top_social';
+
+      const globalProfilesPanel = document.getElementById('globalProfilesPanel');
+      const btnToggleGlobalProfiles = document.getElementById('btnToggleGlobalProfiles');
+      const toggleGlobalProfilesText = document.getElementById('toggleGlobalProfilesText');
+      const btnSaveGlobalProfiles = document.getElementById('btnSaveGlobalProfiles');
+
+      const inpGlobalYt = document.getElementById('global_soc_yt');
+      const inpGlobalTg = document.getElementById('global_soc_tg');
+      const inpGlobalWa = document.getElementById('global_soc_wa');
+      const inpGlobalIg = document.getElementById('global_soc_ig');
+      const inpGlobalFb = document.getElementById('global_soc_fb');
+      const inpGlobalWeb = document.getElementById('global_soc_web');
+
+      const btnGroupTabsContainer = document.getElementById('btnGroupTabsContainer');
+      const btnAddButtonGroup = document.getElementById('btnAddButtonGroup');
+      const activeGroupNameInput = document.getElementById('activeGroupNameInput');
+      const btnDuplicateGroup = document.getElementById('btnDuplicateGroup');
+      const btnDeleteGroup = document.getElementById('btnDeleteGroup');
+
+      const grpStyleSelect = document.getElementById('grpStyleSelect');
+      const grpFormatSelect = document.getElementById('grpFormatSelect');
+      const grpButtonsCount = document.getElementById('grpButtonsCount');
+      const btnOpenPresetModal = document.getElementById('btnOpenPresetModal');
+      const btnAddCustomBtn = document.getElementById('btnAddCustomBtn');
+      const groupButtonsListContainer = document.getElementById('groupButtonsListContainer');
+
+      const groupLivePreview = document.getElementById('groupLivePreview');
+      const previewGroupBadge = document.getElementById('previewGroupBadge');
+
+      const btnCopyGroupGadget = document.getElementById('btnCopyGroupGadget');
+      const btnCopyGroupCompose = document.getElementById('btnCopyGroupCompose');
+      const btnCopyGroupHtml = document.getElementById('btnCopyGroupHtml');
+
+      const presetSocialModal = document.getElementById('presetSocialModal');
+      const btnClosePresetModal = document.getElementById('btnClosePresetModal');
+      const presetPlatformPickers = document.getElementById('presetPlatformPickers');
+
+      // Initialize Global Store inputs
+      function initGlobalProfilesUI() {
+        const profs = getSocialProfiles();
+        if (inpGlobalYt) inpGlobalYt.value = profs.yt || '';
+        if (inpGlobalTg) inpGlobalTg.value = profs.tg || '';
+        if (inpGlobalWa) inpGlobalWa.value = profs.wa || '';
+        if (inpGlobalIg) inpGlobalIg.value = profs.ig || '';
+        if (inpGlobalFb) inpGlobalFb.value = profs.fb || '';
+        if (inpGlobalWeb) inpGlobalWeb.value = profs.web || '';
+      }
+
+      if (btnToggleGlobalProfiles) {
+        btnToggleGlobalProfiles.addEventListener('click', () => {
+          if (!globalProfilesPanel) return;
+          const isHidden = globalProfilesPanel.classList.toggle('hidden');
+          if (toggleGlobalProfilesText) {
+            toggleGlobalProfilesText.textContent = isHidden ? 'Edit Profiles' : 'Hide Profiles';
+          }
+        });
+      }
+
+      if (btnSaveGlobalProfiles) {
+        btnSaveGlobalProfiles.addEventListener('click', () => {
+          const profs = {
+            yt: (inpGlobalYt?.value.trim()) || DEFAULT_SOCIAL_PROFILES.yt,
+            tg: (inpGlobalTg?.value.trim()) || DEFAULT_SOCIAL_PROFILES.tg,
+            wa: (inpGlobalWa?.value.trim()) || DEFAULT_SOCIAL_PROFILES.wa,
+            ig: (inpGlobalIg?.value.trim()) || DEFAULT_SOCIAL_PROFILES.ig,
+            fb: (inpGlobalFb?.value.trim()) || DEFAULT_SOCIAL_PROFILES.fb,
+            web: (inpGlobalWeb?.value.trim()) || DEFAULT_SOCIAL_PROFILES.web
+          };
+          saveSocialProfiles(profs);
+
+          // Automatically sync existing social buttons across all button groups
+          currentButtonGroups.forEach(grp => {
+            grp.buttons.forEach(btn => {
+              if (btn.type === 'social' && profs[btn.platform]) {
+                btn.url = profs[btn.platform];
+              }
+            });
+          });
+          saveButtonGroups(currentButtonGroups);
+          renderActiveGroup();
+          showToast("Saved Global Profiles! Auto-synced across all button groups.", "success");
+        });
+      }
+
+      // Group Helper
+      function getActiveGroup() {
+        return currentButtonGroups.find(g => g.id === activeGroupId) || currentButtonGroups[0];
+      }
+
+      function renderGroupTabs() {
+        if (!btnGroupTabsContainer) return;
+        btnGroupTabsContainer.innerHTML = '';
+
+        currentButtonGroups.forEach(grp => {
+          const isActive = (grp.id === activeGroupId);
+          const tabBtn = document.createElement('button');
+          tabBtn.type = 'button';
+          tabBtn.className = `tactile-btn px-3 py-1.5 rounded-xl text-xs font-bold shrink-0 transition flex items-center gap-1.5 ${
+            isActive 
+              ? 'bg-primary text-white shadow-sm shadow-primary/30 border-b-2 border-primary-dark' 
+              : 'bg-slate-100 hover:bg-slate-200 text-slate-700 border border-border-light'
+          }`;
+          tabBtn.innerHTML = `
+            <span>${escapeHtml(grp.name)}</span>
+            <span class="px-1.5 py-0.2 rounded-full text-[10px] ${isActive ? 'bg-white/20 text-white' : 'bg-slate-200 text-slate-600'}">${grp.buttons.length}</span>
+          `;
+          tabBtn.addEventListener('click', () => {
+            activeGroupId = grp.id;
+            renderActiveGroup();
+          });
+          btnGroupTabsContainer.appendChild(tabBtn);
+        });
+      }
+
+      function renderActiveGroup() {
+        const group = getActiveGroup();
+        if (!group) return;
+        activeGroupId = group.id;
+
+        renderGroupTabs();
+
+        if (activeGroupNameInput) {
+          activeGroupNameInput.value = group.name;
         }
 
-        const isVert = (layout === 'vertical');
+        // Layout Radios
+        document.querySelectorAll('input[name="grpLayout"]').forEach(r => {
+          r.checked = (r.value === group.layout);
+          const labelWrapper = r.closest('.grp-layout-option');
+          if (labelWrapper) {
+            if (r.checked) {
+              labelWrapper.className = 'grp-layout-option flex flex-col items-center justify-center p-2 rounded-xl border border-primary bg-primary-bg/30 cursor-pointer text-center select-none transition';
+              labelWrapper.querySelector('span')?.classList.add('text-primary');
+              labelWrapper.querySelector('span')?.classList.remove('text-slate-700');
+              labelWrapper.querySelector('i')?.classList.add('text-primary');
+              labelWrapper.querySelector('i')?.classList.remove('text-slate-500');
+            } else {
+              labelWrapper.className = 'grp-layout-option flex flex-col items-center justify-center p-2 rounded-xl border border-border-light bg-white cursor-pointer hover:border-slate-300 text-center select-none transition';
+              labelWrapper.querySelector('span')?.classList.remove('text-primary');
+              labelWrapper.querySelector('span')?.classList.add('text-slate-700');
+              labelWrapper.querySelector('i')?.classList.remove('text-primary');
+              labelWrapper.querySelector('i')?.classList.add('text-slate-500');
+            }
+          }
+        });
+
+        if (grpStyleSelect) grpStyleSelect.value = group.style || 'pill_glow';
+        if (grpFormatSelect) grpFormatSelect.value = group.format || 'both';
+        if (grpButtonsCount) grpButtonsCount.textContent = group.buttons.length;
+        if (previewGroupBadge) previewGroupBadge.textContent = `${group.layout.toUpperCase()} • ${group.buttons.length} ITEMS`;
+
+        renderButtonsEditorList(group);
+        updateGroupPreview(group);
+      }
+
+      // Render Editor Cards for each Button in Group
+      function renderButtonsEditorList(group) {
+        if (!groupButtonsListContainer) return;
+        groupButtonsListContainer.innerHTML = '';
+
+        if (group.buttons.length === 0) {
+          groupButtonsListContainer.innerHTML = `
+            <div class="p-6 text-center rounded-2xl border-2 border-dashed border-slate-200 bg-slate-50/50">
+              <i class="fa-solid fa-layer-group text-slate-300 text-2xl mb-2"></i>
+              <p class="text-xs font-bold text-slate-600">No buttons in this group yet.</p>
+              <p class="text-[11px] text-slate-400 mb-3">Add preset social handles or custom download/action links above.</p>
+            </div>
+          `;
+          return;
+        }
+
+        group.buttons.forEach((btn, idx) => {
+          const card = document.createElement('div');
+          card.className = 'p-3.5 rounded-2xl border border-border-light bg-slate-50/60 hover:bg-slate-50 transition space-y-2.5';
+          
+          const isSocial = (btn.type === 'social');
+          const platformInfo = isSocial ? SOCIAL_PLATFORMS[btn.platform] : null;
+
+          card.innerHTML = `
+            <div class="flex items-center justify-between gap-2">
+              <div class="flex items-center gap-2">
+                <div class="flex items-center gap-1">
+                  <button type="button" class="btn-btn-up p-1 text-slate-400 hover:text-slate-700 disabled:opacity-30 rounded" ${idx === 0 ? 'disabled' : ''} title="Move Up">
+                    <i class="fa-solid fa-arrow-up text-xs"></i>
+                  </button>
+                  <button type="button" class="btn-btn-down p-1 text-slate-400 hover:text-slate-700 disabled:opacity-30 rounded" ${idx === group.buttons.length - 1 ? 'disabled' : ''} title="Move Down">
+                    <i class="fa-solid fa-arrow-down text-xs"></i>
+                  </button>
+                </div>
+                <div class="w-7 h-7 rounded-lg flex items-center justify-center text-white text-xs font-bold shadow-xs" style="background: ${btn.gradient || btn.color};">
+                  ${isSocial ? (platformInfo?.svg ? `<span style="display:inline-flex;transform:scale(0.8);">${platformInfo.svg}</span>` : `<i class="${platformInfo?.faClass || 'fa-solid fa-share'}"></i>`) : `<i class="${btn.icon || 'fa-solid fa-link'}"></i>`}
+                </div>
+                <span class="text-xs font-extrabold text-slate-800">${escapeHtml(btn.label || 'Button')}</span>
+                <span class="px-2 py-0.2 rounded-full text-[10px] font-bold ${isSocial ? 'bg-sky-100 text-sky-800' : 'bg-indigo-100 text-indigo-800'}">${isSocial ? 'Social' : 'Custom'}</span>
+              </div>
+              <button type="button" class="btn-btn-delete p-1.5 text-slate-400 hover:text-rose-600 rounded-lg transition" title="Delete Button">
+                <i class="fa-solid fa-trash-can text-xs"></i>
+              </button>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+              <div>
+                <label class="block text-[10px] font-bold text-slate-500 uppercase mb-0.5">Button Label</label>
+                <input type="text" class="btn-label-input w-full px-2.5 py-1.5 rounded-lg border border-border-light bg-white text-xs font-semibold text-slate-800 focus:border-primary outline-none" value="${escapeHtml(btn.label)}">
+              </div>
+              <div>
+                <label class="block text-[10px] font-bold text-slate-500 uppercase mb-0.5">Target URL</label>
+                <input type="url" class="btn-url-input w-full px-2.5 py-1.5 rounded-lg border border-border-light bg-white text-xs font-semibold text-slate-700 focus:border-primary outline-none" value="${escapeHtml(btn.url)}">
+              </div>
+            </div>
+
+            ${!isSocial ? `
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-1 border-t border-slate-200/60">
+                <div>
+                  <label class="block text-[10px] font-bold text-slate-500 uppercase mb-0.5">Icon Selection</label>
+                  <select class="btn-icon-select w-full px-2 py-1 rounded-lg border border-border-light bg-white text-xs font-bold text-slate-700 outline-none focus:border-primary">
+                    ${POPULAR_CUSTOM_ICONS.map(ic => `<option value="${ic.cls}" ${btn.icon === ic.cls ? 'selected' : ''}>${ic.label}</option>`).join('')}
+                  </select>
+                </div>
+                <div>
+                  <label class="block text-[10px] font-bold text-slate-500 uppercase mb-0.5">Color Theme</label>
+                  <div class="flex items-center gap-1.5 pt-0.5">
+                    ${CUSTOM_COLOR_PRESETS.map(cp => `
+                      <button type="button" class="btn-color-pick w-5 h-5 rounded-full border ${btn.color === cp.color ? 'ring-2 ring-primary ring-offset-1 scale-110' : 'opacity-80 hover:opacity-100'}" style="background:${cp.color};" data-color="${cp.color}" data-gradient="${cp.gradient}" data-shadow="${cp.shadow}" data-lightbg="${cp.lightBg}" data-border="${cp.borderColor}" title="${cp.name}"></button>
+                    `).join('')}
+                  </div>
+                </div>
+              </div>
+            ` : ''}
+          `;
+
+          // Event Listeners for this button card
+          card.querySelector('.btn-label-input').addEventListener('input', (e) => {
+            btn.label = e.target.value;
+            saveButtonGroups(currentButtonGroups);
+            updateGroupPreview(group);
+          });
+
+          card.querySelector('.btn-url-input').addEventListener('input', (e) => {
+            btn.url = e.target.value;
+            saveButtonGroups(currentButtonGroups);
+            updateGroupPreview(group);
+          });
+
+          card.querySelector('.btn-btn-up').addEventListener('click', () => {
+            if (idx <= 0) return;
+            const temp = group.buttons[idx];
+            group.buttons[idx] = group.buttons[idx - 1];
+            group.buttons[idx - 1] = temp;
+            saveButtonGroups(currentButtonGroups);
+            renderActiveGroup();
+          });
+
+          card.querySelector('.btn-btn-down').addEventListener('click', () => {
+            if (idx >= group.buttons.length - 1) return;
+            const temp = group.buttons[idx];
+            group.buttons[idx] = group.buttons[idx + 1];
+            group.buttons[idx + 1] = temp;
+            saveButtonGroups(currentButtonGroups);
+            renderActiveGroup();
+          });
+
+          card.querySelector('.btn-btn-delete').addEventListener('click', () => {
+            group.buttons.splice(idx, 1);
+            saveButtonGroups(currentButtonGroups);
+            renderActiveGroup();
+          });
+
+          if (!isSocial) {
+            const iconSelect = card.querySelector('.btn-icon-select');
+            if (iconSelect) {
+              iconSelect.addEventListener('change', (e) => {
+                btn.icon = e.target.value;
+                saveButtonGroups(currentButtonGroups);
+                renderActiveGroup();
+              });
+            }
+
+            card.querySelectorAll('.btn-color-pick').forEach(cb => {
+              cb.addEventListener('click', () => {
+                btn.color = cb.getAttribute('data-color');
+                btn.gradient = cb.getAttribute('data-gradient');
+                btn.shadow = cb.getAttribute('data-shadow');
+                btn.lightBg = cb.getAttribute('data-lightbg');
+                btn.borderColor = cb.getAttribute('data-border');
+                saveButtonGroups(currentButtonGroups);
+                renderActiveGroup();
+              });
+            });
+          }
+
+          groupButtonsListContainer.appendChild(card);
+        });
+      }
+
+      // Group HTML Generator (Scoped & Clean)
+      function generateGroupHtml(group, forGadget = false) {
+        if (!group || !group.buttons || group.buttons.length === 0) {
+          return `<div class="bsp-grp-wrapper" style="padding: 16px; text-align: center; color: #94a3b8; font-size: 13px; font-family: sans-serif;">No buttons configured in this group.</div>`;
+        }
+
+        const layout = group.layout || 'horizontal';
+        const style = group.style || 'pill_glow';
+        const format = group.format || 'both';
         const isIconOnly = (format === 'icon_only');
 
-        const wrapperStyle = isVert 
-          ? `display: flex; flex-direction: column; gap: 8px; width: 100%; max-width: 360px; margin: 16px auto; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;` 
-          : `display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 10px; width: 100%; margin: 16px auto; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;`;
+        let wrapperStyle = '';
+        if (layout === 'vertical') {
+          wrapperStyle = `display: flex; flex-direction: column; gap: 9px; width: 100%; max-width: 100%; margin: 14px auto; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;`;
+        } else if (layout === 'grid2') {
+          wrapperStyle = `display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 10px; width: 100%; margin: 14px auto; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;`;
+        } else {
+          wrapperStyle = `display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 10px; width: 100%; margin: 14px auto; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;`;
+        }
 
-        const buttonsHtml = items.map(item => {
+        const buttonsHtml = group.buttons.map(btn => {
           let btnStyle = '';
-          let borderRadius = (style === 'minimal' ? '12px' : '9999px');
-          let width = isVert ? 'width: 100%;' : '';
+          let borderRadius = (style === 'minimal_solid' ? '12px' : (style === 'gradient' ? '14px' : '9999px'));
+          let width = (layout === 'vertical' && !isIconOnly) ? 'width: 100%;' : '';
 
           if (isIconOnly) {
             borderRadius = '50%';
-            width = 'width: 44px; height: 44px;';
+            width = 'width: 44px; height: 44px; flex-shrink: 0;';
           }
 
-          if (style === 'gradient') {
-            btnStyle = `background: ${item.gradient}; color: #ffffff !important; box-shadow: 0 4px 14px ${item.shadow}; border: none;`;
-          } else if (style === 'pill') {
-            btnStyle = `background: ${item.color}; color: #ffffff !important; box-shadow: 0 2px 6px rgba(0,0,0,0.12); border: none;`;
-          } else if (style === 'minimal') {
-            btnStyle = `background: ${item.lightBg}; color: ${item.color} !important; border: 1.5px solid ${item.borderColor}; box-shadow: 0 1px 3px rgba(0,0,0,0.05);`;
+          if (style === 'pill_glow') {
+            btnStyle = `background: ${btn.gradient || btn.color}; color: #ffffff !important; box-shadow: 0 4px 14px ${btn.shadow || 'rgba(0,0,0,0.2)'}; border: none;`;
+          } else if (style === 'minimal_solid') {
+            btnStyle = `background: ${btn.color}; color: #ffffff !important; box-shadow: 0 2px 6px rgba(0,0,0,0.1); border: none;`;
+          } else if (style === 'outlined') {
+            btnStyle = `background: transparent; color: ${btn.color} !important; border: 2px solid ${btn.color}; box-shadow: 0 1px 3px rgba(0,0,0,0.05);`;
+          } else if (style === 'gradient') {
+            btnStyle = `background: ${btn.gradient || btn.color}; color: #ffffff !important; box-shadow: 0 4px 12px ${btn.shadow || 'rgba(0,0,0,0.18)'}; border: 1px solid rgba(255,255,255,0.25);`;
           }
 
-          const padding = isIconOnly ? 'padding: 0;' : (isVert ? 'padding: 12px 20px;' : 'padding: 10px 20px;');
+          const padding = isIconOnly ? 'padding: 0;' : (layout === 'vertical' ? 'padding: 12px 18px;' : 'padding: 10px 18px;');
 
-          return `<a class="bsp-social-btn bsp-btn-${item.key}" href="${escapeHtml(item.url)}" target="_blank" rel="noopener noreferrer" style="${width} ${padding} border-radius: ${borderRadius}; display: inline-flex; align-items: center; justify-content: center; gap: 8px; text-decoration: none !important; font-size: 13px !important; font-weight: 700 !important; letter-spacing: 0.02em; transition: transform 0.15s ease, opacity 0.15s ease; box-sizing: border-box; cursor: pointer; ${btnStyle}">
-  ${item.svg}
-  ${!isIconOnly ? `<span>${escapeHtml(item.label)}</span>` : ''}
+          let iconHtml = '';
+          if (btn.type === 'social' && SOCIAL_PLATFORMS[btn.platform]) {
+            iconHtml = SOCIAL_PLATFORMS[btn.platform].svg;
+          } else {
+            iconHtml = `<i class="${btn.icon || 'fa-solid fa-link'}" style="font-size: 14px;"></i>`;
+          }
+
+          return `<a class="bsp-btn-item" href="${escapeHtml(btn.url)}" target="_blank" rel="noopener noreferrer" style="${width} ${padding} border-radius: ${borderRadius}; display: inline-flex; align-items: center; justify-content: center; gap: 8px; text-decoration: none !important; font-size: 13px !important; font-weight: 700 !important; letter-spacing: 0.02em; transition: transform 0.15s ease, opacity 0.15s ease; box-sizing: border-box; cursor: pointer; ${btnStyle}">
+  ${iconHtml}
+  ${!isIconOnly ? `<span>${escapeHtml(btn.label)}</span>` : ''}
 </a>`;
-        }).join(isVert ? '\n' : '\n  ');
+        }).join(layout === 'vertical' ? '\n' : '\n  ');
 
-        return `<div class="bsp-social-bar bsp-social-bar-${layout}" style="${wrapperStyle}">
+        let prefix = '';
+        if (forGadget) {
+          prefix = `<!-- Blogger Gadget: Scoped Hover Styles & FontAwesome Fallback -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+  .bsp-grp-wrapper .bsp-btn-item:hover { transform: translateY(-2px); opacity: 0.95; }
+  .bsp-grp-wrapper .bsp-btn-item:active { transform: translateY(0); }
+</style>
+`;
+        }
+
+        return `${prefix}<div class="bsp-grp-wrapper bsp-grp-${layout}" style="${wrapperStyle}">
   ${buttonsHtml}
 </div>`;
       }
 
-      function updateSocialPreview() {
-        if (socLivePreview) {
-          socLivePreview.innerHTML = generateSocialBarHtml();
+      function updateGroupPreview(group = null) {
+        const grp = group || getActiveGroup();
+        if (groupLivePreview && grp) {
+          groupLivePreview.innerHTML = generateGroupHtml(grp, false);
         }
       }
 
-      // Add change & input listeners to social bar builder elements
-      document.querySelectorAll('input[name="socLayout"]').forEach(r => r.addEventListener('change', updateSocialPreview));
-      if (socStyleSelect) socStyleSelect.addEventListener('change', updateSocialPreview);
-      if (socFormatSelect) socFormatSelect.addEventListener('change', updateSocialPreview);
-      document.querySelectorAll('.soc-toggle, .soc-input').forEach(el => {
-        el.addEventListener('input', updateSocialPreview);
-        el.addEventListener('change', updateSocialPreview);
+      // Group Manager Event Listeners
+      if (activeGroupNameInput) {
+        activeGroupNameInput.addEventListener('input', (e) => {
+          const grp = getActiveGroup();
+          if (grp) {
+            grp.name = e.target.value.trim() || 'Custom Button Group';
+            saveButtonGroups(currentButtonGroups);
+            renderGroupTabs();
+          }
+        });
+      }
+
+      document.querySelectorAll('input[name="grpLayout"]').forEach(r => {
+        r.addEventListener('change', () => {
+          const grp = getActiveGroup();
+          if (grp) {
+            grp.layout = r.value;
+            saveButtonGroups(currentButtonGroups);
+            renderActiveGroup();
+          }
+        });
       });
 
-      if (btnCopySocCompose) {
-        btnCopySocCompose.addEventListener('click', () => {
-          copyWidgetToBlogger(generateSocialBarHtml(), "Social Media Bar");
+      if (grpStyleSelect) {
+        grpStyleSelect.addEventListener('change', () => {
+          const grp = getActiveGroup();
+          if (grp) {
+            grp.style = grpStyleSelect.value;
+            saveButtonGroups(currentButtonGroups);
+            renderActiveGroup();
+          }
         });
       }
-      if (btnCopySocHtml) {
-        btnCopySocHtml.addEventListener('click', () => {
-          copyWidgetRawHtml(generateSocialBarHtml(), "Social Media Bar");
+
+      if (grpFormatSelect) {
+        grpFormatSelect.addEventListener('change', () => {
+          const grp = getActiveGroup();
+          if (grp) {
+            grp.format = grpFormatSelect.value;
+            saveButtonGroups(currentButtonGroups);
+            renderActiveGroup();
+          }
         });
       }
+
+      // Add New Group
+      if (btnAddButtonGroup) {
+        btnAddButtonGroup.addEventListener('click', () => {
+          const profs = getSocialProfiles();
+          const newGrpId = 'grp_' + Date.now();
+          const newGrp = {
+            id: newGrpId,
+            name: `Group ${currentButtonGroups.length + 1}: Custom Buttons`,
+            layout: 'horizontal',
+            style: 'pill_glow',
+            format: 'both',
+            buttons: [
+              {
+                id: 'btn_tg_' + Date.now(),
+                type: 'social',
+                platform: 'tg',
+                label: 'Join Telegram Channel',
+                url: profs.tg,
+                color: SOCIAL_PLATFORMS.tg.color,
+                gradient: SOCIAL_PLATFORMS.tg.gradient,
+                shadow: SOCIAL_PLATFORMS.tg.shadow,
+                lightBg: SOCIAL_PLATFORMS.tg.lightBg,
+                borderColor: SOCIAL_PLATFORMS.tg.borderColor,
+                icon: SOCIAL_PLATFORMS.tg.faClass
+              },
+              {
+                id: 'btn_c_' + Date.now(),
+                type: 'custom',
+                label: 'Download Chapter Notes PDF',
+                url: 'https://example.com/notes.pdf',
+                color: '#4f46e5',
+                gradient: 'linear-gradient(135deg, #6366f1 0%, #4338ca 100%)',
+                shadow: 'rgba(79, 70, 229, 0.35)',
+                lightBg: '#eef2ff',
+                borderColor: '#a5b4fc',
+                icon: 'fa-solid fa-download'
+              }
+            ]
+          };
+          currentButtonGroups.push(newGrp);
+          activeGroupId = newGrpId;
+          saveButtonGroups(currentButtonGroups);
+          renderActiveGroup();
+          showToast(`Created "${newGrp.name}"!`, "success");
+        });
+      }
+
+      // Duplicate Group
+      if (btnDuplicateGroup) {
+        btnDuplicateGroup.addEventListener('click', () => {
+          const grp = getActiveGroup();
+          if (!grp) return;
+          const clone = JSON.parse(JSON.stringify(grp));
+          clone.id = 'grp_' + Date.now();
+          clone.name = `${grp.name} (Copy)`;
+          clone.buttons.forEach((b, i) => { b.id = 'btn_c_' + Date.now() + '_' + i; });
+          currentButtonGroups.push(clone);
+          activeGroupId = clone.id;
+          saveButtonGroups(currentButtonGroups);
+          renderActiveGroup();
+          showToast(`Duplicated into "${clone.name}"!`, "success");
+        });
+      }
+
+      // Delete Group
+      if (btnDeleteGroup) {
+        btnDeleteGroup.addEventListener('click', () => {
+          if (currentButtonGroups.length <= 1) {
+            showToast("Cannot delete the only remaining button group!", "warning");
+            return;
+          }
+          const grp = getActiveGroup();
+          if (!grp) return;
+          if (confirm(`Delete group "${grp.name}"?`)) {
+            currentButtonGroups = currentButtonGroups.filter(g => g.id !== grp.id);
+            activeGroupId = currentButtonGroups[0].id;
+            saveButtonGroups(currentButtonGroups);
+            renderActiveGroup();
+            showToast("Button group deleted.", "info");
+          }
+        });
+      }
+
+      // Add Custom Link Button
+      if (btnAddCustomBtn) {
+        btnAddCustomBtn.addEventListener('click', () => {
+          const grp = getActiveGroup();
+          if (!grp) return;
+          const preset = CUSTOM_COLOR_PRESETS[0];
+          grp.buttons.push({
+            id: 'btn_custom_' + Date.now(),
+            type: 'custom',
+            label: 'Download Notes & Study PDF',
+            url: 'https://example.com/notes.pdf',
+            color: preset.color,
+            gradient: preset.gradient,
+            shadow: preset.shadow,
+            lightBg: preset.lightBg,
+            borderColor: preset.borderColor,
+            icon: 'fa-solid fa-download'
+          });
+          saveButtonGroups(currentButtonGroups);
+          renderActiveGroup();
+          showToast("Added custom action button!", "success");
+        });
+      }
+
+      // Preset Social Button Modal
+      function populatePresetModal() {
+        if (!presetPlatformPickers) return;
+        presetPlatformPickers.innerHTML = '';
+        const profs = getSocialProfiles();
+
+        ['yt', 'tg', 'wa', 'ig', 'fb', 'web'].forEach(k => {
+          const p = SOCIAL_PLATFORMS[k];
+          const btn = document.createElement('button');
+          btn.type = 'button';
+          btn.className = 'tactile-btn p-3 rounded-2xl border border-border-light bg-slate-50 hover:bg-slate-100 flex items-center gap-2.5 text-left transition';
+          btn.innerHTML = `
+            <div class="w-8 h-8 rounded-xl flex items-center justify-center text-white shrink-0 shadow-xs" style="background:${p.gradient};">
+              ${p.svg}
+            </div>
+            <div class="overflow-hidden">
+              <strong class="text-xs font-bold text-slate-800 block truncate">${p.name}</strong>
+              <span class="text-[10px] text-slate-400 block truncate">${escapeHtml(profs[k] || 'No link saved')}</span>
+            </div>
+          `;
+          btn.addEventListener('click', () => {
+            const grp = getActiveGroup();
+            if (grp) {
+              grp.buttons.push({
+                id: 'btn_soc_' + Date.now(),
+                type: 'social',
+                platform: k,
+                label: p.defaultLabel,
+                url: profs[k] || '#',
+                color: p.color,
+                gradient: p.gradient,
+                shadow: p.shadow,
+                lightBg: p.lightBg,
+                borderColor: p.borderColor,
+                icon: p.faClass
+              });
+              saveButtonGroups(currentButtonGroups);
+              renderActiveGroup();
+              if (presetSocialModal) presetSocialModal.classList.add('hidden');
+              showToast(`Added ${p.name} button!`, "success");
+            }
+          });
+          presetPlatformPickers.appendChild(btn);
+        });
+      }
+
+      if (btnOpenPresetModal) {
+        btnOpenPresetModal.addEventListener('click', () => {
+          populatePresetModal();
+          if (presetSocialModal) presetSocialModal.classList.remove('hidden');
+        });
+      }
+
+      if (btnClosePresetModal) {
+        btnClosePresetModal.addEventListener('click', () => {
+          if (presetSocialModal) presetSocialModal.classList.add('hidden');
+        });
+      }
+
+      if (presetSocialModal) {
+        presetSocialModal.addEventListener('click', (e) => {
+          if (e.target === presetSocialModal) {
+            presetSocialModal.classList.add('hidden');
+          }
+        });
+      }
+
+      // Group Export Actions
+      if (btnCopyGroupGadget) {
+        btnCopyGroupGadget.addEventListener('click', () => {
+          const grp = getActiveGroup();
+          if (!grp) return;
+          const html = generateGroupHtml(grp, true);
+          copyWidgetRawHtml(html, grp.name + " (Sidebar Gadget)");
+          showToast("Layout Gadget HTML copied! Paste in Layout -> Add a Gadget -> HTML/JavaScript", "success");
+        });
+      }
+
+      if (btnCopyGroupCompose) {
+        btnCopyGroupCompose.addEventListener('click', () => {
+          const grp = getActiveGroup();
+          if (!grp) return;
+          const html = generateGroupHtml(grp, false);
+          copyWidgetToBlogger(html, grp.name);
+        });
+      }
+
+      if (btnCopyGroupHtml) {
+        btnCopyGroupHtml.addEventListener('click', () => {
+          const grp = getActiveGroup();
+          if (!grp) return;
+          const html = generateGroupHtml(grp, false);
+          copyWidgetRawHtml(html, grp.name);
+        });
+      }
+
+      // Initialize Custom Button Groups UI
+      initGlobalProfilesUI();
+      renderActiveGroup();
 
       // --- WIDGET B: Educational Alert / Callout Boxes ---
       const calloutTypeSelect = document.getElementById('calloutTypeSelect');
@@ -2527,7 +3412,7 @@ ${cards}
       });
 
       function updateAllWidgetPreviews() {
-        updateSocialPreview();
+        if (typeof renderActiveGroup === 'function') renderActiveGroup();
         updateCalloutPreview();
         renderGridEditorItems();
         updateGridPreview();
