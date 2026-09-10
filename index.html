@@ -824,6 +824,10 @@
               <input type="text" id="modalGhRepo" class="w-full px-3 py-2 rounded-xl border border-border-light bg-white text-xs font-semibold focus:border-primary outline-none" value="RK_Quizmaker_nodatabase">
             </div>
           </div>
+          <div class="pt-2 border-t border-slate-200/60">
+            <label class="block text-[11px] font-bold text-slate-500 uppercase mb-1">Custom Master Google Sheet ID or Link (Optional)</label>
+            <input type="text" id="modalMasterSheetId" class="w-full px-3 py-2 rounded-xl border border-border-light bg-white text-xs font-semibold focus:border-primary outline-none font-mono" value="1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms" placeholder="1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms">
+          </div>
         </div>
 
         <!-- Step 2: Deployment Mode Selector -->
@@ -922,18 +926,21 @@
 
       <!-- Body -->
       <div class="p-5 sm:p-6 space-y-4 overflow-y-auto max-h-[75vh]">
-        <!-- Step 1: Template Download Banner -->
-        <div class="p-4 rounded-2xl bg-emerald-50/70 border border-emerald-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+        <!-- Step 1: Official Google Sheet Template Banner -->
+        <div class="p-4 rounded-2xl bg-emerald-50/80 border border-emerald-200 flex flex-col md:flex-row md:items-center justify-between gap-3">
           <div class="space-y-1">
             <span class="text-xs font-bold text-emerald-900 flex items-center gap-1.5">
-              <i class="fa-solid fa-table text-emerald-600"></i> Exam Master Template (6-in-1 Format)
+              <i class="fa-brands fa-google-drive text-emerald-600"></i> Official 6-in-1 Exam Master Template
             </span>
-            <p class="text-[11px] text-emerald-700 font-mono">Type | Question / Prompt | Option A / Left / Front | Option B / Right / Back | Option C | Option D | Correct Answer | Explanation / Hint</p>
+            <p class="text-[11px] text-emerald-700 font-medium">Clones all 6 question types directly into your personal Google Drive account.</p>
           </div>
-          <div class="flex items-center gap-2 shrink-0">
-            <button id="btnDownloadCsvTemplate" type="button" class="tactile-btn px-3.5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs flex items-center gap-1.5 shadow-sm" title="Download Full Exam Master CSV Template">
-              <i class="fa-solid fa-download"></i> Download Template (CSV)
+          <div class="flex items-center gap-2 shrink-0 flex-wrap">
+            <button id="btnOpenTemplatePreview" type="button" class="tactile-btn px-3 py-2 rounded-xl bg-white hover:bg-emerald-50 text-emerald-800 border border-emerald-300 font-bold text-xs flex items-center gap-1.5 shadow-sm" title="Inspect columns and formatting rules">
+              <i class="fa-solid fa-table-cells text-emerald-600"></i> View Template Format
             </button>
+            <a id="btnMakeSheetCopy" href="https://docs.google.com/spreadsheets/d/1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms/copy" target="_blank" rel="noopener noreferrer" class="tactile-btn px-3.5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs flex items-center gap-1.5 shadow-sm" title="Opens Google Sheets 'Make a copy' page directly in Google Drive">
+              <i class="fa-brands fa-google-drive text-emerald-100"></i> Make a Copy in Google Sheets
+            </a>
           </div>
         </div>
 
@@ -985,6 +992,204 @@
           <i id="fetchSheetSpinner" class="fa-solid fa-wand-magic-sparkles text-yellow-300"></i>
           <span id="fetchSheetBtnText">Fetch & Build Question Paper</span>
         </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================= -->
+  <!-- MODAL: GOOGLE SHEET TEMPLATE PREVIEW & FORMAT RULES           -->
+  <!-- ============================================================= -->
+  <div id="templatePreviewModal" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm hidden flex items-center justify-center p-4">
+    <div class="bg-white w-full max-w-4xl rounded-3xl shadow-2xl border border-border-light overflow-hidden flex flex-col animate-[fadeIn_0.2s_ease-out] max-h-[92vh]">
+      <!-- Header -->
+      <div class="p-5 bg-gradient-to-r from-emerald-900 via-teal-900 to-slate-900 text-white flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 flex items-center justify-center">
+            <i class="fa-solid fa-table-cells text-lg"></i>
+          </div>
+          <div>
+            <h3 class="font-extrabold text-base sm:text-lg">Google Sheet Exam Master Format</h3>
+            <p class="text-xs text-emerald-200">Universal 8-column layout supporting all 6 educational question types</p>
+          </div>
+        </div>
+        <button id="btnCloseTemplatePreview" class="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition">
+          <i class="fa-solid fa-times"></i>
+        </button>
+      </div>
+
+      <!-- Body -->
+      <div class="p-5 sm:p-6 space-y-4 overflow-y-auto flex-1">
+        <!-- Explanatory Banner & Copy Rules Button -->
+        <div class="p-4 rounded-2xl bg-slate-50 border border-border-light flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div class="space-y-0.5">
+            <h4 class="text-xs font-bold text-slate-800 uppercase tracking-wider">How to structure your Google Sheet:</h4>
+            <p class="text-xs text-slate-600">Row 1 must contain column headers. Enter questions starting from Row 2 matching the structure below.</p>
+          </div>
+          <button id="btnCopyFormatRules" type="button" class="tactile-btn px-3.5 py-2 rounded-xl bg-white hover:bg-slate-100 text-slate-700 font-bold text-xs border border-border-light flex items-center gap-1.5 shrink-0 shadow-sm">
+            <i class="fa-solid fa-copy text-emerald-600"></i> Copy Format Rules
+          </button>
+        </div>
+
+        <!-- Styled Preview Table with Horizontal Scroll -->
+        <div class="border border-border-light rounded-2xl overflow-hidden shadow-sm">
+          <div class="overflow-x-auto max-h-[420px]">
+            <table class="w-full text-left border-collapse font-sans text-xs">
+              <thead class="bg-slate-100 text-slate-700 font-extrabold sticky top-0 border-b border-border-light z-10">
+                <tr>
+                  <th class="p-3 whitespace-nowrap">Type</th>
+                  <th class="p-3 whitespace-nowrap min-w-[200px]">Question / Prompt</th>
+                  <th class="p-3 whitespace-nowrap min-w-[130px]">Option A / Left / Front</th>
+                  <th class="p-3 whitespace-nowrap min-w-[130px]">Option B / Right / Back</th>
+                  <th class="p-3 whitespace-nowrap min-w-[100px]">Option C</th>
+                  <th class="p-3 whitespace-nowrap min-w-[100px]">Option D</th>
+                  <th class="p-3 whitespace-nowrap min-w-[110px]">Correct Answer</th>
+                  <th class="p-3 whitespace-nowrap min-w-[180px]">Explanation / Hint</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-border-light bg-white font-medium text-slate-700">
+                <!-- 1. MCQ -->
+                <tr class="hover:bg-slate-50/80 transition">
+                  <td class="p-3 whitespace-nowrap">
+                    <span class="px-2 py-0.5 rounded-full text-[11px] font-bold bg-indigo-100 text-indigo-700">mcq</span>
+                  </td>
+                  <td class="p-3 font-semibold text-slate-900">What is the brain of the computer?</td>
+                  <td class="p-3">CPU</td>
+                  <td class="p-3">RAM</td>
+                  <td class="p-3">Hard Disk</td>
+                  <td class="p-3">Motherboard</td>
+                  <td class="p-3 font-mono font-bold text-emerald-700 bg-emerald-50/50">1 <span class="text-[10px] text-slate-400 font-normal">(or CPU)</span></td>
+                  <td class="p-3 text-slate-500">Central Processing Unit manages execution.</td>
+                </tr>
+
+                <!-- 2. Fill in the Blank -->
+                <tr class="hover:bg-slate-50/80 transition">
+                  <td class="p-3 whitespace-nowrap">
+                    <span class="px-2 py-0.5 rounded-full text-[11px] font-bold bg-emerald-100 text-emerald-700">fill_blank</span>
+                  </td>
+                  <td class="p-3 font-semibold text-slate-900">The shortcut key to copy text is Ctrl + ___.</td>
+                  <td class="p-3 text-slate-300 font-mono italic">—</td>
+                  <td class="p-3 text-slate-300 font-mono italic">—</td>
+                  <td class="p-3 text-slate-300 font-mono italic">—</td>
+                  <td class="p-3 text-slate-300 font-mono italic">—</td>
+                  <td class="p-3 font-mono font-bold text-emerald-700 bg-emerald-50/50">C</td>
+                  <td class="p-3 text-slate-500">Ctrl+C copies selected items.</td>
+                </tr>
+
+                <!-- 3. True / False -->
+                <tr class="hover:bg-slate-50/80 transition">
+                  <td class="p-3 whitespace-nowrap">
+                    <span class="px-2 py-0.5 rounded-full text-[11px] font-bold bg-rose-100 text-rose-700">true_false</span>
+                  </td>
+                  <td class="p-3 font-semibold text-slate-900">Python is a compiled-only programming language.</td>
+                  <td class="p-3">True</td>
+                  <td class="p-3">False</td>
+                  <td class="p-3 text-slate-300 font-mono italic">—</td>
+                  <td class="p-3 text-slate-300 font-mono italic">—</td>
+                  <td class="p-3 font-mono font-bold text-emerald-700 bg-emerald-50/50">2 <span class="text-[10px] text-slate-400 font-normal">(or False)</span></td>
+                  <td class="p-3 text-slate-500">Python is an interpreted language.</td>
+                </tr>
+
+                <!-- 4. Flashcard -->
+                <tr class="hover:bg-slate-50/80 transition">
+                  <td class="p-3 whitespace-nowrap">
+                    <span class="px-2 py-0.5 rounded-full text-[11px] font-bold bg-amber-100 text-amber-800">flashcard</span>
+                  </td>
+                  <td class="p-3 font-semibold text-slate-900">Cache Memory</td>
+                  <td class="p-3">Extremely high-speed buffer between CPU and RAM.</td>
+                  <td class="p-3 text-slate-300 font-mono italic">—</td>
+                  <td class="p-3 text-slate-300 font-mono italic">—</td>
+                  <td class="p-3 text-slate-300 font-mono italic">—</td>
+                  <td class="p-3 text-slate-300 font-mono italic">—</td>
+                  <td class="p-3 text-slate-500">Flip to see concept definition.</td>
+                </tr>
+
+                <!-- 5. Match the Pair -->
+                <tr class="hover:bg-slate-50/80 transition">
+                  <td class="p-3 whitespace-nowrap">
+                    <span class="px-2 py-0.5 rounded-full text-[11px] font-bold bg-purple-100 text-purple-700">match</span>
+                  </td>
+                  <td class="p-3 font-semibold text-slate-900">Match network protocols to default ports:</td>
+                  <td class="p-3 font-mono font-semibold text-purple-900">HTTP:80</td>
+                  <td class="p-3 font-mono font-semibold text-purple-900">HTTPS:443</td>
+                  <td class="p-3 font-mono font-semibold text-purple-900">DNS:53</td>
+                  <td class="p-3 font-mono font-semibold text-purple-900">SSH:22</td>
+                  <td class="p-3 font-mono font-bold text-emerald-700 bg-emerald-50/50">ALL</td>
+                  <td class="p-3 text-slate-500">Key-value pairs separated by colons.</td>
+                </tr>
+
+                <!-- 6. Sequence Reorder -->
+                <tr class="hover:bg-slate-50/80 transition">
+                  <td class="p-3 whitespace-nowrap">
+                    <span class="px-2 py-0.5 rounded-full text-[11px] font-bold bg-sky-100 text-sky-800">reorder</span>
+                  </td>
+                  <td class="p-3 font-semibold text-slate-900">Arrange the IPO cycle steps in order:</td>
+                  <td class="p-3 font-semibold">Input</td>
+                  <td class="p-3 font-semibold">Process</td>
+                  <td class="p-3 font-semibold">Output</td>
+                  <td class="p-3 font-semibold">Storage</td>
+                  <td class="p-3 font-mono font-bold text-emerald-700 bg-emerald-50/50">1,2,3,4</td>
+                  <td class="p-3 text-slate-500">Standard computer execution pipeline.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Format Rules Quick Guide -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 pt-1">
+          <div class="p-3 rounded-xl bg-slate-50 border border-border-light space-y-1">
+            <span class="font-bold text-[11px] text-indigo-700 flex items-center gap-1">
+              <i class="fa-solid fa-circle-check"></i> Multiple Choice (mcq)
+            </span>
+            <p class="text-[11px] text-slate-600 leading-relaxed">Put options in cols C-F. Answer can be <code>1</code>, <code>2</code>, <code>3</code>, <code>4</code> or <code>A</code>, <code>B</code>, <code>C</code>, <code>D</code>.</p>
+          </div>
+          <div class="p-3 rounded-xl bg-slate-50 border border-border-light space-y-1">
+            <span class="font-bold text-[11px] text-emerald-700 flex items-center gap-1">
+              <i class="fa-solid fa-pen"></i> Fill Blank (fill_blank)
+            </span>
+            <p class="text-[11px] text-slate-600 leading-relaxed">Put target word in Answer col. Comma-separate synonyms (e.g. <code>DHCP, Dynamic Host</code>).</p>
+          </div>
+          <div class="p-3 rounded-xl bg-slate-50 border border-border-light space-y-1">
+            <span class="font-bold text-[11px] text-rose-700 flex items-center gap-1">
+              <i class="fa-solid fa-toggle-on"></i> True / False (true_false)
+            </span>
+            <p class="text-[11px] text-slate-600 leading-relaxed">Col C is True, Col D is False. Answer can be <code>1</code> (True), <code>2</code> (False), or <code>True</code>/<code>False</code>.</p>
+          </div>
+          <div class="p-3 rounded-xl bg-slate-50 border border-border-light space-y-1">
+            <span class="font-bold text-[11px] text-amber-700 flex items-center gap-1">
+              <i class="fa-solid fa-clone"></i> Flashcard (flashcard)
+            </span>
+            <p class="text-[11px] text-slate-600 leading-relaxed">Question col = Card Term/Front. Col C = Detailed Definition / Back.</p>
+          </div>
+          <div class="p-3 rounded-xl bg-slate-50 border border-border-light space-y-1">
+            <span class="font-bold text-[11px] text-purple-700 flex items-center gap-1">
+              <i class="fa-solid fa-diagram-project"></i> Match Pair (match)
+            </span>
+            <p class="text-[11px] text-slate-600 leading-relaxed">Write each matching item as <code>Left:Right</code> (e.g. <code>HTTP:80</code>) across columns C to F.</p>
+          </div>
+          <div class="p-3 rounded-xl bg-slate-50 border border-border-light space-y-1">
+            <span class="font-bold text-[11px] text-sky-700 flex items-center gap-1">
+              <i class="fa-solid fa-arrow-down-1-9"></i> Reorder (reorder)
+            </span>
+            <p class="text-[11px] text-slate-600 leading-relaxed">Place steps in correct chronological order across Cols C to F. The player auto-shuffles them.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Footer -->
+      <div class="p-4 sm:p-5 bg-slate-50 border-t border-border-light flex flex-wrap items-center justify-between gap-3">
+        <button id="btnCopyFormatRulesFooter" type="button" class="tactile-btn px-4 py-2 rounded-xl bg-white hover:bg-slate-100 text-slate-700 font-bold text-xs border border-border-light flex items-center gap-1.5">
+          <i class="fa-solid fa-copy text-emerald-600"></i> Copy Rules Text
+        </button>
+        <div class="flex items-center gap-2">
+          <button id="btnCloseTemplatePreviewFooter" class="tactile-btn px-4 py-2 rounded-xl bg-white hover:bg-slate-100 text-slate-700 font-bold text-xs border border-border-light">
+            Close
+          </button>
+          <a id="btnPreviewModalCopyLink" href="https://docs.google.com/spreadsheets/d/1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms/copy" target="_blank" rel="noopener noreferrer" class="tactile-btn px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs flex items-center gap-1.5 shadow-md shadow-emerald-600/20">
+            <i class="fa-brands fa-google-drive text-emerald-100"></i>
+            <span>Make a Copy in Google Sheets</span>
+          </a>
+        </div>
       </div>
     </div>
   </div>
@@ -1122,6 +1327,11 @@
       let ghUsername = localStorage.getItem(GITHUB_USER_KEY) || 'RaviKhillare';
       let ghRepo = localStorage.getItem(GITHUB_REPO_KEY) || 'RK_Quizmaker_nodatabase';
 
+      // Master Google Sheet Template Settings (Persistent in LocalStorage)
+      const MASTER_SHEET_KEY = 'bsp_master_sheet_id';
+      const DEFAULT_MASTER_SHEET_ID = '1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms';
+      let masterSheetId = localStorage.getItem(MASTER_SHEET_KEY) || DEFAULT_MASTER_SHEET_ID;
+
       // -------------------------------------------------------------
       // 2. DOM Handles
       // -------------------------------------------------------------
@@ -1191,6 +1401,16 @@
       const googleSheetUrlInput = document.getElementById('googleSheetUrlInput');
       const btnFetchGoogleSheet = document.getElementById('btnFetchGoogleSheet');
 
+      // Master Sheet Copy & Preview Elements
+      const modalMasterSheetId = document.getElementById('modalMasterSheetId');
+      const btnMakeSheetCopy = document.getElementById('btnMakeSheetCopy');
+      const btnOpenTemplatePreview = document.getElementById('btnOpenTemplatePreview');
+      const templatePreviewModal = document.getElementById('templatePreviewModal');
+      const btnCloseTemplatePreview = document.getElementById('btnCloseTemplatePreview');
+      const btnCloseTemplatePreviewFooter = document.getElementById('btnCloseTemplatePreviewFooter');
+      const btnCopyFormatRulesFooter = document.getElementById('btnCopyFormatRulesFooter');
+      const btnPreviewModalCopyLink = document.getElementById('btnPreviewModalCopyLink');
+
       // Library Elements
       const btnSaveCurrentToLibrary = document.getElementById('btnSaveCurrentToLibrary');
       const btnSaveCurrentQuick = document.getElementById('btnSaveCurrentQuick');
@@ -1213,7 +1433,9 @@
       // Initialize Inputs with saved Settings
       modalGhUsername.value = ghUsername;
       modalGhRepo.value = ghRepo;
+      if (modalMasterSheetId) modalMasterSheetId.value = masterSheetId;
       updateSidebarGhDisplay();
+      updateMasterSheetCopyLinks();
 
       // -------------------------------------------------------------
       // 3. Slug & URL Helper Engines
@@ -1273,6 +1495,17 @@
 
       modalGhUsername.addEventListener('input', handleGhSettingsChange);
       modalGhRepo.addEventListener('input', handleGhSettingsChange);
+
+      function handleMasterSheetIdChange() {
+        if (!modalMasterSheetId) return;
+        masterSheetId = modalMasterSheetId.value.trim() || DEFAULT_MASTER_SHEET_ID;
+        localStorage.setItem(MASTER_SHEET_KEY, masterSheetId);
+        updateMasterSheetCopyLinks();
+      }
+
+      if (modalMasterSheetId) {
+        modalMasterSheetId.addEventListener('input', handleMasterSheetIdChange);
+      }
 
       document.querySelectorAll('input[name="embedMode"]').forEach(radio => {
         radio.addEventListener('change', () => {
@@ -2483,6 +2716,63 @@ ${cards}
         if (bulkImportModal) bulkImportModal.classList.add('hidden');
       }
 
+      function getMasterSheetCopyUrl(idOrUrl) {
+        const val = (idOrUrl || masterSheetId || DEFAULT_MASTER_SHEET_ID).trim();
+        const idMatch = val.match(/\/d\/([a-zA-Z0-9-_]+)/);
+        const sheetId = idMatch ? idMatch[1] : (val || DEFAULT_MASTER_SHEET_ID);
+        return `https://docs.google.com/spreadsheets/d/${sheetId}/copy`;
+      }
+
+      function updateMasterSheetCopyLinks() {
+        const copyUrl = getMasterSheetCopyUrl(masterSheetId);
+        if (btnMakeSheetCopy) btnMakeSheetCopy.href = copyUrl;
+        if (btnPreviewModalCopyLink) btnPreviewModalCopyLink.href = copyUrl;
+      }
+
+      function openTemplatePreviewModal() {
+        updateMasterSheetCopyLinks();
+        if (templatePreviewModal) templatePreviewModal.classList.remove('hidden');
+      }
+
+      function closeTemplatePreviewModal() {
+        if (templatePreviewModal) templatePreviewModal.classList.add('hidden');
+      }
+
+      function copyFormatRulesText() {
+        const rulesText = `GOOGLE SHEET EXAM MASTER TEMPLATE FORMAT (6-IN-1)
+=====================================================
+Columns (8 Total):
+1. Type: mcq | fill_blank | true_false | flashcard | match | reorder
+2. Question / Prompt: The question prompt or card term
+3. Option A / Left / Front: Option A (mcq), True (true_false), Definition (flashcard), Left:Right pair 1 (match), Step 1 (reorder)
+4. Option B / Right / Back: Option B (mcq), False (true_false), Left:Right pair 2 (match), Step 2 (reorder)
+5. Option C: Option C (mcq), Left:Right pair 3 (match), Step 3 (reorder)
+6. Option D: Option D (mcq), Left:Right pair 4 (match), Step 4 (reorder)
+7. Correct Answer:
+   - mcq: 1, 2, 3, 4 (or A, B, C, D)
+   - fill_blank: Expected answer string or comma-separated synonyms
+   - true_false: 1 (True) or 2 (False)
+   - flashcard: (leave blank)
+   - match: ALL
+   - reorder: 1,2,3,4 (target step order)
+8. Explanation / Hint: Educational rationale or concept tip
+
+Master Template Copy Link:
+${getMasterSheetCopyUrl(masterSheetId)}`;
+
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(rulesText).then(() => {
+            showToast("Copied Template Format Rules to clipboard!", "success");
+          }).catch(() => {
+            fallbackCopyText(rulesText);
+            showToast("Copied Template Format Rules!", "success");
+          });
+        } else {
+          fallbackCopyText(rulesText);
+          showToast("Copied Template Format Rules!", "success");
+        }
+      }
+
       function downloadCsvTemplate() {
         const csvContent = `Type,Question / Prompt,Option A / Left / Front,Option B / Right / Back,Option C,Option D,Correct Answer,Explanation / Hint
 mcq,"What is the brain of the computer?","CPU","RAM","Hard Disk","Motherboard","1","Central Processing Unit manages execution."
@@ -2780,6 +3070,15 @@ reorder,"Arrange the IPO cycle steps in order.","Input","Process","Output","Stor
       if (btnCancelBulkModal) btnCancelBulkModal.addEventListener('click', closeBulkImportModal);
       if (btnDownloadCsvTemplate) btnDownloadCsvTemplate.addEventListener('click', downloadCsvTemplate);
       if (btnFetchGoogleSheet) btnFetchGoogleSheet.addEventListener('click', executeGoogleSheetImport);
+      if (btnOpenTemplatePreview) btnOpenTemplatePreview.addEventListener('click', openTemplatePreviewModal);
+      if (btnCloseTemplatePreview) btnCloseTemplatePreview.addEventListener('click', closeTemplatePreviewModal);
+      if (btnCloseTemplatePreviewFooter) btnCloseTemplatePreviewFooter.addEventListener('click', closeTemplatePreviewModal);
+      if (btnCopyFormatRulesFooter) btnCopyFormatRulesFooter.addEventListener('click', copyFormatRulesText);
+      if (templatePreviewModal) {
+        templatePreviewModal.addEventListener('click', (e) => {
+          if (e.target === templatePreviewModal) closeTemplatePreviewModal();
+        });
+      }
       if (googleSheetUrlInput) {
         googleSheetUrlInput.addEventListener('keydown', (e) => {
           if (e.key === 'Enter') {
