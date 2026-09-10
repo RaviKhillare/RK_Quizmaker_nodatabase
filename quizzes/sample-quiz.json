@@ -43,6 +43,22 @@
         { "left": "SSH", "right": "Port 22" }
       ],
       "explanation": "Standard well-known ports defined by IANA for core Internet communication protocols."
+    },
+    {
+      "type": "true_false",
+      "prompt": "IPv6 addresses are 128 bits in length, represented as eight groups of four hexadecimal digits.",
+      "correctAnswer": true,
+      "explanation": "IPv6 uses 128-bit addresses (compared to IPv4's 32-bit addresses), vastly expanding available unique IP addresses across the globe."
+    },
+    {
+      "type": "reorder",
+      "prompt": "Arrange the standard 3-Way TCP Handshake connection packets in proper sequence:",
+      "items": [
+        "Client sends SYN (Synchronize) to Server",
+        "Server responds with SYN-ACK (Synchronize-Acknowledge)",
+        "Client replies with ACK (Acknowledge) to establish connection"
+      ],
+      "explanation": "The classic TCP 3-way handshake follows SYN -> SYN-ACK -> ACK to establish a reliable end-to-end transmission session."
     }
   ]
 }

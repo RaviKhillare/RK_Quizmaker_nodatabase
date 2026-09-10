@@ -74,6 +74,26 @@
       flex-direction: column;
       position: relative;
       overflow: hidden;
+      transition: all 0.25s ease;
+    }
+
+    /* Mobile Immersive / Fullscreen Mode */
+    .quiz-app.is-fullscreen {
+      position: fixed !important;
+      inset: 0 !important;
+      z-index: 999999 !important;
+      width: 100vw !important;
+      height: 100vh !important;
+      max-width: 100% !important;
+      max-height: 100% !important;
+      border-radius: 0 !important;
+      border: none !important;
+      box-shadow: none !important;
+      padding-top: env(safe-area-inset-top, 0) !important;
+      padding-bottom: env(safe-area-inset-bottom, 0) !important;
+      padding-left: env(safe-area-inset-left, 0) !important;
+      padding-right: env(safe-area-inset-right, 0) !important;
+      background: #ffffff !important;
     }
 
     /* -------------------------------------------------------------
@@ -550,12 +570,219 @@
       cursor: default;
     }
 
-    .match-pill.shake-red {
-      animation: duolingoShake 0.4s ease;
-      border-color: var(--danger);
-      border-bottom-color: var(--danger-dark);
+    /* -------------------------------------------------------------
+       Type 5: True / False Tactile Cards
+       ------------------------------------------------------------- */
+    .tf-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      width: 100%;
+      margin-top: 10px;
+    }
+
+    .tf-btn {
+      padding: 24px 16px;
+      background: #ffffff;
+      border: 2px solid var(--border-light);
+      border-bottom: 5px solid var(--border-dark);
+      border-radius: var(--radius-xl);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      cursor: pointer;
+      user-select: none;
+      transition: all 0.15s ease;
+    }
+
+    .tf-btn .tf-icon-circle {
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.4rem;
+      transition: transform 0.2s var(--ease-bounce);
+    }
+
+    .tf-btn-true .tf-icon-circle {
+      background: var(--success-bg);
+      color: var(--success);
+      border: 2px solid var(--success-light);
+    }
+
+    .tf-btn-false .tf-icon-circle {
       background: var(--danger-bg);
-      color: var(--danger-dark);
+      color: var(--danger);
+      border: 2px solid var(--danger-light);
+    }
+
+    .tf-label {
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: var(--text-main);
+    }
+
+    .tf-btn:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 16px -4px rgba(0, 0, 0, 0.06);
+    }
+    .tf-btn-true:hover:not(:disabled) {
+      border-color: var(--success);
+      background: #f0fdf4;
+    }
+    .tf-btn-false:hover:not(:disabled) {
+      border-color: var(--danger);
+      background: #fef2f2;
+    }
+
+    .tf-btn:active:not(:disabled) {
+      transform: translateY(3px);
+      border-bottom-width: 2px;
+    }
+
+    .tf-btn.selected-correct {
+      border-color: var(--success) !important;
+      border-bottom: 5px solid var(--success-dark) !important;
+      background: var(--success-bg) !important;
+      color: var(--success-dark) !important;
+    }
+    .tf-btn.selected-wrong {
+      border-color: var(--danger) !important;
+      border-bottom: 5px solid var(--danger-dark) !important;
+      background: var(--danger-bg) !important;
+      color: var(--danger-dark) !important;
+    }
+
+    /* -------------------------------------------------------------
+       Type 6: Sequence Reorder Engine
+       ------------------------------------------------------------- */
+    .reorder-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      width: 100%;
+    }
+
+    .reorder-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 16px;
+      background: #ffffff;
+      border: 2px solid var(--border-light);
+      border-bottom: 3px solid var(--border-dark);
+      border-radius: var(--radius-lg);
+      transition: all 0.2s ease;
+    }
+
+    .reorder-rank {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: #f1f5f9;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .reorder-text {
+      flex: 1;
+      font-size: 0.92rem;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+
+    .reorder-arrows {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      flex-shrink: 0;
+    }
+
+    .btn-reorder-move {
+      width: 26px;
+      height: 22px;
+      border-radius: 6px;
+      background: #f1f5f9;
+      border: 1px solid var(--border-light);
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 0.7rem;
+      transition: all 0.15s ease;
+    }
+
+    .btn-reorder-move:hover:not(:disabled) {
+      background: var(--primary-light);
+      color: var(--primary);
+      border-color: var(--primary);
+    }
+
+    .btn-reorder-move:disabled {
+      opacity: 0.3;
+      cursor: not-allowed;
+    }
+
+    .reorder-submit-bar {
+      margin-top: 14px;
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    .reorder-item.item-correct {
+      border-color: var(--success);
+      background: var(--success-bg);
+    }
+    .reorder-item.item-correct .reorder-rank {
+      background: var(--success);
+      color: #ffffff;
+    }
+
+    .reorder-item.item-wrong {
+      border-color: var(--danger);
+      background: var(--danger-bg);
+    }
+    .reorder-item.item-wrong .reorder-rank {
+      background: var(--danger);
+      color: #ffffff;
+    }
+
+    /* Top Nav Fullscreen buttons */
+    .btn-fs-control {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      cursor: pointer;
+      font-size: 0.95rem;
+      padding: 5px 8px;
+      border-radius: var(--radius-sm);
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-family: inherit;
+      font-weight: 700;
+      transition: all 0.15s ease;
+    }
+    .btn-fs-control:hover {
+      background: #f1f5f9;
+      color: var(--text-main);
+    }
+    .btn-fs-close {
+      color: var(--danger) !important;
+      background: var(--danger-bg) !important;
+    }
+    .btn-fs-close:hover {
+      background: var(--danger-light) !important;
     }
 
     /* -------------------------------------------------------------
@@ -891,6 +1118,13 @@
           <span class="score-badge" id="scoreBadge">
             <i class="fa-solid fa-star"></i> <span id="scoreText">0</span>
           </span>
+          <!-- Fullscreen Expand / Close Action Buttons -->
+          <button class="btn-fs-control" id="fullscreenToggleBtn" title="Toggle Fullscreen Mode">
+            <i class="fa-solid fa-expand"></i>
+          </button>
+          <button class="btn-fs-control btn-fs-close" id="closeFullscreenBtn" title="Close Fullscreen / Return" style="display: none;">
+            <i class="fa-solid fa-xmark"></i> <span>Close</span>
+          </button>
         </div>
       </div>
       <div class="progress-track">
@@ -964,6 +1198,23 @@
               { left: "HTML", right: "Content Structure" }
             ],
             explanation: "HTML creates content, CSS paints the appearance, and JavaScript runs dynamic behaviors."
+          },
+          {
+            type: "true_false",
+            prompt: "HTTP is inherently a stateless application-layer communication protocol.",
+            correctAnswer: true,
+            explanation: "HTTP is stateless by design; each request is executed independently without server session state unless cookies or tokens are used."
+          },
+          {
+            type: "reorder",
+            prompt: "Arrange the standard stages of the Web Development Lifecycle in proper order:",
+            items: [
+              "Requirements & UI/UX Wireframing",
+              "Frontend & Backend Development",
+              "Testing & Cross-browser QA",
+              "Production Deployment & Hosting"
+            ],
+            explanation: "The typical delivery sequence flows from wireframing to coding, testing, and finally production release."
           }
         ]
       };
@@ -1054,6 +1305,7 @@
       };
 
       // DOM Handles
+      const quizApp = document.getElementById('quizApp');
       const topNav = document.getElementById('topNav');
       const quizTitle = document.getElementById('quizTitle');
       const soundToggleBtn = document.getElementById('soundToggleBtn');
@@ -1066,6 +1318,66 @@
       const drawerStatus = document.getElementById('drawerStatus');
       const drawerExplanation = document.getElementById('drawerExplanation');
       const drawerContinueBtn = document.getElementById('drawerContinueBtn');
+      const fullscreenToggleBtn = document.getElementById('fullscreenToggleBtn');
+      const closeFullscreenBtn = document.getElementById('closeFullscreenBtn');
+
+      let isFullscreenActive = false;
+
+      function enterFullscreenMode() {
+        isFullscreenActive = true;
+        quizApp.classList.add('is-fullscreen');
+        if (fullscreenToggleBtn) fullscreenToggleBtn.style.display = 'none';
+        if (closeFullscreenBtn) closeFullscreenBtn.style.display = 'inline-flex';
+        document.body.style.overflow = 'hidden';
+
+        try {
+          if (document.documentElement.requestFullscreen && !document.fullscreenElement) {
+            document.documentElement.requestFullscreen().catch(() => {});
+          }
+        } catch (e) {}
+      }
+
+      function exitFullscreenMode() {
+        isFullscreenActive = false;
+        quizApp.classList.remove('is-fullscreen');
+        if (fullscreenToggleBtn) fullscreenToggleBtn.style.display = 'inline-flex';
+        if (closeFullscreenBtn) closeFullscreenBtn.style.display = 'none';
+        document.body.style.overflow = '';
+
+        try {
+          if (document.fullscreenElement && document.exitFullscreen) {
+            document.exitFullscreen().catch(() => {});
+          }
+        } catch (e) {}
+      }
+
+      function toggleFullscreenMode() {
+        if (isFullscreenActive) {
+          exitFullscreenMode();
+        } else {
+          enterFullscreenMode();
+        }
+      }
+
+      if (fullscreenToggleBtn) {
+        fullscreenToggleBtn.addEventListener('click', () => {
+          initAudio();
+          toggleFullscreenMode();
+        });
+      }
+
+      if (closeFullscreenBtn) {
+        closeFullscreenBtn.addEventListener('click', () => {
+          initAudio();
+          exitFullscreenMode();
+        });
+      }
+
+      document.addEventListener('fullscreenchange', () => {
+        if (!document.fullscreenElement && isFullscreenActive) {
+          exitFullscreenMode();
+        }
+      });
 
       // Sound toggle interaction
       soundToggleBtn.addEventListener('click', () => {
@@ -1189,6 +1501,12 @@
             break;
           case 'match':
             renderMatch(currentQ);
+            break;
+          case 'true_false':
+            renderTrueFalse(currentQ);
+            break;
+          case 'reorder':
+            renderReorder(currentQ);
             break;
           default:
             renderUnsupported(currentQ);
@@ -1504,6 +1822,219 @@
       }
 
       // -------------------------------------------------------------
+      // Engine 5: True / False (Tactile Dual Cards)
+      // -------------------------------------------------------------
+      function renderTrueFalse(q) {
+        quizViewport.innerHTML = `
+          <div>
+            <span class="badge-pill"><i class="fa-solid fa-circle-check"></i> True / False</span>
+            <h2 class="prompt-text">${escapeHtml(q.prompt)}</h2>
+            <div class="tf-grid">
+              <button class="tactile-btn tf-btn tf-btn-true" id="btnTfTrue" data-val="true">
+                <div class="tf-icon-circle">
+                  <i class="fa-solid fa-check"></i>
+                </div>
+                <span class="tf-label">TRUE</span>
+              </button>
+              <button class="tactile-btn tf-btn tf-btn-false" id="btnTfFalse" data-val="false">
+                <div class="tf-icon-circle">
+                  <i class="fa-solid fa-xmark"></i>
+                </div>
+                <span class="tf-label">FALSE</span>
+              </button>
+            </div>
+          </div>
+        `;
+
+        const btnTrue = document.getElementById('btnTfTrue');
+        const btnFalse = document.getElementById('btnTfFalse');
+
+        const evaluateTf = (chosenBool) => {
+          if (state.hasAnsweredCurrent) return;
+          state.hasAnsweredCurrent = true;
+          initAudio();
+
+          const correctBool = (typeof q.correctAnswer === 'boolean')
+            ? q.correctAnswer
+            : (String(q.correctAnswer).toLowerCase() === 'true');
+
+          const isCorrect = (chosenBool === correctBool);
+
+          btnTrue.disabled = true;
+          btnFalse.disabled = true;
+
+          if (isCorrect) {
+            state.score++;
+            scoreText.textContent = state.score;
+            playSound('correct');
+            if (chosenBool) {
+              btnTrue.classList.add('selected-correct');
+            } else {
+              btnFalse.classList.add('selected-correct');
+            }
+          } else {
+            playSound('wrong');
+            if (chosenBool) {
+              btnTrue.classList.add('selected-wrong');
+              btnFalse.classList.add('selected-correct');
+            } else {
+              btnFalse.classList.add('selected-wrong');
+              btnTrue.classList.add('selected-correct');
+            }
+          }
+
+          state.resultsLog.push({ prompt: q.prompt, isCorrect });
+          const statusText = isCorrect ? "Correct!" : "Incorrect";
+          const explanation = q.explanation || (isCorrect 
+            ? `The statement is indeed ${correctBool ? 'True' : 'False'}.` 
+            : `The correct answer is ${correctBool ? 'True' : 'False'}.`);
+          openFeedbackDrawer(isCorrect, statusText, explanation);
+        };
+
+        btnTrue.addEventListener('click', () => evaluateTf(true));
+        btnFalse.addEventListener('click', () => evaluateTf(false));
+      }
+
+      // -------------------------------------------------------------
+      // Engine 6: Sequence Reorder (Chronological / Process Ordering)
+      // -------------------------------------------------------------
+      function renderReorder(q) {
+        // Items must be arranged in the correct sequential order in q.items or q.steps
+        const originalSequence = (q.items && q.items.length) ? [...q.items] : (q.steps || ["Step 1", "Step 2", "Step 3"]);
+        // Create an indexed array and shuffle for student display
+        let indexedItems = originalSequence.map((text, idx) => ({ id: idx, text }));
+        // Shuffle ensuring it's not already accidentally in the exact solved order if more than 1 item
+        if (indexedItems.length > 1) {
+          let attempts = 0;
+          do {
+            indexedItems = shuffle([...indexedItems]);
+            attempts++;
+          } while (attempts < 5 && indexedItems.every((item, i) => item.id === i));
+        }
+
+        state.currentReorderState = {
+          items: indexedItems,
+          total: originalSequence.length
+        };
+
+        const renderListHtml = () => {
+          return state.currentReorderState.items.map((item, idx) => `
+            <div class="reorder-item" data-id="${item.id}" data-index="${idx}">
+              <div class="reorder-rank">${idx + 1}</div>
+              <div class="reorder-text">${escapeHtml(item.text)}</div>
+              <div class="reorder-arrows">
+                <button type="button" class="btn-reorder-move btn-move-up" data-dir="up" ${idx === 0 ? 'disabled' : ''} title="Move Up">
+                  <i class="fa-solid fa-chevron-up"></i>
+                </button>
+                <button type="button" class="btn-reorder-move btn-move-down" data-dir="down" ${idx === state.currentReorderState.items.length - 1 ? 'disabled' : ''} title="Move Down">
+                  <i class="fa-solid fa-chevron-down"></i>
+                </button>
+              </div>
+            </div>
+          `).join('');
+        };
+
+        quizViewport.innerHTML = `
+          <div>
+            <span class="badge-pill"><i class="fa-solid fa-arrow-down-1-9"></i> Sequence Reorder</span>
+            <h2 class="prompt-text">${escapeHtml(q.prompt || "Arrange the following items in the correct order:")}</h2>
+            <div class="reorder-list" id="reorderListContainer">
+              ${renderListHtml()}
+            </div>
+            <div class="reorder-submit-bar">
+              <button class="tactile-btn" id="btnCheckReorder" style="padding: 12px 24px; background: var(--primary); color: #fff; font-size: 0.95rem; border: none; border-radius: var(--radius-lg);">
+                Check Order <i class="fa-solid fa-circle-check" style="margin-left: 6px;"></i>
+              </button>
+            </div>
+          </div>
+        `;
+
+        const attachItemMovementEvents = () => {
+          const container = document.getElementById('reorderListContainer');
+          const upBtns = container.querySelectorAll('.btn-move-up');
+          const downBtns = container.querySelectorAll('.btn-move-down');
+
+          upBtns.forEach(btn => {
+            btn.addEventListener('click', (e) => {
+              e.stopPropagation();
+              const itemEl = btn.closest('.reorder-item');
+              const idx = parseInt(itemEl.dataset.index);
+              if (idx > 0) {
+                initAudio();
+                playSound('flip');
+                const temp = state.currentReorderState.items[idx];
+                state.currentReorderState.items[idx] = state.currentReorderState.items[idx - 1];
+                state.currentReorderState.items[idx - 1] = temp;
+                container.innerHTML = renderListHtml();
+                attachItemMovementEvents();
+              }
+            });
+          });
+
+          downBtns.forEach(btn => {
+            btn.addEventListener('click', (e) => {
+              e.stopPropagation();
+              const itemEl = btn.closest('.reorder-item');
+              const idx = parseInt(itemEl.dataset.index);
+              if (idx < state.currentReorderState.items.length - 1) {
+                initAudio();
+                playSound('flip');
+                const temp = state.currentReorderState.items[idx];
+                state.currentReorderState.items[idx] = state.currentReorderState.items[idx + 1];
+                state.currentReorderState.items[idx + 1] = temp;
+                container.innerHTML = renderListHtml();
+                attachItemMovementEvents();
+              }
+            });
+          });
+        };
+
+        attachItemMovementEvents();
+
+        const btnCheck = document.getElementById('btnCheckReorder');
+        btnCheck.addEventListener('click', () => {
+          if (state.hasAnsweredCurrent) return;
+          state.hasAnsweredCurrent = true;
+          btnCheck.disabled = true;
+          initAudio();
+
+          const container = document.getElementById('reorderListContainer');
+          const itemElements = container.querySelectorAll('.reorder-item');
+          let correctSlots = 0;
+
+          state.currentReorderState.items.forEach((item, slotIdx) => {
+            const el = itemElements[slotIdx];
+            const moveBtns = el.querySelectorAll('.btn-reorder-move');
+            moveBtns.forEach(b => b.disabled = true);
+
+            if (item.id === slotIdx) {
+              correctSlots++;
+              el.classList.add('item-correct');
+            } else {
+              el.classList.add('item-wrong');
+            }
+          });
+
+          const isFullyCorrect = (correctSlots === state.currentReorderState.total);
+
+          if (isFullyCorrect) {
+            state.score++;
+            scoreText.textContent = state.score;
+            playSound('correct');
+          } else {
+            playSound('wrong');
+          }
+
+          state.resultsLog.push({ prompt: q.prompt, isCorrect: isFullyCorrect });
+          const statusMsg = isFullyCorrect ? "Perfect Sequence!" : `${correctSlots} of ${state.currentReorderState.total} in right place`;
+          const explanation = q.explanation || (isFullyCorrect 
+            ? "You sequenced each step in exact chronological order." 
+            : "Review the highlighted steps above for the proper ordering.");
+          openFeedbackDrawer(isFullyCorrect, statusMsg, explanation);
+        });
+      }
+
+      // -------------------------------------------------------------
       // 6. Bottom Feedback Drawer Coordinator
       // -------------------------------------------------------------
       function openFeedbackDrawer(isSuccess, title, explanation) {
@@ -1591,15 +2122,27 @@
               ${breakdownHtml}
             </div>
 
-            <button class="tactile-btn retake-quiz-btn" id="retakeQuizBtn">
-              <i class="fa-solid fa-rotate-right" style="margin-right: 8px;"></i> Retake Quiz
-            </button>
+            <div style="display: flex; flex-direction: column; gap: 10px; width: 100%; max-width: 380px; align-items: stretch;">
+              <button class="tactile-btn retake-quiz-btn" id="retakeQuizBtn">
+                <i class="fa-solid fa-rotate-right" style="margin-right: 8px;"></i> Retake Quiz
+              </button>
+              <button class="tactile-btn" id="exitQuizReturnBtn" style="padding: 12px 24px; background: #f1f5f9; border: 2px solid var(--border-dark); border-bottom: 4px solid var(--border-dark); color: #334155; font-size: 0.95rem; border-radius: var(--radius-lg);">
+                <i class="fa-solid fa-arrow-left" style="margin-right: 8px;"></i> Exit Quiz & Return to Article
+              </button>
+            </div>
           </div>
         `;
 
         document.getElementById('retakeQuizBtn').addEventListener('click', () => {
           initAudio();
           startQuizSession();
+        });
+
+        document.getElementById('exitQuizReturnBtn').addEventListener('click', () => {
+          initAudio();
+          exitFullscreenMode();
+          // Scroll page or container to top
+          quizViewport.scrollTo({ top: 0, behavior: 'smooth' });
         });
       }
 

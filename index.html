@@ -186,6 +186,12 @@
         <span class="hidden sm:inline">Copy</span> HTML
       </button>
 
+      <!-- Button 3: Native Inline HTML Quiz Generator (SEO & No-iFrame) -->
+      <button id="btnOpenInlineModal" class="tactile-btn flex items-center gap-2 px-3.5 py-2 rounded-xl bg-violet-600 hover:bg-violet-700 text-white text-xs sm:text-sm font-bold shadow-sm shadow-violet-600/30 border-b-2 border-violet-800" title="Generate SEO-friendly Non-iFrame Native HTML Quiz for Blogger">
+        <i class="fa-solid fa-feather-pointed text-amber-300"></i>
+        <span class="hidden sm:inline">Native</span> Inline Quiz
+      </button>
+
       <!-- GitHub Settings Gear Button -->
       <button id="btnOpenSettings" class="p-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-600 hover:text-primary transition" title="Configure GitHub Username & Repository">
         <i class="fa-brands fa-github text-lg"></i>
@@ -973,6 +979,73 @@ flashcard	DNS (Domain Name System)	Translates domain names into numerical IP add
     </div>
   </div>
 
+  <!-- ============================================================= -->
+  <!-- MODAL: NATIVE INLINE HTML QUIZ GENERATOR (SEO / NO IFRAME)   -->
+  <!-- ============================================================= -->
+  <div id="inlineQuizModal" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm hidden flex items-center justify-center p-4">
+    <div class="bg-white w-full max-w-3xl rounded-3xl shadow-2xl border border-border-light overflow-hidden flex flex-col animate-[fadeIn_0.2s_ease-out] max-h-[92vh]">
+      <!-- Header -->
+      <div class="p-5 bg-gradient-to-r from-violet-900 via-indigo-900 to-slate-900 text-white flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl bg-violet-500/20 text-violet-300 border border-violet-500/30 flex items-center justify-center">
+            <i class="fa-solid fa-feather-pointed text-lg"></i>
+          </div>
+          <div>
+            <h3 class="font-extrabold text-base sm:text-lg">Native Inline HTML Quiz Generator</h3>
+            <p class="text-xs text-violet-200">100% SEO-Friendly • Zero iFrames • Pure HTML + Scoped CSS + Micro Vanilla JS</p>
+          </div>
+        </div>
+        <button id="btnCloseInlineModal" class="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition">
+          <i class="fa-solid fa-times"></i>
+        </button>
+      </div>
+
+      <!-- Modal Body -->
+      <div class="p-5 sm:p-6 space-y-4 overflow-y-auto flex-1">
+        <div class="p-3.5 rounded-2xl bg-violet-50 border border-violet-200 flex items-start gap-3">
+          <i class="fa-solid fa-circle-info text-violet-600 text-base mt-0.5"></i>
+          <p class="text-xs text-violet-950 leading-relaxed font-medium">
+            Unlike iFrames, this generator compiles your quiz directly into clean HTML tags (<code class="font-mono bg-violet-100 px-1 py-0.5 rounded text-violet-800">&lt;div class="bsp-inline-quiz"&gt;</code>). Googlebot indexes every question, answer, and explanation directly for organic SEO traffic!
+          </p>
+        </div>
+
+        <!-- Live Code Preview Area -->
+        <div class="space-y-1.5">
+          <div class="flex items-center justify-between">
+            <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider">
+              Compiled Standalone Code
+            </label>
+            <span class="text-[11px] font-bold text-slate-500" id="inlineCodeStats">Ready to export</span>
+          </div>
+          <textarea id="inlineQuizCodeOutput" readonly rows="9" class="w-full p-3.5 rounded-2xl border border-border-light bg-slate-900 text-emerald-400 font-mono text-xs leading-relaxed resize-y outline-none"></textarea>
+        </div>
+
+        <!-- Live Inline Render Preview -->
+        <div class="space-y-1.5">
+          <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider">
+            Live Preview (How it appears in Blogger)
+          </label>
+          <div id="inlineQuizLiveContainer" class="p-4 rounded-2xl border border-border-light bg-slate-50 overflow-y-auto max-h-60">
+            <!-- Rendered inline html -->
+          </div>
+        </div>
+      </div>
+
+      <!-- Footer Action Buttons -->
+      <div class="p-4 sm:p-5 bg-slate-50 border-t border-border-light flex flex-wrap items-center justify-between gap-3">
+        <span class="text-xs font-medium text-slate-500">Paste in Compose View or HTML View</span>
+        <div class="flex items-center gap-2">
+          <button id="btnCopyInlineHtml" class="tactile-btn px-4 py-2.5 rounded-xl bg-white hover:bg-slate-100 text-slate-700 font-bold text-xs border border-border-light flex items-center gap-1.5">
+            <i class="fa-solid fa-code text-primary"></i> Copy HTML Code
+          </button>
+          <button id="btnCopyInlineCompose" class="tactile-btn px-5 py-2.5 rounded-xl bg-violet-600 hover:bg-violet-700 text-white font-bold text-xs flex items-center gap-2 shadow-md shadow-violet-600/20">
+            <i class="fa-solid fa-wand-magic-sparkles text-yellow-300"></i> Copy for Blogger Compose
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- Toast Container -->
   <div id="toastContainer"></div>
 
@@ -1075,6 +1148,16 @@ flashcard	DNS (Domain Name System)	Translates domain names into numerical IP add
       const labelModeJson = document.getElementById('labelModeJson');
       const labelModeData = document.getElementById('labelModeData');
       const modalQuickCopyInstantBtn = document.getElementById('modalQuickCopyInstantBtn');
+
+      // Native Inline HTML Quiz Elements
+      const btnOpenInlineModal = document.getElementById('btnOpenInlineModal');
+      const inlineQuizModal = document.getElementById('inlineQuizModal');
+      const btnCloseInlineModal = document.getElementById('btnCloseInlineModal');
+      const inlineQuizCodeOutput = document.getElementById('inlineQuizCodeOutput');
+      const inlineQuizLiveContainer = document.getElementById('inlineQuizLiveContainer');
+      const btnCopyInlineHtml = document.getElementById('btnCopyInlineHtml');
+      const btnCopyInlineCompose = document.getElementById('btnCopyInlineCompose');
+      const inlineCodeStats = document.getElementById('inlineCodeStats');
 
       // Tabs & Views
       const tabBtnQuiz = document.getElementById('tabBtnQuiz');
@@ -1372,6 +1455,8 @@ flashcard	DNS (Domain Name System)	Translates domain names into numerical IP add
                   <option value="fill_in_blank" ${q.type === 'fill_in_blank' ? 'selected' : ''}>Fill in the Blank</option>
                   <option value="flashcard" ${q.type === 'flashcard' ? 'selected' : ''}>3D Flashcard</option>
                   <option value="match" ${q.type === 'match' ? 'selected' : ''}>Match the Pair</option>
+                  <option value="true_false" ${q.type === 'true_false' ? 'selected' : ''}>True / False Card</option>
+                  <option value="reorder" ${q.type === 'reorder' ? 'selected' : ''}>Sequence Reorder</option>
                 </select>
 
                 <button class="btn-move-up p-1.5 text-slate-400 hover:text-slate-600 rounded" title="Move Up" ${qIndex === 0 ? 'disabled style="opacity:0.3"' : ''}>
@@ -1485,6 +1570,50 @@ flashcard	DNS (Domain Name System)	Translates domain names into numerical IP add
               </div>
             </div>
           `;
+        } else if (q.type === 'true_false') {
+          const isTrue = (q.correctAnswer === true || String(q.correctAnswer).toLowerCase() === 'true');
+          return `
+            <div class="space-y-2">
+              <label class="block text-xs font-bold text-slate-600">Select Correct Statement Truth Value:</label>
+              <div class="grid grid-cols-2 gap-3 max-w-sm">
+                <label class="flex items-center gap-2.5 p-3 rounded-xl border ${isTrue ? 'border-emerald-500 bg-emerald-50 text-emerald-800' : 'border-border-light bg-slate-50 text-slate-700'} cursor-pointer font-bold text-xs transition hover:border-emerald-400">
+                  <input type="radio" name="tf_correct_${qIndex}" value="true" ${isTrue ? 'checked' : ''} class="tf-radio-correct text-emerald-600 focus:ring-emerald-500">
+                  <i class="fa-solid fa-circle-check text-emerald-600"></i>
+                  <span>TRUE</span>
+                </label>
+                <label class="flex items-center gap-2.5 p-3 rounded-xl border ${!isTrue ? 'border-rose-500 bg-rose-50 text-rose-800' : 'border-border-light bg-slate-50 text-slate-700'} cursor-pointer font-bold text-xs transition hover:border-rose-400">
+                  <input type="radio" name="tf_correct_${qIndex}" value="false" ${!isTrue ? 'checked' : ''} class="tf-radio-correct text-rose-600 focus:ring-rose-500">
+                  <i class="fa-solid fa-circle-xmark text-rose-600"></i>
+                  <span>FALSE</span>
+                </label>
+              </div>
+            </div>
+          `;
+        } else if (q.type === 'reorder') {
+          const items = (q.items && q.items.length) ? q.items : (q.steps || ["Step 1", "Step 2", "Step 3"]);
+          return `
+            <div class="space-y-2">
+              <div class="flex items-center justify-between text-xs font-bold text-slate-600">
+                <span>Sequence Items (In Correct Target Order):</span>
+                <button type="button" class="btn-add-reorder-step text-primary hover:text-primary-dark flex items-center gap-1 font-bold">
+                  <i class="fa-solid fa-plus-circle"></i> Add Step
+                </button>
+              </div>
+              <div class="reorder-builder-list space-y-2">
+                ${items.map((it, itIdx) => `
+                  <div class="flex items-center gap-2 p-2 rounded-xl bg-slate-50 border border-border-light">
+                    <span class="w-6 h-6 rounded-full bg-indigo-100 text-primary text-xs font-extrabold flex items-center justify-center shrink-0">
+                      ${itIdx + 1}
+                    </span>
+                    <input type="text" class="reorder-item-input flex-1 px-2.5 py-1.5 rounded-lg border border-border-light bg-white font-semibold text-xs" placeholder="Sequential Step / Item text" value="${escapeHtml(it)}" data-step-index="${itIdx}">
+                    <button type="button" class="btn-del-reorder-step p-1 text-slate-400 hover:text-rose-500" data-step-index="${itIdx}">
+                      <i class="fa-solid fa-times"></i>
+                    </button>
+                  </div>
+                `).join('')}
+              </div>
+            </div>
+          `;
         }
         return '';
       }
@@ -1506,6 +1635,10 @@ flashcard	DNS (Domain Name System)	Translates domain names into numerical IP add
             q.definition = "Definition text";
           } else if (newType === 'match' && !q.pairs) {
             q.pairs = [{ left: "Item 1", right: "Definition 1" }];
+          } else if (newType === 'true_false' && typeof q.correctAnswer !== 'boolean') {
+            q.correctAnswer = true;
+          } else if (newType === 'reorder' && (!q.items || !q.items.length)) {
+            q.items = ["Step 1", "Step 2", "Step 3"];
           }
           renderAllQuestions();
           triggerPreviewUpdate();
@@ -1646,6 +1779,51 @@ flashcard	DNS (Domain Name System)	Translates domain names into numerical IP add
           if (btnAddPair) {
             btnAddPair.addEventListener('click', () => {
               q.pairs.push({ left: `Item ${q.pairs.length + 1}`, right: `Definition ${q.pairs.length + 1}` });
+              renderAllQuestions();
+              triggerPreviewUpdate();
+            });
+          }
+        } else if (q.type === 'true_false') {
+          const tfRadios = card.querySelectorAll('.tf-radio-correct');
+          tfRadios.forEach(r => {
+            r.addEventListener('change', () => {
+              q.correctAnswer = (r.value === 'true');
+              renderAllQuestions();
+              triggerPreviewUpdate();
+            });
+          });
+        } else if (q.type === 'reorder') {
+          const reorderInputs = card.querySelectorAll('.reorder-item-input');
+          const delStepBtns = card.querySelectorAll('.btn-del-reorder-step');
+          const btnAddStep = card.querySelector('.btn-add-reorder-step');
+
+          reorderInputs.forEach(inp => {
+            inp.addEventListener('input', (e) => {
+              const sIdx = parseInt(inp.dataset.stepIndex);
+              if (q.items && q.items[sIdx] !== undefined) {
+                q.items[sIdx] = e.target.value;
+                triggerPreviewUpdate();
+              }
+            });
+          });
+
+          delStepBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+              const sIdx = parseInt(btn.dataset.stepIndex);
+              if (q.items && q.items.length <= 2) {
+                showToast("At least 2 sequence steps are required.", "warning");
+                return;
+              }
+              q.items.splice(sIdx, 1);
+              renderAllQuestions();
+              triggerPreviewUpdate();
+            });
+          });
+
+          if (btnAddStep) {
+            btnAddStep.addEventListener('click', () => {
+              if (!q.items) q.items = [];
+              q.items.push(`Step ${q.items.length + 1}`);
               renderAllQuestions();
               triggerPreviewUpdate();
             });
@@ -2301,6 +2479,8 @@ mcq,"Which protocol operates at the Transport Layer and guarantees packet delive
 mcq,"What default port is used for secure HTTPS web traffic?","80","21","443","25","C","Port 443 is the standard port for TLS/SSL encrypted HTTPS communication."
 fill_in_blank,"______ is the network protocol that translates domain names into numerical IP addresses.","DNS","","","","DNS","DNS (Domain Name System) acts as the phonebook of the Internet."
 flashcard,"Cache Memory","High-speed memory located close to or inside the CPU to accelerate frequent data access.","","","","","Stores copies of data from frequently used main memory locations."
+true_false,"HTTP is inherently a stateless application-layer communication protocol.","TRUE","","","","TRUE","HTTP is stateless by design unless session tokens or cookies are used."
+reorder,"Arrange the standard 3-Way TCP Handshake connection packets:","Client sends SYN to Server","Server responds with SYN-ACK","Client replies with ACK","","","SYN -> SYN-ACK -> ACK establishes a reliable TCP connection."
 `;
         const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
         const url = URL.createObjectURL(blob);
@@ -2368,6 +2548,10 @@ flashcard,"Cache Memory","High-speed memory located close to or inside the CPU t
             type = 'flashcard';
           } else if (firstCol.includes('match') || firstCol.includes('pair')) {
             type = 'match';
+          } else if (firstCol.includes('true') || firstCol.includes('false') || firstCol === 'tf') {
+            type = 'true_false';
+          } else if (firstCol.includes('order') || firstCol.includes('seq') || firstCol.includes('reorder')) {
+            type = 'reorder';
           } else {
             type = 'mcq';
           }
@@ -2420,6 +2604,41 @@ flashcard,"Cache Memory","High-speed memory located close to or inside the CPU t
               prompt: "Review the study card below:",
               term: prompt,
               definition: backDef || "Definition text",
+              explanation
+            });
+          } else if (type === 'true_false') {
+            const rawAns = (cols[6] || cols[2] || 'true').trim().toLowerCase();
+            const isTrue = (rawAns === 'true' || rawAns === 't' || rawAns === '1' || rawAns === 'yes' || rawAns === 'y');
+            const explanation = cols[7] || cols[3] || '';
+            questions.push({
+              type: 'true_false',
+              prompt,
+              correctAnswer: isTrue,
+              explanation
+            });
+          } else if (type === 'reorder') {
+            // Steps can be listed across Option A..D or semicolon separated in cols[2]
+            let items = [cols[2], cols[3], cols[4], cols[5]].filter(Boolean);
+            if (items.length < 2 && cols[2] && (cols[2].includes(';') || cols[2].includes('|'))) {
+              items = cols[2].split(/[;|]/).map(s => s.trim()).filter(Boolean);
+            }
+            const explanation = cols[7] || '';
+            questions.push({
+              type: 'reorder',
+              prompt,
+              items: items.length >= 2 ? items : ["Step 1", "Step 2", "Step 3"],
+              explanation
+            });
+          } else if (type === 'match') {
+            // Pair format e.g. "Term1:Def1 | Term2:Def2" or individual columns
+            const pairs = [];
+            if (cols[2] && cols[3]) pairs.push({ left: cols[2], right: cols[3] });
+            if (cols[4] && cols[5]) pairs.push({ left: cols[4], right: cols[5] });
+            const explanation = cols[7] || '';
+            questions.push({
+              type: 'match',
+              prompt,
+              pairs: pairs.length ? pairs : [{ left: "Item 1", right: "Definition 1" }],
               explanation
             });
           }
@@ -2780,6 +2999,488 @@ ${jsonString}
       if (btnNewQuizFromLibrary) btnNewQuizFromLibrary.addEventListener('click', createBlankQuiz);
       if (btnBackupLibraryHtml) btnBackupLibraryHtml.addEventListener('click', exportLibraryAsStandaloneHtmlBackup);
       if (librarySearchInput) librarySearchInput.addEventListener('input', (e) => renderSavedQuizzesList(e.target.value));
+
+      // -------------------------------------------------------------
+      // 12. NATIVE INLINE HTML QUIZ GENERATOR (SEO & ZERO IFRAME)
+      // -------------------------------------------------------------
+      function buildInlineQuizHtml(quiz) {
+        const uid = 'bsp_inline_' + Math.random().toString(36).substring(2, 9);
+        const title = quiz.title || "Interactive Quiz";
+        const questions = quiz.questions || [];
+
+        const questionsHtml = questions.map((q, idx) => {
+          const qId = `${uid}_q${idx}`;
+          const promptEscaped = escapeHtml(q.prompt || `Question ${idx + 1}`);
+          const explanation = escapeHtml(q.explanation || '');
+
+          if (q.type === 'mcq') {
+            const options = q.options || ["Option A", "Option B", "Option C", "Option D"];
+            const correctIdx = typeof q.correctAnswer === 'number' ? q.correctAnswer : 0;
+            const optsHtml = options.map((opt, oIdx) => `
+              <label class="bsp-inline-opt" data-correct="${oIdx === correctIdx}">
+                <input type="radio" name="${qId}_radio" value="${oIdx}">
+                <span>${escapeHtml(opt)}</span>
+              </label>
+            `).join('');
+
+            return `
+              <div class="bsp-inline-card" id="${qId}">
+                <div class="bsp-inline-q-header">
+                  <span class="bsp-inline-num">${idx + 1}</span>
+                  <span class="bsp-inline-prompt">${promptEscaped}</span>
+                </div>
+                <div class="bsp-inline-opts">${optsHtml}</div>
+                <div class="bsp-inline-actions">
+                  <button type="button" class="bsp-inline-btn" onclick="window['${uid}_checkMcq']('${qId}')">Check Answer</button>
+                </div>
+                <div class="bsp-inline-feedback" style="display:none;"></div>
+              </div>
+            `;
+          } else if (q.type === 'fill_in_blank') {
+            const accepted = Array.isArray(q.acceptedAnswers) 
+              ? q.acceptedAnswers 
+              : [q.acceptedAnswers || q.correctAnswer || 'Answer'];
+            const primaryAns = escapeHtml(accepted[0] || 'Answer');
+            const acceptedAttr = escapeHtml(JSON.stringify(accepted.map(a => String(a).trim().toLowerCase())));
+
+            return `
+              <div class="bsp-inline-card" id="${qId}">
+                <div class="bsp-inline-q-header">
+                  <span class="bsp-inline-num">${idx + 1}</span>
+                  <span class="bsp-inline-prompt">${promptEscaped}</span>
+                </div>
+                <div class="bsp-inline-fib">
+                  <input type="text" class="bsp-inline-input" placeholder="Type your answer here..." autocomplete="off">
+                  <button type="button" class="bsp-inline-btn" onclick="window['${uid}_checkFib']('${qId}')">Submit</button>
+                </div>
+                ${q.hint ? `<div class="bsp-inline-hint">💡 Hint: ${escapeHtml(q.hint)}</div>` : ''}
+                <div class="bsp-inline-feedback" data-accepted='${acceptedAttr}' data-primary="${primaryAns}" data-exp="${explanation}" style="display:none;"></div>
+              </div>
+            `;
+          } else if (q.type === 'true_false') {
+            const correctBool = (typeof q.correctAnswer === 'boolean') 
+              ? q.correctAnswer 
+              : (String(q.correctAnswer).toLowerCase() === 'true');
+
+            return `
+              <div class="bsp-inline-card" id="${qId}">
+                <div class="bsp-inline-q-header">
+                  <span class="bsp-inline-num">${idx + 1}</span>
+                  <span class="bsp-inline-prompt">${promptEscaped}</span>
+                </div>
+                <div class="bsp-inline-tf-grid">
+                  <button type="button" class="bsp-inline-tf-btn bsp-tf-true" onclick="window['${uid}_checkTf']('${qId}', true, ${correctBool})">
+                    <span>✔ TRUE</span>
+                  </button>
+                  <button type="button" class="bsp-inline-tf-btn bsp-tf-false" onclick="window['${uid}_checkTf']('${qId}', false, ${correctBool})">
+                    <span>✖ FALSE</span>
+                  </button>
+                </div>
+                <div class="bsp-inline-feedback" data-exp="${explanation}" style="display:none;"></div>
+              </div>
+            `;
+          } else if (q.type === 'reorder') {
+            const steps = (q.items && q.items.length) ? q.items : (q.steps || ["Step 1", "Step 2", "Step 3"]);
+            const stepsAttr = escapeHtml(JSON.stringify(steps));
+            const shuffled = shuffle([...steps.map((text, sIdx) => ({ id: sIdx, text }))]);
+            const stepsHtml = shuffled.map((s, sIdx) => `
+              <div class="bsp-inline-seq-item" data-id="${s.id}">
+                <span class="bsp-inline-seq-rank">${sIdx + 1}</span>
+                <span class="bsp-inline-seq-text">${escapeHtml(s.text)}</span>
+                <div class="bsp-inline-seq-arrows">
+                  <button type="button" onclick="window['${uid}_moveSeq']('${qId}', this, -1)">▲</button>
+                  <button type="button" onclick="window['${uid}_moveSeq']('${qId}', this, 1)">▼</button>
+                </div>
+              </div>
+            `).join('');
+
+            return `
+              <div class="bsp-inline-card" id="${qId}">
+                <div class="bsp-inline-q-header">
+                  <span class="bsp-inline-num">${idx + 1}</span>
+                  <span class="bsp-inline-prompt">${promptEscaped}</span>
+                </div>
+                <div class="bsp-inline-seq-list" data-steps='${stepsAttr}'>
+                  ${stepsHtml}
+                </div>
+                <div class="bsp-inline-actions">
+                  <button type="button" class="bsp-inline-btn" onclick="window['${uid}_checkSeq']('${qId}')">Check Sequence</button>
+                </div>
+                <div class="bsp-inline-feedback" data-exp="${explanation}" style="display:none;"></div>
+              </div>
+            `;
+          } else {
+            // Fallback for flashcard or match
+            return `
+              <div class="bsp-inline-card" id="${qId}">
+                <div class="bsp-inline-q-header">
+                  <span class="bsp-inline-num">${idx + 1}</span>
+                  <span class="bsp-inline-prompt">${promptEscaped}</span>
+                </div>
+                <div style="font-size:0.88rem; color:#475569; padding:8px 0;">${q.explanation || q.definition || 'Concept study card.'}</div>
+              </div>
+            `;
+          }
+        }).join('');
+
+        return `<!-- Blogger Suite Pro: Native Inline HTML Quiz (No iFrame • 100% SEO Indexed) -->
+<div class="bsp-inline-quiz" id="${uid}">
+  <style>
+    #${uid} {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      max-width: 680px;
+      margin: 24px auto;
+      background: #ffffff;
+      border: 2px solid #e2e8f0;
+      border-radius: 20px;
+      padding: 24px;
+      box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.06);
+      box-sizing: border-box;
+      color: #0f172a;
+    }
+    #${uid} * { box-sizing: border-box; }
+    #${uid} .bsp-inline-header {
+      border-bottom: 2px solid #f1f5f9;
+      padding-bottom: 14px;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    #${uid} .bsp-inline-title {
+      font-size: 1.18rem;
+      font-weight: 800;
+      color: #3730a3;
+      margin: 0;
+    }
+    #${uid} .bsp-inline-badge {
+      font-size: 0.72rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      background: #eef2ff;
+      color: #4f46e5;
+      padding: 4px 10px;
+      border-radius: 9999px;
+    }
+    #${uid} .bsp-inline-card {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 14px;
+      padding: 16px;
+      margin-bottom: 16px;
+    }
+    #${uid} .bsp-inline-q-header {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+    #${uid} .bsp-inline-num {
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      background: #4f46e5;
+      color: #ffffff;
+      font-size: 0.78rem;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    #${uid} .bsp-inline-prompt {
+      font-size: 0.96rem;
+      font-weight: 700;
+      line-height: 1.45;
+      color: #0f172a;
+    }
+    #${uid} .bsp-inline-opts {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    #${uid} .bsp-inline-opt {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 14px;
+      background: #ffffff;
+      border: 1.5px solid #e2e8f0;
+      border-radius: 10px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    #${uid} .bsp-inline-opt:hover {
+      border-color: #4f46e5;
+      background: #eef2ff;
+    }
+    #${uid} .bsp-inline-actions {
+      margin-top: 12px;
+      display: flex;
+      justify-content: flex-end;
+    }
+    #${uid} .bsp-inline-btn {
+      padding: 9px 18px;
+      background: #4f46e5;
+      color: #ffffff;
+      font-size: 0.85rem;
+      font-weight: 700;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.15s ease;
+    }
+    #${uid} .bsp-inline-btn:hover {
+      background: #3730a3;
+    }
+    #${uid} .bsp-inline-fib {
+      display: flex;
+      gap: 8px;
+      margin-top: 8px;
+    }
+    #${uid} .bsp-inline-input {
+      flex: 1;
+      padding: 10px 14px;
+      border: 1.5px solid #cbd5e1;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      outline: none;
+    }
+    #${uid} .bsp-inline-input:focus {
+      border-color: #4f46e5;
+    }
+    #${uid} .bsp-inline-hint {
+      font-size: 0.8rem;
+      color: #64748b;
+      margin-top: 6px;
+      font-style: italic;
+    }
+    #${uid} .bsp-inline-tf-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-top: 10px;
+    }
+    #${uid} .bsp-inline-tf-btn {
+      padding: 12px;
+      border: 2px solid #e2e8f0;
+      border-radius: 10px;
+      font-size: 0.95rem;
+      font-weight: 800;
+      background: #ffffff;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    #${uid} .bsp-tf-true:hover { border-color: #16a34a; background: #f0fdf4; color: #15803d; }
+    #${uid} .bsp-tf-false:hover { border-color: #dc2626; background: #fef2f2; color: #b91c1c; }
+    #${uid} .bsp-inline-seq-list {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-top: 8px;
+    }
+    #${uid} .bsp-inline-seq-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 12px;
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      font-size: 0.88rem;
+      font-weight: 600;
+    }
+    #${uid} .bsp-inline-seq-rank {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: #f1f5f9;
+      font-size: 0.75rem;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    #${uid} .bsp-inline-seq-text { flex: 1; }
+    #${uid} .bsp-inline-seq-arrows button {
+      background: #f1f5f9;
+      border: 1px solid #cbd5e1;
+      padding: 2px 6px;
+      font-size: 0.65rem;
+      cursor: pointer;
+      border-radius: 4px;
+      margin-left: 2px;
+    }
+    #${uid} .bsp-inline-feedback {
+      margin-top: 10px;
+      padding: 10px 14px;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      line-height: 1.4;
+    }
+    #${uid} .bsp-fb-ok { background: #dcfce7; color: #166534; border: 1px solid #bbf7d0; }
+    #${uid} .bsp-fb-err { background: #fee2e2; color: #991b1b; border: 1px solid #fecaca; }
+  </style>
+
+  <div class="bsp-inline-header">
+    <h3 class="bsp-inline-title">${escapeHtml(title)}</h3>
+    <span class="bsp-inline-badge">${questions.length} Questions</span>
+  </div>
+
+  <div class="bsp-inline-body">
+    ${questionsHtml}
+  </div>
+
+  <div style="margin-top: 14px; text-align: center; font-size: 0.75rem; color: #94a3b8; font-weight: 600;">
+    ⚡ Powered by <a href="https://github.com/RaviKhillare/RK_Quizmaker_nodatabase" target="_blank" rel="noopener" style="color: #4f46e5; text-decoration: none;">Blogger Suite Pro</a>
+  </div>
+</div>
+
+<script>
+(function() {
+  window['${uid}_checkMcq'] = function(qId) {
+    var card = document.getElementById(qId);
+    if (!card) return;
+    var selected = card.querySelector('input[type="radio"]:checked');
+    var fb = card.querySelector('.bsp-inline-feedback');
+    if (!selected) {
+      alert("Please choose an answer before checking!");
+      return;
+    }
+    var isCorrect = selected.closest('.bsp-inline-opt').getAttribute('data-correct') === 'true';
+    fb.style.display = 'block';
+    fb.className = 'bsp-inline-feedback ' + (isCorrect ? 'bsp-fb-ok' : 'bsp-fb-err');
+    fb.innerHTML = isCorrect ? '✔ Correct! Well done.' : '✖ Incorrect. Review the question carefully.';
+  };
+
+  window['${uid}_checkFib'] = function(qId) {
+    var card = document.getElementById(qId);
+    if (!card) return;
+    var input = card.querySelector('.bsp-inline-input');
+    var fb = card.querySelector('.bsp-inline-feedback');
+    var val = (input.value || '').trim().toLowerCase();
+    if (!val) {
+      alert("Please type your answer!");
+      return;
+    }
+    var accepted = JSON.parse(fb.getAttribute('data-accepted') || '[]');
+    var primary = fb.getAttribute('data-primary') || '';
+    var exp = fb.getAttribute('data-exp') || '';
+    var isCorrect = accepted.indexOf(val) !== -1;
+    fb.style.display = 'block';
+    fb.className = 'bsp-inline-feedback ' + (isCorrect ? 'bsp-fb-ok' : 'bsp-fb-err');
+    fb.innerHTML = isCorrect ? ('✔ Spot on! ' + (exp ? '<em>' + exp + '</em>' : '')) : ('✖ Incorrect. Correct answer: <strong>' + primary + '</strong>' + (exp ? '. ' + exp : ''));
+  };
+
+  window['${uid}_checkTf'] = function(qId, chosenBool, correctBool) {
+    var card = document.getElementById(qId);
+    if (!card) return;
+    var fb = card.querySelector('.bsp-inline-feedback');
+    var exp = fb.getAttribute('data-exp') || '';
+    var isCorrect = (chosenBool === correctBool);
+    fb.style.display = 'block';
+    fb.className = 'bsp-inline-feedback ' + (isCorrect ? 'bsp-fb-ok' : 'bsp-fb-err');
+    fb.innerHTML = (isCorrect ? '✔ Correct! ' : '✖ Incorrect. ') + (exp ? exp : ('Answer is ' + (correctBool ? 'TRUE' : 'FALSE')));
+  };
+
+  window['${uid}_moveSeq'] = function(qId, btn, dir) {
+    var item = btn.closest('.bsp-inline-seq-item');
+    var list = item.parentNode;
+    if (dir === -1 && item.previousElementSibling) {
+      list.insertBefore(item, item.previousElementSibling);
+    } else if (dir === 1 && item.nextElementSibling) {
+      list.insertBefore(item.nextElementSibling, item);
+    }
+    var ranks = list.querySelectorAll('.bsp-inline-seq-rank');
+    ranks.forEach(function(r, i) { r.textContent = i + 1; });
+  };
+
+  window['${uid}_checkSeq'] = function(qId) {
+    var card = document.getElementById(qId);
+    if (!card) return;
+    var list = card.querySelector('.bsp-inline-seq-list');
+    var fb = card.querySelector('.bsp-inline-feedback');
+    var exp = fb.getAttribute('data-exp') || '';
+    var items = list.querySelectorAll('.bsp-inline-seq-item');
+    var correctCount = 0;
+    items.forEach(function(it, idx) {
+      if (parseInt(it.getAttribute('data-id')) === idx) {
+        correctCount++;
+        it.style.borderColor = '#16a34a';
+        it.style.background = '#f0fdf4';
+      } else {
+        it.style.borderColor = '#dc2626';
+        it.style.background = '#fef2f2';
+      }
+    });
+    var isFull = (correctCount === items.length);
+    fb.style.display = 'block';
+    fb.className = 'bsp-inline-feedback ' + (isFull ? 'bsp-fb-ok' : 'bsp-fb-err');
+    fb.innerHTML = (isFull ? '✔ Outstanding! Entire sequence is correct.' : ('✖ ' + correctCount + ' of ' + items.length + ' in right position.')) + (exp ? ' ' + exp : '');
+  };
+})();
+<\\/script>`;
+      }
+
+      function openInlineQuizModal() {
+        if (!inlineQuizModal) return;
+        const compiledHtml = buildInlineQuizHtml(currentQuiz);
+        if (inlineQuizCodeOutput) inlineQuizCodeOutput.value = compiledHtml;
+        if (inlineCodeStats) inlineCodeStats.textContent = `${currentQuiz.questions.length} Questions Compiled`;
+
+        if (inlineQuizLiveContainer) {
+          // Embed sanitized iframe or container preview
+          inlineQuizLiveContainer.innerHTML = compiledHtml.replace(/<\\\/script>/g, '<' + '/script>');
+        }
+        inlineQuizModal.classList.remove('hidden');
+      }
+
+      function closeInlineQuizModal() {
+        if (inlineQuizModal) inlineQuizModal.classList.add('hidden');
+      }
+
+      async function copyInlineQuizHtmlCode() {
+        const code = inlineQuizCodeOutput ? inlineQuizCodeOutput.value.replace(/<\\\/script>/g, '<' + '/script>') : '';
+        if (!code) return;
+        try {
+          await navigator.clipboard.writeText(code);
+          showToast("Copied Native Inline Quiz HTML to clipboard!", "success");
+        } catch (e) {
+          showToast("Clipboard copy failed.", "danger");
+        }
+      }
+
+      async function copyInlineQuizForCompose() {
+        const code = inlineQuizCodeOutput ? inlineQuizCodeOutput.value.replace(/<\\\/script>/g, '<' + '/script>') : '';
+        if (!code) return;
+        try {
+          const htmlBlob = new Blob([code], { type: 'text/html' });
+          const textBlob = new Blob([code], { type: 'text/plain' });
+          if (navigator.clipboard && window.ClipboardItem) {
+            await navigator.clipboard.write([
+              new ClipboardItem({
+                'text/html': htmlBlob,
+                'text/plain': textBlob
+              })
+            ]);
+            showToast("Copied for Blogger Compose View! Simply Ctrl+V into your post.", "success");
+          } else {
+            await navigator.clipboard.writeText(code);
+            showToast("Copied HTML! (ClipboardItem unsupported)", "info");
+          }
+        } catch (e) {
+          await navigator.clipboard.writeText(code);
+          showToast("Copied HTML to clipboard!", "success");
+        }
+      }
+
+      if (btnOpenInlineModal) btnOpenInlineModal.addEventListener('click', openInlineQuizModal);
+      if (btnCloseInlineModal) btnCloseInlineModal.addEventListener('click', closeInlineQuizModal);
+      if (btnCopyInlineHtml) btnCopyInlineHtml.addEventListener('click', copyInlineQuizHtmlCode);
+      if (btnCopyInlineCompose) btnCopyInlineCompose.addEventListener('click', copyInlineQuizForCompose);
 
       // Initial Boot
       const existingSaved = getSavedQuizzes();
