@@ -1,15 +1,1258 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="light">
 <head>
   <meta charset="UTF-8">
-  <meta http-equiv="refresh" content="0; url=quiz-player.html">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Blogger Suite Pro - Quiz Engine</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Blogger Suite Pro - Creator Dashboard</title>
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
   <script>
-    window.location.replace("quiz-player.html" + window.location.search);
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary: '#4f46e5',
+            'primary-dark': '#3730a3',
+            'primary-light': '#e0e7ff',
+            'primary-bg': '#eef2ff',
+            surface: '#ffffff',
+            background: '#f8fafc',
+            'surface-alt': '#f1f5f9',
+            'border-light': '#e2e8f0',
+            'border-dark': '#cbd5e1',
+            success: '#16a34a',
+            'success-light': '#dcfce7',
+            danger: '#dc2626',
+            'danger-light': '#fee2e2',
+            warning: '#d97706',
+            'warning-light': '#fef3c7'
+          },
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'system-ui', '-apple-system', 'sans-serif']
+          }
+        }
+      }
+    };
   </script>
+
+  <!-- Google Font: Plus Jakarta Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- FontAwesome 6 CDN -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+  <style>
+    body {
+      font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+      background-color: #f8fafc;
+      color: #0f172a;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Custom Scrollbars */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 9999px;
+    }
+
+    /* Tactile 3D Button Style */
+    .tactile-btn {
+      transition: all 0.12s ease-in-out;
+      user-select: none;
+    }
+    .tactile-btn:active {
+      transform: translateY(2px);
+    }
+
+    /* Mobile Device Frame Simulation */
+    .phone-mockup {
+      width: 340px;
+      height: 670px;
+      background: #0f172a;
+      border-radius: 46px;
+      padding: 12px;
+      box-shadow: 0 25px 50px -12px rgba(15, 23, 42, 0.25), 0 0 0 4px #e2e8f0;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .phone-speaker {
+      width: 90px;
+      height: 18px;
+      background: #0f172a;
+      border-bottom-left-radius: 12px;
+      border-bottom-right-radius: 12px;
+      position: absolute;
+      top: 12px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 20;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .speaker-notch {
+      width: 44px;
+      height: 4px;
+      background: #334155;
+      border-radius: 9999px;
+    }
+
+    .phone-screen {
+      width: 100%;
+      height: 100%;
+      background: #ffffff;
+      border-radius: 36px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+    }
+
+    /* Toast notification */
+    #toastContainer {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 9999;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      pointer-events: none;
+    }
+    .toast-msg {
+      pointer-events: auto;
+      animation: slideToast 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    @keyframes slideToast {
+      from { transform: translateY(20px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+  </style>
 </head>
-<body style="font-family: system-ui, sans-serif; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; background: #f8fafc;">
-  <p style="color: #64748b; font-weight: 600;">Loading Quiz Player... <a href="quiz-player.html" style="color: #4f46e5;">Click here if not redirected</a></p>
+<body class="min-h-screen flex flex-col bg-[#f8fafc]">
+
+  <!-- Top Action Bar & Branding Header -->
+  <header class="sticky top-0 z-40 bg-white/90 backdrop-blur-md border-b border-border-light shadow-sm px-4 lg:px-8 py-3.5 flex items-center justify-between">
+    <!-- Brand Logo -->
+    <div class="flex items-center gap-3">
+      <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-primary to-indigo-500 text-white flex items-center justify-center shadow-md shadow-primary/20">
+        <i class="fa-solid fa-shapes text-lg"></i>
+      </div>
+      <div>
+        <div class="flex items-center gap-2">
+          <h1 class="font-extrabold text-lg text-slate-900 tracking-tight leading-tight">Blogger Suite Pro</h1>
+          <span class="bg-indigo-100 text-primary font-bold text-xs px-2 py-0.5 rounded-full">Creator Studio</span>
+        </div>
+        <p class="text-xs font-semibold text-slate-500">No-Database Educational Toolkit for Blogger</p>
+      </div>
+    </div>
+
+    <!-- Quick Action Bar -->
+    <div class="flex items-center gap-2 lg:gap-3">
+      <!-- Button 1: Copy for Blogger (Compose View) -->
+      <button id="btnCopyCompose" class="tactile-btn flex items-center gap-2 px-3.5 py-2 rounded-xl bg-primary hover:bg-primary-dark text-white text-xs sm:text-sm font-bold shadow-sm shadow-primary/30 border-b-2 border-primary-dark">
+        <i class="fa-solid fa-wand-magic-sparkles text-yellow-300"></i>
+        <span>Copy for Blogger (Compose)</span>
+      </button>
+
+      <!-- Button 2: Copy iFrame HTML -->
+      <button id="btnCopyHtml" class="tactile-btn flex items-center gap-2 px-3 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs sm:text-sm font-bold border border-border-light">
+        <i class="fa-solid fa-code text-primary"></i>
+        <span class="hidden sm:inline">Copy</span> HTML
+      </button>
+
+      <!-- Button 3: Export JSON -->
+      <button id="btnExportJsonTop" class="tactile-btn flex items-center gap-2 px-3 py-2 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-emerald-700 text-xs sm:text-sm font-bold border border-emerald-200">
+        <i class="fa-solid fa-download"></i>
+        <span class="hidden sm:inline">Export</span> JSON
+      </button>
+
+      <!-- Mobile View Preview Toggle button (Small screens) -->
+      <button id="btnToggleMobileDrawer" class="xl:hidden p-2 rounded-xl bg-slate-100 text-slate-700 hover:bg-slate-200">
+        <i class="fa-solid fa-mobile-screen-button text-lg"></i>
+      </button>
+    </div>
+  </header>
+
+  <!-- Main Workspace Layout (Sidebar + Center Builder + Right Live Preview) -->
+  <div class="flex-1 flex overflow-hidden">
+    
+    <!-- 1. Left Navigation Sidebar -->
+    <aside class="w-18 md:w-60 bg-white border-r border-border-light flex flex-col justify-between p-3 shrink-0">
+      <div class="space-y-1.5">
+        <div class="px-3 py-2 text-xs font-bold text-slate-400 uppercase tracking-wider hidden md:block">Modules</div>
+        
+        <!-- Tab 1: Quiz Builder (Default) -->
+        <button id="tabBtnQuiz" class="sidebar-tab active w-full flex items-center gap-3 px-3 py-2.5 rounded-xl font-bold text-sm text-primary bg-primary-bg transition-colors">
+          <i class="fa-solid fa-graduation-cap text-base w-5 text-center"></i>
+          <span class="hidden md:inline">Quiz Builder</span>
+        </button>
+
+        <!-- Tab 2: Blogger Widgets -->
+        <button id="tabBtnWidgets" class="sidebar-tab w-full flex items-center gap-3 px-3 py-2.5 rounded-xl font-bold text-sm text-slate-600 hover:bg-slate-50 transition-colors">
+          <i class="fa-solid fa-cubes text-base w-5 text-center"></i>
+          <span class="hidden md:inline">Blogger Widgets</span>
+        </button>
+
+        <!-- Tab 3: JSON Manager -->
+        <button id="tabBtnJson" class="sidebar-tab w-full flex items-center gap-3 px-3 py-2.5 rounded-xl font-bold text-sm text-slate-600 hover:bg-slate-50 transition-colors">
+          <i class="fa-solid fa-file-code text-base w-5 text-center"></i>
+          <span class="hidden md:inline">JSON Manager</span>
+        </button>
+      </div>
+
+      <!-- Quick Tips Box -->
+      <div class="hidden md:block p-3 rounded-xl bg-slate-50 border border-border-light text-xs text-slate-600 space-y-1">
+        <div class="font-bold text-slate-800 flex items-center gap-1.5">
+          <i class="fa-solid fa-lightbulb text-amber-500"></i> Blogger Pro Tip
+        </div>
+        <p class="text-[11px] leading-relaxed text-slate-500">
+          Click <strong>Copy for Blogger</strong> and simply press <kbd class="px-1 py-0.5 bg-white border rounded">Ctrl+V</kbd> in your Blogger Post Compose View!
+        </p>
+      </div>
+    </aside>
+
+    <!-- 2. Center Area: Content Viewports -->
+    <main class="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8 space-y-6">
+      
+      <!-- ============================================================= -->
+      <!-- MODULE A: QUIZ BUILDER VIEW                                   -->
+      <!-- ============================================================= -->
+      <div id="viewQuizBuilder" class="tab-view space-y-6 max-w-3xl mx-auto">
+        
+        <!-- Quiz Metadata Card -->
+        <div class="bg-white p-5 sm:p-6 rounded-2xl border border-border-light shadow-sm space-y-4">
+          <div class="flex items-center justify-between border-b border-border-light pb-3">
+            <div class="flex items-center gap-2.5">
+              <div class="w-8 h-8 rounded-lg bg-indigo-50 text-primary flex items-center justify-center font-bold">
+                <i class="fa-solid fa-sliders"></i>
+              </div>
+              <div>
+                <h2 class="text-base font-extrabold text-slate-900">Quiz Settings</h2>
+                <p class="text-xs text-slate-500 font-medium">Configure general details and learner rules</p>
+              </div>
+            </div>
+            <span id="questionCountBadge" class="px-2.5 py-1 rounded-full bg-slate-100 text-slate-700 text-xs font-bold">
+              4 Questions
+            </span>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <!-- Title -->
+            <div class="space-y-1 sm:col-span-2">
+              <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider">Quiz Title</label>
+              <input type="text" id="metaQuizTitle" class="w-full px-3.5 py-2.5 rounded-xl border border-border-light bg-slate-50 font-semibold text-sm focus:bg-white focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition" value="General Science & Tech Quiz">
+            </div>
+
+            <!-- Subject / Category -->
+            <div class="space-y-1">
+              <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider">Category / Subject</label>
+              <input type="text" id="metaCategory" class="w-full px-3.5 py-2 rounded-xl border border-border-light bg-slate-50 font-semibold text-sm focus:bg-white focus:border-primary outline-none transition" value="Science & Computers">
+            </div>
+
+            <!-- GitHub Repo / URL base -->
+            <div class="space-y-1">
+              <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider">Live URL Prefix</label>
+              <input type="text" id="metaUrlPrefix" class="w-full px-3.5 py-2 rounded-xl border border-border-light bg-slate-50 font-semibold text-sm focus:bg-white focus:border-primary outline-none transition" value="quiz-player.html" title="Base URL for Blogger embed link">
+            </div>
+          </div>
+
+          <!-- Feature Toggles -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
+            <label class="flex items-center justify-between p-3 rounded-xl bg-slate-50 border border-border-light cursor-pointer hover:bg-indigo-50/50 transition">
+              <div class="space-y-0.5">
+                <span class="text-xs font-bold text-slate-800 flex items-center gap-1.5">
+                  <i class="fa-solid fa-stopwatch text-indigo-500"></i> Timer Indicator
+                </span>
+                <span class="text-[11px] text-slate-500 block">Encourages steady pace</span>
+              </div>
+              <input type="checkbox" id="metaToggleTimer" checked class="w-4 h-4 rounded text-primary focus:ring-primary">
+            </label>
+
+            <label class="flex items-center justify-between p-3 rounded-xl bg-slate-50 border border-border-light cursor-pointer hover:bg-emerald-50/50 transition">
+              <div class="space-y-0.5">
+                <span class="text-xs font-bold text-slate-800 flex items-center gap-1.5">
+                  <i class="fa-solid fa-comments text-emerald-600"></i> Instant Feedback
+                </span>
+                <span class="text-[11px] text-slate-500 block">Show rationale immediately</span>
+              </div>
+              <input type="checkbox" id="metaToggleFeedback" checked class="w-4 h-4 rounded text-emerald-600 focus:ring-emerald-500">
+            </label>
+          </div>
+        </div>
+
+        <!-- Questions Dynamic List Container -->
+        <div id="questionsContainer" class="space-y-5">
+          <!-- Rendered dynamically by JS -->
+        </div>
+
+        <!-- Add Question Floating/Prominent Button -->
+        <div class="flex justify-center pt-2 pb-6">
+          <button id="btnAddQuestion" class="tactile-btn flex items-center gap-2 px-6 py-3.5 rounded-full bg-white hover:bg-slate-50 text-primary font-bold text-sm shadow-md border border-border-light hover:border-primary/30">
+            <i class="fa-solid fa-plus-circle text-lg text-primary"></i>
+            <span>Add New Question</span>
+          </button>
+        </div>
+
+      </div>
+
+
+      <!-- ============================================================= -->
+      <!-- MODULE B: BLOGGER WIDGETS GENERATOR VIEW                     -->
+      <!-- ============================================================= -->
+      <div id="viewBloggerWidgets" class="tab-view hidden space-y-8 max-w-4xl mx-auto">
+        
+        <div class="bg-gradient-to-r from-primary via-indigo-600 to-indigo-800 p-6 rounded-2xl text-white shadow-md">
+          <h2 class="text-xl font-extrabold mb-1">Blogger Widget Generator</h2>
+          <p class="text-indigo-100 text-sm">Create professional, conversion-friendly callouts and social badges ready to paste directly into your Blogger posts.</p>
+        </div>
+
+        <!-- Section 1: Social Media Channel Buttons -->
+        <div class="bg-white p-6 rounded-2xl border border-border-light shadow-sm space-y-4">
+          <div class="flex items-center justify-between border-b border-border-light pb-3">
+            <div class="flex items-center gap-2">
+              <i class="fa-solid fa-share-nodes text-primary text-lg"></i>
+              <h3 class="font-extrabold text-base text-slate-900">Gradient Social Media Badges</h3>
+            </div>
+            <span class="text-xs font-bold text-slate-500">3 Presets</span>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            
+            <!-- YouTube Subscribe Widget -->
+            <div class="p-4 rounded-xl border border-border-light bg-slate-50 space-y-3">
+              <div class="text-xs font-bold text-slate-700 flex items-center gap-1.5">
+                <i class="fa-brands fa-youtube text-red-600 text-base"></i> YouTube Subscribe
+              </div>
+              <div class="p-3 bg-white rounded-lg border text-center">
+                <a href="#" class="inline-flex items-center gap-2 px-4 py-2 rounded-xl font-bold text-xs text-white bg-gradient-to-r from-red-600 to-rose-600 shadow-sm" style="text-decoration: none;">
+                  <i class="fa-brands fa-youtube"></i> Subscribe on YouTube
+                </a>
+              </div>
+              <div class="flex gap-2">
+                <button onclick="copyWidgetCompose('yt')" class="flex-1 py-1.5 rounded-lg bg-red-50 hover:bg-red-100 text-red-700 text-xs font-bold border border-red-200">
+                  Copy (Compose)
+                </button>
+                <button onclick="copyWidgetHtml('yt')" class="px-2.5 py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold">
+                  HTML
+                </button>
+              </div>
+            </div>
+
+            <!-- Telegram Channel Join Widget -->
+            <div class="p-4 rounded-xl border border-border-light bg-slate-50 space-y-3">
+              <div class="text-xs font-bold text-slate-700 flex items-center gap-1.5">
+                <i class="fa-brands fa-telegram text-sky-500 text-base"></i> Telegram Channel
+              </div>
+              <div class="p-3 bg-white rounded-lg border text-center">
+                <a href="#" class="inline-flex items-center gap-2 px-4 py-2 rounded-xl font-bold text-xs text-white bg-gradient-to-r from-sky-500 to-blue-600 shadow-sm" style="text-decoration: none;">
+                  <i class="fa-brands fa-telegram"></i> Join Telegram Group
+                </a>
+              </div>
+              <div class="flex gap-2">
+                <button onclick="copyWidgetCompose('tg')" class="flex-1 py-1.5 rounded-lg bg-sky-50 hover:bg-sky-100 text-sky-700 text-xs font-bold border border-sky-200">
+                  Copy (Compose)
+                </button>
+                <button onclick="copyWidgetHtml('tg')" class="px-2.5 py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold">
+                  HTML
+                </button>
+              </div>
+            </div>
+
+            <!-- WhatsApp Community Widget -->
+            <div class="p-4 rounded-xl border border-border-light bg-slate-50 space-y-3">
+              <div class="text-xs font-bold text-slate-700 flex items-center gap-1.5">
+                <i class="fa-brands fa-whatsapp text-emerald-500 text-base"></i> WhatsApp Community
+              </div>
+              <div class="p-3 bg-white rounded-lg border text-center">
+                <a href="#" class="inline-flex items-center gap-2 px-4 py-2 rounded-xl font-bold text-xs text-white bg-gradient-to-r from-emerald-500 to-green-600 shadow-sm" style="text-decoration: none;">
+                  <i class="fa-brands fa-whatsapp"></i> Join WhatsApp Channel
+                </a>
+              </div>
+              <div class="flex gap-2">
+                <button onclick="copyWidgetCompose('wa')" class="flex-1 py-1.5 rounded-lg bg-emerald-50 hover:bg-emerald-100 text-emerald-700 text-xs font-bold border border-emerald-200">
+                  Copy (Compose)
+                </button>
+                <button onclick="copyWidgetHtml('wa')" class="px-2.5 py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold">
+                  HTML
+                </button>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Section 2: Modern Notice / Callout Boxes -->
+        <div class="bg-white p-6 rounded-2xl border border-border-light shadow-sm space-y-4">
+          <div class="flex items-center justify-between border-b border-border-light pb-3">
+            <div class="flex items-center gap-2">
+              <i class="fa-solid fa-bullhorn text-amber-500 text-lg"></i>
+              <h3 class="font-extrabold text-base text-slate-900">Notice & Callout Alert Boxes</h3>
+            </div>
+            <span class="text-xs font-bold text-slate-500">Ready to Paste</span>
+          </div>
+
+          <div class="space-y-4">
+            <!-- Alert 1: Info Note -->
+            <div class="p-4 rounded-xl border border-border-light bg-slate-50 flex flex-col md:flex-row md:items-center justify-between gap-4">
+              <div class="flex-1 p-3.5 rounded-xl bg-blue-50 border-l-4 border-blue-600 text-blue-900 text-xs font-semibold leading-relaxed">
+                <strong class="font-bold flex items-center gap-1.5 text-blue-800 mb-0.5"><i class="fa-solid fa-circle-info"></i> Important Student Instruction</strong>
+                Attempt all questions in one sitting. Once submitted, your scores and review notes will appear on the final screen.
+              </div>
+              <div class="flex items-center gap-2 shrink-0">
+                <button onclick="copyCalloutCompose('info')" class="px-3 py-2 rounded-xl bg-blue-600 text-white text-xs font-bold hover:bg-blue-700">
+                  Copy for Compose
+                </button>
+                <button onclick="copyCalloutHtml('info')" class="px-3 py-2 rounded-xl bg-slate-200 text-slate-700 text-xs font-bold hover:bg-slate-300">
+                  HTML
+                </button>
+              </div>
+            </div>
+
+            <!-- Alert 2: PDF Download Note -->
+            <div class="p-4 rounded-xl border border-border-light bg-slate-50 flex flex-col md:flex-row md:items-center justify-between gap-4">
+              <div class="flex-1 p-3.5 rounded-xl bg-emerald-50 border-l-4 border-emerald-600 text-emerald-900 text-xs font-semibold leading-relaxed">
+                <strong class="font-bold flex items-center gap-1.5 text-emerald-800 mb-0.5"><i class="fa-solid fa-file-pdf"></i> Download PDF Solutions</strong>
+                Want to revise offline? Click the download button below to get the official chapter PDF with answers.
+              </div>
+              <div class="flex items-center gap-2 shrink-0">
+                <button onclick="copyCalloutCompose('pdf')" class="px-3 py-2 rounded-xl bg-emerald-600 text-white text-xs font-bold hover:bg-emerald-700">
+                  Copy for Compose
+                </button>
+                <button onclick="copyCalloutHtml('pdf')" class="px-3 py-2 rounded-xl bg-slate-200 text-slate-700 text-xs font-bold hover:bg-slate-300">
+                  HTML
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+
+      <!-- ============================================================= -->
+      <!-- MODULE C: JSON MANAGER VIEW                                   -->
+      <!-- ============================================================= -->
+      <div id="viewJsonManager" class="tab-view hidden space-y-6 max-w-4xl mx-auto">
+        <div class="bg-white p-6 rounded-2xl border border-border-light shadow-sm space-y-4">
+          <div class="flex items-center justify-between border-b border-border-light pb-3">
+            <div class="flex items-center gap-2.5">
+              <i class="fa-solid fa-code text-primary text-lg"></i>
+              <div>
+                <h3 class="font-extrabold text-base text-slate-900">Quiz JSON Definition</h3>
+                <p class="text-xs text-slate-500 font-medium">Export, import, or manually modify the quiz schema</p>
+              </div>
+            </div>
+
+            <div class="flex items-center gap-2">
+              <input type="file" id="jsonFileInput" accept=".json" class="hidden">
+              <button onclick="document.getElementById('jsonFileInput').click()" class="px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold flex items-center gap-1.5">
+                <i class="fa-solid fa-upload"></i> Import File
+              </button>
+              <button id="btnFormatJson" class="px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold">
+                Prettify
+              </button>
+            </div>
+          </div>
+
+          <textarea id="jsonRawEditor" rows="18" class="w-full p-4 rounded-xl bg-slate-900 text-emerald-400 font-mono text-xs outline-none leading-relaxed border border-slate-700 shadow-inner" placeholder="Paste or view JSON here..."></textarea>
+
+          <div class="flex items-center justify-between pt-2">
+            <button id="btnApplyJson" class="tactile-btn px-5 py-2.5 rounded-xl bg-primary text-white font-bold text-sm shadow-sm hover:bg-primary-dark">
+              <i class="fa-solid fa-check-double mr-1.5"></i> Apply JSON to Builder
+            </button>
+            <button id="btnDownloadJsonFile" class="tactile-btn px-5 py-2.5 rounded-xl bg-emerald-600 text-white font-bold text-sm shadow-sm hover:bg-emerald-700">
+              <i class="fa-solid fa-download mr-1.5"></i> Download .json
+            </button>
+          </div>
+        </div>
+      </div>
+
+    </main>
+
+    <!-- 3. Right Sidebar: Real-time Live Mobile Preview (Desktop View) -->
+    <aside id="previewSidebar" class="hidden xl:flex w-[380px] bg-slate-100 border-l border-border-light flex-col items-center justify-center p-6 shrink-0 relative">
+      
+      <div class="w-full flex items-center justify-between mb-3 px-2">
+        <div class="flex items-center gap-2">
+          <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
+          <span class="font-extrabold text-xs text-slate-700 tracking-wider uppercase">Live Mobile Preview</span>
+        </div>
+        <button id="btnRefreshPreview" class="text-xs text-slate-500 hover:text-primary font-bold flex items-center gap-1">
+          <i class="fa-solid fa-rotate"></i> Reload
+        </button>
+      </div>
+
+      <!-- Realistic Mobile Shell -->
+      <div class="phone-mockup">
+        <div class="phone-speaker">
+          <div class="speaker-notch"></div>
+        </div>
+        <div class="phone-screen">
+          <iframe id="previewIframe" src="quiz-player.html" class="w-full h-full border-none" title="Quiz Live Student Preview"></iframe>
+        </div>
+      </div>
+    </aside>
+
+  </div>
+
+  <!-- Toast Container -->
+  <div id="toastContainer"></div>
+
+  <!-- Script Logic -->
+  <script>
+    (function () {
+      'use strict';
+
+      // -------------------------------------------------------------
+      // 1. Initial State Definition
+      // -------------------------------------------------------------
+      const defaultQuizState = {
+        title: "General Science & Tech Quiz",
+        category: "Science & Computers",
+        timer: true,
+        instantFeedback: true,
+        questions: [
+          {
+            type: "mcq",
+            prompt: "Which component is known as the 'Brain' of a computer?",
+            options: [
+              "Random Access Memory (RAM)",
+              "Central Processing Unit (CPU)",
+              "Solid State Drive (SSD)",
+              "Power Supply Unit"
+            ],
+            correctAnswer: 1,
+            explanation: "The CPU performs fundamental arithmetic, logic, and operational control of the computer."
+          },
+          {
+            type: "fill_in_blank",
+            prompt: "What does 'URL' stand for in web browsing?",
+            acceptedAnswers: ["Uniform Resource Locator", "Universal Resource Locator"],
+            hint: "Uniform R... L...",
+            explanation: "A URL specifies the global web address of a specific resource on the internet."
+          },
+          {
+            type: "flashcard",
+            prompt: "Concept: Responsive Web Design",
+            term: "Responsive Web Design (RWD)",
+            definition: "An approach to design web pages that automatically adapt and look great across all device screens.",
+            explanation: "Accomplished with flexible CSS grids, fluid images, and CSS media queries."
+          },
+          {
+            type: "match",
+            prompt: "Match each science term with its core definition:",
+            pairs: [
+              { left: "Photosynthesis", right: "Sunlight to plant chemical energy" },
+              { left: "Gravity", right: "Attraction force between masses" },
+              { left: "Atom", right: "Basic building block of matter" }
+            ],
+            explanation: "Fundamental foundational principles across physics, chemistry, and biology."
+          }
+        ]
+      };
+
+      let currentQuiz = JSON.parse(JSON.stringify(defaultQuizState));
+      let previewDebounceTimer = null;
+
+      // -------------------------------------------------------------
+      // 2. DOM Selectors
+      // -------------------------------------------------------------
+      const metaQuizTitle = document.getElementById('metaQuizTitle');
+      const metaCategory = document.getElementById('metaCategory');
+      const metaUrlPrefix = document.getElementById('metaUrlPrefix');
+      const metaToggleTimer = document.getElementById('metaToggleTimer');
+      const metaToggleFeedback = document.getElementById('metaToggleFeedback');
+      const questionsContainer = document.getElementById('questionsContainer');
+      const btnAddQuestion = document.getElementById('btnAddQuestion');
+      const questionCountBadge = document.getElementById('questionCountBadge');
+      const previewIframe = document.getElementById('previewIframe');
+      const btnRefreshPreview = document.getElementById('btnRefreshPreview');
+
+      // Tabs
+      const tabBtnQuiz = document.getElementById('tabBtnQuiz');
+      const tabBtnWidgets = document.getElementById('tabBtnWidgets');
+      const tabBtnJson = document.getElementById('tabBtnJson');
+      const viewQuizBuilder = document.getElementById('viewQuizBuilder');
+      const viewBloggerWidgets = document.getElementById('viewBloggerWidgets');
+      const viewJsonManager = document.getElementById('viewJsonManager');
+
+      // Top Action Buttons
+      const btnCopyCompose = document.getElementById('btnCopyCompose');
+      const btnCopyHtml = document.getElementById('btnCopyHtml');
+      const btnExportJsonTop = document.getElementById('btnExportJsonTop');
+
+      // JSON Manager elements
+      const jsonRawEditor = document.getElementById('jsonRawEditor');
+      const btnApplyJson = document.getElementById('btnApplyJson');
+      const btnDownloadJsonFile = document.getElementById('btnDownloadJsonFile');
+      const btnFormatJson = document.getElementById('btnFormatJson');
+      const jsonFileInput = document.getElementById('jsonFileInput');
+
+      // -------------------------------------------------------------
+      // 3. Tab Switching
+      // -------------------------------------------------------------
+      function switchTab(target) {
+        [tabBtnQuiz, tabBtnWidgets, tabBtnJson].forEach(b => {
+          b.classList.remove('active', 'bg-primary-bg', 'text-primary');
+          b.classList.add('text-slate-600');
+        });
+        [viewQuizBuilder, viewBloggerWidgets, viewJsonManager].forEach(v => v.classList.add('hidden'));
+
+        if (target === 'quiz') {
+          tabBtnQuiz.classList.add('active', 'bg-primary-bg', 'text-primary');
+          tabBtnQuiz.classList.remove('text-slate-600');
+          viewQuizBuilder.classList.remove('hidden');
+        } else if (target === 'widgets') {
+          tabBtnWidgets.classList.add('active', 'bg-primary-bg', 'text-primary');
+          tabBtnWidgets.classList.remove('text-slate-600');
+          viewBloggerWidgets.classList.remove('hidden');
+        } else if (target === 'json') {
+          tabBtnJson.classList.add('active', 'bg-primary-bg', 'text-primary');
+          tabBtnJson.classList.remove('text-slate-600');
+          viewJsonManager.classList.remove('hidden');
+          syncJsonEditor();
+        }
+      }
+
+      tabBtnQuiz.addEventListener('click', () => switchTab('quiz'));
+      tabBtnWidgets.addEventListener('click', () => switchTab('widgets'));
+      tabBtnJson.addEventListener('click', () => switchTab('json'));
+
+      // -------------------------------------------------------------
+      // 4. Render Dynamic Question Cards
+      // -------------------------------------------------------------
+      function renderAllQuestions() {
+        questionsContainer.innerHTML = '';
+        questionCountBadge.textContent = `${currentQuiz.questions.length} Question${currentQuiz.questions.length !== 1 ? 's' : ''}`;
+
+        currentQuiz.questions.forEach((q, qIndex) => {
+          const card = document.createElement('div');
+          card.className = 'question-card bg-white p-5 sm:p-6 rounded-2xl border border-border-light shadow-sm space-y-4 relative transition-all';
+          card.dataset.index = qIndex;
+
+          card.innerHTML = `
+            <!-- Question Card Header -->
+            <div class="flex items-center justify-between border-b border-border-light pb-3">
+              <div class="flex items-center gap-2.5">
+                <span class="w-7 h-7 rounded-full bg-primary text-white text-xs font-extrabold flex items-center justify-center">
+                  ${qIndex + 1}
+                </span>
+                <span class="font-extrabold text-sm text-slate-800">Question ${qIndex + 1} of ${currentQuiz.questions.length}</span>
+              </div>
+
+              <!-- Type Selector Dropdown & Card Actions -->
+              <div class="flex items-center gap-2">
+                <select class="q-type-select px-2.5 py-1 rounded-lg bg-slate-100 font-bold text-xs text-slate-700 border border-border-light outline-none">
+                  <option value="mcq" ${q.type === 'mcq' ? 'selected' : ''}>Multiple Choice (MCQ)</option>
+                  <option value="fill_in_blank" ${q.type === 'fill_in_blank' ? 'selected' : ''}>Fill in the Blank</option>
+                  <option value="flashcard" ${q.type === 'flashcard' ? 'selected' : ''}>3D Flashcard</option>
+                  <option value="match" ${q.type === 'match' ? 'selected' : ''}>Match the Pair</option>
+                </select>
+
+                <button class="btn-move-up p-1.5 text-slate-400 hover:text-slate-600 rounded" title="Move Up" ${qIndex === 0 ? 'disabled style="opacity:0.3"' : ''}>
+                  <i class="fa-solid fa-arrow-up text-xs"></i>
+                </button>
+                <button class="btn-move-down p-1.5 text-slate-400 hover:text-slate-600 rounded" title="Move Down" ${qIndex === currentQuiz.questions.length - 1 ? 'disabled style="opacity:0.3"' : ''}>
+                  <i class="fa-solid fa-arrow-down text-xs"></i>
+                </button>
+                <button class="btn-delete-q p-1.5 text-rose-500 hover:text-rose-700 rounded" title="Delete Question">
+                  <i class="fa-solid fa-trash-can text-xs"></i>
+                </button>
+              </div>
+            </div>
+
+            <!-- Question Prompt Textarea -->
+            <div class="space-y-1">
+              <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider">Question Prompt / Heading</label>
+              <textarea rows="2" class="q-prompt-input w-full p-3 rounded-xl border border-border-light bg-slate-50 font-semibold text-sm focus:bg-white focus:border-primary outline-none transition resize-none leading-relaxed">${escapeHtml(q.prompt || '')}</textarea>
+            </div>
+
+            <!-- Dynamic Question Type Body Area -->
+            <div class="q-type-content space-y-3 pt-1">
+              ${renderTypeSpecificBody(q, qIndex)}
+            </div>
+
+            <!-- Explanation Note Field -->
+            <div class="space-y-1 pt-1 border-t border-border-light/60">
+              <label class="block text-xs font-bold text-slate-600 flex items-center gap-1.5">
+                <i class="fa-solid fa-lightbulb text-amber-500"></i> Explanation / Solution Note
+              </label>
+              <input type="text" class="q-explanation-input w-full px-3 py-2 rounded-xl border border-border-light bg-slate-50 font-medium text-xs focus:bg-white focus:border-primary outline-none transition" value="${escapeHtml(q.explanation || '')}" placeholder="Explanation shown to students after answering...">
+            </div>
+          `;
+
+          questionsContainer.appendChild(card);
+          attachQuestionCardEvents(card, qIndex);
+        });
+      }
+
+      function renderTypeSpecificBody(q, qIndex) {
+        if (q.type === 'mcq') {
+          const letters = ['A', 'B', 'C', 'D'];
+          const options = q.options || ["Option 1", "Option 2", "Option 3", "Option 4"];
+          return `
+            <div class="space-y-2">
+              <div class="flex items-center justify-between text-xs text-slate-500 font-bold">
+                <span>Options & Select Correct Key:</span>
+                <span class="text-indigo-600">Select correct radio</span>
+              </div>
+              <div class="grid grid-cols-1 gap-2">
+                ${options.map((opt, i) => `
+                  <div class="flex items-center gap-2.5 p-2 rounded-xl bg-slate-50 border border-border-light">
+                    <span class="w-6 h-6 rounded-full bg-slate-200 text-slate-700 text-xs font-bold flex items-center justify-center shrink-0">
+                      ${letters[i] || (i + 1)}
+                    </span>
+                    <input type="text" class="mcq-opt-input flex-1 bg-transparent text-xs font-semibold text-slate-800 outline-none" data-opt-index="${i}" value="${escapeHtml(opt)}">
+                    <label class="flex items-center gap-1 text-xs font-bold cursor-pointer ${q.correctAnswer === i ? 'text-emerald-600' : 'text-slate-400'}">
+                      <input type="radio" name="mcq_correct_${qIndex}" value="${i}" ${q.correctAnswer === i ? 'checked' : ''} class="mcq-radio-correct text-emerald-600 focus:ring-emerald-500">
+                      <span>Correct</span>
+                    </label>
+                  </div>
+                `).join('')}
+              </div>
+            </div>
+          `;
+        } else if (q.type === 'fill_in_blank') {
+          const accepted = Array.isArray(q.acceptedAnswers) ? q.acceptedAnswers.join(', ') : (q.acceptedAnswers || '');
+          return `
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div class="space-y-1">
+                <label class="block text-xs font-bold text-slate-600">Acceptable Answers (Comma separated)</label>
+                <input type="text" class="fib-answers-input w-full px-3 py-2 rounded-xl border border-border-light bg-slate-50 font-semibold text-xs focus:bg-white focus:border-primary outline-none" value="${escapeHtml(accepted)}" placeholder="e.g. HTML, HyperText Markup Language">
+              </div>
+              <div class="space-y-1">
+                <label class="block text-xs font-bold text-slate-600">Optional Hint</label>
+                <input type="text" class="fib-hint-input w-full px-3 py-2 rounded-xl border border-border-light bg-slate-50 font-medium text-xs focus:bg-white focus:border-primary outline-none" value="${escapeHtml(q.hint || '')}" placeholder="e.g. 4-letter acronym">
+              </div>
+            </div>
+          `;
+        } else if (q.type === 'flashcard') {
+          return `
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div class="space-y-1">
+                <label class="block text-xs font-bold text-slate-600">Card Front (Concept / Term)</label>
+                <input type="text" class="fc-term-input w-full px-3 py-2 rounded-xl border border-border-light bg-slate-50 font-bold text-xs text-primary focus:bg-white focus:border-primary outline-none" value="${escapeHtml(q.term || q.front || '')}" placeholder="e.g. CSS">
+              </div>
+              <div class="space-y-1">
+                <label class="block text-xs font-bold text-slate-600">Card Back (Explanation / Definition)</label>
+                <textarea rows="2" class="fc-def-input w-full p-2.5 rounded-xl border border-border-light bg-slate-50 font-semibold text-xs focus:bg-white focus:border-primary outline-none resize-none leading-relaxed" placeholder="Detailed definition...">${escapeHtml(q.definition || q.back || '')}</textarea>
+              </div>
+            </div>
+          `;
+        } else if (q.type === 'match') {
+          const pairs = q.pairs || [];
+          return `
+            <div class="space-y-2">
+              <div class="flex items-center justify-between text-xs font-bold text-slate-600">
+                <span>Matching Pairs (Left Item ➔ Right Match):</span>
+                <button type="button" class="btn-add-pair text-primary hover:text-primary-dark flex items-center gap-1">
+                  <i class="fa-solid fa-plus-circle"></i> Add Pair
+                </button>
+              </div>
+              <div class="match-pairs-list space-y-2">
+                ${pairs.map((p, pIdx) => `
+                  <div class="flex items-center gap-2 p-2 rounded-xl bg-slate-50 border border-border-light">
+                    <input type="text" class="pair-left-input flex-1 px-2.5 py-1.5 rounded-lg border border-border-light bg-white font-semibold text-xs" placeholder="Left Term" value="${escapeHtml(p.left || '')}">
+                    <i class="fa-solid fa-arrow-right text-slate-400 text-xs"></i>
+                    <input type="text" class="pair-right-input flex-1 px-2.5 py-1.5 rounded-lg border border-border-light bg-white font-semibold text-xs" placeholder="Right Matching Definition" value="${escapeHtml(p.right || '')}">
+                    <button type="button" class="btn-del-pair p-1 text-slate-400 hover:text-rose-500" data-pair-index="${pIdx}">
+                      <i class="fa-solid fa-times"></i>
+                    </button>
+                  </div>
+                `).join('')}
+              </div>
+            </div>
+          `;
+        }
+        return '';
+      }
+
+      // -------------------------------------------------------------
+      // 5. Question Card Events Binding
+      // -------------------------------------------------------------
+      function attachQuestionCardEvents(card, qIndex) {
+        const q = currentQuiz.questions[qIndex];
+
+        // Type Change
+        const typeSelect = card.querySelector('.q-type-select');
+        typeSelect.addEventListener('change', (e) => {
+          const newType = e.target.value;
+          q.type = newType;
+          if (newType === 'mcq' && !q.options) {
+            q.options = ["Option 1", "Option 2", "Option 3", "Option 4"];
+            q.correctAnswer = 0;
+          } else if (newType === 'fill_in_blank' && !q.acceptedAnswers) {
+            q.acceptedAnswers = ["Answer"];
+          } else if (newType === 'flashcard' && !q.term) {
+            q.term = "Term";
+            q.definition = "Definition text";
+          } else if (newType === 'match' && !q.pairs) {
+            q.pairs = [{ left: "Item 1", right: "Definition 1" }];
+          }
+          renderAllQuestions();
+          triggerPreviewUpdate();
+        });
+
+        // Prompt Input
+        const promptInput = card.querySelector('.q-prompt-input');
+        promptInput.addEventListener('input', (e) => {
+          q.prompt = e.target.value;
+          triggerPreviewUpdate();
+        });
+
+        // Explanation Input
+        const expInput = card.querySelector('.q-explanation-input');
+        expInput.addEventListener('input', (e) => {
+          q.explanation = e.target.value;
+          triggerPreviewUpdate();
+        });
+
+        // Move Up / Down / Delete
+        const btnUp = card.querySelector('.btn-move-up');
+        if (btnUp) {
+          btnUp.addEventListener('click', () => {
+            if (qIndex > 0) {
+              const temp = currentQuiz.questions[qIndex];
+              currentQuiz.questions[qIndex] = currentQuiz.questions[qIndex - 1];
+              currentQuiz.questions[qIndex - 1] = temp;
+              renderAllQuestions();
+              triggerPreviewUpdate();
+            }
+          });
+        }
+
+        const btnDown = card.querySelector('.btn-move-down');
+        if (btnDown) {
+          btnDown.addEventListener('click', () => {
+            if (qIndex < currentQuiz.questions.length - 1) {
+              const temp = currentQuiz.questions[qIndex];
+              currentQuiz.questions[qIndex] = currentQuiz.questions[qIndex + 1];
+              currentQuiz.questions[qIndex + 1] = temp;
+              renderAllQuestions();
+              triggerPreviewUpdate();
+            }
+          });
+        }
+
+        const btnDelete = card.querySelector('.btn-delete-q');
+        if (btnDelete) {
+          btnDelete.addEventListener('click', () => {
+            if (currentQuiz.questions.length <= 1) {
+              showToast("At least 1 question is required!", "warning");
+              return;
+            }
+            currentQuiz.questions.splice(qIndex, 1);
+            renderAllQuestions();
+            triggerPreviewUpdate();
+            showToast(`Question ${qIndex + 1} deleted`, "info");
+          });
+        }
+
+        // Specific Type Inputs Bindings
+        if (q.type === 'mcq') {
+          const optInputs = card.querySelectorAll('.mcq-opt-input');
+          optInputs.forEach(inp => {
+            inp.addEventListener('input', (e) => {
+              const optIdx = parseInt(inp.dataset.optIndex);
+              q.options[optIdx] = e.target.value;
+              triggerPreviewUpdate();
+            });
+          });
+
+          const radios = card.querySelectorAll('.mcq-radio-correct');
+          radios.forEach(radio => {
+            radio.addEventListener('change', () => {
+              q.correctAnswer = parseInt(radio.value);
+              triggerPreviewUpdate();
+            });
+          });
+        } else if (q.type === 'fill_in_blank') {
+          const ansInput = card.querySelector('.fib-answers-input');
+          if (ansInput) {
+            ansInput.addEventListener('input', (e) => {
+              q.acceptedAnswers = e.target.value.split(',').map(s => s.trim()).filter(Boolean);
+              triggerPreviewUpdate();
+            });
+          }
+          const hintInput = card.querySelector('.fib-hint-input');
+          if (hintInput) {
+            hintInput.addEventListener('input', (e) => {
+              q.hint = e.target.value;
+              triggerPreviewUpdate();
+            });
+          }
+        } else if (q.type === 'flashcard') {
+          const termInp = card.querySelector('.fc-term-input');
+          if (termInp) {
+            termInp.addEventListener('input', (e) => {
+              q.term = e.target.value;
+              triggerPreviewUpdate();
+            });
+          }
+          const defInp = card.querySelector('.fc-def-input');
+          if (defInp) {
+            defInp.addEventListener('input', (e) => {
+              q.definition = e.target.value;
+              triggerPreviewUpdate();
+            });
+          }
+        } else if (q.type === 'match') {
+          const pairLefts = card.querySelectorAll('.pair-left-input');
+          const pairRights = card.querySelectorAll('.pair-right-input');
+          const delPairBtns = card.querySelectorAll('.btn-del-pair');
+
+          pairLefts.forEach((inp, pIdx) => {
+            inp.addEventListener('input', (e) => {
+              if (q.pairs[pIdx]) q.pairs[pIdx].left = e.target.value;
+              triggerPreviewUpdate();
+            });
+          });
+
+          pairRights.forEach((inp, pIdx) => {
+            inp.addEventListener('input', (e) => {
+              if (q.pairs[pIdx]) q.pairs[pIdx].right = e.target.value;
+              triggerPreviewUpdate();
+            });
+          });
+
+          delPairBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+              const pIdx = parseInt(btn.dataset.pairIndex);
+              if (q.pairs.length <= 1) {
+                showToast("At least 1 pair is required.", "warning");
+                return;
+              }
+              q.pairs.splice(pIdx, 1);
+              renderAllQuestions();
+              triggerPreviewUpdate();
+            });
+          });
+
+          const btnAddPair = card.querySelector('.btn-add-pair');
+          if (btnAddPair) {
+            btnAddPair.addEventListener('click', () => {
+              q.pairs.push({ left: `Item ${q.pairs.length + 1}`, right: `Definition ${q.pairs.length + 1}` });
+              renderAllQuestions();
+              triggerPreviewUpdate();
+            });
+          }
+        }
+      }
+
+      // Add New Question Action
+      btnAddQuestion.addEventListener('click', () => {
+        currentQuiz.questions.push({
+          type: "mcq",
+          prompt: "New question prompt here...",
+          options: ["Option A", "Option B", "Option C", "Option D"],
+          correctAnswer: 0,
+          explanation: "Explanation note for this question."
+        });
+        renderAllQuestions();
+        triggerPreviewUpdate();
+        showToast("New question added!", "success");
+        // Scroll to the bottom of the container
+        window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+      });
+
+      // Metadata Changes
+      metaQuizTitle.addEventListener('input', (e) => {
+        currentQuiz.title = e.target.value;
+        triggerPreviewUpdate();
+      });
+      metaCategory.addEventListener('input', (e) => {
+        currentQuiz.category = e.target.value;
+      });
+
+      // -------------------------------------------------------------
+      // 6. Live Mobile Preview Synchronizer
+      // -------------------------------------------------------------
+      function triggerPreviewUpdate() {
+        clearTimeout(previewDebounceTimer);
+        previewDebounceTimer = setTimeout(() => {
+          updateIframePreview();
+        }, 350);
+      }
+
+      function updateIframePreview() {
+        try {
+          const jsonString = JSON.stringify(currentQuiz);
+          const base64Payload = encodeUtf8Base64(jsonString);
+          const targetUrl = `quiz-player.html?data=${encodeURIComponent(base64Payload)}`;
+          
+          if (previewIframe) {
+            previewIframe.src = targetUrl;
+          }
+        } catch (e) {
+          console.error("Failed to sync preview:", e);
+        }
+      }
+
+      btnRefreshPreview.addEventListener('click', () => {
+        updateIframePreview();
+        showToast("Preview reloaded!", "info");
+      });
+
+      // -------------------------------------------------------------
+      // 7. Blogger Embed & Export Engine
+      // -------------------------------------------------------------
+
+      // Helper to generate Blogger Iframe HTML
+      function generateEmbedSnippet() {
+        const jsonString = JSON.stringify(currentQuiz);
+        const base64Data = encodeUtf8Base64(jsonString);
+        const prefix = metaUrlPrefix.value.trim() || 'quiz-player.html';
+        
+        const liveSrc = prefix.includes('?') 
+          ? `${prefix}&data=${base64Data}` 
+          : `${prefix}?data=${base64Data}`;
+
+        return `<div style="text-align: center; margin: 24px auto; max-width: 680px; width: 100%;">
+  <iframe src="${liveSrc}" width="100%" height="600" style="border: none; border-radius: 24px; max-width: 680px; width: 100%; box-shadow: 0 10px 30px rgba(0,0,0,0.08); display: block; margin: 0 auto;" loading="lazy"></iframe>
+  <div style="font-size: 11px; color: #64748b; margin-top: 6px; font-family: sans-serif;">Powered by Blogger Suite Pro</div>
+</div>`;
+      }
+
+      // Button 1: Copy for Blogger Compose View (Rich-text ClipboardItem)
+      btnCopyCompose.addEventListener('click', async () => {
+        const snippet = generateEmbedSnippet();
+        try {
+          if (navigator.clipboard && window.ClipboardItem) {
+            const htmlBlob = new Blob([snippet], { type: 'text/html' });
+            const textBlob = new Blob([snippet], { type: 'text/plain' });
+            await navigator.clipboard.write([
+              new ClipboardItem({
+                'text/html': htmlBlob,
+                'text/plain': textBlob
+              })
+            ]);
+            showToast("Copied for Blogger Compose! Just press Ctrl+V in your post.", "success");
+          } else {
+            await navigator.clipboard.writeText(snippet);
+            showToast("HTML copied to clipboard!", "success");
+          }
+        } catch (err) {
+          // Fallback
+          fallbackCopyText(snippet);
+          showToast("Copied snippet to clipboard!", "success");
+        }
+      });
+
+      // Button 2: Copy Raw iFrame HTML (For standard Blogger HTML View)
+      btnCopyHtml.addEventListener('click', async () => {
+        const snippet = generateEmbedSnippet();
+        try {
+          await navigator.clipboard.writeText(snippet);
+          showToast("iFrame HTML code copied!", "success");
+        } catch (err) {
+          fallbackCopyText(snippet);
+          showToast("HTML copied!", "success");
+        }
+      });
+
+      // Button 3: Export JSON File
+      btnExportJsonTop.addEventListener('click', () => {
+        downloadQuizJsonFile();
+      });
+
+      function downloadQuizJsonFile() {
+        const jsonStr = JSON.stringify(currentQuiz, null, 2);
+        const fileName = (currentQuiz.title || 'quiz').toLowerCase().replace(/[^a-z0-9]/g, '-') + '.json';
+        const blob = new Blob([jsonStr], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = fileName;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+        showToast(`Exported ${fileName}`, "success");
+      }
+
+      // -------------------------------------------------------------
+      // 8. Blogger Widgets Module Generator Functions
+      // -------------------------------------------------------------
+      const widgetTemplates = {
+        yt: `<div style="text-align: center; margin: 18px auto;"><a href="https://youtube.com" target="_blank" rel="noopener noreferrer" style="display: inline-flex; align-items: center; gap: 8px; padding: 12px 24px; border-radius: 50px; background: linear-gradient(135deg, #dc2626, #e11d48); color: #ffffff; text-decoration: none; font-family: sans-serif; font-weight: 700; font-size: 14px; box-shadow: 0 4px 15px rgba(220,38,38,0.3);"><i class="fa-brands fa-youtube"></i> Subscribe on YouTube</a></div>`,
+        tg: `<div style="text-align: center; margin: 18px auto;"><a href="https://t.me" target="_blank" rel="noopener noreferrer" style="display: inline-flex; align-items: center; gap: 8px; padding: 12px 24px; border-radius: 50px; background: linear-gradient(135deg, #0284c7, #2563eb); color: #ffffff; text-decoration: none; font-family: sans-serif; font-weight: 700; font-size: 14px; box-shadow: 0 4px 15px rgba(2,132,199,0.3);"><i class="fa-brands fa-telegram"></i> Join Telegram Channel</a></div>`,
+        wa: `<div style="text-align: center; margin: 18px auto;"><a href="https://whatsapp.com" target="_blank" rel="noopener noreferrer" style="display: inline-flex; align-items: center; gap: 8px; padding: 12px 24px; border-radius: 50px; background: linear-gradient(135deg, #059669, #10b981); color: #ffffff; text-decoration: none; font-family: sans-serif; font-weight: 700; font-size: 14px; box-shadow: 0 4px 15px rgba(5,150,105,0.3);"><i class="fa-brands fa-whatsapp"></i> Join WhatsApp Community</a></div>`,
+        info: `<div style="margin: 20px auto; max-width: 640px; padding: 16px 20px; border-radius: 16px; background-color: #eff6ff; border-left: 5px solid #2563eb; color: #1e3a8a; font-family: sans-serif; font-size: 14px; line-height: 1.5; box-shadow: 0 2px 8px rgba(0,0,0,0.04);"><strong style="display: block; margin-bottom: 4px; font-size: 15px; color: #1d4ed8;">📌 Notice for Students</strong>Please read each question thoroughly before submitting your responses. All results are tabulated instantly.</div>`,
+        pdf: `<div style="margin: 20px auto; max-width: 640px; padding: 16px 20px; border-radius: 16px; background-color: #ecfdf5; border-left: 5px solid #059669; color: #064e3b; font-family: sans-serif; font-size: 14px; line-height: 1.5; box-shadow: 0 2px 8px rgba(0,0,0,0.04);"><strong style="display: block; margin-bottom: 4px; font-size: 15px; color: #047857;">📥 Download Study Materials</strong>Official practice notes and reference solutions are available in PDF format. Keep practicing daily!</div>`
+      };
+
+      window.copyWidgetCompose = async function (type) {
+        const html = widgetTemplates[type] || '';
+        try {
+          if (navigator.clipboard && window.ClipboardItem) {
+            const htmlBlob = new Blob([html], { type: 'text/html' });
+            const textBlob = new Blob([html], { type: 'text/plain' });
+            await navigator.clipboard.write([new ClipboardItem({ 'text/html': htmlBlob, 'text/plain': textBlob })]);
+            showToast("Widget copied for Blogger Compose! Paste with Ctrl+V.", "success");
+          } else {
+            await navigator.clipboard.writeText(html);
+            showToast("HTML copied!", "success");
+          }
+        } catch (e) {
+          fallbackCopyText(html);
+          showToast("Widget copied!", "success");
+        }
+      };
+
+      window.copyWidgetHtml = async function (type) {
+        const html = widgetTemplates[type] || '';
+        await navigator.clipboard.writeText(html);
+        showToast("HTML code copied!", "success");
+      };
+
+      window.copyCalloutCompose = function (type) {
+        window.copyWidgetCompose(type);
+      };
+      window.copyCalloutHtml = function (type) {
+        window.copyWidgetHtml(type);
+      };
+
+      // -------------------------------------------------------------
+      // 9. JSON Manager Module
+      // -------------------------------------------------------------
+      function syncJsonEditor() {
+        jsonRawEditor.value = JSON.stringify(currentQuiz, null, 2);
+      }
+
+      btnFormatJson.addEventListener('click', () => {
+        try {
+          const parsed = JSON.parse(jsonRawEditor.value);
+          jsonRawEditor.value = JSON.stringify(parsed, null, 2);
+          showToast("JSON formatted cleanly", "info");
+        } catch (e) {
+          showToast("Invalid JSON syntax: " + e.message, "danger");
+        }
+      });
+
+      btnApplyJson.addEventListener('click', () => {
+        try {
+          const parsed = JSON.parse(jsonRawEditor.value);
+          if (!parsed.questions || !Array.isArray(parsed.questions)) {
+            throw new Error("Missing 'questions' array in JSON.");
+          }
+          currentQuiz = parsed;
+          metaQuizTitle.value = currentQuiz.title || '';
+          metaCategory.value = currentQuiz.category || '';
+          renderAllQuestions();
+          triggerPreviewUpdate();
+          switchTab('quiz');
+          showToast("JSON successfully applied to Quiz Builder!", "success");
+        } catch (e) {
+          showToast("Cannot apply: " + e.message, "danger");
+        }
+      });
+
+      btnDownloadJsonFile.addEventListener('click', () => {
+        downloadQuizJsonFile();
+      });
+
+      jsonFileInput.addEventListener('change', (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = (event) => {
+          try {
+            const parsed = JSON.parse(event.target.result);
+            currentQuiz = parsed;
+            jsonRawEditor.value = JSON.stringify(parsed, null, 2);
+            metaQuizTitle.value = currentQuiz.title || '';
+            renderAllQuestions();
+            triggerPreviewUpdate();
+            switchTab('quiz');
+            showToast(`Loaded ${file.name}!`, "success");
+          } catch (err) {
+            showToast("Failed to parse JSON file", "danger");
+          }
+        };
+        reader.readAsText(file);
+      });
+
+      // -------------------------------------------------------------
+      // Utilities (UTF-8 Base64 & Toast)
+      // -------------------------------------------------------------
+      function encodeUtf8Base64(str) {
+        const bytes = new TextEncoder().encode(str);
+        let binary = '';
+        for (let i = 0; i < bytes.byteLength; i++) {
+          binary += String.fromCharCode(bytes[i]);
+        }
+        return btoa(binary);
+      }
+
+      function escapeHtml(str) {
+        if (!str) return '';
+        return String(str)
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;')
+          .replace(/'/g, '&#039;');
+      }
+
+      function fallbackCopyText(text) {
+        const ta = document.createElement('textarea');
+        ta.value = text;
+        ta.style.position = 'fixed';
+        ta.style.opacity = '0';
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand('copy');
+        document.body.removeChild(ta);
+      }
+
+      function showToast(message, type = 'info') {
+        const container = document.getElementById('toastContainer');
+        const toast = document.createElement('div');
+
+        let bg = 'bg-slate-900 text-white';
+        let icon = '<i class="fa-solid fa-circle-info text-sky-400"></i>';
+
+        if (type === 'success') {
+          bg = 'bg-emerald-700 text-white';
+          icon = '<i class="fa-solid fa-circle-check text-emerald-200"></i>';
+        } else if (type === 'warning') {
+          bg = 'bg-amber-600 text-white';
+          icon = '<i class="fa-solid fa-triangle-exclamation text-amber-200"></i>';
+        } else if (type === 'danger') {
+          bg = 'bg-rose-700 text-white';
+          icon = '<i class="fa-solid fa-circle-xmark text-rose-200"></i>';
+        }
+
+        toast.className = `toast-msg flex items-center gap-2.5 px-4 py-3 rounded-xl shadow-lg font-bold text-xs ${bg}`;
+        toast.innerHTML = `${icon} <span>${escapeHtml(message)}</span>`;
+
+        container.appendChild(toast);
+        setTimeout(() => {
+          toast.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+          toast.style.opacity = '0';
+          toast.style.transform = 'translateY(10px)';
+          setTimeout(() => toast.remove(), 300);
+        }, 3000);
+      }
+
+      // Initial Boot
+      renderAllQuestions();
+      updateIframePreview();
+    })();
+  </script>
 </body>
 </html>
