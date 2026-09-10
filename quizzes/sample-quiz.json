@@ -1,0 +1,40 @@
+{
+  "title": "General Science & Web Tech Quiz",
+  "questions": [
+    {
+      "type": "mcq",
+      "prompt": "Which component is known as the 'Brain' of a computer?",
+      "options": ["RAM", "CPU (Central Processing Unit)", "Hard Drive", "Power Supply"],
+      "correctAnswer": 1,
+      "explanation": "The CPU performs the fundamental arithmetic, logic, and control operations of a computer."
+    },
+    {
+      "type": "fill_in_blank",
+      "prompt": "What does 'URL' stand for in web browsing?",
+      "acceptedAnswers": [
+        "Uniform Resource Locator",
+        "Universal Resource Locator"
+      ],
+      "hint": "Uniform R... L...",
+      "explanation": "A URL (Uniform Resource Locator) specifies the web address of a given unique resource on the Internet."
+    },
+    {
+      "type": "flashcard",
+      "prompt": "Concept: Responsive Web Design",
+      "term": "Responsive Web Design (RWD)",
+      "definition": "An approach to web design that aims to make web pages render well on a variety of devices, window, or screen sizes.",
+      "explanation": "Achieved primarily via fluid grids, flexible images, and CSS media queries."
+    },
+    {
+      "type": "match",
+      "prompt": "Match the science term to its corresponding definition:",
+      "pairs": [
+        { "left": "Photosynthesis", "right": "Plants converting sunlight to energy" },
+        { "left": "Gravity", "right": "Force attracting masses toward each other" },
+        { "left": "Atom", "right": "Basic unit of a chemical element" },
+        { "left": "DNA", "right": "Carries genetic instructions for life" }
+      ],
+      "explanation": "These are fundamental concepts in biology, physics, and chemistry."
+    }
+  ]
+}

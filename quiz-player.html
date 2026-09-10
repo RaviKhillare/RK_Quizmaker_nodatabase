@@ -1,0 +1,1628 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Blogger Suite Pro - Interactive Quiz Engine</title>
+  
+  <!-- FontAwesome 6 CDN -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+  <!-- Google Fonts: Plus Jakarta Sans for M3 / Duolingo-grade typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --primary: #4f46e5;
+      --primary-dark: #3730a3;
+      --primary-light: #e0e7ff;
+      --primary-bg: #eef2ff;
+      --success: #16a34a;
+      --success-dark: #15803d;
+      --success-light: #bbf7d0;
+      --success-bg: #f0fdf4;
+      --danger: #dc2626;
+      --danger-dark: #b91c1c;
+      --danger-light: #fecaca;
+      --danger-bg: #fef2f2;
+      --warning: #d97706;
+      --surface: #ffffff;
+      --background: #f8fafc;
+      --text-main: #0f172a;
+      --text-muted: #64748b;
+      --border-light: #e2e8f0;
+      --border-dark: #cbd5e1;
+      --radius-xl: 24px;
+      --radius-lg: 16px;
+      --radius-md: 12px;
+      --radius-sm: 8px;
+      --ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+      --ease-smooth: cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+      background-color: var(--background);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 10px;
+    }
+
+    /* Outer Container: Tailored for Blogger iframe embed (500px-620px) */
+    .quiz-app {
+      width: 100%;
+      max-width: 660px;
+      height: 600px;
+      max-height: 94vh;
+      background: var(--surface);
+      border-radius: var(--radius-xl);
+      box-shadow: 0 16px 36px -8px rgba(15, 23, 42, 0.08), 0 4px 12px -2px rgba(15, 23, 42, 0.04);
+      border: 2px solid var(--border-light);
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* -------------------------------------------------------------
+       Top Navigation & Progress Bar
+       ------------------------------------------------------------- */
+    .top-nav {
+      padding: 14px 20px 12px;
+      background: #ffffff;
+      border-bottom: 2px solid var(--border-light);
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      z-index: 10;
+    }
+
+    .top-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .brand-title {
+      font-size: 0.95rem;
+      font-weight: 800;
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      gap: 7px;
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .question-indicator {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      background: #f1f5f9;
+      padding: 3px 10px;
+      border-radius: 9999px;
+    }
+
+    .score-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      background: #fef3c7;
+      color: #92400e;
+      font-size: 0.85rem;
+      font-weight: 800;
+      padding: 4px 10px;
+      border-radius: 9999px;
+    }
+
+    .sound-toggle-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      cursor: pointer;
+      font-size: 1rem;
+      padding: 4px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: color 0.2s;
+    }
+
+    .sound-toggle-btn:hover {
+      color: var(--primary);
+    }
+
+    .progress-track {
+      width: 100%;
+      height: 10px;
+      background: #e2e8f0;
+      border-radius: 9999px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .progress-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #4f46e5, #10b981);
+      border-radius: 9999px;
+      transition: width 0.4s var(--ease-smooth);
+    }
+
+    /* -------------------------------------------------------------
+       Main Scrollable Question Canvas
+       ------------------------------------------------------------- */
+    .quiz-viewport {
+      flex: 1;
+      overflow-y: auto;
+      padding: 20px 22px 100px; /* bottom padding reserves room for drawer */
+      display: flex;
+      flex-direction: column;
+      position: relative;
+    }
+
+    .quiz-viewport::-webkit-scrollbar {
+      width: 6px;
+    }
+    .quiz-viewport::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 9999px;
+    }
+
+    .badge-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.75rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--primary);
+      margin-bottom: 6px;
+    }
+
+    .prompt-text {
+      font-size: 1.18rem;
+      font-weight: 800;
+      line-height: 1.45;
+      color: var(--text-main);
+      margin-bottom: 18px;
+    }
+
+    /* -------------------------------------------------------------
+       Tactile 3D Buttons (Duolingo Style: Depth + Press Effect)
+       ------------------------------------------------------------- */
+    .tactile-btn {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-family: inherit;
+      font-weight: 800;
+      border-radius: var(--radius-lg);
+      cursor: pointer;
+      user-select: none;
+      transition: all 0.12s ease-in-out;
+      outline: none;
+      text-decoration: none;
+    }
+
+    .tactile-btn:active:not(:disabled),
+    .tactile-btn.is-pressed {
+      transform: translateY(3px);
+      box-shadow: 0 0 0 transparent !important;
+    }
+
+    /* -------------------------------------------------------------
+       Type 1: Multiple Choice Options (MCQ)
+       ------------------------------------------------------------- */
+    .mcq-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      width: 100%;
+    }
+
+    .mcq-btn {
+      padding: 14px 18px;
+      background: #ffffff;
+      border: 2px solid var(--border-light);
+      border-bottom: 4px solid var(--border-dark);
+      border-radius: var(--radius-lg);
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      text-align: left;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .mcq-btn:hover:not(:disabled) {
+      border-color: var(--primary);
+      background: var(--primary-bg);
+      transform: translateY(-1px);
+    }
+
+    .mcq-btn:active:not(:disabled) {
+      transform: translateY(2px);
+      border-bottom-width: 2px;
+    }
+
+    .mcq-btn .key-circle {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: #f1f5f9;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: 14px;
+      flex-shrink: 0;
+      transition: all 0.15s ease;
+    }
+
+    .mcq-btn:hover:not(:disabled) .key-circle {
+      background: var(--primary-light);
+      color: var(--primary);
+    }
+
+    .mcq-btn.correct {
+      border-color: var(--success);
+      border-bottom-color: var(--success-dark);
+      background: var(--success-bg);
+      color: var(--success-dark);
+    }
+
+    .mcq-btn.correct .key-circle {
+      background: var(--success);
+      color: #ffffff;
+    }
+
+    .mcq-btn.wrong {
+      border-color: var(--danger);
+      border-bottom-color: var(--danger-dark);
+      background: var(--danger-bg);
+      color: var(--danger-dark);
+      animation: duolingoShake 0.4s ease;
+    }
+
+    .mcq-btn.wrong .key-circle {
+      background: var(--danger);
+      color: #ffffff;
+    }
+
+    .mcq-btn .end-icon {
+      margin-left: auto;
+      font-size: 1.25rem;
+    }
+
+    /* -------------------------------------------------------------
+       Type 2: Fill in the Blank
+       ------------------------------------------------------------- */
+    .fib-box {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      max-width: 500px;
+      margin: 10px auto 0;
+      width: 100%;
+    }
+
+    .fib-input-wrapper {
+      position: relative;
+      display: flex;
+      gap: 10px;
+    }
+
+    .fib-field {
+      flex: 1;
+      padding: 14px 18px;
+      font-family: inherit;
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--text-main);
+      background: #ffffff;
+      border: 2px solid var(--border-light);
+      border-radius: var(--radius-lg);
+      outline: none;
+      transition: all 0.2s ease;
+    }
+
+    .fib-field:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.15);
+    }
+
+    .fib-field.correct {
+      border-color: var(--success);
+      background: var(--success-bg);
+      color: var(--success-dark);
+    }
+
+    .fib-field.wrong {
+      border-color: var(--danger);
+      background: var(--danger-bg);
+      color: var(--danger-dark);
+      animation: duolingoShake 0.4s ease;
+    }
+
+    .fib-submit-btn {
+      padding: 0 24px;
+      background: var(--primary);
+      color: #ffffff;
+      border: 2px solid var(--primary-dark);
+      border-bottom: 4px solid var(--primary-dark);
+      font-size: 0.95rem;
+    }
+
+    .fib-hint-note {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-align: center;
+    }
+
+    /* -------------------------------------------------------------
+       Type 3: 3D Perspective Flashcard
+       ------------------------------------------------------------- */
+    .flashcard-wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+      width: 100%;
+    }
+
+    .perspective-stage {
+      perspective: 1000px;
+      width: 100%;
+      height: 200px;
+      cursor: pointer;
+    }
+
+    .flipper-card {
+      width: 100%;
+      height: 100%;
+      position: relative;
+      transform-style: preserve-3d;
+      transition: transform 0.55s cubic-bezier(0.4, 0.2, 0.2, 1);
+      border-radius: var(--radius-xl);
+      box-shadow: 0 8px 20px -4px rgba(0, 0, 0, 0.08);
+    }
+
+    .flipper-card.is-flipped {
+      transform: rotateY(180deg);
+    }
+
+    .card-face {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+      border-radius: var(--radius-xl);
+      padding: 22px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      border: 2px solid var(--border-light);
+    }
+
+    .card-front {
+      background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+      color: var(--text-main);
+    }
+
+    .card-back {
+      background: linear-gradient(135deg, #4f46e5 0%, #3730a3 100%);
+      color: #ffffff;
+      transform: rotateY(180deg);
+      border-color: #3730a3;
+    }
+
+    .card-term {
+      font-size: 1.3rem;
+      font-weight: 800;
+      margin-bottom: 8px;
+    }
+
+    .card-def {
+      font-size: 1.05rem;
+      font-weight: 600;
+      line-height: 1.45;
+    }
+
+    .card-cue {
+      font-size: 0.78rem;
+      font-weight: 700;
+      opacity: 0.75;
+      margin-top: 10px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .flashcard-action-bar {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      width: 100%;
+      max-width: 440px;
+    }
+
+    .btn-review-again {
+      padding: 12px;
+      background: #f8fafc;
+      border: 2px solid var(--border-dark);
+      border-bottom: 4px solid var(--border-dark);
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
+
+    .btn-know-this {
+      padding: 12px;
+      background: var(--success);
+      border: 2px solid var(--success-dark);
+      border-bottom: 4px solid var(--success-dark);
+      color: #ffffff;
+      font-size: 0.9rem;
+    }
+
+    /* -------------------------------------------------------------
+       Type 4: Match the Pair
+       ------------------------------------------------------------- */
+    .match-columns {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      width: 100%;
+    }
+
+    .match-col {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .match-pill {
+      padding: 12px 14px;
+      background: #ffffff;
+      border: 2px solid var(--border-light);
+      border-bottom: 3px solid var(--border-dark);
+      border-radius: var(--radius-md);
+      font-size: 0.88rem;
+      font-weight: 700;
+      min-height: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      cursor: pointer;
+      user-select: none;
+      word-break: break-word;
+      transition: all 0.15s ease;
+    }
+
+    .match-pill:hover:not(.is-matched) {
+      border-color: var(--primary);
+      background: var(--primary-bg);
+      transform: translateY(-1px);
+    }
+
+    .match-pill.is-selected {
+      border-color: var(--primary);
+      border-bottom: 3px solid var(--primary-dark);
+      background: var(--primary-light);
+      color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.25);
+    }
+
+    .match-pill.is-matched {
+      border-color: var(--success);
+      border-bottom: 3px solid var(--success-dark);
+      background: var(--success-bg);
+      color: var(--success-dark);
+      cursor: default;
+    }
+
+    .match-pill.shake-red {
+      animation: duolingoShake 0.4s ease;
+      border-color: var(--danger);
+      border-bottom-color: var(--danger-dark);
+      background: var(--danger-bg);
+      color: var(--danger-dark);
+    }
+
+    /* -------------------------------------------------------------
+       Bottom Interactive Feedback Drawer (Duolingo Style Slide-Up)
+       ------------------------------------------------------------- */
+    .feedback-drawer {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 18px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      transform: translateY(105%);
+      transition: transform 0.32s var(--ease-smooth);
+      z-index: 20;
+      box-shadow: 0 -8px 24px rgba(0, 0, 0, 0.08);
+    }
+
+    .feedback-drawer.is-open {
+      transform: translateY(0);
+    }
+
+    .feedback-drawer.drawer-correct {
+      background: var(--success-bg);
+      border-top: 2px solid var(--success-light);
+    }
+
+    .feedback-drawer.drawer-wrong {
+      background: var(--danger-bg);
+      border-top: 2px solid var(--danger-light);
+    }
+
+    .drawer-info {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      flex: 1;
+    }
+
+    .drawer-icon {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.4rem;
+      flex-shrink: 0;
+    }
+
+    .drawer-correct .drawer-icon {
+      background: var(--success);
+      color: #ffffff;
+    }
+
+    .drawer-wrong .drawer-icon {
+      background: var(--danger);
+      color: #ffffff;
+    }
+
+    .drawer-text {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .drawer-status {
+      font-size: 1.15rem;
+      font-weight: 800;
+    }
+
+    .drawer-correct .drawer-status {
+      color: var(--success-dark);
+    }
+
+    .drawer-wrong .drawer-status {
+      color: var(--danger-dark);
+    }
+
+    .drawer-explanation {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-main);
+      line-height: 1.35;
+    }
+
+    .drawer-continue-btn {
+      padding: 14px 28px;
+      font-size: 0.95rem;
+      white-space: nowrap;
+    }
+
+    .drawer-correct .drawer-continue-btn {
+      background: var(--success);
+      border: 2px solid var(--success-dark);
+      border-bottom: 4px solid var(--success-dark);
+      color: #ffffff;
+    }
+
+    .drawer-wrong .drawer-continue-btn {
+      background: var(--danger);
+      border: 2px solid var(--danger-dark);
+      border-bottom: 4px solid var(--danger-dark);
+      color: #ffffff;
+    }
+
+    /* -------------------------------------------------------------
+       Final Result View
+       ------------------------------------------------------------- */
+    .result-view {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      padding: 20px 10px 40px;
+      animation: fadeIn 0.4s ease;
+      width: 100%;
+    }
+
+    .result-trophy {
+      font-size: 3.5rem;
+      color: #f59e0b;
+      margin-bottom: 12px;
+      animation: bounceFloat 1.2s infinite alternate ease-in-out;
+    }
+
+    .result-headline {
+      font-size: 1.6rem;
+      font-weight: 800;
+      color: var(--text-main);
+      margin-bottom: 4px;
+    }
+
+    .result-subline {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      margin-bottom: 20px;
+    }
+
+    .score-hero-card {
+      background: #f8fafc;
+      border: 2px solid var(--border-light);
+      border-radius: var(--radius-xl);
+      padding: 18px 36px;
+      display: flex;
+      gap: 28px;
+      align-items: center;
+      margin-bottom: 22px;
+    }
+
+    .score-stat {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .stat-val {
+      font-size: 2.2rem;
+      font-weight: 800;
+      color: var(--primary);
+      line-height: 1;
+    }
+
+    .stat-label {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      margin-top: 4px;
+      text-transform: uppercase;
+    }
+
+    .stat-divider {
+      width: 2px;
+      height: 40px;
+      background: var(--border-light);
+    }
+
+    .review-breakdown-box {
+      width: 100%;
+      background: #ffffff;
+      border: 2px solid var(--border-light);
+      border-radius: var(--radius-lg);
+      padding: 14px 16px;
+      margin-bottom: 22px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      text-align: left;
+    }
+
+    .breakdown-title {
+      font-size: 0.85rem;
+      font-weight: 800;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .review-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px 12px;
+      background: #f8fafc;
+      border-radius: var(--radius-sm);
+      font-size: 0.88rem;
+      font-weight: 600;
+    }
+
+    .review-item .badge-ok {
+      color: var(--success);
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .review-item .badge-miss {
+      color: var(--danger);
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .retake-quiz-btn {
+      padding: 14px 34px;
+      background: var(--primary);
+      border: 2px solid var(--primary-dark);
+      border-bottom: 4px solid var(--primary-dark);
+      color: #ffffff;
+      font-size: 1rem;
+    }
+
+    /* -------------------------------------------------------------
+       Loading & State Spinners
+       ------------------------------------------------------------- */
+    .state-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+      text-align: center;
+      gap: 16px;
+      padding: 20px;
+    }
+
+    .spinner-ring {
+      width: 44px;
+      height: 44px;
+      border: 4px solid #e2e8f0;
+      border-top-color: var(--primary);
+      border-radius: 50%;
+      animation: spinRound 0.75s linear infinite;
+    }
+
+    /* -------------------------------------------------------------
+       Animations
+       ------------------------------------------------------------- */
+    @keyframes duolingoShake {
+      0%, 100% { transform: translateX(0); }
+      20%, 60% { transform: translateX(-8px); }
+      40%, 80% { transform: translateX(8px); }
+    }
+
+    @keyframes spinRound {
+      to { transform: rotate(360deg); }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes bounceFloat {
+      from { transform: translateY(0); }
+      to { transform: translateY(-10px); }
+    }
+
+    /* Responsive adjustments for mobile / narrow iframes */
+    @media (max-width: 480px) {
+      .quiz-app { height: 560px; }
+      .prompt-text { font-size: 1.05rem; margin-bottom: 14px; }
+      .feedback-drawer { padding: 14px 16px; flex-direction: column; align-items: stretch; gap: 12px; }
+      .drawer-continue-btn { width: 100%; }
+      .match-pill { font-size: 0.8rem; padding: 8px; min-height: 40px; }
+      .score-hero-card { padding: 14px 24px; gap: 18px; }
+      .stat-val { font-size: 1.8rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Core App Container -->
+  <div class="quiz-app" id="quizApp">
+    
+    <!-- Top Navigation Bar -->
+    <header class="top-nav" id="topNav" style="display: none;">
+      <div class="top-meta">
+        <div class="brand-title" id="quizTitle">
+          <i class="fa-solid fa-graduation-cap"></i> <span>Quiz Player</span>
+        </div>
+        <div class="nav-actions">
+          <button class="sound-toggle-btn" id="soundToggleBtn" title="Toggle Sound">
+            <i class="fa-solid fa-volume-high"></i>
+          </button>
+          <span class="question-indicator" id="questionIndicator">Question 1 of 4</span>
+          <span class="score-badge" id="scoreBadge">
+            <i class="fa-solid fa-star"></i> <span id="scoreText">0</span>
+          </span>
+        </div>
+      </div>
+      <div class="progress-track">
+        <div class="progress-fill" id="progressFill"></div>
+      </div>
+    </header>
+
+    <!-- Question Viewport -->
+    <main class="quiz-viewport" id="quizViewport">
+      <div class="state-container" id="loadingState">
+        <div class="spinner-ring"></div>
+        <p style="color: var(--text-muted); font-weight: 700; font-size: 0.95rem;">Preparing learning experience...</p>
+      </div>
+    </main>
+
+    <!-- Bottom Interactive Feedback Drawer (Duolingo Style Slide-Up) -->
+    <div class="feedback-drawer" id="feedbackDrawer">
+      <div class="drawer-info">
+        <div class="drawer-icon" id="drawerIcon">
+          <i class="fa-solid fa-check"></i>
+        </div>
+        <div class="drawer-text">
+          <div class="drawer-status" id="drawerStatus">Great job!</div>
+          <div class="drawer-explanation" id="drawerExplanation">Explanation text goes here.</div>
+        </div>
+      </div>
+      <button class="tactile-btn drawer-continue-btn" id="drawerContinueBtn">
+        CONTINUE <i class="fa-solid fa-arrow-right" style="margin-left: 6px;"></i>
+      </button>
+    </div>
+
+  </div>
+
+  <script>
+    (function () {
+      'use strict';
+
+      // -------------------------------------------------------------
+      // 1. Built-in Mock Quiz Data (Showcasing all 4 Core Types)
+      // -------------------------------------------------------------
+      const MOCK_QUIZ = {
+        title: "Web Tech Fundamentals",
+        questions: [
+          {
+            type: "mcq",
+            prompt: "Which protocol provides cryptographic end-to-end security over the web?",
+            options: ["HTTP", "HTTPS", "FTP", "Telnet"],
+            correctAnswer: 1, // index of "HTTPS"
+            explanation: "HTTPS encrypts communications using Transport Layer Security (TLS/SSL)."
+          },
+          {
+            type: "fill_in_blank",
+            prompt: "What is the primary markup language used to structure web pages?",
+            acceptedAnswers: ["HTML", "HyperText Markup Language"],
+            hint: "A famous 4-letter acronym",
+            explanation: "HTML (HyperText Markup Language) serves as the semantic skeleton of web documents."
+          },
+          {
+            type: "flashcard",
+            prompt: "Core Concept: Cascading Style Sheets",
+            term: "CSS (Cascading Style Sheets)",
+            definition: "A stylesheet language used to specify document layout, colors, typography, and responsive presentation.",
+            explanation: "CSS separates layout rules and aesthetics from HTML structural markup."
+          },
+          {
+            type: "match",
+            prompt: "Match each frontend technology to its core role:",
+            pairs: [
+              { left: "JavaScript", right: "Interactivity & Logic" },
+              { left: "CSS", right: "Styling & Layout" },
+              { left: "HTML", right: "Content Structure" }
+            ],
+            explanation: "HTML creates content, CSS paints the appearance, and JavaScript runs dynamic behaviors."
+          }
+        ]
+      };
+
+      // -------------------------------------------------------------
+      // 2. Pure Native Web Audio Synthesizer (Zero External Audio Files)
+      // -------------------------------------------------------------
+      let audioCtx = null;
+      let soundEnabled = true;
+
+      function initAudio() {
+        if (!audioCtx) {
+          const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+          if (AudioContextClass) {
+            audioCtx = new AudioContextClass();
+          }
+        }
+        if (audioCtx && audioCtx.state === 'suspended') {
+          audioCtx.resume();
+        }
+      }
+
+      function playTone(freq, type, duration, delay = 0, gainLevel = 0.12) {
+        if (!soundEnabled) return;
+        try {
+          initAudio();
+          if (!audioCtx) return;
+
+          const osc = audioCtx.createOscillator();
+          const gain = audioCtx.createGain();
+
+          osc.type = type;
+          osc.frequency.setValueAtTime(freq, audioCtx.currentTime + delay);
+
+          gain.gain.setValueAtTime(gainLevel, audioCtx.currentTime + delay);
+          gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + delay + duration);
+
+          osc.connect(gain);
+          gain.connect(audioCtx.destination);
+
+          osc.start(audioCtx.currentTime + delay);
+          osc.stop(audioCtx.currentTime + delay + duration);
+        } catch (e) {
+          // Audio gracefully ignored if unavailable
+        }
+      }
+
+      function playSound(type) {
+        if (!soundEnabled) return;
+        if (type === 'correct') {
+          // Upward cheerful chime (C5 -> E5 -> G5)
+          playTone(523.25, 'sine', 0.12, 0.0);
+          playTone(659.25, 'sine', 0.15, 0.08);
+          playTone(783.99, 'sine', 0.28, 0.16);
+        } else if (type === 'wrong') {
+          // Soft descending buzzer
+          playTone(320.0, 'triangle', 0.14, 0.0);
+          playTone(260.0, 'triangle', 0.22, 0.1);
+        } else if (type === 'flip') {
+          playTone(440.0, 'sine', 0.06, 0.0, 0.05);
+        } else if (type === 'match') {
+          playTone(587.33, 'sine', 0.12, 0.0);
+          playTone(880.00, 'sine', 0.20, 0.08);
+        } else if (type === 'complete') {
+          // Fanfare
+          playTone(523.25, 'sine', 0.15, 0.0);
+          playTone(659.25, 'sine', 0.15, 0.12);
+          playTone(783.99, 'sine', 0.20, 0.24);
+          playTone(1046.50, 'sine', 0.40, 0.36);
+        }
+      }
+
+      // -------------------------------------------------------------
+      // 3. Engine Application State
+      // -------------------------------------------------------------
+      const state = {
+        quizData: null,
+        currentIndex: 0,
+        score: 0,
+        hasAnsweredCurrent: false,
+        resultsLog: [], // records { question, isCorrect, prompt }
+        matchState: {
+          selectedLeft: null,
+          selectedRight: null,
+          matchedCount: 0,
+          totalPairs: 0
+        }
+      };
+
+      // DOM Handles
+      const topNav = document.getElementById('topNav');
+      const quizTitle = document.getElementById('quizTitle');
+      const soundToggleBtn = document.getElementById('soundToggleBtn');
+      const questionIndicator = document.getElementById('questionIndicator');
+      const scoreText = document.getElementById('scoreText');
+      const progressFill = document.getElementById('progressFill');
+      const quizViewport = document.getElementById('quizViewport');
+      const feedbackDrawer = document.getElementById('feedbackDrawer');
+      const drawerIcon = document.getElementById('drawerIcon');
+      const drawerStatus = document.getElementById('drawerStatus');
+      const drawerExplanation = document.getElementById('drawerExplanation');
+      const drawerContinueBtn = document.getElementById('drawerContinueBtn');
+
+      // Sound toggle interaction
+      soundToggleBtn.addEventListener('click', () => {
+        soundEnabled = !soundEnabled;
+        soundToggleBtn.innerHTML = soundEnabled 
+          ? `<i class="fa-solid fa-volume-high"></i>` 
+          : `<i class="fa-solid fa-volume-xmark"></i>`;
+      });
+
+      // -------------------------------------------------------------
+      // 4. Data Loading & Auto-Update Engine
+      // -------------------------------------------------------------
+      async function bootstrapQuizEngine() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const base64Data = urlParams.get('data');
+        const fileParam = urlParams.get('file');
+
+        try {
+          if (base64Data) {
+            // Option 1: Base64 / URI encoded JSON
+            state.quizData = decodeBase64Payload(base64Data);
+          } else if (fileParam) {
+            // Option 2: Asynchronous file or remote URL fetch
+            const response = await fetch(fileParam);
+            if (!response.ok) throw new Error(`HTTP ${response.status} failed to fetch "${fileParam}"`);
+            state.quizData = await response.json();
+          } else {
+            // Option 3: Fallback demo mock quiz
+            state.quizData = MOCK_QUIZ;
+          }
+
+          assertValidQuiz(state.quizData);
+          startQuizSession();
+        } catch (err) {
+          console.error("Quiz bootstrap error:", err);
+          renderErrorScreen(err.message);
+        }
+      }
+
+      function decodeBase64Payload(raw) {
+        let text = raw;
+        try { text = decodeURIComponent(raw); } catch (e) { text = raw; }
+
+        // Try direct JSON
+        try { return JSON.parse(text); } catch (e) {}
+
+        // Handle Base64 URL character replacement and UTF-8 decoding
+        const base64Str = text.replace(/ /g, '+');
+        try {
+          const binary = atob(base64Str);
+          const bytes = new Uint8Array(binary.length);
+          for (let i = 0; i < binary.length; i++) {
+            bytes[i] = binary.charCodeAt(i);
+          }
+          const decoded = new TextDecoder('utf-8').decode(bytes);
+          return JSON.parse(decoded);
+        } catch (e2) {
+          return JSON.parse(atob(base64Str));
+        }
+      }
+
+      function assertValidQuiz(data) {
+        if (!data || !Array.isArray(data.questions) || data.questions.length === 0) {
+          throw new Error("Invalid quiz format: 'questions' array is missing or empty.");
+        }
+      }
+
+      function startQuizSession() {
+        state.currentIndex = 0;
+        state.score = 0;
+        state.resultsLog = [];
+        topNav.style.display = 'flex';
+        quizTitle.innerHTML = `<i class="fa-solid fa-graduation-cap"></i> <span>${escapeHtml(state.quizData.title || "Quiz")}</span>`;
+        renderCurrentQuestion();
+      }
+
+      // -------------------------------------------------------------
+      // 5. Question Rendering Coordinator
+      // -------------------------------------------------------------
+      function renderCurrentQuestion() {
+        closeFeedbackDrawer();
+        state.hasAnsweredCurrent = false;
+
+        const total = state.quizData.questions.length;
+        const currentQ = state.quizData.questions[state.currentIndex];
+
+        // Update Top Navigation
+        questionIndicator.textContent = `Question ${state.currentIndex + 1} of ${total}`;
+        scoreText.textContent = state.score;
+        const progressPct = ((state.currentIndex) / total) * 100;
+        progressFill.style.width = `${progressPct}%`;
+
+        switch (currentQ.type) {
+          case 'mcq':
+            renderMCQ(currentQ);
+            break;
+          case 'fill_in_blank':
+            renderFillInBlank(currentQ);
+            break;
+          case 'flashcard':
+            renderFlashcard(currentQ);
+            break;
+          case 'match':
+            renderMatch(currentQ);
+            break;
+          default:
+            renderUnsupported(currentQ);
+        }
+      }
+
+      // -------------------------------------------------------------
+      // Engine 1: MCQ (Multiple Choice)
+      // -------------------------------------------------------------
+      function renderMCQ(q) {
+        const letters = ['A', 'B', 'C', 'D', 'E', 'F'];
+        const optionsHtml = q.options.map((opt, idx) => `
+          <button class="tactile-btn mcq-btn" data-index="${idx}">
+            <span class="key-circle">${letters[idx] || (idx + 1)}</span>
+            <span style="flex: 1;">${escapeHtml(opt)}</span>
+            <span class="end-icon"></span>
+          </button>
+        `).join('');
+
+        quizViewport.innerHTML = `
+          <div>
+            <span class="badge-pill"><i class="fa-regular fa-circle-question"></i> Multiple Choice</span>
+            <h2 class="prompt-text">${escapeHtml(q.prompt)}</h2>
+            <div class="mcq-grid" id="mcqGrid">${optionsHtml}</div>
+          </div>
+        `;
+
+        const buttons = quizViewport.querySelectorAll('.mcq-btn');
+        buttons.forEach(btn => {
+          btn.addEventListener('click', () => {
+            initAudio();
+            handleMCQAnswer(parseInt(btn.getAttribute('data-index')), q);
+          });
+        });
+      }
+
+      function handleMCQAnswer(selectedIdx, q) {
+        if (state.hasAnsweredCurrent) return;
+        state.hasAnsweredCurrent = true;
+
+        const isCorrect = (selectedIdx === q.correctAnswer);
+        const buttons = quizViewport.querySelectorAll('.mcq-btn');
+
+        buttons.forEach((btn, idx) => {
+          btn.disabled = true;
+          const icon = btn.querySelector('.end-icon');
+          if (idx === q.correctAnswer) {
+            btn.classList.add('correct');
+            icon.innerHTML = `<i class="fa-solid fa-circle-check"></i>`;
+          } else if (idx === selectedIdx) {
+            btn.classList.add('wrong');
+            icon.innerHTML = `<i class="fa-solid fa-circle-xmark"></i>`;
+          }
+        });
+
+        if (isCorrect) {
+          state.score++;
+          scoreText.textContent = state.score;
+          playSound('correct');
+        } else {
+          playSound('wrong');
+        }
+
+        state.resultsLog.push({ prompt: q.prompt, isCorrect });
+        openFeedbackDrawer(isCorrect, isCorrect ? "Awesome!" : "Correct solution:", q.explanation);
+      }
+
+      // -------------------------------------------------------------
+      // Engine 2: Fill in the Blank
+      // -------------------------------------------------------------
+      function renderFillInBlank(q) {
+        quizViewport.innerHTML = `
+          <div>
+            <span class="badge-pill"><i class="fa-solid fa-pen-to-square"></i> Fill in the Blank</span>
+            <h2 class="prompt-text">${escapeHtml(q.prompt)}</h2>
+            <div class="fib-box">
+              <div class="fib-input-wrapper">
+                <input type="text" class="fib-field" id="fibField" placeholder="Type your answer here..." autocomplete="off" autofocus />
+                <button class="tactile-btn fib-submit-btn" id="fibSubmit">Check</button>
+              </div>
+              ${q.hint ? `<div class="fib-hint-note"><i class="fa-regular fa-lightbulb"></i> Hint: ${escapeHtml(q.hint)}</div>` : ''}
+            </div>
+          </div>
+        `;
+
+        const field = document.getElementById('fibField');
+        const submitBtn = document.getElementById('fibSubmit');
+
+        const executeSubmit = () => {
+          const val = field.value.trim();
+          if (!val || state.hasAnsweredCurrent) return;
+          initAudio();
+          handleFIBAnswer(val, q, field, submitBtn);
+        };
+
+        submitBtn.addEventListener('click', executeSubmit);
+        field.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter') executeSubmit();
+        });
+      }
+
+      function handleFIBAnswer(userText, q, field, submitBtn) {
+        state.hasAnsweredCurrent = true;
+        field.disabled = true;
+        submitBtn.disabled = true;
+
+        const accepted = Array.isArray(q.acceptedAnswers) 
+          ? q.acceptedAnswers 
+          : [q.acceptedAnswers || q.correctAnswer];
+
+        const cleanUser = userText.trim().toLowerCase();
+        const isCorrect = accepted.some(ans => String(ans).trim().toLowerCase() === cleanUser);
+
+        if (isCorrect) {
+          state.score++;
+          scoreText.textContent = state.score;
+          field.classList.add('correct');
+          playSound('correct');
+        } else {
+          field.classList.add('wrong');
+          playSound('wrong');
+        }
+
+        const primaryAnswer = accepted[0];
+        const explanationText = isCorrect 
+          ? (q.explanation || "Your answer matches perfectly.") 
+          : `Correct answer: <strong>${escapeHtml(primaryAnswer)}</strong>. ${q.explanation ? escapeHtml(q.explanation) : ''}`;
+
+        state.resultsLog.push({ prompt: q.prompt, isCorrect });
+        openFeedbackDrawer(isCorrect, isCorrect ? "Spot on!" : "Needs work", explanationText);
+      }
+
+      // -------------------------------------------------------------
+      // Engine 3: Flashcard (3D Flip + Action Buttons)
+      // -------------------------------------------------------------
+      function renderFlashcard(q) {
+        quizViewport.innerHTML = `
+          <div>
+            <span class="badge-pill"><i class="fa-regular fa-clone"></i> Flashcard</span>
+            <h2 class="prompt-text">${escapeHtml(q.prompt || "Review the study card below:")}</h2>
+            
+            <div class="flashcard-wrapper">
+              <div class="perspective-stage" id="cardStage">
+                <div class="flipper-card" id="cardFlipper">
+                  <div class="card-face card-front">
+                    <div class="card-term">${escapeHtml(q.term || q.front || "Front")}</div>
+                    <div class="card-cue"><i class="fa-solid fa-rotate"></i> Tap card to flip</div>
+                  </div>
+                  <div class="card-face card-back">
+                    <div class="card-def">${escapeHtml(q.definition || q.back || "Back")}</div>
+                    <div class="card-cue"><i class="fa-solid fa-rotate"></i> Tap to flip back</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="flashcard-action-bar">
+                <button class="tactile-btn btn-review-again" id="btnReviewAgain">
+                  <i class="fa-solid fa-rotate-left" style="margin-right: 6px;"></i> Review Again
+                </button>
+                <button class="tactile-btn btn-know-this" id="btnKnowThis">
+                  <i class="fa-solid fa-check" style="margin-right: 6px;"></i> I Know This
+                </button>
+              </div>
+            </div>
+          </div>
+        `;
+
+        const stage = document.getElementById('cardStage');
+        const flipper = document.getElementById('cardFlipper');
+        const btnReview = document.getElementById('btnReviewAgain');
+        const btnKnow = document.getElementById('btnKnowThis');
+
+        stage.addEventListener('click', () => {
+          initAudio();
+          playSound('flip');
+          flipper.classList.toggle('is-flipped');
+        });
+
+        btnReview.addEventListener('click', () => {
+          if (state.hasAnsweredCurrent) return;
+          state.hasAnsweredCurrent = true;
+          initAudio();
+          playSound('wrong');
+          state.resultsLog.push({ prompt: q.term || q.prompt, isCorrect: false });
+          openFeedbackDrawer(false, "Flagged for review", q.explanation || "Keep practicing this definition.");
+        });
+
+        btnKnow.addEventListener('click', () => {
+          if (state.hasAnsweredCurrent) return;
+          state.hasAnsweredCurrent = true;
+          initAudio();
+          state.score++;
+          scoreText.textContent = state.score;
+          playSound('correct');
+          state.resultsLog.push({ prompt: q.term || q.prompt, isCorrect: true });
+          openFeedbackDrawer(true, "Nicely mastered!", q.explanation || "Great recall on this concept.");
+        });
+      }
+
+      // -------------------------------------------------------------
+      // Engine 4: Match the Pair (Bidirectional Clicking)
+      // -------------------------------------------------------------
+      function renderMatch(q) {
+        state.matchState = {
+          selectedLeft: null,
+          selectedRight: null,
+          matchedCount: 0,
+          totalPairs: q.pairs.length
+        };
+
+        const leftList = q.pairs.map((p, i) => ({ id: i, text: p.left }));
+        const rightList = shuffle([...q.pairs.map((p, i) => ({ id: i, text: p.right }))]);
+
+        const leftHtml = leftList.map(item => `
+          <div class="tactile-btn match-pill match-left" data-id="${item.id}">
+            ${escapeHtml(item.text)}
+          </div>
+        `).join('');
+
+        const rightHtml = rightList.map(item => `
+          <div class="tactile-btn match-pill match-right" data-id="${item.id}">
+            ${escapeHtml(item.text)}
+          </div>
+        `).join('');
+
+        quizViewport.innerHTML = `
+          <div>
+            <span class="badge-pill"><i class="fa-solid fa-diagram-project"></i> Match the Pair</span>
+            <h2 class="prompt-text">${escapeHtml(q.prompt)}</h2>
+            <div class="match-columns">
+              <div class="match-col">${leftHtml}</div>
+              <div class="match-col">${rightHtml}</div>
+            </div>
+          </div>
+        `;
+
+        setupMatchEvents(q);
+      }
+
+      function setupMatchEvents(q) {
+        const leftElements = quizViewport.querySelectorAll('.match-left');
+        const rightElements = quizViewport.querySelectorAll('.match-right');
+
+        const tryPairMatch = (lEl, rEl) => {
+          const leftId = lEl.getAttribute('data-id');
+          const rightId = rEl.getAttribute('data-id');
+
+          if (leftId === rightId) {
+            // Match Succeeded!
+            playSound('match');
+            lEl.classList.remove('is-selected');
+            rEl.classList.remove('is-selected');
+            lEl.classList.add('is-matched');
+            rEl.classList.add('is-matched');
+
+            lEl.innerHTML += ` <i class="fa-solid fa-check" style="margin-left: auto; font-size: 0.8rem;"></i>`;
+            rEl.innerHTML = `<i class="fa-solid fa-check" style="margin-right: auto; font-size: 0.8rem;"></i> ` + rEl.innerHTML;
+
+            state.matchState.selectedLeft = null;
+            state.matchState.selectedRight = null;
+            state.matchState.matchedCount++;
+
+            if (state.matchState.matchedCount === state.matchState.totalPairs) {
+              state.score++;
+              scoreText.textContent = state.score;
+              playSound('correct');
+              state.resultsLog.push({ prompt: q.prompt, isCorrect: true });
+              openFeedbackDrawer(true, "All pairs matched!", q.explanation || "Outstanding association skills!");
+            }
+          } else {
+            // Match Failed: Shake red
+            playSound('wrong');
+            lEl.classList.add('shake-red');
+            rEl.classList.add('shake-red');
+            setTimeout(() => {
+              lEl.classList.remove('shake-red', 'is-selected');
+              rEl.classList.remove('shake-red', 'is-selected');
+              state.matchState.selectedLeft = null;
+              state.matchState.selectedRight = null;
+            }, 400);
+          }
+        };
+
+        leftElements.forEach(el => {
+          el.addEventListener('click', () => {
+            if (el.classList.contains('is-matched')) return;
+            initAudio();
+
+            if (state.matchState.selectedRight) {
+              tryPairMatch(el, state.matchState.selectedRight);
+            } else {
+              leftElements.forEach(i => i.classList.remove('is-selected'));
+              el.classList.add('is-selected');
+              state.matchState.selectedLeft = el;
+            }
+          });
+        });
+
+        rightElements.forEach(el => {
+          el.addEventListener('click', () => {
+            if (el.classList.contains('is-matched')) return;
+            initAudio();
+
+            if (state.matchState.selectedLeft) {
+              tryPairMatch(state.matchState.selectedLeft, el);
+            } else {
+              rightElements.forEach(i => i.classList.remove('is-selected'));
+              el.classList.add('is-selected');
+              state.matchState.selectedRight = el;
+            }
+          });
+        });
+      }
+
+      // -------------------------------------------------------------
+      // 6. Bottom Feedback Drawer Coordinator
+      // -------------------------------------------------------------
+      function openFeedbackDrawer(isSuccess, title, explanation) {
+        feedbackDrawer.className = `feedback-drawer ${isSuccess ? 'drawer-correct' : 'drawer-wrong'} is-open`;
+        drawerIcon.innerHTML = isSuccess ? `<i class="fa-solid fa-check"></i>` : `<i class="fa-solid fa-xmark"></i>`;
+        drawerStatus.textContent = title;
+        drawerExplanation.innerHTML = explanation || (isSuccess ? "Nicely done!" : "Review the correct solution above.");
+      }
+
+      function closeFeedbackDrawer() {
+        feedbackDrawer.classList.remove('is-open');
+      }
+
+      drawerContinueBtn.addEventListener('click', () => {
+        initAudio();
+        state.currentIndex++;
+        if (state.currentIndex < state.quizData.questions.length) {
+          renderCurrentQuestion();
+        } else {
+          renderFinalResultView();
+        }
+      });
+
+      // -------------------------------------------------------------
+      // 7. Final Result View
+      // -------------------------------------------------------------
+      function renderFinalResultView() {
+        closeFeedbackDrawer();
+        playSound('complete');
+
+        const total = state.quizData.questions.length;
+        const pct = Math.round((state.score / total) * 100);
+
+        // Fill progress track to 100%
+        progressFill.style.width = '100%';
+        questionIndicator.textContent = 'Completed';
+
+        let headline = "Quiz Completed!";
+        let subline = "You've successfully finished all questions.";
+
+        if (pct >= 90) {
+          headline = "Sensational Mastery! 🌟";
+        } else if (pct >= 70) {
+          headline = "Great Performance! 👏";
+        } else if (pct >= 50) {
+          headline = "Good Effort! 📚";
+          subline = "A quick review will make you invincible.";
+        } else {
+          headline = "Keep Practicing! 💪";
+          subline = "Mistakes are proof that you are learning.";
+        }
+
+        const breakdownHtml = state.resultsLog.map((item, idx) => `
+          <div class="review-item">
+            <span style="max-width: 80%; text-overflow: ellipsis; overflow: hidden; white-space: nowrap;">
+              ${idx + 1}. ${escapeHtml(item.prompt)}
+            </span>
+            ${item.isCorrect 
+              ? `<span class="badge-ok"><i class="fa-solid fa-circle-check"></i> +1</span>` 
+              : `<span class="badge-miss"><i class="fa-solid fa-circle-xmark"></i> 0</span>`
+            }
+          </div>
+        `).join('');
+
+        quizViewport.innerHTML = `
+          <div class="result-view">
+            <div class="result-trophy"><i class="fa-solid fa-trophy"></i></div>
+            <h1 class="result-headline">${headline}</h1>
+            <p class="result-subline">${subline}</p>
+
+            <div class="score-hero-card">
+              <div class="score-stat">
+                <span class="stat-val">${state.score} / ${total}</span>
+                <span class="stat-label">Total Score</span>
+              </div>
+              <div class="stat-divider"></div>
+              <div class="score-stat">
+                <span class="stat-val">${pct}%</span>
+                <span class="stat-label">Accuracy</span>
+              </div>
+            </div>
+
+            <div class="review-breakdown-box">
+              <div class="breakdown-title">Session Breakdown</div>
+              ${breakdownHtml}
+            </div>
+
+            <button class="tactile-btn retake-quiz-btn" id="retakeQuizBtn">
+              <i class="fa-solid fa-rotate-right" style="margin-right: 8px;"></i> Retake Quiz
+            </button>
+          </div>
+        `;
+
+        document.getElementById('retakeQuizBtn').addEventListener('click', () => {
+          initAudio();
+          startQuizSession();
+        });
+      }
+
+      // -------------------------------------------------------------
+      // Helper Utilities & Error Handling
+      // -------------------------------------------------------------
+      function renderErrorScreen(msg) {
+        topNav.style.display = 'none';
+        closeFeedbackDrawer();
+        quizViewport.innerHTML = `
+          <div class="state-container">
+            <i class="fa-solid fa-triangle-exclamation" style="font-size: 3rem; color: var(--danger);"></i>
+            <h3 style="font-size: 1.25rem; font-weight: 800;">Quiz Load Error</h3>
+            <p style="color: var(--text-muted); font-size: 0.9rem; max-width: 380px;">${escapeHtml(msg)}</p>
+            <button class="tactile-btn retake-quiz-btn" id="demoFallbackBtn" style="margin-top: 14px;">
+              <i class="fa-solid fa-play" style="margin-right: 8px;"></i> Load Demo Quiz
+            </button>
+          </div>
+        `;
+        document.getElementById('demoFallbackBtn').addEventListener('click', () => {
+          state.quizData = MOCK_QUIZ;
+          startQuizSession();
+        });
+      }
+
+      function renderUnsupported(q) {
+        quizViewport.innerHTML = `
+          <div class="state-container">
+            <i class="fa-solid fa-circle-question" style="font-size: 2.5rem; color: var(--warning);"></i>
+            <p>Unsupported question format: <code>${escapeHtml(q.type)}</code></p>
+            <button class="tactile-btn retake-quiz-btn" id="skipUnsupportedBtn" style="margin-top: 12px;">
+              Skip Question
+            </button>
+          </div>
+        `;
+        document.getElementById('skipUnsupportedBtn').addEventListener('click', () => {
+          state.currentIndex++;
+          renderCurrentQuestion();
+        });
+      }
+
+      function escapeHtml(str) {
+        if (!str) return '';
+        return String(str)
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;')
+          .replace(/'/g, '&#039;');
+      }
+
+      function shuffle(arr) {
+        for (let i = arr.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [arr[i], arr[j]] = [arr[j], arr[i]];
+        }
+        return arr;
+      }
+
+      // Initialize engine on page load
+      bootstrapQuizEngine();
+    })();
+  </script>
+</body>
+</html>
