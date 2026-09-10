@@ -1,40 +1,48 @@
 {
-  "title": "General Science & Web Tech Quiz",
+  "title": "Computer Networking & Web Essentials",
+  "category": "Computer Science & IT",
+  "timer": true,
+  "instantFeedback": true,
   "questions": [
     {
       "type": "mcq",
-      "prompt": "Which component is known as the 'Brain' of a computer?",
-      "options": ["RAM", "CPU (Central Processing Unit)", "Hard Drive", "Power Supply"],
+      "prompt": "Which OSI model layer is responsible for end-to-end communication, flow control, and error recovery using TCP and UDP?",
+      "options": [
+        "Network Layer (Layer 3)",
+        "Transport Layer (Layer 4)",
+        "Data Link Layer (Layer 2)",
+        "Session Layer (Layer 5)"
+      ],
       "correctAnswer": 1,
-      "explanation": "The CPU performs the fundamental arithmetic, logic, and control operations of a computer."
+      "explanation": "The Transport Layer (Layer 4) manages end-to-end transport services, packet segmentation, reliability (TCP), or connectionless speed (UDP)."
     },
     {
       "type": "fill_in_blank",
-      "prompt": "What does 'URL' stand for in web browsing?",
+      "prompt": "What protocol is used by network devices to automatically assign IP addresses to client systems?",
       "acceptedAnswers": [
-        "Uniform Resource Locator",
-        "Universal Resource Locator"
+        "DHCP",
+        "Dynamic Host Configuration Protocol"
       ],
-      "hint": "Uniform R... L...",
-      "explanation": "A URL (Uniform Resource Locator) specifies the web address of a given unique resource on the Internet."
+      "hint": "4-letter acronym starting with D",
+      "explanation": "DHCP (Dynamic Host Configuration Protocol) automatically assigns IP addresses, subnet masks, default gateways, and DNS servers to host devices."
     },
     {
       "type": "flashcard",
-      "prompt": "Concept: Responsive Web Design",
-      "term": "Responsive Web Design (RWD)",
-      "definition": "An approach to web design that aims to make web pages render well on a variety of devices, window, or screen sizes.",
-      "explanation": "Achieved primarily via fluid grids, flexible images, and CSS media queries."
+      "prompt": "Core Networking Concept",
+      "term": "DNS (Domain Name System)",
+      "definition": "The hierarchical, decentralized naming system that translates human-readable domain names (e.g. google.com) into numeric IP addresses (e.g. 142.250.190.46).",
+      "explanation": "Often referred to as the 'Phonebook of the Internet'."
     },
     {
       "type": "match",
-      "prompt": "Match the science term to its corresponding definition:",
+      "prompt": "Match standard network protocols to their default TCP/UDP port numbers:",
       "pairs": [
-        { "left": "Photosynthesis", "right": "Plants converting sunlight to energy" },
-        { "left": "Gravity", "right": "Force attracting masses toward each other" },
-        { "left": "Atom", "right": "Basic unit of a chemical element" },
-        { "left": "DNA", "right": "Carries genetic instructions for life" }
+        { "left": "HTTP", "right": "Port 80" },
+        { "left": "HTTPS", "right": "Port 443" },
+        { "left": "DNS", "right": "Port 53" },
+        { "left": "SSH", "right": "Port 22" }
       ],
-      "explanation": "These are fundamental concepts in biology, physics, and chemistry."
+      "explanation": "Standard well-known ports defined by IANA for core Internet communication protocols."
     }
   ]
 }

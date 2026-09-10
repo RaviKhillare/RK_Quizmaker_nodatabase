@@ -1068,9 +1068,16 @@
             // Option 1: Base64 / URI encoded JSON
             state.quizData = decodeBase64Payload(base64Data);
           } else if (fileParam) {
-            // Option 2: Asynchronous file or remote URL fetch
-            const response = await fetch(fileParam);
-            if (!response.ok) throw new Error(`HTTP ${response.status} failed to fetch "${fileParam}"`);
+            // Option 2: Asynchronous file or remote URL fetch with cache-busting to bypass GitHub Pages CDN cache delays
+            const cacheBustParam = (fileParam.includes('?') ? '&' : '?') + '_t=' + Date.now();
+            const fetchUrl = fileParam + cacheBustParam;
+            const response = await fetch(fetchUrl, {
+              cache: 'no-store',
+              headers: {
+                'Accept': 'application/json'
+              }
+            });
+            if (!response.ok) throw new Error(`HTTP ${response.status}: Unable to load quiz file "${fileParam}". Make sure the file exists and is accessible.`);
             state.quizData = await response.json();
           } else {
             // Option 3: Fallback demo mock quiz

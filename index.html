@@ -162,22 +162,27 @@
 
     <!-- Quick Action Bar -->
     <div class="flex items-center gap-2 lg:gap-3">
+      <!-- Button: Publish / Get Link (Opens Publish Hub) -->
+      <button id="btnOpenPublishModal" class="tactile-btn flex items-center gap-2 px-3.5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs sm:text-sm font-bold shadow-sm shadow-emerald-600/30 border-b-2 border-emerald-800">
+        <i class="fa-solid fa-cloud-arrow-up text-white"></i>
+        <span>Publish / Get Link</span>
+      </button>
+
       <!-- Button 1: Copy for Blogger (Compose View) -->
-      <button id="btnCopyCompose" class="tactile-btn flex items-center gap-2 px-3.5 py-2 rounded-xl bg-primary hover:bg-primary-dark text-white text-xs sm:text-sm font-bold shadow-sm shadow-primary/30 border-b-2 border-primary-dark">
+      <button id="btnCopyCompose" class="tactile-btn flex items-center gap-2 px-3.5 py-2 rounded-xl bg-primary hover:bg-primary-dark text-white text-xs sm:text-sm font-bold shadow-sm shadow-primary/30 border-b-2 border-primary-dark" title="Copies rich-text iframe to paste directly into Blogger Compose View (Ctrl+V)">
         <i class="fa-solid fa-wand-magic-sparkles text-yellow-300"></i>
-        <span>Copy for Blogger (Compose)</span>
+        <span class="hidden sm:inline">Copy for Blogger</span> (Compose)
       </button>
 
       <!-- Button 2: Copy iFrame HTML -->
-      <button id="btnCopyHtml" class="tactile-btn flex items-center gap-2 px-3 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs sm:text-sm font-bold border border-border-light">
+      <button id="btnCopyHtml" class="tactile-btn flex items-center gap-2 px-3 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs sm:text-sm font-bold border border-border-light" title="Copy raw HTML for Blogger HTML View">
         <i class="fa-solid fa-code text-primary"></i>
         <span class="hidden sm:inline">Copy</span> HTML
       </button>
 
-      <!-- Button 3: Export JSON -->
-      <button id="btnExportJsonTop" class="tactile-btn flex items-center gap-2 px-3 py-2 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-emerald-700 text-xs sm:text-sm font-bold border border-emerald-200">
-        <i class="fa-solid fa-download"></i>
-        <span class="hidden sm:inline">Export</span> JSON
+      <!-- GitHub Settings Gear Button -->
+      <button id="btnOpenSettings" class="p-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-600 hover:text-primary transition" title="Configure GitHub Username & Repository">
+        <i class="fa-brands fa-github text-lg"></i>
       </button>
 
       <!-- Mobile View Preview Toggle button (Small screens) -->
@@ -215,13 +220,16 @@
       </div>
 
       <!-- Quick Tips Box -->
-      <div class="hidden md:block p-3 rounded-xl bg-slate-50 border border-border-light text-xs text-slate-600 space-y-1">
+      <div class="hidden md:block p-3.5 rounded-xl bg-slate-50 border border-border-light text-xs text-slate-600 space-y-1.5">
         <div class="font-bold text-slate-800 flex items-center gap-1.5">
-          <i class="fa-solid fa-lightbulb text-amber-500"></i> Blogger Pro Tip
+          <i class="fa-solid fa-bolt text-amber-500"></i> GitHub Pages Sync
         </div>
         <p class="text-[11px] leading-relaxed text-slate-500">
-          Click <strong>Copy for Blogger</strong> and simply press <kbd class="px-1 py-0.5 bg-white border rounded">Ctrl+V</kbd> in your Blogger Post Compose View!
+          Target: <code id="sideGhTarget" class="text-indigo-600 font-mono">RaviKhillare/RK_Quizmaker_nodatabase</code>
         </p>
+        <button id="btnQuickConfigGh" class="w-full mt-1 py-1 px-2 rounded-lg bg-white border border-border-light text-slate-700 font-bold text-[10px] hover:bg-indigo-50 hover:text-primary transition">
+          Change GitHub Repo
+        </button>
       </div>
     </aside>
 
@@ -241,8 +249,8 @@
                 <i class="fa-solid fa-sliders"></i>
               </div>
               <div>
-                <h2 class="text-base font-extrabold text-slate-900">Quiz Settings</h2>
-                <p class="text-xs text-slate-500 font-medium">Configure general details and learner rules</p>
+                <h2 class="text-base font-extrabold text-slate-900">Quiz Configuration</h2>
+                <p class="text-xs text-slate-500 font-medium">Set quiz title, subject, and student rules</p>
               </div>
             </div>
             <span id="questionCountBadge" class="px-2.5 py-1 rounded-full bg-slate-100 text-slate-700 text-xs font-bold">
@@ -254,19 +262,22 @@
             <!-- Title -->
             <div class="space-y-1 sm:col-span-2">
               <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider">Quiz Title</label>
-              <input type="text" id="metaQuizTitle" class="w-full px-3.5 py-2.5 rounded-xl border border-border-light bg-slate-50 font-semibold text-sm focus:bg-white focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition" value="General Science & Tech Quiz">
+              <input type="text" id="metaQuizTitle" class="w-full px-3.5 py-2.5 rounded-xl border border-border-light bg-slate-50 font-semibold text-sm focus:bg-white focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition" value="Computer Networking & Web Essentials">
             </div>
 
             <!-- Subject / Category -->
             <div class="space-y-1">
-              <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider">Category / Subject</label>
-              <input type="text" id="metaCategory" class="w-full px-3.5 py-2 rounded-xl border border-border-light bg-slate-50 font-semibold text-sm focus:bg-white focus:border-primary outline-none transition" value="Science & Computers">
+              <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider">Category / Subject Tag</label>
+              <input type="text" id="metaCategory" class="w-full px-3.5 py-2 rounded-xl border border-border-light bg-slate-50 font-semibold text-sm focus:bg-white focus:border-primary outline-none transition" value="Computer Science & IT">
             </div>
 
-            <!-- GitHub Repo / URL base -->
+            <!-- Target JSON Slug Preview -->
             <div class="space-y-1">
-              <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider">Live URL Prefix</label>
-              <input type="text" id="metaUrlPrefix" class="w-full px-3.5 py-2 rounded-xl border border-border-light bg-slate-50 font-semibold text-sm focus:bg-white focus:border-primary outline-none transition" value="quiz-player.html" title="Base URL for Blogger embed link">
+              <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider">Target JSON File Slug</label>
+              <div class="flex items-center gap-1.5 px-3 py-2 rounded-xl border border-border-light bg-slate-50 font-mono text-xs text-indigo-700">
+                <i class="fa-regular fa-file-lines text-slate-400"></i>
+                <span id="metaSlugPreview">quizzes/networking-ch1.json</span>
+              </div>
             </div>
           </div>
 
@@ -275,7 +286,7 @@
             <label class="flex items-center justify-between p-3 rounded-xl bg-slate-50 border border-border-light cursor-pointer hover:bg-indigo-50/50 transition">
               <div class="space-y-0.5">
                 <span class="text-xs font-bold text-slate-800 flex items-center gap-1.5">
-                  <i class="fa-solid fa-stopwatch text-indigo-500"></i> Timer Indicator
+                  <i class="fa-solid fa-stopwatch text-indigo-500"></i> Countdown Timer
                 </span>
                 <span class="text-[11px] text-slate-500 block">Encourages steady pace</span>
               </div>
@@ -285,9 +296,9 @@
             <label class="flex items-center justify-between p-3 rounded-xl bg-slate-50 border border-border-light cursor-pointer hover:bg-emerald-50/50 transition">
               <div class="space-y-0.5">
                 <span class="text-xs font-bold text-slate-800 flex items-center gap-1.5">
-                  <i class="fa-solid fa-comments text-emerald-600"></i> Instant Feedback
+                  <i class="fa-solid fa-comments text-emerald-600"></i> Instant Feedback Drawer
                 </span>
-                <span class="text-[11px] text-slate-500 block">Show rationale immediately</span>
+                <span class="text-[11px] text-slate-500 block">Show explanation on answer tap</span>
               </div>
               <input type="checkbox" id="metaToggleFeedback" checked class="w-4 h-4 rounded text-emerald-600 focus:ring-emerald-500">
             </label>
@@ -475,7 +486,7 @@
               <i class="fa-solid fa-check-double mr-1.5"></i> Apply JSON to Builder
             </button>
             <button id="btnDownloadJsonFile" class="tactile-btn px-5 py-2.5 rounded-xl bg-emerald-600 text-white font-bold text-sm shadow-sm hover:bg-emerald-700">
-              <i class="fa-solid fa-download mr-1.5"></i> Download .json
+              <i class="fa-solid fa-download mr-1.5"></i> Download Quiz JSON
             </button>
           </div>
         </div>
@@ -509,6 +520,121 @@
 
   </div>
 
+  <!-- ============================================================= -->
+  <!-- MODAL: GITHUB PAGES PUBLISH & EMBED HUB                      -->
+  <!-- ============================================================= -->
+  <div id="publishModal" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm hidden flex items-center justify-center p-4">
+    <div class="bg-white w-full max-w-xl rounded-3xl shadow-2xl border border-border-light overflow-hidden flex flex-col animate-[fadeIn_0.2s_ease-out]">
+      
+      <!-- Modal Header -->
+      <div class="p-5 sm:p-6 bg-gradient-to-r from-slate-900 to-indigo-950 text-white flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 flex items-center justify-center">
+            <i class="fa-solid fa-cloud-arrow-up text-lg"></i>
+          </div>
+          <div>
+            <h3 class="font-extrabold text-base sm:text-lg">Publish & Blogger Embed Hub</h3>
+            <p class="text-xs text-slate-300">Generate production URLs and one-click copy snippets</p>
+          </div>
+        </div>
+        <button id="btnClosePublishModal" class="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition">
+          <i class="fa-solid fa-times"></i>
+        </button>
+      </div>
+
+      <!-- Modal Body -->
+      <div class="p-5 sm:p-6 space-y-5 overflow-y-auto max-h-[75vh]">
+        
+        <!-- Step 1: GitHub Target Settings -->
+        <div class="p-4 rounded-2xl bg-slate-50 border border-border-light space-y-3">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-bold uppercase tracking-wider text-slate-600 flex items-center gap-1.5">
+              <i class="fa-brands fa-github text-slate-900 text-sm"></i> GitHub Pages Target Repository
+            </span>
+            <span class="text-[11px] font-semibold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full">Auto-Saved</span>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div>
+              <label class="block text-[11px] font-bold text-slate-500 uppercase mb-1">GitHub Username</label>
+              <input type="text" id="modalGhUsername" class="w-full px-3 py-2 rounded-xl border border-border-light bg-white text-xs font-semibold focus:border-primary outline-none" value="RaviKhillare">
+            </div>
+            <div>
+              <label class="block text-[11px] font-bold text-slate-500 uppercase mb-1">Repository Name</label>
+              <input type="text" id="modalGhRepo" class="w-full px-3 py-2 rounded-xl border border-border-light bg-white text-xs font-semibold focus:border-primary outline-none" value="RK_Quizmaker_nodatabase">
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 2: Deployment Mode Selector -->
+        <div class="space-y-2">
+          <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider">Select Embed Delivery Method</label>
+          
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            
+            <!-- Mode 1: Remote JSON (Standard GitHub Pages) -->
+            <label class="p-3.5 rounded-2xl border-2 cursor-pointer transition flex flex-col justify-between mode-card border-primary bg-primary-bg/40" id="labelModeJson">
+              <div class="space-y-1">
+                <div class="flex items-center justify-between">
+                  <span class="font-extrabold text-xs text-primary flex items-center gap-1.5">
+                    <i class="fa-regular fa-file-code"></i> Remote JSON File
+                  </span>
+                  <input type="radio" name="embedMode" value="file" checked class="text-primary focus:ring-primary">
+                </div>
+                <p class="text-[11px] text-slate-600 leading-relaxed">Loads asynchronously from your repo's <code>quizzes/</code> folder.</p>
+              </div>
+              <button id="modalBtnDownloadJson" type="button" class="mt-2.5 w-full py-1.5 px-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-[11px] font-bold flex items-center justify-center gap-1.5 shadow-sm">
+                <i class="fa-solid fa-download"></i> Download <span id="downloadSlugName" class="font-mono">sample.json</span>
+              </button>
+            </label>
+
+            <!-- Mode 2: Instant Base64 Data (Zero Uploads) -->
+            <label class="p-3.5 rounded-2xl border-2 cursor-pointer transition flex flex-col justify-between mode-card border-border-light bg-slate-50 hover:bg-slate-100" id="labelModeData">
+              <div class="space-y-1">
+                <div class="flex items-center justify-between">
+                  <span class="font-extrabold text-xs text-slate-800 flex items-center gap-1.5">
+                    <i class="fa-solid fa-bolt text-amber-500"></i> Instant Base64
+                  </span>
+                  <input type="radio" name="embedMode" value="data" class="text-primary focus:ring-primary">
+                </div>
+                <p class="text-[11px] text-slate-600 leading-relaxed">Embeds quiz data directly into the link. No GitHub file commit needed!</p>
+              </div>
+              <span class="mt-2.5 text-[10px] text-slate-400 font-semibold block text-center">Ready instantly</span>
+            </label>
+
+          </div>
+        </div>
+
+        <!-- Step 3: Generated Production URL & Live Actions -->
+        <div class="p-4 rounded-2xl bg-slate-900 text-slate-200 space-y-2.5">
+          <div class="flex items-center justify-between text-xs">
+            <span class="font-bold text-slate-400 uppercase tracking-wider">Live Embed Target URL</span>
+            <a id="modalTestLink" href="#" target="_blank" class="text-sky-400 hover:text-sky-300 font-bold flex items-center gap-1 text-[11px]">
+              Test in New Tab <i class="fa-solid fa-arrow-up-right-from-square"></i>
+            </a>
+          </div>
+          <div class="p-2.5 rounded-xl bg-slate-950 font-mono text-[11px] text-emerald-400 break-all select-all border border-slate-800 leading-relaxed" id="modalLiveUrlText">
+            https://ravikhillare.github.io/RK_Quizmaker_nodatabase/quiz-player.html
+          </div>
+        </div>
+
+        <!-- Step 4: One-Click Copy Actions for Blogger -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
+          <button id="modalCopyComposeBtn" class="tactile-btn p-3.5 rounded-2xl bg-primary hover:bg-primary-dark text-white font-bold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-md shadow-primary/20 border-b-2 border-primary-dark">
+            <i class="fa-solid fa-wand-magic-sparkles text-yellow-300"></i>
+            <span>Copy for Blogger (Compose)</span>
+          </button>
+          <button id="modalCopyHtmlBtn" class="tactile-btn p-3.5 rounded-2xl bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold text-xs sm:text-sm flex items-center justify-center gap-2 border border-border-light">
+            <i class="fa-solid fa-code text-primary"></i>
+            <span>Copy iFrame HTML</span>
+          </button>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+
   <!-- Toast Container -->
   <div id="toastContainer"></div>
 
@@ -518,49 +644,50 @@
       'use strict';
 
       // -------------------------------------------------------------
-      // 1. Initial State Definition
+      // 1. Initial State & Persistence
       // -------------------------------------------------------------
       const defaultQuizState = {
-        title: "General Science & Tech Quiz",
-        category: "Science & Computers",
+        title: "Computer Networking & Web Essentials",
+        category: "Computer Science & IT",
         timer: true,
         instantFeedback: true,
         questions: [
           {
             type: "mcq",
-            prompt: "Which component is known as the 'Brain' of a computer?",
+            prompt: "Which OSI model layer is responsible for end-to-end communication, flow control, and error recovery using TCP and UDP?",
             options: [
-              "Random Access Memory (RAM)",
-              "Central Processing Unit (CPU)",
-              "Solid State Drive (SSD)",
-              "Power Supply Unit"
+              "Network Layer (Layer 3)",
+              "Transport Layer (Layer 4)",
+              "Data Link Layer (Layer 2)",
+              "Session Layer (Layer 5)"
             ],
             correctAnswer: 1,
-            explanation: "The CPU performs fundamental arithmetic, logic, and operational control of the computer."
+            explanation: "The Transport Layer (Layer 4) manages end-to-end transport services, packet segmentation, reliability (TCP), or connectionless speed (UDP)."
           },
           {
             type: "fill_in_blank",
-            prompt: "What does 'URL' stand for in web browsing?",
-            acceptedAnswers: ["Uniform Resource Locator", "Universal Resource Locator"],
-            hint: "Uniform R... L...",
-            explanation: "A URL specifies the global web address of a specific resource on the internet."
+            prompt: "What protocol is used by network devices to automatically assign IP addresses to client systems?",
+            acceptedAnswers: ["DHCP", "Dynamic Host Configuration Protocol"],
+            hint: "4-letter acronym starting with D",
+            explanation: "DHCP (Dynamic Host Configuration Protocol) automatically assigns IP addresses, subnet masks, default gateways, and DNS servers."
           },
           {
             type: "flashcard",
-            prompt: "Concept: Responsive Web Design",
-            term: "Responsive Web Design (RWD)",
-            definition: "An approach to design web pages that automatically adapt and look great across all device screens.",
-            explanation: "Accomplished with flexible CSS grids, fluid images, and CSS media queries."
+            prompt: "Core Networking Concept",
+            term: "DNS (Domain Name System)",
+            definition: "The hierarchical naming system that translates human-readable domain names (e.g. google.com) into numeric IP addresses (e.g. 142.250.190.46).",
+            explanation: "Often referred to as the 'Phonebook of the Internet'."
           },
           {
             type: "match",
-            prompt: "Match each science term with its core definition:",
+            prompt: "Match standard network protocols to their default TCP/UDP port numbers:",
             pairs: [
-              { left: "Photosynthesis", right: "Sunlight to plant chemical energy" },
-              { left: "Gravity", right: "Attraction force between masses" },
-              { left: "Atom", right: "Basic building block of matter" }
+              { left: "HTTP", right: "Port 80" },
+              { left: "HTTPS", right: "Port 443" },
+              { left: "DNS", right: "Port 53" },
+              { left: "SSH", right: "Port 22" }
             ],
-            explanation: "Fundamental foundational principles across physics, chemistry, and biology."
+            explanation: "Standard well-known ports defined by IANA for core Internet communication protocols."
           }
         ]
       };
@@ -568,12 +695,18 @@
       let currentQuiz = JSON.parse(JSON.stringify(defaultQuizState));
       let previewDebounceTimer = null;
 
+      // GitHub Target Settings (Persistent in LocalStorage)
+      const GITHUB_USER_KEY = 'bsp_gh_user';
+      const GITHUB_REPO_KEY = 'bsp_gh_repo';
+      let ghUsername = localStorage.getItem(GITHUB_USER_KEY) || 'RaviKhillare';
+      let ghRepo = localStorage.getItem(GITHUB_REPO_KEY) || 'RK_Quizmaker_nodatabase';
+
       // -------------------------------------------------------------
-      // 2. DOM Selectors
+      // 2. DOM Handles
       // -------------------------------------------------------------
       const metaQuizTitle = document.getElementById('metaQuizTitle');
       const metaCategory = document.getElementById('metaCategory');
-      const metaUrlPrefix = document.getElementById('metaUrlPrefix');
+      const metaSlugPreview = document.getElementById('metaSlugPreview');
       const metaToggleTimer = document.getElementById('metaToggleTimer');
       const metaToggleFeedback = document.getElementById('metaToggleFeedback');
       const questionsContainer = document.getElementById('questionsContainer');
@@ -581,6 +714,28 @@
       const questionCountBadge = document.getElementById('questionCountBadge');
       const previewIframe = document.getElementById('previewIframe');
       const btnRefreshPreview = document.getElementById('btnRefreshPreview');
+      const sideGhTarget = document.getElementById('sideGhTarget');
+
+      // Top Actions & Modals
+      const btnOpenPublishModal = document.getElementById('btnOpenPublishModal');
+      const btnClosePublishModal = document.getElementById('btnClosePublishModal');
+      const publishModal = document.getElementById('publishModal');
+      const btnCopyCompose = document.getElementById('btnCopyCompose');
+      const btnCopyHtml = document.getElementById('btnCopyHtml');
+      const btnOpenSettings = document.getElementById('btnOpenSettings');
+      const btnQuickConfigGh = document.getElementById('btnQuickConfigGh');
+
+      // Modal specifics
+      const modalGhUsername = document.getElementById('modalGhUsername');
+      const modalGhRepo = document.getElementById('modalGhRepo');
+      const modalLiveUrlText = document.getElementById('modalLiveUrlText');
+      const modalTestLink = document.getElementById('modalTestLink');
+      const downloadSlugName = document.getElementById('downloadSlugName');
+      const modalBtnDownloadJson = document.getElementById('modalBtnDownloadJson');
+      const modalCopyComposeBtn = document.getElementById('modalCopyComposeBtn');
+      const modalCopyHtmlBtn = document.getElementById('modalCopyHtmlBtn');
+      const labelModeJson = document.getElementById('labelModeJson');
+      const labelModeData = document.getElementById('labelModeData');
 
       // Tabs
       const tabBtnQuiz = document.getElementById('tabBtnQuiz');
@@ -590,11 +745,6 @@
       const viewBloggerWidgets = document.getElementById('viewBloggerWidgets');
       const viewJsonManager = document.getElementById('viewJsonManager');
 
-      // Top Action Buttons
-      const btnCopyCompose = document.getElementById('btnCopyCompose');
-      const btnCopyHtml = document.getElementById('btnCopyHtml');
-      const btnExportJsonTop = document.getElementById('btnExportJsonTop');
-
       // JSON Manager elements
       const jsonRawEditor = document.getElementById('jsonRawEditor');
       const btnApplyJson = document.getElementById('btnApplyJson');
@@ -602,8 +752,192 @@
       const btnFormatJson = document.getElementById('btnFormatJson');
       const jsonFileInput = document.getElementById('jsonFileInput');
 
+      // Initialize Inputs with saved Settings
+      modalGhUsername.value = ghUsername;
+      modalGhRepo.value = ghRepo;
+      updateSidebarGhDisplay();
+
       // -------------------------------------------------------------
-      // 3. Tab Switching
+      // 3. Slug & URL Helper Engines
+      // -------------------------------------------------------------
+      function getQuizSlug() {
+        const title = (currentQuiz.title || 'quiz').trim().toLowerCase();
+        return title.replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '') || 'custom-quiz';
+      }
+
+      function updateSlugDisplay() {
+        const slug = getQuizSlug();
+        const fullRel = `quizzes/${slug}.json`;
+        metaSlugPreview.textContent = fullRel;
+        downloadSlugName.textContent = `${slug}.json`;
+      }
+
+      function getSelectedEmbedMode() {
+        const checked = document.querySelector('input[name="embedMode"]:checked');
+        return checked ? checked.value : 'file';
+      }
+
+      function buildProductionPlayerUrl(mode = null) {
+        const activeMode = mode || getSelectedEmbedMode();
+        const baseHost = `https://${ghUsername}.github.io/${ghRepo}/quiz-player.html`;
+
+        if (activeMode === 'file') {
+          const slug = getQuizSlug();
+          return `${baseHost}?file=quizzes/${slug}.json`;
+        } else {
+          // Direct base64 mode
+          const jsonString = JSON.stringify(currentQuiz);
+          const base64Payload = encodeUtf8Base64(jsonString);
+          return `${baseHost}?data=${encodeURIComponent(base64Payload)}`;
+        }
+      }
+
+      function updateModalUrlPreview() {
+        const url = buildProductionPlayerUrl();
+        modalLiveUrlText.textContent = url;
+        modalTestLink.href = url;
+      }
+
+      function updateSidebarGhDisplay() {
+        if (sideGhTarget) {
+          sideGhTarget.textContent = `${ghUsername}/${ghRepo}`;
+        }
+      }
+
+      // Save GitHub Settings Changes
+      function handleGhSettingsChange() {
+        ghUsername = modalGhUsername.value.trim() || 'RaviKhillare';
+        ghRepo = modalGhRepo.value.trim() || 'RK_Quizmaker_nodatabase';
+        localStorage.setItem(GITHUB_USER_KEY, ghUsername);
+        localStorage.setItem(GITHUB_REPO_KEY, ghRepo);
+        updateSidebarGhDisplay();
+        updateModalUrlPreview();
+      }
+
+      modalGhUsername.addEventListener('input', handleGhSettingsChange);
+      modalGhRepo.addEventListener('input', handleGhSettingsChange);
+
+      // Embed Mode Selector Radios
+      document.querySelectorAll('input[name="embedMode"]').forEach(radio => {
+        radio.addEventListener('change', () => {
+          const mode = radio.value;
+          if (mode === 'file') {
+            labelModeJson.classList.add('border-primary', 'bg-primary-bg/40');
+            labelModeJson.classList.remove('border-border-light', 'bg-slate-50');
+            labelModeData.classList.remove('border-primary', 'bg-primary-bg/40');
+            labelModeData.classList.add('border-border-light', 'bg-slate-50');
+          } else {
+            labelModeData.classList.add('border-primary', 'bg-primary-bg/40');
+            labelModeData.classList.remove('border-border-light', 'bg-slate-50');
+            labelModeJson.classList.remove('border-primary', 'bg-primary-bg/40');
+            labelModeJson.classList.add('border-border-light', 'bg-slate-50');
+          }
+          updateModalUrlPreview();
+        });
+      });
+
+      // Modal Show/Hide
+      function openPublishModal() {
+        updateSlugDisplay();
+        updateModalUrlPreview();
+        publishModal.classList.remove('hidden');
+      }
+
+      function closePublishModal() {
+        publishModal.classList.add('hidden');
+      }
+
+      btnOpenPublishModal.addEventListener('click', openPublishModal);
+      btnClosePublishModal.addEventListener('click', closePublishModal);
+      btnOpenSettings.addEventListener('click', openPublishModal);
+      btnQuickConfigGh.addEventListener('click', openPublishModal);
+
+      publishModal.addEventListener('click', (e) => {
+        if (e.target === publishModal) closePublishModal();
+      });
+
+      // -------------------------------------------------------------
+      // 4. True Blogger Compose View Clipboard Engine
+      // -------------------------------------------------------------
+      function generateBloggerEmbedHtml(mode = null) {
+        const livePlayerUrl = buildProductionPlayerUrl(mode);
+        return `<div class="blogger-quiz-embed" style="max-width: 720px; margin: 24px auto; width: 100%; text-align: center;"><iframe src="${livePlayerUrl}" width="100%" height="580" frameborder="0" style="border: none; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); width: 100%; display: block;" allowfullscreen loading="lazy"></iframe></div>`;
+      }
+
+      async function executeCopyCompose(mode = null) {
+        const richSnippet = generateBloggerEmbedHtml(mode);
+        const fallbackPlainText = richSnippet;
+
+        try {
+          if (navigator.clipboard && window.ClipboardItem) {
+            const htmlBlob = new Blob([richSnippet], { type: 'text/html' });
+            const textBlob = new Blob([fallbackPlainText], { type: 'text/plain' });
+            await navigator.clipboard.write([
+              new ClipboardItem({
+                'text/html': htmlBlob,
+                'text/plain': textBlob
+              })
+            ]);
+            showToast("Copied! You can now press Ctrl+V directly in Blogger Compose View", "success");
+          } else {
+            await navigator.clipboard.writeText(richSnippet);
+            showToast("Copied! You can now press Ctrl+V directly in Blogger Compose View", "success");
+          }
+        } catch (err) {
+          fallbackCopyText(richSnippet);
+          showToast("Copied! You can now press Ctrl+V directly in Blogger Compose View", "success");
+        }
+      }
+
+      async function executeCopyHtml(mode = null) {
+        const htmlSnippet = generateBloggerEmbedHtml(mode);
+        try {
+          await navigator.clipboard.writeText(htmlSnippet);
+          showToast("iFrame HTML code copied for HTML View!", "success");
+        } catch (err) {
+          fallbackCopyText(htmlSnippet);
+          showToast("iFrame HTML copied!", "success");
+        }
+      }
+
+      // Top Bar Direct Click Handlers
+      btnCopyCompose.addEventListener('click', () => executeCopyCompose());
+      btnCopyHtml.addEventListener('click', () => executeCopyHtml());
+
+      // Modal Click Handlers
+      modalCopyComposeBtn.addEventListener('click', () => {
+        executeCopyCompose();
+        closePublishModal();
+      });
+      modalCopyHtmlBtn.addEventListener('click', () => {
+        executeCopyHtml();
+        closePublishModal();
+      });
+
+      // -------------------------------------------------------------
+      // 5. Automatic Quiz JSON Downloader
+      // -------------------------------------------------------------
+      function triggerDownloadQuizJson() {
+        const slug = getQuizSlug();
+        const fileName = `${slug}.json`;
+        const jsonStr = JSON.stringify(currentQuiz, null, 2);
+        const blob = new Blob([jsonStr], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = fileName;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+        showToast(`Downloaded "${fileName}". Place inside repo's quizzes/ folder!`, "success");
+      }
+
+      modalBtnDownloadJson.addEventListener('click', triggerDownloadQuizJson);
+      btnDownloadJsonFile.addEventListener('click', triggerDownloadQuizJson);
+
+      // -------------------------------------------------------------
+      // 6. Tab Navigation
       // -------------------------------------------------------------
       function switchTab(target) {
         [tabBtnQuiz, tabBtnWidgets, tabBtnJson].forEach(b => {
@@ -633,11 +967,12 @@
       tabBtnJson.addEventListener('click', () => switchTab('json'));
 
       // -------------------------------------------------------------
-      // 4. Render Dynamic Question Cards
+      // 7. Dynamic Question Cards Renderer
       // -------------------------------------------------------------
       function renderAllQuestions() {
         questionsContainer.innerHTML = '';
         questionCountBadge.textContent = `${currentQuiz.questions.length} Question${currentQuiz.questions.length !== 1 ? 's' : ''}`;
+        updateSlugDisplay();
 
         currentQuiz.questions.forEach((q, qIndex) => {
           const card = document.createElement('div');
@@ -645,7 +980,6 @@
           card.dataset.index = qIndex;
 
           card.innerHTML = `
-            <!-- Question Card Header -->
             <div class="flex items-center justify-between border-b border-border-light pb-3">
               <div class="flex items-center gap-2.5">
                 <span class="w-7 h-7 rounded-full bg-primary text-white text-xs font-extrabold flex items-center justify-center">
@@ -654,7 +988,6 @@
                 <span class="font-extrabold text-sm text-slate-800">Question ${qIndex + 1} of ${currentQuiz.questions.length}</span>
               </div>
 
-              <!-- Type Selector Dropdown & Card Actions -->
               <div class="flex items-center gap-2">
                 <select class="q-type-select px-2.5 py-1 rounded-lg bg-slate-100 font-bold text-xs text-slate-700 border border-border-light outline-none">
                   <option value="mcq" ${q.type === 'mcq' ? 'selected' : ''}>Multiple Choice (MCQ)</option>
@@ -675,18 +1008,15 @@
               </div>
             </div>
 
-            <!-- Question Prompt Textarea -->
             <div class="space-y-1">
               <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider">Question Prompt / Heading</label>
               <textarea rows="2" class="q-prompt-input w-full p-3 rounded-xl border border-border-light bg-slate-50 font-semibold text-sm focus:bg-white focus:border-primary outline-none transition resize-none leading-relaxed">${escapeHtml(q.prompt || '')}</textarea>
             </div>
 
-            <!-- Dynamic Question Type Body Area -->
             <div class="q-type-content space-y-3 pt-1">
               ${renderTypeSpecificBody(q, qIndex)}
             </div>
 
-            <!-- Explanation Note Field -->
             <div class="space-y-1 pt-1 border-t border-border-light/60">
               <label class="block text-xs font-bold text-slate-600 flex items-center gap-1.5">
                 <i class="fa-solid fa-lightbulb text-amber-500"></i> Explanation / Solution Note
@@ -732,11 +1062,11 @@
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div class="space-y-1">
                 <label class="block text-xs font-bold text-slate-600">Acceptable Answers (Comma separated)</label>
-                <input type="text" class="fib-answers-input w-full px-3 py-2 rounded-xl border border-border-light bg-slate-50 font-semibold text-xs focus:bg-white focus:border-primary outline-none" value="${escapeHtml(accepted)}" placeholder="e.g. HTML, HyperText Markup Language">
+                <input type="text" class="fib-answers-input w-full px-3 py-2 rounded-xl border border-border-light bg-slate-50 font-semibold text-xs focus:bg-white focus:border-primary outline-none" value="${escapeHtml(accepted)}" placeholder="e.g. DHCP, Dynamic Host Configuration Protocol">
               </div>
               <div class="space-y-1">
                 <label class="block text-xs font-bold text-slate-600">Optional Hint</label>
-                <input type="text" class="fib-hint-input w-full px-3 py-2 rounded-xl border border-border-light bg-slate-50 font-medium text-xs focus:bg-white focus:border-primary outline-none" value="${escapeHtml(q.hint || '')}" placeholder="e.g. 4-letter acronym">
+                <input type="text" class="fib-hint-input w-full px-3 py-2 rounded-xl border border-border-light bg-slate-50 font-medium text-xs focus:bg-white focus:border-primary outline-none" value="${escapeHtml(q.hint || '')}" placeholder="e.g. 4-letter acronym starting with D">
               </div>
             </div>
           `;
@@ -745,7 +1075,7 @@
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div class="space-y-1">
                 <label class="block text-xs font-bold text-slate-600">Card Front (Concept / Term)</label>
-                <input type="text" class="fc-term-input w-full px-3 py-2 rounded-xl border border-border-light bg-slate-50 font-bold text-xs text-primary focus:bg-white focus:border-primary outline-none" value="${escapeHtml(q.term || q.front || '')}" placeholder="e.g. CSS">
+                <input type="text" class="fc-term-input w-full px-3 py-2 rounded-xl border border-border-light bg-slate-50 font-bold text-xs text-primary focus:bg-white focus:border-primary outline-none" value="${escapeHtml(q.term || q.front || '')}" placeholder="e.g. DNS">
               </div>
               <div class="space-y-1">
                 <label class="block text-xs font-bold text-slate-600">Card Back (Explanation / Definition)</label>
@@ -781,9 +1111,6 @@
         return '';
       }
 
-      // -------------------------------------------------------------
-      // 5. Question Card Events Binding
-      // -------------------------------------------------------------
       function attachQuestionCardEvents(card, qIndex) {
         const q = currentQuiz.questions[qIndex];
 
@@ -953,7 +1280,7 @@
         }
       }
 
-      // Add New Question Action
+      // Add New Question Button
       btnAddQuestion.addEventListener('click', () => {
         currentQuiz.questions.push({
           type: "mcq",
@@ -965,13 +1292,13 @@
         renderAllQuestions();
         triggerPreviewUpdate();
         showToast("New question added!", "success");
-        // Scroll to the bottom of the container
         window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
       });
 
       // Metadata Changes
       metaQuizTitle.addEventListener('input', (e) => {
         currentQuiz.title = e.target.value;
+        updateSlugDisplay();
         triggerPreviewUpdate();
       });
       metaCategory.addEventListener('input', (e) => {
@@ -979,7 +1306,7 @@
       });
 
       // -------------------------------------------------------------
-      // 6. Live Mobile Preview Synchronizer
+      // 8. Live Mobile Preview Synchronizer
       // -------------------------------------------------------------
       function triggerPreviewUpdate() {
         clearTimeout(previewDebounceTimer);
@@ -1008,84 +1335,7 @@
       });
 
       // -------------------------------------------------------------
-      // 7. Blogger Embed & Export Engine
-      // -------------------------------------------------------------
-
-      // Helper to generate Blogger Iframe HTML
-      function generateEmbedSnippet() {
-        const jsonString = JSON.stringify(currentQuiz);
-        const base64Data = encodeUtf8Base64(jsonString);
-        const prefix = metaUrlPrefix.value.trim() || 'quiz-player.html';
-        
-        const liveSrc = prefix.includes('?') 
-          ? `${prefix}&data=${base64Data}` 
-          : `${prefix}?data=${base64Data}`;
-
-        return `<div style="text-align: center; margin: 24px auto; max-width: 680px; width: 100%;">
-  <iframe src="${liveSrc}" width="100%" height="600" style="border: none; border-radius: 24px; max-width: 680px; width: 100%; box-shadow: 0 10px 30px rgba(0,0,0,0.08); display: block; margin: 0 auto;" loading="lazy"></iframe>
-  <div style="font-size: 11px; color: #64748b; margin-top: 6px; font-family: sans-serif;">Powered by Blogger Suite Pro</div>
-</div>`;
-      }
-
-      // Button 1: Copy for Blogger Compose View (Rich-text ClipboardItem)
-      btnCopyCompose.addEventListener('click', async () => {
-        const snippet = generateEmbedSnippet();
-        try {
-          if (navigator.clipboard && window.ClipboardItem) {
-            const htmlBlob = new Blob([snippet], { type: 'text/html' });
-            const textBlob = new Blob([snippet], { type: 'text/plain' });
-            await navigator.clipboard.write([
-              new ClipboardItem({
-                'text/html': htmlBlob,
-                'text/plain': textBlob
-              })
-            ]);
-            showToast("Copied for Blogger Compose! Just press Ctrl+V in your post.", "success");
-          } else {
-            await navigator.clipboard.writeText(snippet);
-            showToast("HTML copied to clipboard!", "success");
-          }
-        } catch (err) {
-          // Fallback
-          fallbackCopyText(snippet);
-          showToast("Copied snippet to clipboard!", "success");
-        }
-      });
-
-      // Button 2: Copy Raw iFrame HTML (For standard Blogger HTML View)
-      btnCopyHtml.addEventListener('click', async () => {
-        const snippet = generateEmbedSnippet();
-        try {
-          await navigator.clipboard.writeText(snippet);
-          showToast("iFrame HTML code copied!", "success");
-        } catch (err) {
-          fallbackCopyText(snippet);
-          showToast("HTML copied!", "success");
-        }
-      });
-
-      // Button 3: Export JSON File
-      btnExportJsonTop.addEventListener('click', () => {
-        downloadQuizJsonFile();
-      });
-
-      function downloadQuizJsonFile() {
-        const jsonStr = JSON.stringify(currentQuiz, null, 2);
-        const fileName = (currentQuiz.title || 'quiz').toLowerCase().replace(/[^a-z0-9]/g, '-') + '.json';
-        const blob = new Blob([jsonStr], { type: 'application/json' });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = fileName;
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-        URL.revokeObjectURL(url);
-        showToast(`Exported ${fileName}`, "success");
-      }
-
-      // -------------------------------------------------------------
-      // 8. Blogger Widgets Module Generator Functions
+      // 9. Blogger Widgets Module Generator Functions
       // -------------------------------------------------------------
       const widgetTemplates = {
         yt: `<div style="text-align: center; margin: 18px auto;"><a href="https://youtube.com" target="_blank" rel="noopener noreferrer" style="display: inline-flex; align-items: center; gap: 8px; padding: 12px 24px; border-radius: 50px; background: linear-gradient(135deg, #dc2626, #e11d48); color: #ffffff; text-decoration: none; font-family: sans-serif; font-weight: 700; font-size: 14px; box-shadow: 0 4px 15px rgba(220,38,38,0.3);"><i class="fa-brands fa-youtube"></i> Subscribe on YouTube</a></div>`,
@@ -1127,7 +1377,7 @@
       };
 
       // -------------------------------------------------------------
-      // 9. JSON Manager Module
+      // 10. JSON Manager Module
       // -------------------------------------------------------------
       function syncJsonEditor() {
         jsonRawEditor.value = JSON.stringify(currentQuiz, null, 2);
@@ -1159,10 +1409,6 @@
         } catch (e) {
           showToast("Cannot apply: " + e.message, "danger");
         }
-      });
-
-      btnDownloadJsonFile.addEventListener('click', () => {
-        downloadQuizJsonFile();
       });
 
       jsonFileInput.addEventListener('change', (e) => {

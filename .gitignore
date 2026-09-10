@@ -1,0 +1,7 @@
+# Design & Reference Archives
+*.zip
+stitch_blogger_suite_pro/
+
+# OS & Temp
+.DS_Store
+Thumbs.db
