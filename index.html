@@ -326,7 +326,7 @@
           <!-- Quick Action Bar: Google Sheets Bulk Import & Save to Library -->
           <div class="flex flex-wrap items-center gap-2 pt-2 border-t border-border-light">
             <button id="btnOpenBulkImport" type="button" class="tactile-btn px-3 py-1.5 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-emerald-700 font-bold text-xs flex items-center gap-1.5 border border-emerald-200 shadow-sm transition">
-              <i class="fa-solid fa-file-excel text-emerald-600"></i> Google Sheets / Bulk Import
+              <i class="fa-solid fa-file-excel text-emerald-600"></i> Import from Google Sheet
             </button>
             <button id="btnSaveCurrentToLibrary" type="button" class="tactile-btn px-3 py-1.5 rounded-xl bg-indigo-50 hover:bg-indigo-100 text-primary font-bold text-xs flex items-center gap-1.5 border border-indigo-200 shadow-sm transition">
               <i class="fa-solid fa-floppy-disk"></i> Save to Library
@@ -350,7 +350,7 @@
           </button>
           <button id="btnOpenBulkImportBottom" class="tactile-btn flex items-center gap-2 px-5 py-3.5 rounded-full bg-emerald-50 hover:bg-emerald-100 text-emerald-700 font-bold text-sm shadow-md border border-emerald-200">
             <i class="fa-solid fa-file-excel text-lg text-emerald-600"></i>
-            <span>Google Sheets Bulk Import</span>
+            <span>Import from Google Sheet</span>
           </button>
         </div>
 
@@ -911,8 +911,8 @@
             <i class="fa-solid fa-file-excel text-lg"></i>
           </div>
           <div>
-            <h3 class="font-extrabold text-base sm:text-lg">Google Sheets & CSV Bulk Importer</h3>
-            <p class="text-xs text-emerald-200">Convert spreadsheet rows into interactive quiz cards instantly</p>
+            <h3 class="font-extrabold text-base sm:text-lg">Google Sheet Public Link Auto-Importer</h3>
+            <p class="text-xs text-emerald-200">Import questions automatically via your Google Sheet sharing link</p>
           </div>
         </div>
         <button id="btnCloseBulkModal" class="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition">
@@ -926,34 +926,42 @@
         <div class="p-4 rounded-2xl bg-emerald-50/70 border border-emerald-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div class="space-y-1">
             <span class="text-xs font-bold text-emerald-900 flex items-center gap-1.5">
-              <i class="fa-solid fa-table text-emerald-600"></i> Universal 6-in-1 Exam Master Format
+              <i class="fa-solid fa-table text-emerald-600"></i> Exam Master Template (6-in-1 Format)
             </span>
             <p class="text-[11px] text-emerald-700 font-mono">Type | Question / Prompt | Option A / Left / Front | Option B / Right / Back | Option C | Option D | Correct Answer | Explanation / Hint</p>
           </div>
           <div class="flex items-center gap-2 shrink-0">
-            <button id="btnCopySheetHeaders" type="button" class="tactile-btn px-3 py-2 rounded-xl bg-white hover:bg-emerald-50 text-emerald-800 border border-emerald-300 font-bold text-xs flex items-center gap-1.5 shadow-sm" title="Copy Column Headers to paste into Google Sheets row 1">
-              <i class="fa-solid fa-copy"></i> Copy Headers
-            </button>
             <button id="btnDownloadCsvTemplate" type="button" class="tactile-btn px-3.5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs flex items-center gap-1.5 shadow-sm" title="Download Full Exam Master CSV Template">
-              <i class="fa-solid fa-download"></i> Exam Master (CSV)
+              <i class="fa-solid fa-download"></i> Download Template (CSV)
             </button>
           </div>
         </div>
 
-        <!-- Step 2: Paste Area -->
+        <!-- Step 2: Google Sheet URL Input -->
         <div class="space-y-2">
           <div class="flex items-center justify-between">
             <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider">
-              Step 2: Copy Cells & Paste Below (TSV / CSV)
+              Google Sheet Public Share Link
             </label>
-            <span class="text-[11px] text-slate-500 font-medium">Select cells in Google Sheets, Ctrl+C, paste here</span>
+            <span class="text-[11px] text-emerald-700 font-bold flex items-center gap-1">
+              <i class="fa-solid fa-bolt text-amber-500"></i> Direct Auto-Sync
+            </span>
           </div>
-          <textarea id="bulkPasteInput" rows="7" class="w-full p-3.5 rounded-2xl border border-border-light bg-slate-50 font-mono text-xs text-slate-800 focus:bg-white focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 outline-none leading-relaxed resize-y" placeholder="mcq	Which layer of OSI model handles routing?	Transport Layer	Network Layer	Data Link Layer	Application Layer	B	Network Layer handles IP addressing and routing packets.
-fill_in_blank	HTTP stands for Hypertext ______ Protocol	Transfer				Transfer	Hypertext Transfer Protocol is the foundation of the Web.
-flashcard	DNS (Domain Name System)	Translates domain names into numerical IP addresses.				Internet directory service."></textarea>
+          <div class="relative">
+            <input type="url" id="googleSheetUrlInput" class="w-full pl-10 pr-4 py-3 rounded-2xl border border-border-light bg-slate-50 font-medium text-xs text-slate-800 focus:bg-white focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 outline-none transition" placeholder="https://docs.google.com/spreadsheets/d/.../edit?usp=sharing">
+            <span class="absolute left-3.5 top-3.5 text-slate-400 text-sm">
+              <i class="fa-solid fa-link"></i>
+            </span>
+          </div>
+          <div class="p-3 rounded-xl bg-amber-50 border border-amber-200 text-xs text-amber-900 flex items-start gap-2.5">
+            <i class="fa-solid fa-circle-info text-amber-600 mt-0.5 shrink-0"></i>
+            <span class="text-[11px] leading-relaxed">
+              Make sure your Google Sheet is set to <strong>"Anyone with the link can view"</strong> (File &gt; Share).
+            </span>
+          </div>
         </div>
 
-        <!-- Options -->
+        <!-- Options: Append vs Replace -->
         <div class="flex flex-wrap items-center justify-between gap-3 pt-1">
           <div class="flex items-center gap-4 text-xs font-bold text-slate-700">
             <label class="flex items-center gap-1.5 cursor-pointer">
@@ -965,9 +973,6 @@ flashcard	DNS (Domain Name System)	Translates domain names into numerical IP add
               <span>Replace existing questions</span>
             </label>
           </div>
-          <button id="btnClearBulkInput" type="button" class="text-xs font-semibold text-slate-400 hover:text-slate-600">
-            Clear Text
-          </button>
         </div>
       </div>
 
@@ -976,9 +981,9 @@ flashcard	DNS (Domain Name System)	Translates domain names into numerical IP add
         <button id="btnCancelBulkModal" class="tactile-btn px-4 py-2.5 rounded-xl bg-white hover:bg-slate-100 text-slate-700 font-bold text-xs border border-border-light">
           Cancel
         </button>
-        <button id="btnExecuteBulkImport" class="tactile-btn px-5 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs flex items-center gap-2 shadow-md shadow-emerald-600/20">
-          <i class="fa-solid fa-wand-magic-sparkles text-yellow-300"></i>
-          <span>Convert & Import Questions</span>
+        <button id="btnFetchGoogleSheet" class="tactile-btn px-5 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs flex items-center gap-2 shadow-md shadow-emerald-600/20">
+          <i id="fetchSheetSpinner" class="fa-solid fa-wand-magic-sparkles text-yellow-300"></i>
+          <span id="fetchSheetBtnText">Fetch & Build Question Paper</span>
         </button>
       </div>
     </div>
@@ -1176,16 +1181,15 @@ flashcard	DNS (Domain Name System)	Translates domain names into numerical IP add
       const viewJsonManager = document.getElementById('viewJsonManager');
       const viewSavedQuizzes = document.getElementById('viewSavedQuizzes');
 
-      // Bulk Import Elements
+      // Bulk Import / Google Sheet Elements
       const btnOpenBulkImport = document.getElementById('btnOpenBulkImport');
       const btnOpenBulkImportBottom = document.getElementById('btnOpenBulkImportBottom');
       const bulkImportModal = document.getElementById('bulkImportModal');
       const btnCloseBulkModal = document.getElementById('btnCloseBulkModal');
       const btnCancelBulkModal = document.getElementById('btnCancelBulkModal');
       const btnDownloadCsvTemplate = document.getElementById('btnDownloadCsvTemplate');
-      const bulkPasteInput = document.getElementById('bulkPasteInput');
-      const btnClearBulkInput = document.getElementById('btnClearBulkInput');
-      const btnExecuteBulkImport = document.getElementById('btnExecuteBulkImport');
+      const googleSheetUrlInput = document.getElementById('googleSheetUrlInput');
+      const btnFetchGoogleSheet = document.getElementById('btnFetchGoogleSheet');
 
       // Library Elements
       const btnSaveCurrentToLibrary = document.getElementById('btnSaveCurrentToLibrary');
@@ -2467,24 +2471,16 @@ ${cards}
       }
 
       // -------------------------------------------------------------
-      // 10. GOOGLE SHEETS & CSV BULK QUIZ IMPORTER
+      // 10. GOOGLE SHEET PUBLIC LINK AUTO-IMPORTER
       // -------------------------------------------------------------
       function openBulkImportModal() {
-        if (bulkPasteInput) bulkPasteInput.value = '';
+        if (googleSheetUrlInput) googleSheetUrlInput.value = '';
         if (bulkImportModal) bulkImportModal.classList.remove('hidden');
+        setTimeout(() => { if (googleSheetUrlInput) googleSheetUrlInput.focus(); }, 100);
       }
 
       function closeBulkImportModal() {
         if (bulkImportModal) bulkImportModal.classList.add('hidden');
-      }
-
-      function copySheetHeaders() {
-        const headers = "Type\tQuestion / Prompt\tOption A / Left / Front\tOption B / Right / Back\tOption C\tOption D\tCorrect Answer\tExplanation / Hint";
-        navigator.clipboard.writeText(headers).then(() => {
-          showToast("Copied Template Column Headers to clipboard!", "success");
-        }).catch(() => {
-          showToast("Could not copy headers to clipboard.", "danger");
-        });
       }
 
       function downloadCsvTemplate() {
@@ -2508,49 +2504,101 @@ reorder,"Arrange the IPO cycle steps in order.","Input","Process","Output","Stor
         showToast("Downloaded Exam Master Template (CSV)!", "success");
       }
 
-      function parseCsvLine(text) {
-        const result = [];
-        let cur = '';
+      function convertToCsvUrl(sheetUrl) {
+        if (!sheetUrl || typeof sheetUrl !== 'string') return null;
+        const idMatch = sheetUrl.match(/\/d\/([a-zA-Z0-9-_]+)/);
+        if (!idMatch) return null;
+        const sheetId = idMatch[1];
+        const gidMatch = sheetUrl.match(/gid=([0-9]+)/);
+        const gid = gidMatch ? gidMatch[1] : '0';
+        return `https://docs.google.com/spreadsheets/d/${sheetId}/export?format=csv&gid=${gid}`;
+      }
+
+      async function fetchGoogleSheetCsv(csvUrl) {
+        // 1. Direct fetch with cache bypassing
+        try {
+          const directResp = await fetch(csvUrl, { cache: 'no-store' });
+          if (directResp.ok) {
+            const text = await directResp.text();
+            if (text && !text.includes('<!DOCTYPE html') && !text.includes('<html')) {
+              return text;
+            }
+          }
+        } catch (err) {
+          console.warn("Direct Google Sheet CSV fetch blocked or failed, falling back to CORS proxy...", err);
+        }
+
+        // 2. Seamless Fallback via public CORS proxy
+        const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(csvUrl)}`;
+        const proxyResp = await fetch(proxyUrl, { cache: 'no-store' });
+        if (!proxyResp.ok) {
+          throw new Error(`Failed to fetch spreadsheet. Server status: ${proxyResp.status}`);
+        }
+        const proxyText = await proxyResp.text();
+        if (proxyText.includes('<!DOCTYPE html') || proxyText.includes('<html')) {
+          throw new Error("Spreadsheet is not public. Please set sharing to 'Anyone with the link can view'!");
+        }
+        return proxyText;
+      }
+
+      function parseCsvToRows(text) {
+        const rows = [];
+        let curRow = [];
+        let curCell = '';
         let inQuotes = false;
+
         for (let i = 0; i < text.length; i++) {
           const ch = text[i];
+          const nextCh = text[i + 1];
+
           if (ch === '"') {
-            if (inQuotes && text[i + 1] === '"') {
-              cur += '"';
+            if (inQuotes && nextCh === '"') {
+              curCell += '"';
               i++;
             } else {
               inQuotes = !inQuotes;
             }
           } else if (ch === ',' && !inQuotes) {
-            result.push(cur.trim());
-            cur = '';
+            curRow.push(curCell.trim());
+            curCell = '';
+          } else if ((ch === '\r' || ch === '\n') && !inQuotes) {
+            if (ch === '\r' && nextCh === '\n') i++;
+            curRow.push(curCell.trim());
+            if (curRow.length > 0 && curRow.some(c => c.length > 0)) {
+              rows.push(curRow);
+            }
+            curRow = [];
+            curCell = '';
           } else {
-            cur += ch;
+            curCell += ch;
           }
         }
-        result.push(cur.trim());
-        return result;
+        if (curCell || curRow.length > 0) {
+          curRow.push(curCell.trim());
+          if (curRow.some(c => c.length > 0)) {
+            rows.push(curRow);
+          }
+        }
+        return rows;
       }
 
       function parseSheetsBulkText(rawText) {
         if (!rawText || !rawText.trim()) return [];
-        const lines = rawText.trim().split(/\r?\n/);
+
+        let rows = [];
+        if (rawText.includes('\t') && !rawText.includes(',')) {
+          rows = rawText.trim().split(/\r?\n/).map(line => line.split('\t').map(c => c.trim().replace(/^["']|["']$/g, '')));
+        } else {
+          rows = parseCsvToRows(rawText.trim());
+        }
+
         const questions = [];
 
-        for (let i = 0; i < lines.length; i++) {
-          const line = lines[i].trim();
-          if (!line) continue;
+        for (let i = 0; i < rows.length; i++) {
+          const cols = rows[i];
+          if (!cols || cols.length < 2) continue;
 
-          let cols = [];
-          if (line.includes('\t')) {
-            cols = line.split('\t').map(c => c.trim().replace(/^["']|["']$/g, ''));
-          } else {
-            cols = parseCsvLine(line).map(c => c.replace(/^["']|["']$/g, ''));
-          }
-
-          if (cols.length < 2) continue;
-
-          const firstCol = (cols[0] || '').toLowerCase();
+          const firstCol = (cols[0] || '').toLowerCase().trim();
           if (i === 0 && (firstCol === 'type' || firstCol.includes('question') || (cols[1] || '').toLowerCase().includes('question'))) {
             continue;
           }
@@ -2636,7 +2684,6 @@ reorder,"Arrange the IPO cycle steps in order.","Input","Process","Output","Stor
               explanation
             });
           } else if (type === 'reorder') {
-            // Steps can be spread across Option A..D or in cols[2..5]
             let items = [cols[2], cols[3], cols[4], cols[5]].filter(Boolean);
             if (items.length < 2 && cols[2] && (cols[2].includes(';') || cols[2].includes('|') || cols[2].includes(','))) {
               items = cols[2].split(/[;|,]/).map(s => s.trim()).filter(Boolean);
@@ -2649,7 +2696,6 @@ reorder,"Arrange the IPO cycle steps in order.","Input","Process","Output","Stor
               explanation
             });
           } else if (type === 'match') {
-            // Check if cols[2..5] contain "Key:Value" format
             const candidateCols = [cols[2], cols[3], cols[4], cols[5]].filter(Boolean);
             const pairs = [];
             candidateCols.forEach(colVal => {
@@ -2661,7 +2707,6 @@ reorder,"Arrange the IPO cycle steps in order.","Input","Process","Output","Stor
                 pairs.push({ left: parts[0].trim(), right: parts.slice(1).join('=').trim() });
               }
             });
-            // If not key:value, pair adjacent columns
             if (pairs.length === 0) {
               if (cols[2] && cols[3]) pairs.push({ left: cols[2], right: cols[3] });
               if (cols[4] && cols[5]) pairs.push({ left: cols[4], right: cols[5] });
@@ -2678,31 +2723,55 @@ reorder,"Arrange the IPO cycle steps in order.","Input","Process","Output","Stor
         return questions;
       }
 
-      function executeBulkImport() {
-        const raw = bulkPasteInput ? bulkPasteInput.value.trim() : '';
-        if (!raw) {
-          showToast("Please paste rows from Google Sheets or CSV first!", "warning");
+      async function executeGoogleSheetImport() {
+        const rawUrl = googleSheetUrlInput ? googleSheetUrlInput.value.trim() : '';
+        if (!rawUrl) {
+          showToast("Please paste your Google Sheet public sharing link!", "warning");
+          if (googleSheetUrlInput) googleSheetUrlInput.focus();
           return;
         }
 
-        const parsed = parseSheetsBulkText(raw);
-        if (parsed.length === 0) {
-          showToast("No valid questions found. Check expected column layout!", "danger");
+        const csvUrl = convertToCsvUrl(rawUrl);
+        if (!csvUrl) {
+          showToast("Invalid Google Sheet link! Link must contain '/spreadsheets/d/<ID>'", "danger");
           return;
         }
 
-        const mode = document.querySelector('input[name="bulkImportMode"]:checked')?.value || 'append';
-        if (mode === 'replace') {
-          currentQuiz.questions = parsed;
-        } else {
-          currentQuiz.questions = currentQuiz.questions.concat(parsed);
-        }
+        const spinner = document.getElementById('fetchSheetSpinner');
+        const btnText = document.getElementById('fetchSheetBtnText');
 
-        renderAllQuestions();
-        triggerPreviewUpdate();
-        saveCurrentQuizToLibrary(false);
-        closeBulkImportModal();
-        showToast(`Successfully imported ${parsed.length} questions from Google Sheets!`, "success");
+        if (btnFetchGoogleSheet) btnFetchGoogleSheet.disabled = true;
+        if (spinner) spinner.className = 'fa-solid fa-spinner fa-spin text-white';
+        if (btnText) btnText.textContent = 'Fetching Sheet Data...';
+
+        try {
+          const csvData = await fetchGoogleSheetCsv(csvUrl);
+          const parsed = parseSheetsBulkText(csvData);
+
+          if (!parsed || parsed.length === 0) {
+            throw new Error("No valid questions found. Ensure your sheet follows the 6-in-1 format!");
+          }
+
+          const mode = document.querySelector('input[name="bulkImportMode"]:checked')?.value || 'append';
+          if (mode === 'replace') {
+            currentQuiz.questions = parsed;
+          } else {
+            currentQuiz.questions = currentQuiz.questions.concat(parsed);
+          }
+
+          renderAllQuestions();
+          triggerPreviewUpdate();
+          saveCurrentQuizToLibrary(false);
+          closeBulkImportModal();
+          showToast(`Loaded ${parsed.length} questions successfully from Google Sheet!`, "success");
+        } catch (err) {
+          console.error("Google Sheet Import Error:", err);
+          showToast(err.message || "Failed to load Google Sheet. Ensure link sharing is public!", "danger");
+        } finally {
+          if (btnFetchGoogleSheet) btnFetchGoogleSheet.disabled = false;
+          if (spinner) spinner.className = 'fa-solid fa-wand-magic-sparkles text-yellow-300';
+          if (btnText) btnText.textContent = 'Fetch & Build Question Paper';
+        }
       }
 
       if (btnOpenBulkImport) btnOpenBulkImport.addEventListener('click', openBulkImportModal);
@@ -2710,10 +2779,15 @@ reorder,"Arrange the IPO cycle steps in order.","Input","Process","Output","Stor
       if (btnCloseBulkModal) btnCloseBulkModal.addEventListener('click', closeBulkImportModal);
       if (btnCancelBulkModal) btnCancelBulkModal.addEventListener('click', closeBulkImportModal);
       if (btnDownloadCsvTemplate) btnDownloadCsvTemplate.addEventListener('click', downloadCsvTemplate);
-      const btnCopySheetHeaders = document.getElementById('btnCopySheetHeaders');
-      if (btnCopySheetHeaders) btnCopySheetHeaders.addEventListener('click', copySheetHeaders);
-      if (btnClearBulkInput) btnClearBulkInput.addEventListener('click', () => { if (bulkPasteInput) bulkPasteInput.value = ''; });
-      if (btnExecuteBulkImport) btnExecuteBulkImport.addEventListener('click', executeBulkImport);
+      if (btnFetchGoogleSheet) btnFetchGoogleSheet.addEventListener('click', executeGoogleSheetImport);
+      if (googleSheetUrlInput) {
+        googleSheetUrlInput.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter') {
+            e.preventDefault();
+            executeGoogleSheetImport();
+          }
+        });
+      }
 
       // -------------------------------------------------------------
       // 11. IN-TOOL LOCAL STORAGE LIBRARY ("MY SAVED QUIZZES")
