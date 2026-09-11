@@ -1,0 +1,1606 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Educational Interactive Web Widgets for Teacher Blog</title>
+  <style>
+    /* Demo Page Container Styles */
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", sans-serif;
+      background: #f8fafc;
+      color: #1e293b;
+      margin: 0;
+      padding: 32px 16px;
+      line-height: 1.6;
+    }
+    .demo-wrapper {
+      max-width: 860px;
+      margin: 0 auto;
+    }
+    .demo-header {
+      text-align: center;
+      margin-bottom: 40px;
+      padding: 24px;
+      background: linear-gradient(135deg, #1e1b4b 0%, #312e81 50%, #4338ca 100%);
+      color: #ffffff;
+      border-radius: 16px;
+      box-shadow: 0 10px 25px -5px rgba(49, 46, 129, 0.2);
+    }
+    .demo-header h1 {
+      margin: 0 0 10px 0;
+      font-size: 28px;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+    }
+    .demo-header p {
+      margin: 0;
+      font-size: 15px;
+      color: #c7d2fe;
+      max-width: 620px;
+      margin: 0 auto;
+    }
+    .widget-card-section {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 16px;
+      padding: 28px 20px;
+      margin-bottom: 40px;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+    }
+    .widget-badge-heading {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 24px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid #f1f5f9;
+    }
+    .widget-badge-heading h2 {
+      margin: 0;
+      font-size: 20px;
+      font-weight: 700;
+      color: #0f172a;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .tech-pill {
+      background: #f1f5f9;
+      color: #475569;
+      font-size: 12px;
+      font-weight: 600;
+      padding: 6px 12px;
+      border-radius: 9999px;
+      border: 1px solid #e2e8f0;
+    }
+    .copy-tip {
+      font-size: 13px;
+      color: #64748b;
+      margin-top: 18px;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+<div class="demo-wrapper">
+
+  <div class="demo-header">
+    <h1>🎓 Interactive Educational Widgets</h1>
+    <p>Zero-dependency, production-ready widgets engineered for Computer Science & IT teachers to embed directly inside Blogger, WordPress, or any web page.</p>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- WIDGET 1: Interactive Flip Cards (Flashcards)                -->
+  <!-- ============================================================ -->
+  <div class="widget-card-section">
+    <div class="widget-badge-heading">
+      <h2><span>🗂️</span> Widget 1: Interactive Flip Cards (Flashcards)</h2>
+      <span class="tech-pill">CBSE IT 402 / Computer Science</span>
+    </div>
+
+    <!-- START EMBEDDABLE WIDGET 1 -->
+    <div class="it-fc-wrapper" id="itFcContainer">
+      <style>
+        .it-fc-wrapper {
+          box-sizing: border-box;
+          font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+          max-width: 520px;
+          margin: 0 auto;
+          background: #ffffff;
+          border-radius: 18px;
+          border: 1px solid #e2e8f0;
+          box-shadow: 0 8px 24px -4px rgba(15, 23, 42, 0.08);
+          padding: 20px;
+          color: #0f172a;
+          user-select: none;
+        }
+        .it-fc-wrapper *, .it-fc-wrapper *::before, .it-fc-wrapper *::after {
+          box-sizing: inherit;
+        }
+        .it-fc-topbar {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          margin-bottom: 16px;
+        }
+        .it-fc-progress-badge {
+          background: #eef2ff;
+          color: #4338ca;
+          font-size: 12px;
+          font-weight: 700;
+          padding: 5px 12px;
+          border-radius: 9999px;
+          display: flex;
+          align-items: center;
+          gap: 6px;
+        }
+        .it-fc-actions {
+          display: flex;
+          gap: 8px;
+        }
+        .it-fc-btn-icon {
+          background: #f8fafc;
+          border: 1px solid #e2e8f0;
+          color: #475569;
+          border-radius: 8px;
+          padding: 6px 10px;
+          font-size: 12px;
+          font-weight: 600;
+          cursor: pointer;
+          display: inline-flex;
+          align-items: center;
+          gap: 4px;
+          transition: all 0.2s ease;
+        }
+        .it-fc-btn-icon:hover {
+          background: #e2e8f0;
+          color: #1e293b;
+        }
+        .it-fc-btn-icon:active {
+          transform: scale(0.96);
+        }
+        /* 3D Flip Container */
+        .it-fc-card-viewport {
+          perspective: 1200px;
+          width: 100%;
+          min-height: 290px;
+          cursor: pointer;
+        }
+        .it-fc-card-inner {
+          position: relative;
+          width: 100%;
+          min-height: 290px;
+          text-align: left;
+          transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+          transform-style: preserve-3d;
+        }
+        .it-fc-card-inner.is-flipped {
+          transform: rotateY(180deg);
+        }
+        .it-fc-card-face {
+          position: absolute;
+          width: 100%;
+          height: 100%;
+          min-height: 290px;
+          backface-visibility: hidden;
+          -webkit-backface-visibility: hidden;
+          border-radius: 16px;
+          padding: 24px;
+          display: flex;
+          flex-direction: column;
+          justify-content: space-between;
+          border: 1px solid #e2e8f0;
+        }
+        /* Front Face */
+        .it-fc-front {
+          background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+        }
+        .it-fc-front-head {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+        }
+        .it-fc-cat-tag {
+          font-size: 11px;
+          font-weight: 700;
+          text-transform: uppercase;
+          letter-spacing: 0.5px;
+          padding: 4px 10px;
+          border-radius: 6px;
+          background: #e0e7ff;
+          color: #3730a3;
+        }
+        .it-fc-hint-tag {
+          font-size: 12px;
+          color: #64748b;
+          display: flex;
+          align-items: center;
+          gap: 4px;
+        }
+        .it-fc-front-body {
+          margin: auto 0;
+          text-align: center;
+          padding: 12px 0;
+        }
+        .it-fc-term-title {
+          font-size: 24px;
+          font-weight: 800;
+          color: #0f172a;
+          margin: 0 0 10px 0;
+          line-height: 1.3;
+        }
+        .it-fc-term-desc {
+          font-size: 14px;
+          color: #64748b;
+          margin: 0;
+        }
+        .it-fc-front-footer {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 6px;
+          font-size: 12px;
+          font-weight: 600;
+          color: #6366f1;
+        }
+        .it-fc-pulse-icon {
+          animation: itFcBounce 1.6s infinite;
+        }
+        @keyframes itFcBounce {
+          0%, 100% { transform: translateY(0); }
+          50% { transform: translateY(-4px); }
+        }
+        /* Back Face */
+        .it-fc-back {
+          background: #ffffff;
+          transform: rotateY(180deg);
+          box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.02);
+          overflow-y: auto;
+        }
+        .it-fc-back-head {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          border-bottom: 1px solid #f1f5f9;
+          padding-bottom: 10px;
+          margin-bottom: 12px;
+        }
+        .it-fc-back-title {
+          font-size: 15px;
+          font-weight: 700;
+          color: #1e1b4b;
+        }
+        .it-fc-back-content {
+          font-size: 13.5px;
+          color: #334155;
+          line-height: 1.55;
+          margin-bottom: 12px;
+        }
+        .it-fc-points-list {
+          margin: 8px 0 12px 0;
+          padding-left: 18px;
+        }
+        .it-fc-points-list li {
+          margin-bottom: 6px;
+          color: #475569;
+          font-size: 13px;
+        }
+        .it-fc-example-box {
+          background: #f8fafc;
+          border-left: 3px solid #6366f1;
+          padding: 8px 12px;
+          border-radius: 4px;
+          font-size: 12px;
+          font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+          color: #312e81;
+          word-break: break-all;
+          margin-bottom: 12px;
+        }
+        .it-fc-back-footer {
+          display: flex;
+          justify-content: flex-end;
+          margin-top: auto;
+        }
+        .it-fc-btn-flip-back {
+          background: #f1f5f9;
+          border: none;
+          color: #475569;
+          font-size: 12px;
+          font-weight: 600;
+          padding: 6px 14px;
+          border-radius: 6px;
+          cursor: pointer;
+        }
+        .it-fc-btn-flip-back:hover {
+          background: #e2e8f0;
+          color: #0f172a;
+        }
+        /* Navigation Controls */
+        .it-fc-controls {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          margin-top: 18px;
+          gap: 12px;
+        }
+        .it-fc-nav-btn {
+          flex: 1;
+          background: #4f46e5;
+          color: #ffffff;
+          border: none;
+          border-radius: 10px;
+          padding: 10px 16px;
+          font-size: 13px;
+          font-weight: 600;
+          cursor: pointer;
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          gap: 6px;
+          transition: all 0.2s ease;
+        }
+        .it-fc-nav-btn:hover:not(:disabled) {
+          background: #4338ca;
+        }
+        .it-fc-nav-btn:active:not(:disabled) {
+          transform: scale(0.98);
+        }
+        .it-fc-nav-btn:disabled {
+          background: #cbd5e1;
+          cursor: not-allowed;
+          opacity: 0.7;
+        }
+        .it-fc-dots {
+          display: flex;
+          gap: 5px;
+          align-items: center;
+          justify-content: center;
+        }
+        .it-fc-dot {
+          width: 7px;
+          height: 7px;
+          border-radius: 9999px;
+          background: #cbd5e1;
+          transition: all 0.2s ease;
+        }
+        .it-fc-dot.is-active {
+          width: 18px;
+          background: #4f46e5;
+        }
+        @media (max-width: 480px) {
+          .it-fc-term-title { font-size: 20px; }
+          .it-fc-wrapper { padding: 16px; }
+        }
+      </style>
+
+      <div class="it-fc-topbar">
+        <div class="it-fc-progress-badge" id="itFcBadge">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"/></svg>
+          <span id="itFcIndexText">Card 1 of 5</span>
+        </div>
+        <div class="it-fc-actions">
+          <button class="it-fc-btn-icon" id="itFcShuffleBtn" title="Shuffle flashcards">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 3h5v5M4 20L21 3M21 16v5h-5M15 15l6 6M4 4l5 5"/></svg>
+            Shuffle
+          </button>
+        </div>
+      </div>
+
+      <!-- Flashcard Interactive 3D element -->
+      <div class="it-fc-card-viewport" id="itFcCardViewport" role="button" tabindex="0" aria-label="Interactive flashcard. Tap to reveal definition.">
+        <div class="it-fc-card-inner" id="itFcCardInner">
+          <!-- Front Face -->
+          <div class="it-fc-card-face it-fc-front">
+            <div class="it-fc-front-head">
+              <span class="it-fc-cat-tag" id="itFcFrontCat">Networking</span>
+              <span class="it-fc-hint-tag" id="itFcFrontHint">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+                Hint available
+              </span>
+            </div>
+            <div class="it-fc-front-body">
+              <h3 class="it-fc-term-title" id="itFcFrontTitle">IPv4 vs IPv6 Address</h3>
+              <p class="it-fc-term-desc" id="itFcFrontSub">What is the difference in bit length and notation format?</p>
+            </div>
+            <div class="it-fc-front-footer">
+              <svg class="it-fc-pulse-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
+              <span>Tap card to reveal answer</span>
+            </div>
+          </div>
+
+          <!-- Back Face -->
+          <div class="it-fc-card-face it-fc-back">
+            <div>
+              <div class="it-fc-back-head">
+                <span class="it-fc-cat-tag" id="itFcBackCat">Networking</span>
+                <span class="it-fc-back-title">Answer & Key Takeaways</span>
+              </div>
+              <div class="it-fc-back-content" id="itFcBackContent">
+                An IP address uniquely identifies each device on a network.
+              </div>
+              <ul class="it-fc-points-list" id="itFcBackPoints">
+                <li>IPv4 uses 32 bits divided into 4 decimal octets.</li>
+                <li>IPv6 uses 128 bits divided into 8 hexadecimal groups.</li>
+              </ul>
+              <div class="it-fc-example-box" id="itFcBackExample">
+                Example: 192.168.1.1 (IPv4) vs 2001:0db8::8a2e (IPv6)
+              </div>
+            </div>
+            <div class="it-fc-back-footer">
+              <button class="it-fc-btn-flip-back" id="itFcFlipBackBtn">↩ Flip Back</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Navigation Bar -->
+      <div class="it-fc-controls">
+        <button class="it-fc-nav-btn" id="itFcPrevBtn" aria-label="Previous card">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m15 18-6-6 6-6"/></svg>
+          Previous
+        </button>
+        <div class="it-fc-dots" id="itFcDotsContainer"></div>
+        <button class="it-fc-nav-btn" id="itFcNextBtn" aria-label="Next card">
+          Next
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m9 18 6-6-6-6"/></svg>
+        </button>
+      </div>
+
+      <script>
+        (function() {
+          // TEACHER CONFIGURATION: Edit or add cards here!
+          const FLASHCARDS = [
+            {
+              category: "Networking",
+              term: "IPv4 vs IPv6 Address",
+              question: "What is the core difference in address space and notation?",
+              definition: "An IP (Internet Protocol) address is a unique identifier assigned to every device on a TCP/IP network to route data packets.",
+              keyPoints: [
+                "IPv4: 32-bit address, dotted decimal format (e.g. 192.168.0.1). Provides ~4.3 billion addresses.",
+                "IPv6: 128-bit address, hexadecimal colon format (e.g. 2001:0db8::1). Solves IPv4 exhaustion.",
+                "IPv6 includes native IPSec encryption security."
+              ],
+              example: "IPv4: 172.217.16.206 | IPv6: 2404:6800:4009:80f::200e"
+            },
+            {
+              category: "Cyber Security",
+              term: "Phishing vs Spoofing",
+              question: "How do social engineering attacks deceive users?",
+              definition: "Phishing is a fraudulent attempt to steal sensitive user data (passwords, OTPs), while Spoofing is disguising communication from an unknown source as a trusted one.",
+              keyPoints: [
+                "Phishing lures victims via fake urgent emails, SMS, or fraudulent login pages.",
+                "Spoofing forges headers, caller ID, or IP packets to mimic legitimate brands.",
+                "Prevention: 2-Factor Authentication (2FA) and verifying digital certificates."
+              ],
+              example: "Fake bank email warning 'Account locked! Click here to verify password immediately.'"
+            },
+            {
+              category: "Python Basics",
+              term: "Mutable vs Immutable",
+              question: "Which Python data structures can be changed in-place after creation?",
+              definition: "Mutability refers to whether an object's memory content can be modified after it is allocated in memory.",
+              keyPoints: [
+                "Mutable: Lists, Dictionaries, Sets (content can be modified with append, update).",
+                "Immutable: Integers, Floats, Strings, Tuples (any change creates a new object in memory).",
+                "Tuples are preferred when data integrity must be strictly safeguarded."
+              ],
+              example: "my_list[0] = 99  # Valid! | my_tuple[0] = 99  # TypeError!"
+            },
+            {
+              category: "Databases (RDBMS)",
+              term: "Primary Key vs Foreign Key",
+              question: "How are tables linked while preventing duplicate records?",
+              definition: "A Primary Key uniquely identifies each row in a table, whereas a Foreign Key refers to the Primary Key of another table to maintain referential integrity.",
+              keyPoints: [
+                "Primary Key must be UNIQUE and CANNOT accept NULL values.",
+                "Only one Primary Key per table, but multiple Foreign Keys are permitted.",
+                "Prevents orphan records when cascading deletes or updates occur."
+              ],
+              example: "Students(StudentID [PK]) linked to Enrollments(StudentID [FK])"
+            },
+            {
+              category: "Web & HTML",
+              term: "HTTP vs HTTPS",
+              question: "Why does the lock icon in the browser address bar matter?",
+              definition: "HyperText Transfer Protocol Secure (HTTPS) encrypts communication between the client browser and the server using SSL/TLS.",
+              keyPoints: [
+                "HTTP transmits data in clear text (vulnerable to packet sniffing).",
+                "HTTPS runs over Port 443; HTTP runs over default Port 80.",
+                "Guarantees data encryption, message integrity, and server authentication."
+              ],
+              example: "https://cbse.gov.in (Uses TLS 1.3 encryption with 256-bit key)"
+            }
+          ];
+
+          let cards = [...FLASHCARDS];
+          let currentIndex = 0;
+          let isFlipped = false;
+
+          // DOM elements
+          const cardInner = document.getElementById('itFcCardInner');
+          const cardViewport = document.getElementById('itFcCardViewport');
+          const prevBtn = document.getElementById('itFcPrevBtn');
+          const nextBtn = document.getElementById('itFcNextBtn');
+          const shuffleBtn = document.getElementById('itFcShuffleBtn');
+          const badgeText = document.getElementById('itFcIndexText');
+          const dotsContainer = document.getElementById('itFcDotsContainer');
+          const flipBackBtn = document.getElementById('itFcFlipBackBtn');
+
+          const frontCat = document.getElementById('itFcFrontCat');
+          const frontTitle = document.getElementById('itFcFrontTitle');
+          const frontSub = document.getElementById('itFcFrontSub');
+
+          const backCat = document.getElementById('itFcBackCat');
+          const backContent = document.getElementById('itFcBackContent');
+          const backPoints = document.getElementById('itFcBackPoints');
+          const backExample = document.getElementById('itFcBackExample');
+
+          function renderCard(idx) {
+            const card = cards[idx];
+            isFlipped = false;
+            cardInner.classList.remove('is-flipped');
+
+            // Set Front
+            frontCat.textContent = card.category;
+            frontTitle.textContent = card.term;
+            frontSub.textContent = card.question;
+
+            // Set Back
+            backCat.textContent = card.category;
+            backContent.textContent = card.definition;
+
+            // Build Points
+            backPoints.innerHTML = '';
+            (card.keyPoints || []).forEach(pt => {
+              const li = document.createElement('li');
+              li.textContent = pt;
+              backPoints.appendChild(li);
+            });
+
+            // Set Example
+            if (card.example) {
+              backExample.textContent = card.example;
+              backExample.style.display = 'block';
+            } else {
+              backExample.style.display = 'none';
+            }
+
+            // Update Header & Nav
+            badgeText.textContent = `Card ${idx + 1} of ${cards.length}`;
+            prevBtn.disabled = (idx === 0);
+            nextBtn.disabled = (idx === cards.length - 1);
+
+            // Render Dots
+            dotsContainer.innerHTML = '';
+            cards.forEach((_, i) => {
+              const dot = document.createElement('span');
+              dot.className = 'it-fc-dot' + (i === idx ? ' is-active' : '');
+              dotsContainer.appendChild(dot);
+            });
+          }
+
+          function toggleFlip() {
+            isFlipped = !isFlipped;
+            cardInner.classList.toggle('is-flipped', isFlipped);
+          }
+
+          cardViewport.addEventListener('click', function(e) {
+            if (e.target.closest('#itFcFlipBackBtn')) return;
+            toggleFlip();
+          });
+
+          cardViewport.addEventListener('keydown', function(e) {
+            if (e.key === ' ' || e.key === 'Enter') {
+              e.preventDefault();
+              toggleFlip();
+            }
+          });
+
+          if (flipBackBtn) {
+            flipBackBtn.addEventListener('click', function(e) {
+              e.stopPropagation();
+              isFlipped = false;
+              cardInner.classList.remove('is-flipped');
+            });
+          }
+
+          prevBtn.addEventListener('click', function() {
+            if (currentIndex > 0) {
+              currentIndex--;
+              renderCard(currentIndex);
+            }
+          });
+
+          nextBtn.addEventListener('click', function() {
+            if (currentIndex < cards.length - 1) {
+              currentIndex++;
+              renderCard(currentIndex);
+            }
+          });
+
+          shuffleBtn.addEventListener('click', function() {
+            for (let i = cards.length - 1; i > 0; i--) {
+              const j = Math.floor(Math.random() * (i + 1));
+              [cards[i], cards[j]] = [cards[j], cards[i]];
+            }
+            currentIndex = 0;
+            renderCard(currentIndex);
+          });
+
+          // Keyboard Left / Right navigation
+          document.addEventListener('keydown', function(e) {
+            if (!document.activeElement || document.activeElement === document.body || document.activeElement === cardViewport) {
+              if (e.key === 'ArrowRight' && currentIndex < cards.length - 1) {
+                currentIndex++;
+                renderCard(currentIndex);
+              } else if (e.key === 'ArrowLeft' && currentIndex > 0) {
+                currentIndex--;
+                renderCard(currentIndex);
+              }
+            }
+          });
+
+          renderCard(0);
+        })();
+      </script>
+    </div>
+    <!-- END EMBEDDABLE WIDGET 1 -->
+    <div class="copy-tip">💡 <strong>Teacher Tip:</strong> To embed, copy everything between <code>&lt;!-- START EMBEDDABLE WIDGET 1 --&gt;</code> and <code>&lt;!-- END EMBEDDABLE WIDGET 1 --&gt;</code>.</div>
+  </div>
+
+
+  <!-- ============================================================ -->
+  <!-- WIDGET 2: Step-by-Step Code / Syntax Runner Card             -->
+  <!-- ============================================================ -->
+  <div class="widget-card-section">
+    <div class="widget-badge-heading">
+      <h2><span>💻</span> Widget 2: Step-by-Step Code & Syntax Runner Card</h2>
+      <span class="tech-pill">Python 3 Algorithm Simulation</span>
+    </div>
+
+    <!-- START EMBEDDABLE WIDGET 2 -->
+    <div class="it-runner-wrapper" id="itRunnerContainer">
+      <style>
+        .it-runner-wrapper {
+          box-sizing: border-box;
+          font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+          max-width: 640px;
+          margin: 0 auto;
+          background: #111827;
+          color: #f3f4f6;
+          border-radius: 16px;
+          border: 1px solid #374151;
+          box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+          overflow: hidden;
+        }
+        .it-runner-wrapper *, .it-runner-wrapper *::before, .it-runner-wrapper *::after {
+          box-sizing: inherit;
+        }
+        /* Top Window Bar */
+        .it-runner-head {
+          background: #1f2937;
+          padding: 12px 16px;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          border-bottom: 1px solid #374151;
+        }
+        .it-runner-dots {
+          display: flex;
+          gap: 6px;
+        }
+        .it-runner-dot {
+          width: 11px;
+          height: 11px;
+          border-radius: 50%;
+        }
+        .it-dot-red { background: #ef4444; }
+        .it-dot-yellow { background: #f59e0b; }
+        .it-dot-green { background: #10b981; }
+        .it-runner-title-tag {
+          font-size: 13px;
+          font-weight: 600;
+          color: #9ca3af;
+          display: flex;
+          align-items: center;
+          gap: 6px;
+        }
+        .it-runner-copy-btn {
+          background: #374151;
+          border: 1px solid #4b5563;
+          color: #e5e7eb;
+          font-size: 12px;
+          font-weight: 600;
+          padding: 5px 12px;
+          border-radius: 6px;
+          cursor: pointer;
+          display: inline-flex;
+          align-items: center;
+          gap: 5px;
+          transition: all 0.2s;
+        }
+        .it-runner-copy-btn:hover {
+          background: #4b5563;
+          color: #ffffff;
+        }
+        .it-runner-copy-btn.is-copied {
+          background: #059669;
+          border-color: #10b981;
+          color: #ffffff;
+        }
+        /* Stepper Tab Bar */
+        .it-runner-stepper {
+          display: flex;
+          background: #1e293b;
+          border-bottom: 1px solid #374151;
+          overflow-x: auto;
+        }
+        .it-runner-step-btn {
+          flex: 1;
+          min-width: 110px;
+          background: transparent;
+          border: none;
+          border-bottom: 3px solid transparent;
+          color: #94a3b8;
+          font-size: 12px;
+          font-weight: 600;
+          padding: 10px 12px;
+          cursor: pointer;
+          text-align: center;
+          white-space: nowrap;
+          transition: all 0.2s;
+        }
+        .it-runner-step-btn:hover {
+          color: #e2e8f0;
+          background: rgba(255, 255, 255, 0.03);
+        }
+        .it-runner-step-btn.is-active {
+          color: #60a5fa;
+          border-bottom-color: #3b82f6;
+          background: rgba(59, 130, 246, 0.08);
+        }
+        /* Explanation Bar */
+        .it-runner-explain {
+          padding: 12px 18px;
+          background: #182234;
+          border-bottom: 1px solid #283548;
+          font-size: 13px;
+          color: #cbd5e1;
+          display: flex;
+          align-items: flex-start;
+          gap: 10px;
+          line-height: 1.5;
+        }
+        .it-runner-explain-icon {
+          color: #38bdf8;
+          flex-shrink: 0;
+          margin-top: 1px;
+        }
+        /* Code Box */
+        .it-runner-code-area {
+          padding: 16px;
+          font-family: ui-monospace, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+          font-size: 13px;
+          line-height: 1.65;
+          overflow-x: auto;
+          background: #0d1117;
+        }
+        .it-runner-line {
+          display: flex;
+          white-space: pre;
+        }
+        .it-runner-ln {
+          width: 32px;
+          color: #4b5563;
+          user-select: none;
+          text-align: right;
+          margin-right: 16px;
+          flex-shrink: 0;
+        }
+        .it-runner-code-text {
+          color: #e6edf3;
+        }
+        /* Syntax highlight tokens */
+        .it-kw { color: #ff7b72; font-weight: 600; }
+        .it-fn { color: #d2a8ff; }
+        .it-str { color: #a5d6ff; }
+        .it-num { color: #79c0ff; }
+        .it-cmt { color: #8b949e; font-style: italic; }
+        .it-var { color: #ffa657; }
+
+        /* Output Console Area */
+        .it-runner-console-bar {
+          background: #161b22;
+          border-top: 1px solid #30363d;
+          padding: 10px 16px;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+        }
+        .it-runner-run-btn {
+          background: #2563eb;
+          border: none;
+          color: #ffffff;
+          font-size: 12px;
+          font-weight: 600;
+          padding: 6px 14px;
+          border-radius: 6px;
+          cursor: pointer;
+          display: inline-flex;
+          align-items: center;
+          gap: 6px;
+          transition: background 0.2s;
+        }
+        .it-runner-run-btn:hover {
+          background: #1d4ed8;
+        }
+        .it-runner-status-text {
+          font-size: 12px;
+          color: #8b949e;
+        }
+        .it-runner-output {
+          background: #030712;
+          border-top: 1px dashed #374151;
+          padding: 14px 18px;
+          font-family: ui-monospace, Menlo, Consolas, monospace;
+          font-size: 12.5px;
+          color: #34d399;
+          white-space: pre-wrap;
+          line-height: 1.5;
+          display: block;
+        }
+        .it-runner-output.is-hidden {
+          display: none;
+        }
+        .it-runner-nav-footer {
+          background: #1f2937;
+          border-top: 1px solid #374151;
+          padding: 12px 16px;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+        }
+        .it-runner-subnav-btn {
+          background: #374151;
+          border: none;
+          color: #e5e7eb;
+          font-size: 12px;
+          font-weight: 600;
+          padding: 7px 14px;
+          border-radius: 6px;
+          cursor: pointer;
+          display: inline-flex;
+          align-items: center;
+          gap: 6px;
+          transition: all 0.2s;
+        }
+        .it-runner-subnav-btn:hover:not(:disabled) {
+          background: #4b5563;
+        }
+        .it-runner-subnav-btn:disabled {
+          opacity: 0.4;
+          cursor: not-allowed;
+        }
+      </style>
+
+      <!-- Head Window Bar -->
+      <div class="it-runner-head">
+        <div class="it-runner-dots">
+          <span class="it-runner-dot it-dot-red"></span>
+          <span class="it-runner-dot it-dot-yellow"></span>
+          <span class="it-runner-dot it-dot-green"></span>
+        </div>
+        <div class="it-runner-title-tag">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+          <span id="itRunnerLangTitle">grade_calculator.py (Python 3)</span>
+        </div>
+        <button class="it-runner-copy-btn" id="itRunnerCopyBtn">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+          <span id="itRunnerCopyText">Copy Code</span>
+        </button>
+      </div>
+
+      <!-- Step Indicator Bar -->
+      <div class="it-runner-stepper" id="itRunnerStepper"></div>
+
+      <!-- Explanation Callout -->
+      <div class="it-runner-explain">
+        <svg class="it-runner-explain-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+        <div id="itRunnerExplainText">Step logic explanation goes here.</div>
+      </div>
+
+      <!-- Code Box -->
+      <div class="it-runner-code-area" id="itRunnerCodeBox"></div>
+
+      <!-- Console Runner Bar -->
+      <div class="it-runner-console-bar">
+        <button class="it-runner-run-btn" id="itRunnerRunToggle">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+          <span id="itRunnerRunBtnText">Run / Show Output</span>
+        </button>
+        <span class="it-runner-status-text" id="itRunnerStatus">Terminal Ready</span>
+      </div>
+
+      <!-- Terminal Output Container -->
+      <div class="it-runner-output is-hidden" id="itRunnerOutput"></div>
+
+      <!-- Step Navigation Footer -->
+      <div class="it-runner-nav-footer">
+        <button class="it-runner-subnav-btn" id="itRunnerPrevBtn">
+          ← Previous Step
+        </button>
+        <span style="font-size: 12px; color: #9ca3af;" id="itRunnerStepCount">Step 1 of 4</span>
+        <button class="it-runner-subnav-btn" id="itRunnerNextBtn">
+          Next Step →
+        </button>
+      </div>
+
+      <script>
+        (function() {
+          // TEACHER CONFIGURATION: Edit multi-step programming lessons here!
+          const CODE_STEPS = [
+            {
+              stepName: "1. Input",
+              title: "Step 1: Taking User Input & Casting",
+              explanation: "Accept the student name as string and convert score to integer using int(input()).",
+              lines: [
+                '<span class="it-cmt"># Step 1: Input marks and student details</span>',
+                '<span class="it-var">student_name</span> = <span class="it-fn">input</span>(<span class="it-str">"Enter student name: "</span>)',
+                '<span class="it-var">score</span> = <span class="it-fn">int</span>(<span class="it-fn">input</span>(<span class="it-str">"Enter marks obtained (0-100): "</span>))',
+                '<span class="it-fn">print</span>(<span class="it-str">f"Calculating grade for {student_name}..."</span>)'
+              ],
+              rawText: 'student_name = input("Enter student name: ")\nscore = int(input("Enter marks obtained (0-100): "))\nprint(f"Calculating grade for {student_name}...")',
+              output: 'Enter student name: Ananya Sharma\nEnter marks obtained (0-100): 88\nCalculating grade for Ananya Sharma...\n>>> Exit code: 0'
+            },
+            {
+              stepName: "2. Conditions",
+              title: "Step 2: Checking Conditions with if-elif-else",
+              explanation: "Compare the score against grade thresholds sequentially using if, elif, and else statements.",
+              lines: [
+                '<span class="it-cmt"># Step 2: Determine grade tier</span>',
+                '<span class="it-kw">if</span> <span class="it-var">score</span> >= <span class="it-num">90</span>:',
+                '    <span class="it-var">grade</span> = <span class="it-str">"A+ (Outstanding)"</span>',
+                '<span class="it-kw">elif</span> <span class="it-var">score</span> >= <span class="it-num">75</span>:',
+                '    <span class="it-var">grade</span> = <span class="it-str">"A (Distinction)"</span>',
+                '<span class="it-kw">elif</span> <span class="it-var">score</span> >= <span class="it-num">50</span>:',
+                '    <span class="it-var">grade</span> = <span class="it-str">"B (Pass)"</span>',
+                '<span class="it-kw">else</span>:',
+                '    <span class="it-var">grade</span> = <span class="it-str">"C (Needs Improvement)"</span>'
+              ],
+              rawText: 'if score >= 90:\n    grade = "A+ (Outstanding)"\nelif score >= 75:\n    grade = "A (Distinction)"\nelif score >= 50:\n    grade = "B (Pass)"\nelse:\n    grade = "C (Needs Improvement)"',
+              output: 'Checking score: 88\nCondition matched: score >= 75\nAssigned grade: "A (Distinction)"'
+            },
+            {
+              stepName: "3. Function",
+              title: "Step 3: Wrapping in a Modular Function",
+              explanation: "Encapsulate the evaluation logic inside a reusable function calculate_result(name, score).",
+              lines: [
+                '<span class="it-kw">def</span> <span class="it-fn">calculate_result</span>(<span class="it-var">name</span>, <span class="it-var">score</span>):',
+                '    <span class="it-str">"""Returns formatted report dictionary."""</span>',
+                '    <span class="it-kw">if</span> <span class="it-var">score</span> >= <span class="it-num">75</span>:',
+                '        <span class="it-var">status</span> = <span class="it-str">"PASSED WITH DISTINCTION"</span>',
+                '    <span class="it-kw">else</span>:',
+                '        <span class="it-var">status</span> = <span class="it-str">"PASSED"</span> <span class="it-kw">if</span> <span class="it-var">score</span> >= <span class="it-num">50</span> <span class="it-kw">else</span> <span class="it-str">"FAIL"</span>',
+                '    <span class="it-kw">return</span> {<span class="it-str">"student"</span>: <span class="it-var">name</span>, <span class="it-str">"score"</span>: <span class="it-var">score</span>, <span class="it-str">"status"</span>: <span class="it-var">status</span>}'
+              ],
+              rawText: 'def calculate_result(name, score):\n    """Returns formatted report dictionary."""\n    if score >= 75:\n        status = "PASSED WITH DISTINCTION"\n    else:\n        status = "PASSED" if score >= 50 else "FAIL"\n    return {"student": name, "score": score, "status": status}',
+              output: '>>> def calculate_result loaded into memory\n>>> calculate_result("Ananya", 88)\n{\'student\': \'Ananya\', \'score\': 88, \'status\': \'PASSED WITH DISTINCTION\'}'
+            },
+            {
+              stepName: "4. Full Program",
+              title: "Step 4: Formatted Report Output",
+              explanation: "Execute the complete production script with f-string output formatting.",
+              lines: [
+                '<span class="it-cmt"># Step 4: Final output presentation</span>',
+                '<span class="it-var">res</span> = <span class="it-fn">calculate_result</span>(<span class="it-str">"Ananya Sharma"</span>, <span class="it-num">88</span>)',
+                '<span class="it-fn">print</span>(<span class="it-str">"="</span> * <span class="it-num">35</span>)',
+                '<span class="it-fn">print</span>(<span class="it-str">f" STUDENT REPORT: {res[\'student\']}"</span>)',
+                '<span class="it-fn">print</span>(<span class="it-str">f" Final Score   : {res[\'score\']} / 100"</span>)',
+                '<span class="it-fn">print</span>(<span class="it-str">f" Status        : {res[\'status\']}"</span>)',
+                '<span class="it-fn">print</span>(<span class="it-str">"="</span> * <span class="it-num">35</span>)'
+              ],
+              rawText: 'res = calculate_result("Ananya Sharma", 88)\nprint("=" * 35)\nprint(f" STUDENT REPORT: {res[\'student\']}")\nprint(f" Final Score   : {res[\'score\']} / 100")\nprint(f" Status        : {res[\'status\']}")\nprint("=" * 35)',
+              output: '===================================\n STUDENT REPORT: Ananya Sharma\n Final Score   : 88 / 100\n Status        : PASSED WITH DISTINCTION\n===================================\n>>> Process finished with exit code 0.'
+            }
+          ];
+
+          let activeStep = 0;
+          let isOutputVisible = true;
+
+          const stepperContainer = document.getElementById('itRunnerStepper');
+          const codeBox = document.getElementById('itRunnerCodeBox');
+          const explainText = document.getElementById('itRunnerExplainText');
+          const outputBox = document.getElementById('itRunnerOutput');
+          const runToggleBtn = document.getElementById('itRunnerRunToggle');
+          const runBtnText = document.getElementById('itRunnerRunBtnText');
+          const copyBtn = document.getElementById('itRunnerCopyBtn');
+          const copyText = document.getElementById('itRunnerCopyText');
+          const prevBtn = document.getElementById('itRunnerPrevBtn');
+          const nextBtn = document.getElementById('itRunnerNextBtn');
+          const stepCount = document.getElementById('itRunnerStepCount');
+
+          function renderStep(idx) {
+            activeStep = idx;
+            const step = CODE_STEPS[idx];
+
+            // Render Stepper Buttons
+            stepperContainer.innerHTML = '';
+            CODE_STEPS.forEach((s, i) => {
+              const btn = document.createElement('button');
+              btn.className = 'it-runner-step-btn' + (i === idx ? ' is-active' : '');
+              btn.textContent = s.stepName;
+              btn.onclick = () => renderStep(i);
+              stepperContainer.appendChild(btn);
+            });
+
+            // Set Explanation
+            explainText.textContent = step.explanation;
+
+            // Render Code with Line Numbers
+            codeBox.innerHTML = '';
+            step.lines.forEach((lineHtml, i) => {
+              const lineRow = document.createElement('div');
+              lineRow.className = 'it-runner-line';
+              lineRow.innerHTML = `<span class="it-runner-ln">${i + 1}</span><span class="it-runner-code-text">${lineHtml}</span>`;
+              codeBox.appendChild(lineRow);
+            });
+
+            // Set Output
+            outputBox.textContent = step.output;
+
+            // Update Navigation
+            stepCount.textContent = `Step ${idx + 1} of ${CODE_STEPS.length}`;
+            prevBtn.disabled = (idx === 0);
+            nextBtn.disabled = (idx === CODE_STEPS.length - 1);
+          }
+
+          // Run / Show Output toggle
+          runToggleBtn.addEventListener('click', function() {
+            isOutputVisible = !isOutputVisible;
+            if (isOutputVisible) {
+              outputBox.classList.remove('is-hidden');
+              runBtnText.textContent = "Hide Output";
+            } else {
+              outputBox.classList.add('is-hidden');
+              runBtnText.textContent = "Run / Show Output";
+            }
+          });
+
+          // Copy Code
+          copyBtn.addEventListener('click', function() {
+            const raw = CODE_STEPS[activeStep].rawText;
+            navigator.clipboard.writeText(raw).then(() => {
+              copyBtn.classList.add('is-copied');
+              copyText.textContent = "Copied!";
+              setTimeout(() => {
+                copyBtn.classList.remove('is-copied');
+                copyText.textContent = "Copy Code";
+              }, 2000);
+            });
+          });
+
+          prevBtn.addEventListener('click', () => {
+            if (activeStep > 0) renderStep(activeStep - 1);
+          });
+          nextBtn.addEventListener('click', () => {
+            if (activeStep < CODE_STEPS.length - 1) renderStep(activeStep + 1);
+          });
+
+          renderStep(0);
+        })();
+      </script>
+    </div>
+    <!-- END EMBEDDABLE WIDGET 2 -->
+    <div class="copy-tip">💡 <strong>Teacher Tip:</strong> To embed, copy everything between <code>&lt;!-- START EMBEDDABLE WIDGET 2 --&gt;</code> and <code>&lt;!-- END EMBEDDABLE WIDGET 2 --&gt;</code>.</div>
+  </div>
+
+
+  <!-- ============================================================ -->
+  <!-- WIDGET 3: Smart Searchable Cheatsheet / Formula Grid          -->
+  <!-- ============================================================ -->
+  <div class="widget-card-section">
+    <div class="widget-badge-heading">
+      <h2><span>📑</span> Widget 3: Smart Searchable Cheatsheet & Formula Grid</h2>
+      <span class="tech-pill">Live Filter & Instant Search</span>
+    </div>
+
+    <!-- START EMBEDDABLE WIDGET 3 -->
+    <div class="it-sheet-wrapper" id="itSheetContainer">
+      <style>
+        .it-sheet-wrapper {
+          box-sizing: border-box;
+          font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+          max-width: 720px;
+          margin: 0 auto;
+          background: #ffffff;
+          border-radius: 16px;
+          border: 1px solid #e2e8f0;
+          box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.06);
+          overflow: hidden;
+          color: #1e293b;
+        }
+        .it-sheet-wrapper *, .it-sheet-wrapper *::before, .it-sheet-wrapper *::after {
+          box-sizing: inherit;
+        }
+        .it-sheet-header {
+          padding: 20px;
+          background: #f8fafc;
+          border-bottom: 1px solid #e2e8f0;
+        }
+        .it-sheet-title-row {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          margin-bottom: 14px;
+          flex-wrap: wrap;
+          gap: 8px;
+        }
+        .it-sheet-title {
+          font-size: 16px;
+          font-weight: 700;
+          color: #0f172a;
+          margin: 0;
+          display: flex;
+          align-items: center;
+          gap: 6px;
+        }
+        .it-sheet-counter {
+          font-size: 12px;
+          color: #64748b;
+          background: #ffffff;
+          border: 1px solid #cbd5e1;
+          padding: 3px 10px;
+          border-radius: 9999px;
+          font-weight: 600;
+        }
+        /* Search Box */
+        .it-sheet-search-box {
+          position: relative;
+          margin-bottom: 14px;
+        }
+        .it-sheet-search-input {
+          width: 100%;
+          padding: 10px 38px 10px 36px;
+          border: 1.5px solid #cbd5e1;
+          border-radius: 10px;
+          font-size: 14px;
+          background: #ffffff;
+          color: #0f172a;
+          outline: none;
+          transition: border-color 0.2s, box-shadow 0.2s;
+        }
+        .it-sheet-search-input:focus {
+          border-color: #6366f1;
+          box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+        }
+        .it-sheet-search-icon {
+          position: absolute;
+          left: 12px;
+          top: 50%;
+          transform: translateY(-50%);
+          color: #94a3b8;
+          pointer-events: none;
+        }
+        .it-sheet-clear-btn {
+          position: absolute;
+          right: 10px;
+          top: 50%;
+          transform: translateY(-50%);
+          background: transparent;
+          border: none;
+          color: #94a3b8;
+          font-size: 16px;
+          cursor: pointer;
+          display: none;
+          padding: 4px;
+        }
+        .it-sheet-clear-btn:hover {
+          color: #475569;
+        }
+        /* Category Filter Chips */
+        .it-sheet-chips {
+          display: flex;
+          gap: 6px;
+          overflow-x: auto;
+          padding-bottom: 4px;
+        }
+        .it-sheet-chip {
+          background: #ffffff;
+          border: 1px solid #cbd5e1;
+          color: #475569;
+          font-size: 12px;
+          font-weight: 600;
+          padding: 5px 12px;
+          border-radius: 20px;
+          cursor: pointer;
+          white-space: nowrap;
+          transition: all 0.2s;
+        }
+        .it-sheet-chip:hover {
+          background: #f1f5f9;
+          color: #0f172a;
+        }
+        .it-sheet-chip.is-active {
+          background: #4f46e5;
+          color: #ffffff;
+          border-color: #4f46e5;
+        }
+
+        /* Table Structure */
+        .it-sheet-table-scroll {
+          overflow-x: auto;
+          max-height: 440px;
+        }
+        .it-sheet-table {
+          width: 100%;
+          border-collapse: collapse;
+          text-align: left;
+          font-size: 13px;
+        }
+        .it-sheet-table th {
+          position: sticky;
+          top: 0;
+          background: #f1f5f9;
+          color: #475569;
+          font-weight: 700;
+          text-transform: uppercase;
+          font-size: 11px;
+          letter-spacing: 0.5px;
+          padding: 10px 16px;
+          border-bottom: 1px solid #e2e8f0;
+          z-index: 2;
+        }
+        .it-sheet-table td {
+          padding: 12px 16px;
+          border-bottom: 1px solid #f1f5f9;
+          vertical-align: middle;
+        }
+        .it-sheet-table tr:hover {
+          background: #f8fafc;
+        }
+        /* Keycap Badge Styling */
+        .it-keycap {
+          display: inline-block;
+          background: #f8fafc;
+          border: 1px solid #cbd5e1;
+          border-bottom: 2px solid #94a3b8;
+          border-radius: 5px;
+          padding: 3px 7px;
+          font-size: 11.5px;
+          font-family: ui-monospace, Menlo, Consolas, monospace;
+          font-weight: 700;
+          color: #334155;
+          box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
+          margin: 1px;
+          white-space: nowrap;
+        }
+        .it-sheet-plus {
+          color: #94a3b8;
+          font-weight: 600;
+          margin: 0 3px;
+        }
+        .it-sheet-code-text {
+          font-family: ui-monospace, Menlo, Consolas, monospace;
+          font-size: 12px;
+          background: #eff6ff;
+          color: #1d4ed8;
+          padding: 3px 6px;
+          border-radius: 4px;
+          font-weight: 600;
+        }
+        .it-sheet-cat-badge {
+          display: inline-block;
+          font-size: 10.5px;
+          font-weight: 700;
+          padding: 2px 7px;
+          border-radius: 4px;
+          background: #f1f5f9;
+          color: #64748b;
+          text-transform: uppercase;
+        }
+        .it-sheet-copy-row-btn {
+          background: #f8fafc;
+          border: 1px solid #e2e8f0;
+          color: #64748b;
+          border-radius: 6px;
+          padding: 5px 8px;
+          cursor: pointer;
+          transition: all 0.2s;
+          display: inline-flex;
+          align-items: center;
+          gap: 4px;
+          font-size: 11px;
+          font-weight: 600;
+        }
+        .it-sheet-copy-row-btn:hover {
+          background: #e0e7ff;
+          color: #4338ca;
+          border-color: #c7d2fe;
+        }
+        .it-sheet-copy-row-btn.is-copied {
+          background: #ecfdf5;
+          color: #059669;
+          border-color: #a7f3d0;
+        }
+        /* Empty State */
+        .it-sheet-empty {
+          text-align: center;
+          padding: 40px 20px;
+          color: #64748b;
+        }
+        .it-sheet-empty svg {
+          margin-bottom: 10px;
+          color: #94a3b8;
+        }
+      </style>
+
+      <div class="it-sheet-header">
+        <div class="it-sheet-title-row">
+          <h3 class="it-sheet-title">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+            Quick Reference Cheatsheet
+          </h3>
+          <span class="it-sheet-counter" id="itSheetCounter">Showing 10 items</span>
+        </div>
+
+        <!-- Search Bar -->
+        <div class="it-sheet-search-box">
+          <svg class="it-sheet-search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <input type="text" class="it-sheet-search-input" id="itSheetSearchInput" placeholder="Search shortcuts, formulas, or functions..." autocomplete="off">
+          <button class="it-sheet-clear-btn" id="itSheetClearBtn" aria-label="Clear search">✕</button>
+        </div>
+
+        <!-- Filter Chips -->
+        <div class="it-sheet-chips" id="itSheetChips"></div>
+      </div>
+
+      <!-- Table View -->
+      <div class="it-sheet-table-scroll">
+        <table class="it-sheet-table">
+          <thead>
+            <tr>
+              <th style="width: 32%;">Key / Formula</th>
+              <th style="width: 44%;">Purpose / Function</th>
+              <th style="width: 14%;">Category</th>
+              <th style="width: 10%; text-align: center;">Action</th>
+            </tr>
+          </thead>
+          <tbody id="itSheetTableBody"></tbody>
+        </table>
+        <div class="it-sheet-empty" id="itSheetEmptyState" style="display: none;">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <div style="font-weight: 600;">No matching entries found</div>
+          <div style="font-size: 12px; margin-top: 4px;">Try checking for typos or searching a different term.</div>
+        </div>
+      </div>
+
+      <script>
+        (function() {
+          // TEACHER CONFIGURATION: Add your shortcuts, formulas, and terminal commands here!
+          const CHEATSHEET_DATA = [
+            {
+              category: "Excel Formulas",
+              keyDisplay: '=VLOOKUP(val, table, col, 0)',
+              isCode: true,
+              copyVal: '=VLOOKUP(lookup_value, table_array, col_index_num, FALSE)',
+              purpose: 'Searches for a value in the leftmost column of a table and returns a value in the same row from a specified column.',
+              note: 'Exact match with FALSE or 0'
+            },
+            {
+              category: "Excel Formulas",
+              keyDisplay: '=IF(cond, "Pass", "Fail")',
+              isCode: true,
+              copyVal: '=IF(logical_test, value_if_true, value_if_false)',
+              purpose: 'Evaluates a logical condition and returns one value if TRUE, and another if FALSE.',
+              note: 'Supports nested conditions'
+            },
+            {
+              category: "Excel Formulas",
+              keyDisplay: '=COUNTIF(range, criteria)',
+              isCode: true,
+              copyVal: '=COUNTIF(range, criteria)',
+              purpose: 'Counts the number of cells within a range that satisfy a given condition.',
+              note: 'e.g. =COUNTIF(C2:C50, ">=75")'
+            },
+            {
+              category: "Windows Shortcuts",
+              keys: ['Ctrl', 'Shift', 'Esc'],
+              copyVal: 'Ctrl+Shift+Esc',
+              purpose: 'Directly opens Windows Task Manager without passing through the lock screen menu.',
+              note: 'Instantly view running processes'
+            },
+            {
+              category: "Windows Shortcuts",
+              keys: ['Win', 'Shift', 'S'],
+              copyVal: 'Win+Shift+S',
+              purpose: 'Launches Snipping Tool screen capture overlay to capture a region or window.',
+              note: 'Copies directly to clipboard'
+            },
+            {
+              category: "Windows Shortcuts",
+              keys: ['Win', 'V'],
+              copyVal: 'Win+V',
+              purpose: 'Opens Clipboard History panel to paste previously copied items and pins.',
+              note: 'Must be enabled in settings'
+            },
+            {
+              category: "Python Basics",
+              keyDisplay: 'len(collection)',
+              isCode: true,
+              copyVal: 'len(sequence)',
+              purpose: 'Returns the number of items in an object (string, list, tuple, dictionary).',
+              note: 'O(1) time complexity'
+            },
+            {
+              category: "Python Basics",
+              keyDisplay: 'range(start, stop, step)',
+              isCode: true,
+              copyVal: 'range(start, stop, step)',
+              purpose: 'Generates an immutable sequence of numbers frequently used for looping in for loops.',
+              note: 'stop index is exclusive'
+            },
+            {
+              category: "Python Basics",
+              keyDisplay: 'list.append(x)',
+              isCode: true,
+              copyVal: 'list.append(item)',
+              purpose: 'Appends an element to the end of an existing mutable list in-place.',
+              note: 'Modifies list in place'
+            },
+            {
+              category: "Web & HTML",
+              keys: ['Ctrl', 'Shift', 'I'],
+              copyVal: 'Ctrl+Shift+I',
+              purpose: 'Opens Chrome/Firefox DevTools (Inspect Element and Console tab).',
+              note: 'Shortcut also is F12'
+            },
+            {
+              category: "Web & HTML",
+              keys: ['Ctrl', 'F5'],
+              copyVal: 'Ctrl+F5',
+              purpose: 'Hard refresh: reloads the webpage bypassing cached scripts and stylesheets.',
+              note: 'Clears cache for active page'
+            }
+          ];
+
+          let activeCategory = "All";
+          let searchQuery = "";
+
+          const tableBody = document.getElementById('itSheetTableBody');
+          const searchInput = document.getElementById('itSheetSearchInput');
+          const clearBtn = document.getElementById('itSheetClearBtn');
+          const chipsContainer = document.getElementById('itSheetChips');
+          const counterText = document.getElementById('itSheetCounter');
+          const emptyState = document.getElementById('itSheetEmptyState');
+
+          // Build Category List
+          const categories = ["All", ...new Set(CHEATSHEET_DATA.map(item => item.category))];
+
+          function renderChips() {
+            chipsContainer.innerHTML = '';
+            categories.forEach(cat => {
+              const chip = document.createElement('button');
+              chip.className = 'it-sheet-chip' + (cat === activeCategory ? ' is-active' : '');
+              chip.textContent = cat;
+              chip.onclick = () => {
+                activeCategory = cat;
+                renderChips();
+                renderTable();
+              };
+              chipsContainer.appendChild(chip);
+            });
+          }
+
+          function renderKeyCell(item) {
+            if (item.isCode) {
+              return `<span class="it-sheet-code-text">${item.keyDisplay}</span>`;
+            } else if (Array.isArray(item.keys)) {
+              return item.keys.map((k, i) => {
+                const sep = i < item.keys.length - 1 ? '<span class="it-sheet-plus">+</span>' : '';
+                return `<kbd class="it-keycap">${k}</kbd>${sep}`;
+              }).join('');
+            }
+            return item.keyDisplay || '';
+          }
+
+          function renderTable() {
+            const q = searchQuery.toLowerCase().trim();
+            const filtered = CHEATSHEET_DATA.filter(item => {
+              const matchCat = (activeCategory === "All" || item.category === activeCategory);
+              if (!matchCat) return false;
+              if (!q) return true;
+
+              const inKey = (item.copyVal || '').toLowerCase().includes(q);
+              const inPurpose = (item.purpose || '').toLowerCase().includes(q);
+              const inNote = (item.note || '').toLowerCase().includes(q);
+              const inCat = (item.category || '').toLowerCase().includes(q);
+              return inKey || inPurpose || inNote || inCat;
+            });
+
+            tableBody.innerHTML = '';
+
+            if (filtered.length === 0) {
+              emptyState.style.display = 'block';
+            } else {
+              emptyState.style.display = 'none';
+              filtered.forEach(item => {
+                const tr = document.createElement('tr');
+
+                // Key cell
+                const tdKey = document.createElement('td');
+                tdKey.innerHTML = renderKeyCell(item);
+
+                // Purpose cell
+                const tdPurpose = document.createElement('td');
+                tdPurpose.innerHTML = `<div>${item.purpose}</div>` + (item.note ? `<div style="font-size:11.5px; color:#64748b; margin-top:3px;">ℹ️ ${item.note}</div>` : '');
+
+                // Category cell
+                const tdCat = document.createElement('td');
+                tdCat.innerHTML = `<span class="it-sheet-cat-badge">${item.category}</span>`;
+
+                // Copy Action cell
+                const tdAction = document.createElement('td');
+                tdAction.style.textAlign = 'center';
+                const copyBtn = document.createElement('button');
+                copyBtn.className = 'it-sheet-copy-row-btn';
+                copyBtn.title = 'Copy to clipboard';
+                copyBtn.innerHTML = `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg><span>Copy</span>`;
+
+                copyBtn.onclick = () => {
+                  navigator.clipboard.writeText(item.copyVal).then(() => {
+                    copyBtn.classList.add('is-copied');
+                    copyBtn.innerHTML = `<span>✓ Copied</span>`;
+                    setTimeout(() => {
+                      copyBtn.classList.remove('is-copied');
+                      copyBtn.innerHTML = `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg><span>Copy</span>`;
+                    }, 1800);
+                  });
+                };
+
+                tdAction.appendChild(copyBtn);
+
+                tr.appendChild(tdKey);
+                tr.appendChild(tdPurpose);
+                tr.appendChild(tdCat);
+                tr.appendChild(tdAction);
+
+                tableBody.appendChild(tr);
+              });
+            }
+
+            counterText.textContent = `Showing ${filtered.length} of ${CHEATSHEET_DATA.length} items`;
+          }
+
+          // Search Events
+          searchInput.addEventListener('input', function() {
+            searchQuery = this.value;
+            clearBtn.style.display = searchQuery ? 'block' : 'none';
+            renderTable();
+          });
+
+          clearBtn.addEventListener('click', function() {
+            searchInput.value = '';
+            searchQuery = '';
+            this.style.display = 'none';
+            searchInput.focus();
+            renderTable();
+          });
+
+          renderChips();
+          renderTable();
+        })();
+      </script>
+    </div>
+    <!-- END EMBEDDABLE WIDGET 3 -->
+    <div class="copy-tip">💡 <strong>Teacher Tip:</strong> To embed, copy everything between <code>&lt;!-- START EMBEDDABLE WIDGET 3 --&gt;</code> and <code>&lt;!-- END EMBEDDABLE WIDGET 3 --&gt;</code>.</div>
+  </div>
+
+</div>
+
+</body>
+</html>
