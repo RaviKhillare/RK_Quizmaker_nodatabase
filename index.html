@@ -2451,6 +2451,16 @@
               <span>Receive Widgets from Sheet</span>
             </button>
           </div>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-space-sm pt-1">
+            <button id="btnModalCopyWidgetsJson" type="button" class="py-2 px-space-md rounded-xl bg-surface-container-high hover:bg-surface-bright text-on-surface font-label-md text-xs font-bold flex items-center justify-center gap-2 border border-outline-variant/30 transition shadow-sm" title="Copy all widgets configuration and JSON to clipboard">
+              <span class="material-symbols-outlined text-[16px] text-primary">content_copy</span>
+              <span>Copy Widgets JSON</span>
+            </button>
+            <button id="btnModalDownloadWidgetsBackup" type="button" class="py-2 px-space-md rounded-xl bg-surface-container-high hover:bg-surface-bright text-on-surface font-label-md text-xs font-bold flex items-center justify-center gap-2 border border-outline-variant/30 transition shadow-sm" title="Download backup file of all widgets">
+              <span class="material-symbols-outlined text-[16px] text-tertiary">file_download</span>
+              <span>Download Widgets Backup</span>
+            </button>
+          </div>
         </div>
 
         <!-- Section 3: One-Click Full Master Sync -->
@@ -8452,7 +8462,11 @@ ${jsonString}
         if (btnPushToCloud) btnPushToCloud.disabled = true;
 
         try {
-          await ensureMasterStoreTabExists(activeSpreadsheetId);
+          if (typeof ensureAllRequiredTabsExist === 'function') {
+            await ensureAllRequiredTabsExist(activeSpreadsheetId);
+          } else {
+            await ensureMasterStoreTabExists(activeSpreadsheetId);
+          }
 
           const snapshot = createMasterSnapshot();
           const payloadJson = JSON.stringify(snapshot);
@@ -9522,34 +9536,210 @@ ${jsonString}
         }
       }
 
-      async function sendWidgetsToGoogleSheet() {
-        if (!googleAccessToken) {
-          showToast("Please sign in with Google to send widgets.", "info");
-          handleSignInClick();
-          return false;
-        }
+      // 1-Click Copy Widgets configuration & JSON to clipboard
+      function copyWidgetsForGoogleSheet(notify = true) {
         if (typeof saveFlipCardsState === 'function') saveFlipCardsState();
-        if (typeof saveCurrentGroupToStorage === 'function') saveCurrentGroupToStorage();
-        showToast("Sending widgets to Google Sheet...", "info");
-        const success = await pushMasterSnapshotToCloud(false);
-        if (success) {
-          showToast("✓ Successfully sent all Widgets & Channels to Google Sheet!", "success");
+        if (typeof saveCodeStepperState === 'function') saveCodeStepperState();
+        if (typeof saveCheatsheetState === 'function') saveCheatsheetState();
+        if (typeof saveButtonGroups === 'function' && typeof currentButtonGroups !== 'undefined') {
+          saveButtonGroups(currentButtonGroups);
         }
-        return success;
+
+        const groups = (typeof currentButtonGroups !== 'undefined' && Array.isArray(currentButtonGroups)) ? currentButtonGroups : [];
+        const payload = {
+          version: "2.0",
+          exportedAt: new Date().toISOString(),
+          widgetGroups: groups,
+          flipCards: typeof flipCardsState !== 'undefined' ? flipCardsState : null,
+          codeStepper: typeof codeStepperState !== 'undefined' ? codeStepperState : null,
+          cheatsheet: typeof cheatsheetState !== 'undefined' ? cheatsheetState : null,
+          socialProfiles: typeof getSocialProfiles === 'function' ? getSocialProfiles() : {}
+        };
+
+        const jsonStr = JSON.stringify(payload, null, 2);
+        const onCopied = () => {
+          if (notify) showToast(`✓ Copied ${groups.length} Widget Groups & Profiles to clipboard!`, "success");
+        };
+
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(jsonStr).then(onCopied).catch(() => {
+            copyViaTextarea(jsonStr);
+            onCopied();
+          });
+        } else {
+          copyViaTextarea(jsonStr);
+          onCopied();
+        }
+        return true;
       }
 
-      async function receiveWidgetsFromGoogleSheet() {
-        if (!googleAccessToken) {
-          showToast("Please sign in with Google to receive widgets.", "info");
-          handleSignInClick();
+      // Download Widgets Backup JSON
+      function downloadWidgetsBackup() {
+        if (typeof saveFlipCardsState === 'function') saveFlipCardsState();
+        if (typeof saveCodeStepperState === 'function') saveCodeStepperState();
+        if (typeof saveCheatsheetState === 'function') saveCheatsheetState();
+        if (typeof saveButtonGroups === 'function' && typeof currentButtonGroups !== 'undefined') {
+          saveButtonGroups(currentButtonGroups);
+        }
+
+        const groups = (typeof currentButtonGroups !== 'undefined' && Array.isArray(currentButtonGroups)) ? currentButtonGroups : [];
+        const payload = {
+          version: "2.0",
+          exportedAt: new Date().toISOString(),
+          widgetGroups: groups,
+          flipCards: typeof flipCardsState !== 'undefined' ? flipCardsState : null,
+          codeStepper: typeof codeStepperState !== 'undefined' ? codeStepperState : null,
+          cheatsheet: typeof cheatsheetState !== 'undefined' ? cheatsheetState : null,
+          socialProfiles: typeof getSocialProfiles === 'function' ? getSocialProfiles() : {}
+        };
+
+        const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json;charset=utf-8;' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `widgets_backup_${Date.now()}.json`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+        showToast(`✓ Downloaded ${groups.length} widgets backup file!`, "success");
+      }
+
+      async function sendWidgetsToGoogleSheet(e) {
+        const clickedBtn = (e && e.currentTarget) ? e.currentTarget : (e && e.target ? e.target.closest('button') : null);
+        let origBtnContent = null;
+
+        if (clickedBtn) {
+          origBtnContent = clickedBtn.innerHTML;
+          clickedBtn.disabled = true;
+          clickedBtn.innerHTML = '<span class="material-symbols-outlined text-[16px] animate-spin">sync</span><span>Sending...</span>';
+        }
+
+        try {
+          // 1. Commit all widget forms & states
+          if (typeof saveFlipCardsState === 'function') saveFlipCardsState();
+          if (typeof saveCodeStepperState === 'function') saveCodeStepperState();
+          if (typeof saveCheatsheetState === 'function') saveCheatsheetState();
+          if (typeof saveButtonGroups === 'function' && typeof currentButtonGroups !== 'undefined') {
+            saveButtonGroups(currentButtonGroups);
+          }
+          if (typeof saveSocialProfiles === 'function' && typeof currentProfiles !== 'undefined') {
+            saveSocialProfiles(currentProfiles);
+          }
+
+          // 2. Check Google auth
+          if (!googleAccessToken) {
+            const valid = await ensureValidAccessToken(false);
+            if (!valid || !googleAccessToken) {
+              copyWidgetsForGoogleSheet(false);
+              showToast("📋 Widgets data copied to clipboard! Or sign in below to sync directly with Google Sheet.", "info");
+              openSheetSyncHubModal();
+              return false;
+            }
+          }
+
+          showToast("Sending widgets to Google Sheet...", "info");
+
+          // 3. Resolve active spreadsheet ID
+          if (!activeSpreadsheetId) {
+            const sid = getSpreadsheetIdFromInputs();
+            if (sid) {
+              activeSpreadsheetId = sid;
+              localStorage.setItem("bsp_active_sheet_id", activeSpreadsheetId);
+            } else {
+              await discoverOrCreateSpreadsheet();
+            }
+          }
+
+          if (!activeSpreadsheetId) {
+            showToast("Could not locate or create Google Sheet. Please check your connection.", "danger");
+            return false;
+          }
+
+          // 4. Ensure tabs exist
+          await ensureAllRequiredTabsExist(activeSpreadsheetId);
+
+          // 5. Upload Master Snapshot (silent = true)
+          await pushMasterSnapshotToCloud(true);
+
+          // 6. Write tabular widgets to "Widgets" tab
+          const groups = (typeof currentButtonGroups !== 'undefined' && Array.isArray(currentButtonGroups)) ? currentButtonGroups : [];
+          const widgetRows = groups.map(w => [
+            w.id || "",
+            w.groupName || w.name || "Button Group",
+            w.layout || "horizontal",
+            JSON.stringify(Array.isArray(w.buttons) ? w.buttons : []),
+            w.updatedAt || new Date().toISOString()
+          ]);
+          const header = ["Widget ID", "Group Name", "Layout", "Buttons JSON", "Updated At"];
+          const fullWidgetData = [header, ...widgetRows];
+
+          await fetchWithAuth(`https://sheets.googleapis.com/v4/spreadsheets/${activeSpreadsheetId}/values/Widgets!A1:E?valueInputOption=RAW`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ values: fullWidgetData })
+          }).catch(err => console.warn("Widgets tab write warning:", err));
+
+          const widgetCount = groups.length;
+          showToast(`✓ Successfully sent ${widgetCount} Widget Groups & Profiles to Google Sheet!`, "success");
+          return true;
+
+        } catch (err) {
+          console.error("sendWidgetsToGoogleSheet error:", err);
+          const msg = err.message || "";
+          if (err.status === 401 || msg.includes("invalid authentication credentials") || msg.includes("UNAUTHENTICATED")) {
+            handleAuthExpired("Google session expired. Please sign in to re-authenticate.");
+          } else if (msg.includes("has not been used in project") || msg.includes("sheets.googleapis.com") || msg.includes("disabled")) {
+            showApiEnableModal(msg);
+          } else {
+            showToast("Error sending widgets to Google Sheet: " + msg, "danger");
+          }
           return false;
+        } finally {
+          if (clickedBtn && origBtnContent) {
+            clickedBtn.disabled = false;
+            clickedBtn.innerHTML = origBtnContent;
+          }
         }
-        showToast("Receiving widgets from Google Sheet...", "info");
-        const success = await pullMasterSnapshotFromCloud(false);
-        if (success) {
-          showToast("✓ Successfully received latest Widgets from Google Sheet!", "success");
+      }
+
+      async function receiveWidgetsFromGoogleSheet(e) {
+        const clickedBtn = (e && e.currentTarget) ? e.currentTarget : (e && e.target ? e.target.closest('button') : null);
+        let origBtnContent = null;
+
+        if (clickedBtn) {
+          origBtnContent = clickedBtn.innerHTML;
+          clickedBtn.disabled = true;
+          clickedBtn.innerHTML = '<span class="material-symbols-outlined text-[16px] animate-spin">sync</span><span>Receiving...</span>';
         }
-        return success;
+
+        try {
+          if (!googleAccessToken) {
+            const valid = await ensureValidAccessToken(false);
+            if (!valid || !googleAccessToken) {
+              showToast("Please sign in with Google to receive widgets from your cloud sheet.", "info");
+              openSheetSyncHubModal();
+              return false;
+            }
+          }
+
+          showToast("Receiving widgets from Google Sheet...", "info");
+          const success = await pullMasterSnapshotFromCloud(true);
+          if (success) {
+            const count = (typeof currentButtonGroups !== 'undefined' && Array.isArray(currentButtonGroups)) ? currentButtonGroups.length : 0;
+            showToast(`✓ Successfully received ${count} Widgets from Google Sheet!`, "success");
+          }
+          return success;
+        } catch (err) {
+          console.error("receiveWidgetsFromGoogleSheet error:", err);
+          showToast("Failed to receive widgets: " + (err.message || err), "danger");
+          return false;
+        } finally {
+          if (clickedBtn && origBtnContent) {
+            clickedBtn.disabled = false;
+            clickedBtn.innerHTML = origBtnContent;
+          }
+        }
       }
 
       function openSheetSyncHubModal() {
@@ -9625,6 +9815,12 @@ ${jsonString}
       if (btnModalCopyQuestionsTsv) btnModalCopyQuestionsTsv.addEventListener('click', () => copyQuestionsForGoogleSheet(true));
       if (btnModalDownloadQuestionsCsv) btnModalDownloadQuestionsCsv.addEventListener('click', downloadQuestionsCsv);
 
+      const btnModalCopyWidgetsJson = document.getElementById('btnModalCopyWidgetsJson');
+      const btnModalDownloadWidgetsBackup = document.getElementById('btnModalDownloadWidgetsBackup');
+
+      if (btnModalCopyWidgetsJson) btnModalCopyWidgetsJson.addEventListener('click', () => copyWidgetsForGoogleSheet(true));
+      if (btnModalDownloadWidgetsBackup) btnModalDownloadWidgetsBackup.addEventListener('click', downloadWidgetsBackup);
+
       if (btnSidebarFetchSheet) btnSidebarFetchSheet.addEventListener('click', executeGoogleSheetImport);
       if (sidebarGoogleSheetUrlInput) {
         sidebarGoogleSheetUrlInput.addEventListener('keydown', (e) => {
@@ -9653,6 +9849,8 @@ ${jsonString}
       window.bspOpenSyncHub = openSheetSyncHubModal;
       window.bspCopyQuestionsForSheet = copyQuestionsForGoogleSheet;
       window.bspDownloadQuestionsCsv = downloadQuestionsCsv;
+      window.bspCopyWidgetsForSheet = copyWidgetsForGoogleSheet;
+      window.bspDownloadWidgetsBackup = downloadWidgetsBackup;
 
     })();
   </script>
