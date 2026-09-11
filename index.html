@@ -2817,6 +2817,27 @@
         if (inpGlobalWeb) inpGlobalWeb.value = profs.web || '';
       }
 
+      function populateSocialInputs() {
+        initGlobalProfilesUI();
+      }
+
+      function populateProfilesInputs() {
+        initGlobalProfilesUI();
+      }
+
+      function renderWidgetGroups() {
+        renderGroupTabs();
+        renderActiveGroup();
+        updateAllWidgetPreviews();
+      }
+
+      function updateActiveGroupPreview() {
+        const grp = getActiveGroup();
+        if (grp && typeof updateGroupPreview === 'function') {
+          updateGroupPreview(grp);
+        }
+      }
+
       if (btnToggleGlobalProfiles) {
         btnToggleGlobalProfiles.addEventListener('click', () => {
           if (!globalProfilesPanel) return;
@@ -6142,17 +6163,22 @@ ${jsonString}
           if (widgetRows.length > 0) {
             const pulledGroups = [];
             widgetRows.forEach(row => {
-              const id = row[0];
-              const groupName = row[1];
-              const layout = row[2] || "horizontal";
-              let buttons = [];
-              try { buttons = JSON.parse(row[3]); } catch (e) {}
-              const updatedAt = row[4] || new Date().toISOString();
-              if (id) {
+              if (row[0] && row[1]) {
+                const id = row[0];
+                const groupName = row[1];
+                const layout = row[2] || "horizontal";
+                let buttons = [];
+                try {
+                  buttons = row[3] ? JSON.parse(row[3]) : [];
+                } catch (e) {
+                  console.error("Error parsing widget buttons JSON:", e);
+                }
+                const updatedAt = row[4] || new Date().toISOString();
                 pulledGroups.push({
                   id,
-                  name: groupName || "Button Group",
-                  layout,
+                  name: groupName,
+                  groupName: groupName,
+                  layout: layout,
                   style: "pill_glow",
                   format: "both",
                   buttons: Array.isArray(buttons) ? buttons : [],
@@ -6163,35 +6189,37 @@ ${jsonString}
 
             if (pulledGroups.length > 0) {
               loadedWidgetCount = pulledGroups.length;
-              const localGroups = getButtonGroups();
-              const map = new Map();
-              localGroups.forEach(g => map.set(g.id, g));
-              pulledGroups.forEach(g => map.set(g.id, g));
-              currentButtonGroups = Array.from(map.values());
+              currentButtonGroups = pulledGroups;
               saveButtonGroups(currentButtonGroups);
-              renderGroupTabs();
-              renderActiveGroup();
-              updateAllWidgetPreviews();
+              activeGroupId = currentButtonGroups[0]?.id || 'grp_top_social';
             }
           }
 
-          // 3. Settings
+          // 3. Settings / Social Profiles
           const settingRows = (valueRanges[2] && valueRanges[2].values) || [];
           if (settingRows.length > 0) {
             settingRows.forEach(row => {
-              const key = row[0];
-              let val = null;
-              try { val = JSON.parse(row[1]); } catch (e) { val = row[1]; }
-              if (key === 'social_profiles' && val && typeof val === 'object') {
-                saveSocialProfiles(val);
-                populateProfilesInputs();
+              if (row[0] === 'social_profiles' && row[1]) {
+                try {
+                  const profs = JSON.parse(row[1]);
+                  if (profs && typeof profs === 'object') {
+                    saveSocialProfiles(profs);
+                  }
+                } catch (e) {
+                  console.error("Error parsing social_profiles JSON:", e);
+                }
               }
             });
           }
 
+          // 4. CRUCIAL: Trigger Complete UI Re-Render
+          if (typeof renderWidgetGroups === 'function') renderWidgetGroups();
+          if (typeof populateSocialInputs === 'function') populateSocialInputs();
+          if (typeof updateActiveGroupPreview === 'function') updateActiveGroupPreview();
           updateIframePreview();
+
           updateSyncStatusText("Connected: Google Sheets");
-          showToast(`Synced with Google Sheets: Loaded ${loadedQuizCount} Quizzes and ${loadedWidgetCount} Widget Groups`, "success");
+          showToast(`✓ Cloud Sync Complete: Loaded ${loadedQuizCount} Quizzes and ${loadedWidgetCount} Widget Groups!`, "success");
           return true;
 
         } catch (e) {
@@ -6245,14 +6273,14 @@ ${jsonString}
 
           const widgetValues = localWidgets.map(w => [
             w.id || "",
-            w.name || "",
+            w.groupName || w.name || "Button Group",
             w.layout || "horizontal",
             JSON.stringify(w.buttons || []),
             w.updatedAt || new Date().toISOString()
           ]);
 
           const settingValues = [
-            ["social_profiles", JSON.stringify(localProfiles), new Date().toISOString()],
+            ["social_profiles", JSON.stringify(localProfiles || {}), new Date().toISOString()],
             ["platform_version", "Blogger Suite Pro v2", new Date().toISOString()]
           ];
 
