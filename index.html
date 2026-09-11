@@ -4189,9 +4189,6 @@ ${cards}
         }
       }
 
-const fs = require('fs');
-
-const completeController = `
       // =============================================================
       // 9.B. MODERN BLOGGER & EDUCATIONAL WIDGETS STUDIO CONTROLLER
       // =============================================================
@@ -4364,7 +4361,7 @@ const completeController = `
         const cards = (d.cards && d.cards.length) ? d.cards : [
           { category: "General", term: "Sample Term", hint: "Hint", definition: "Explanation here." }
         ];
-        const cardsJson = JSON.stringify(cards).replace(/<\\/script>/gi, '<\\\\/script>');
+        const cardsJson = JSON.stringify(cards).replace(/<\/script>/gi, '<\\/script>');
         const uid = 'itfc_' + Math.random().toString(36).substring(2, 9);
         const title = escapeHtml(d.title || 'Interactive Flashcards');
         const badge = escapeHtml(d.badge || 'Study Deck');
@@ -4468,7 +4465,7 @@ const completeController = `
         const steps = (d.steps && d.steps.length) ? d.steps : [
           { lines: [1], explanation: "Code executes and prints output.", output: "Hello World" }
         ];
-        const stepsJson = JSON.stringify(steps).replace(/<\\/script>/gi, '<\\\\/script>');
+        const stepsJson = JSON.stringify(steps).replace(/<\/script>/gi, '<\\/script>');
         const uid = 'itcs_' + Math.random().toString(36).substring(2, 9);
         const title = escapeHtml(d.title || 'Code Stepper');
         const lang = escapeHtml(d.language || 'Python');
@@ -4577,7 +4574,7 @@ const completeController = `
           { cat: "General", cmd: "print()", syntax: "print(*args)", desc: "Prints values to console", eg: "print('Hi')" }
         ];
         const cats = (d.categories && d.categories.length) ? d.categories : ["All", "General"];
-        const itemsJson = JSON.stringify(items).replace(/<\\/script>/gi, '<\\\\/script>');
+        const itemsJson = JSON.stringify(items).replace(/<\/script>/gi, '<\\/script>');
         const uid = 'itcsheet_' + Math.random().toString(36).substring(2, 9);
         const title = escapeHtml(d.title || 'Cheatsheet Reference');
 
@@ -5350,10 +5347,6 @@ const completeController = `
       renderCodeStepperEditor();
       renderCheatsheetEditor();
       setActiveStudioWidgetType('flipcards');
-`;
-
-fs.writeFileSync('C:\\Users\\Ravindra Khillare\\.gemini\\antigravity\\brain\\677182ab-f536-4555-a2fa-ef1eaa3523d9\\scratch\\full_controller.js', completeController, 'utf8');
-console.log("Full controller script saved.");
 
 
       // -------------------------------------------------------------
