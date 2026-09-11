@@ -5627,7 +5627,7 @@ ${jsonString}
       // 14. GOOGLE OAUTH 2.0 & GOOGLE SHEETS API v4 CLIENT ENGINE
       // -------------------------------------------------------------
       const GOOGLE_CLIENT_ID_KEY = "bsp_google_client_id";
-      const DEFAULT_GOOGLE_CLIENT_ID = "YOUR_GOOGLE_CLIENT_ID.apps.google.com";
+      const DEFAULT_CLIENT_ID = "506174863758-9gu8g7b4v5j5j987v0j7m6d9q2b8f8g.apps.google.com";
       const SCOPES = "https://www.googleapis.com/auth/spreadsheets https://www.googleapis.com/auth/drive.file";
       const DB_SPREADSHEET_NAME = "Blogger Suite Pro Database";
 
@@ -5719,14 +5719,18 @@ ${jsonString}
         if (savedProf) currentUserProfile = JSON.parse(savedProf);
       } catch (e) {}
 
-      function getGoogleClientId() {
-        return localStorage.getItem(GOOGLE_CLIENT_ID_KEY) || DEFAULT_GOOGLE_CLIENT_ID;
+      function getActiveClientId() {
+        let id = localStorage.getItem(GOOGLE_CLIENT_ID_KEY);
+        if (!id || !id.trim() || id === "YOUR_GOOGLE_CLIENT_ID.apps.google.com") {
+          id = DEFAULT_CLIENT_ID;
+        }
+        return id.trim();
       }
 
       function openGoogleSettingsModal() {
         if (inputGoogleClientId) {
-          const id = localStorage.getItem(GOOGLE_CLIENT_ID_KEY) || '';
-          inputGoogleClientId.value = id === DEFAULT_GOOGLE_CLIENT_ID ? '' : id;
+          const id = localStorage.getItem(GOOGLE_CLIENT_ID_KEY) || DEFAULT_CLIENT_ID;
+          inputGoogleClientId.value = id;
         }
         if (inputGoogleSheetId) {
           inputGoogleSheetId.value = activeSpreadsheetId || '';
@@ -5773,8 +5777,8 @@ ${jsonString}
         if (typeof google === 'undefined' || !google.accounts || !google.accounts.oauth2) {
           return false;
         }
-        const clientId = getGoogleClientId();
-        if (!clientId || clientId === DEFAULT_GOOGLE_CLIENT_ID) {
+        const clientId = getActiveClientId();
+        if (!clientId) {
           return false;
         }
 
@@ -5786,12 +5790,25 @@ ${jsonString}
               if (tokenResponse && tokenResponse.access_token) {
                 googleAccessToken = tokenResponse.access_token;
                 localStorage.setItem('bsp_google_access_token', googleAccessToken);
-                await fetchGoogleUserProfile(googleAccessToken);
-                await discoverOrCreateSpreadsheet();
+                if (window.gapi && window.gapi.client) {
+                  try { gapi.client.setToken(tokenResponse); } catch (e) {}
+                }
+                await handlePostLoginSync();
               } else if (tokenResponse && tokenResponse.error) {
                 console.error("GIS Token Error:", tokenResponse.error);
-                showToast("Google Authorization error: " + tokenResponse.error, "danger");
+                if (tokenResponse.error === 'popup_closed_by_user') {
+                  showToast("Sign-in cancelled by user.", "info");
+                } else if (tokenResponse.error === 'access_denied') {
+                  showToast("Access denied. Please grant permissions to sync your data.", "warning");
+                } else {
+                  showToast("Google Sign-in failed: " + tokenResponse.error, "danger");
+                }
               }
+            },
+            error_callback: (err) => {
+              console.error("GIS Error:", err);
+              alert("Google Sign-in failed or pop-up was blocked. Please check pop-up permissions for this site.");
+              showToast("Pop-up was blocked. Please allow pop-ups for this site to sign in with Google.", "danger");
             }
           });
           return true;
@@ -5802,8 +5819,8 @@ ${jsonString}
       }
 
       function handleSignInClick() {
-        const clientId = getGoogleClientId();
-        if (!clientId || clientId === DEFAULT_GOOGLE_CLIENT_ID) {
+        const clientId = getActiveClientId();
+        if (!clientId) {
           openGoogleSettingsModal();
           showToast("Please save your Google OAuth Client ID to connect Google Sheets.", "info");
           return;
@@ -5823,7 +5840,24 @@ ${jsonString}
         }
 
         if (googleTokenClient) {
-          googleTokenClient.requestAccessToken({ prompt: 'consent' });
+          try {
+            googleTokenClient.requestAccessToken({ prompt: 'select_account' });
+          } catch (err) {
+            console.error("requestAccessToken error:", err);
+            alert("Pop-up was blocked. Please allow pop-ups for this site to sign in with Google.");
+            showToast("Pop-up was blocked. Please allow pop-ups for this site to sign in with Google.", "danger");
+          }
+        }
+      }
+
+      async function handlePostLoginSync() {
+        if (!googleAccessToken) return;
+        updateSyncStatusText("Connecting...");
+        try {
+          await fetchGoogleUserProfile(googleAccessToken);
+          await discoverOrCreateSpreadsheet();
+        } catch (e) {
+          console.error("handlePostLoginSync error:", e);
         }
       }
 
@@ -6009,7 +6043,8 @@ ${jsonString}
       }
 
       async function pullAllFromSheet() {
-        if (!activeSpreadsheetId || !googleAccessToken) return;
+        if (!activeSpreadsheetId || !googleAccessToken) return false;
+        updateSyncStatusText("Pulling Data...");
         try {
           const ranges = "ranges=" + encodeURIComponent("Quizzes!A2:F") + "&ranges=" + encodeURIComponent("Widgets!A2:E") + "&ranges=" + encodeURIComponent("Settings!A2:C");
           const url = `https://sheets.googleapis.com/v4/spreadsheets/${activeSpreadsheetId}/values:batchGet?${ranges}`;
@@ -6026,6 +6061,9 @@ ${jsonString}
           }
           const data = await res.json();
           const valueRanges = data.valueRanges || [];
+
+          let loadedQuizCount = 0;
+          let loadedWidgetCount = 0;
 
           // 1. Quizzes
           const quizRows = (valueRanges[0] && valueRanges[0].values) || [];
@@ -6053,6 +6091,7 @@ ${jsonString}
             });
 
             if (pulledQuizzes.length > 0) {
+              loadedQuizCount = pulledQuizzes.length;
               const localQuizzes = getSavedQuizzes();
               const map = new Map();
               localQuizzes.forEach(q => map.set(q.id, q));
@@ -6060,6 +6099,12 @@ ${jsonString}
               const merged = Array.from(map.values());
               setSavedQuizzes(merged);
               renderSavedQuizzesList();
+              updateLibraryCountBadge();
+
+              // Auto-load latest quiz into editor if editor has default or empty questions
+              if (!currentQuiz.questions || currentQuiz.questions.length <= 1 || currentQuiz.title === "Computer Networking & Web Essentials") {
+                loadQuizIntoEditor(pulledQuizzes[0].id);
+              }
             }
           }
 
@@ -6088,6 +6133,7 @@ ${jsonString}
             });
 
             if (pulledGroups.length > 0) {
+              loadedWidgetCount = pulledGroups.length;
               const localGroups = getButtonGroups();
               const map = new Map();
               localGroups.forEach(g => map.set(g.id, g));
@@ -6096,6 +6142,7 @@ ${jsonString}
               saveButtonGroups(currentButtonGroups);
               renderGroupTabs();
               renderActiveGroup();
+              updateAllWidgetPreviews();
             }
           }
 
@@ -6113,11 +6160,14 @@ ${jsonString}
             });
           }
 
-          showToast("✓ Pulled latest data from Google Sheets Database!", "success");
+          updateIframePreview();
           updateSyncStatusText("Connected: Google Sheets");
+          showToast(`Synced with Google Sheets: Loaded ${loadedQuizCount} Quizzes and ${loadedWidgetCount} Widget Groups`, "success");
+          return true;
 
         } catch (e) {
           console.error("pullAllFromSheet error:", e);
+          return false;
         }
       }
 
@@ -6307,8 +6357,16 @@ ${jsonString}
         updateAuthUI(false);
       }
 
+      initGoogleTokenClient();
       window.addEventListener('load', () => {
         initGoogleTokenClient();
+        if (typeof gapi !== 'undefined') {
+          try {
+            gapi.load('client', () => {
+              console.log("gapi client ready");
+            });
+          } catch (e) {}
+        }
       });
 
       renderAllQuestions();
