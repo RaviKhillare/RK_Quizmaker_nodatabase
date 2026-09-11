@@ -192,6 +192,13 @@
         <span class="hidden sm:inline">Native</span> Question Paper
       </button>
 
+      <!-- Google Sheets Cloud Sync Button -->
+      <button id="btnOpenCloudSyncModal" class="tactile-btn flex items-center gap-2 px-3 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs sm:text-sm font-bold border border-border-light transition" title="Google Sheets Cloud Database Sync">
+        <i class="fa-solid fa-cloud text-emerald-600"></i>
+        <span class="hidden sm:inline">Sheets Cloud</span>
+        <span id="headerCloudSyncDot" class="w-2.5 h-2.5 rounded-full bg-slate-300 transition-colors" title="Status: Not Configured"></span>
+      </button>
+
       <!-- GitHub Settings Gear Button -->
       <button id="btnOpenSettings" class="p-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-600 hover:text-primary transition" title="Configure GitHub Username & Repository">
         <i class="fa-brands fa-github text-lg"></i>
@@ -472,10 +479,17 @@
                 </div>
               </div>
 
-              <!-- Create New Group Button -->
-              <button id="btnAddButtonGroup" type="button" class="tactile-btn px-3.5 py-2 rounded-xl bg-primary hover:bg-primary-dark text-white font-bold text-xs flex items-center gap-1.5 shadow-sm shadow-primary/20">
-                <i class="fa-solid fa-plus"></i> New Button Group
-              </button>
+              <div class="flex items-center gap-2">
+                <!-- Cloud Sync Widgets Button -->
+                <button id="btnSyncWidgetsCloud" type="button" class="tactile-btn px-3 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs flex items-center gap-1.5 border border-border-light" title="Sync All Button Groups & Profiles to Google Sheets Cloud">
+                  <i class="fa-solid fa-cloud text-emerald-600"></i> <span class="hidden sm:inline">Cloud</span> Sync
+                </button>
+
+                <!-- Create New Group Button -->
+                <button id="btnAddButtonGroup" type="button" class="tactile-btn px-3.5 py-2 rounded-xl bg-primary hover:bg-primary-dark text-white font-bold text-xs flex items-center gap-1.5 shadow-sm shadow-primary/20">
+                  <i class="fa-solid fa-plus"></i> New Button Group
+                </button>
+              </div>
             </div>
 
             <!-- Group Tabs Row -->
@@ -786,6 +800,9 @@
             <p class="text-slate-300 text-xs sm:text-sm">Manage quizzes stored in your local browser library. Load, export, or create standalone backups.</p>
           </div>
           <div class="flex items-center gap-2.5 shrink-0 flex-wrap">
+            <button id="btnLibraryCloudSync" type="button" class="tactile-btn px-3.5 py-2 rounded-xl bg-teal-600 hover:bg-teal-500 text-white font-bold text-xs flex items-center gap-1.5 shadow-sm" title="Synchronize with Google Sheets Cloud Database">
+              <i class="fa-solid fa-cloud-arrow-up"></i> Sheets Cloud Sync
+            </button>
             <button id="btnBackupLibraryHtml" type="button" class="tactile-btn px-3.5 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs flex items-center gap-1.5 shadow-sm">
               <i class="fa-solid fa-cloud-arrow-down"></i> Export Standalone HTML Backup
             </button>
@@ -1364,6 +1381,162 @@
           </button>
         </div>
       </div>
+    </div>
+  </div>
+
+  <!-- ============================================================= -->
+  <!-- MODAL: GOOGLE SHEETS CLOUD DATABASE SYNC (RKCloudSync)       -->
+  <!-- ============================================================= -->
+  <div id="cloudSyncModal" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm hidden flex items-center justify-center p-4">
+    <div class="bg-white w-full max-w-2xl rounded-3xl shadow-2xl border border-border-light overflow-hidden flex flex-col animate-[fadeIn_0.2s_ease-out] max-h-[92vh]">
+      
+      <!-- Modal Header -->
+      <div class="p-5 sm:p-6 bg-gradient-to-r from-emerald-900 via-teal-900 to-slate-900 text-white flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 flex items-center justify-center">
+            <i class="fa-solid fa-cloud text-lg"></i>
+          </div>
+          <div>
+            <h3 class="font-extrabold text-base sm:text-lg flex items-center gap-2">
+              Google Sheets Cloud Database Sync
+              <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-500/30 text-emerald-200 border border-emerald-400/30">Free & Permanent</span>
+            </h3>
+            <p class="text-xs text-emerald-200">Save quizzes, questions & custom widgets across all devices using your own Google Sheet</p>
+          </div>
+        </div>
+        <button id="btnCloseCloudSyncModal" class="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition">
+          <i class="fa-solid fa-times"></i>
+        </button>
+      </div>
+
+      <!-- Modal Body -->
+      <div class="p-5 sm:p-6 space-y-5 overflow-y-auto flex-1 text-xs">
+        
+        <!-- Live Connection Status Card -->
+        <div id="cloudStatusCard" class="p-4 rounded-2xl bg-slate-50 border border-border-light flex items-center justify-between gap-4">
+          <div class="flex items-center gap-3">
+            <div id="cloudStatusIcon" class="w-9 h-9 rounded-xl bg-slate-200 text-slate-600 flex items-center justify-center text-base shrink-0">
+              <i class="fa-solid fa-database"></i>
+            </div>
+            <div>
+              <div class="flex items-center gap-2 flex-wrap">
+                <span class="text-xs font-bold text-slate-800">Connection Status:</span>
+                <span id="cloudStatusBadge" class="font-bold px-2 py-0.5 rounded-full text-[11px] bg-slate-200 text-slate-700">Not Configured</span>
+                <span id="cloudConnSpinner" class="hidden"><i class="fa-solid fa-circle-notch fa-spin text-emerald-600 text-xs"></i></span>
+              </div>
+              <p id="cloudLastSyncText" class="text-[11px] text-slate-500 mt-0.5">Last synced: Never</p>
+            </div>
+          </div>
+          <div class="flex items-center gap-2 shrink-0">
+            <button id="btnTestCloudConn" class="tactile-btn px-3 py-1.5 rounded-xl bg-white hover:bg-slate-100 text-slate-700 font-bold border border-border-light flex items-center gap-1.5 shadow-sm">
+              <i class="fa-solid fa-plug text-emerald-600"></i> Test Connection
+            </button>
+          </div>
+        </div>
+
+        <!-- Web App URL Input Form -->
+        <div class="p-4 rounded-2xl bg-white border border-border-light space-y-3">
+          <div class="flex items-center justify-between">
+            <label class="font-bold text-slate-700 uppercase tracking-wider text-[11px] flex items-center gap-1.5">
+              <i class="fa-solid fa-link text-indigo-600"></i> Google Apps Script Web App URL
+            </label>
+            <span class="text-[11px] text-slate-400 font-mono">Ends in <code>/exec</code></span>
+          </div>
+          
+          <div class="flex flex-col sm:flex-row gap-2">
+            <input type="url" id="googleScriptAppUrl" class="flex-1 px-3.5 py-2.5 rounded-xl border border-border-light bg-slate-50 focus:bg-white text-xs font-semibold focus:border-primary outline-none font-mono transition" placeholder="https://script.google.com/macros/s/.../exec">
+            <button id="btnSaveCloudUrl" class="tactile-btn px-4 py-2.5 rounded-xl bg-primary hover:bg-primary-dark text-white font-bold shrink-0 flex items-center justify-center gap-1.5 shadow-sm shadow-primary/20">
+              <i class="fa-solid fa-floppy-disk"></i> Save & Connect
+            </button>
+          </div>
+          <p class="text-[11px] text-slate-500 leading-relaxed">
+            Paste the Web App URL generated from your Google Spreadsheet Apps Script deployment.
+          </p>
+        </div>
+
+        <!-- Synchronization Actions -->
+        <div class="p-4 rounded-2xl bg-slate-50 border border-border-light space-y-3">
+          <h4 class="font-bold text-slate-800 uppercase tracking-wider text-[11px]">Database Synchronization</h4>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <button id="btnPullCloudData" class="tactile-btn p-3.5 rounded-xl bg-white hover:bg-slate-100 border border-border-light text-left space-y-1 group transition shadow-sm">
+              <div class="flex items-center gap-2 text-indigo-600 font-bold">
+                <i class="fa-solid fa-cloud-arrow-down text-sm group-hover:-translate-y-0.5 transition-transform"></i>
+                <span>Pull from Google Sheet</span>
+              </div>
+              <p class="text-[11px] text-slate-500 leading-snug">Download quizzes & widgets from Google Sheets and merge into your dashboard.</p>
+            </button>
+
+            <button id="btnPushCloudData" class="tactile-btn p-3.5 rounded-xl bg-white hover:bg-slate-100 border border-border-light text-left space-y-1 group transition shadow-sm">
+              <div class="flex items-center gap-2 text-emerald-600 font-bold">
+                <i class="fa-solid fa-cloud-arrow-up text-sm group-hover:-translate-y-0.5 transition-transform"></i>
+                <span>Push All to Google Sheet</span>
+              </div>
+              <p class="text-[11px] text-slate-500 leading-snug">Upload all local saved quizzes and button widget groups up into Google Sheets.</p>
+            </button>
+          </div>
+
+          <label class="flex items-center gap-2 pt-1 cursor-pointer select-none">
+            <input type="checkbox" id="chkAutoCloudSync" class="w-4 h-4 rounded text-primary focus:ring-primary border-slate-300">
+            <span class="text-xs font-semibold text-slate-700">Auto-sync changes to Google Sheets in background when saving quizzes or widgets</span>
+          </label>
+        </div>
+
+        <!-- 3-Step Setup Guide Accordion -->
+        <div class="border border-border-light rounded-2xl overflow-hidden shadow-sm">
+          <button id="btnToggleCloudGuide" type="button" class="w-full p-4 bg-slate-50 hover:bg-slate-100 flex items-center justify-between text-left font-bold text-slate-800 transition">
+            <span class="flex items-center gap-2">
+              <i class="fa-solid fa-graduation-cap text-indigo-600"></i>
+              3-Minute Setup Guide: How to create your Google Sheets Cloud Database
+            </span>
+            <i id="cloudGuideChevron" class="fa-solid fa-chevron-down text-slate-400 transition-transform"></i>
+          </button>
+
+          <div id="cloudGuideContent" class="hidden p-5 space-y-4 bg-white border-t border-border-light">
+            <ol class="space-y-3.5 list-decimal list-inside text-slate-700 leading-relaxed font-medium">
+              <li class="pl-1">
+                <strong>Create a new Google Sheet:</strong>
+                Go to <a href="https://sheets.new" target="_blank" class="text-primary underline font-bold inline-flex items-center gap-1">sheets.new <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i></a> and name your spreadsheet (e.g., <em>"Blogger Suite Pro Database"</em>).
+              </li>
+              <li class="pl-1">
+                <strong>Open Apps Script:</strong>
+                In your Google Sheet menu, click <strong>Extensions &gt; Apps Script</strong>.
+              </li>
+              <li class="pl-1">
+                <strong>Paste the Backend Code:</strong>
+                Delete everything in <code>Code.gs</code> and paste our official backend script:
+                <div class="mt-2 flex items-center gap-2 flex-wrap">
+                  <button id="btnCopyCodeGsModal" type="button" class="tactile-btn px-3.5 py-1.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs flex items-center gap-1.5 shadow-sm">
+                    <i class="fa-solid fa-copy"></i> 1-Click Copy Code.gs Script
+                  </button>
+                  <span class="text-[11px] text-slate-500 font-mono">(Also included in your project repo as <code>Code.gs</code>)</span>
+                </div>
+              </li>
+              <li class="pl-1">
+                <strong>Deploy as Web App:</strong>
+                Click <strong>Deploy &gt; New deployment</strong>. Click the gear icon next to "Select type" and choose <strong>Web app</strong>.
+                <div class="mt-1.5 p-2.5 rounded-xl bg-amber-50 border border-amber-200 text-amber-900 text-[11px] space-y-1">
+                  <div>• <strong>Execute as:</strong> Me</div>
+                  <div>• <strong>Who has access:</strong> <span class="font-bold underline text-amber-950">Anyone</span> (Crucial! Allows Blogger Suite Pro to connect)</div>
+                </div>
+              </li>
+              <li class="pl-1">
+                <strong>Authorize & Copy URL:</strong>
+                Click <strong>Deploy</strong>, grant permissions when Google prompts, and copy the <strong>Web App URL</strong> (ends in <code>/exec</code>). Paste it in the field above!
+              </li>
+            </ol>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Modal Footer -->
+      <div class="p-4 sm:p-5 bg-slate-50 border-t border-border-light flex items-center justify-between">
+        <span class="text-[11px] text-slate-500">Your Google Account, 100% private & under your control</span>
+        <button id="btnCloseCloudSyncModalFooter" class="tactile-btn px-4 py-2 rounded-xl bg-white hover:bg-slate-100 text-slate-700 font-bold text-xs border border-border-light">
+          Close
+        </button>
+      </div>
+
     </div>
   </div>
 
@@ -2371,6 +2544,9 @@
       function saveSocialProfiles(profs) {
         try {
           localStorage.setItem(SOCIAL_PROFILES_KEY, JSON.stringify(profs));
+          if (typeof syncSettingsWithCloud === 'function') {
+            syncSettingsWithCloud({ social_profiles: profs });
+          }
         } catch (e) {
           console.error("Error saving social profiles:", e);
         }
@@ -2564,6 +2740,9 @@
       function saveButtonGroups(groups) {
         try {
           localStorage.setItem(BUTTON_GROUPS_KEY, JSON.stringify(groups));
+          if (typeof syncWidgetsWithCloud === 'function') {
+            syncWidgetsWithCloud(groups);
+          }
         } catch (e) {
           console.error("Error saving button groups:", e);
         }
@@ -4046,6 +4225,9 @@ reorder,"Arrange the IPO cycle steps in order.","Input","Process","Output","Stor
         }
 
         setSavedQuizzes(list);
+        if (typeof syncQuizWithCloud === 'function') {
+          syncQuizWithCloud(entry);
+        }
         if (notify) {
           showToast(`Saved "${currentTitle}" to your local library!`, "success");
         }
@@ -4057,6 +4239,9 @@ reorder,"Arrange the IPO cycle steps in order.","Input","Process","Output","Stor
         list = list.filter(item => item.id !== id);
         setSavedQuizzes(list);
         renderSavedQuizzesList();
+        if (typeof deleteQuizFromCloudInternal === 'function') {
+          deleteQuizFromCloudInternal(id);
+        }
         showToast("Quiz deleted from library", "info");
       }
 
@@ -5420,12 +5605,474 @@ ${jsonString}
       if (btnCopyInlineHtml) btnCopyInlineHtml.addEventListener('click', copyInlineQuizHtmlCode);
       if (btnCopyInlineCompose) btnCopyInlineCompose.addEventListener('click', copyInlineQuizForCompose);
 
+      // -------------------------------------------------------------
+      // 14. GOOGLE SHEETS CLOUD DATABASE SYNC ENGINE (RKCloudSync)
+      // -------------------------------------------------------------
+      const CLOUD_URL_KEY = "rk_googleScriptAppUrl";
+      const CLOUD_AUTO_SYNC_KEY = "rk_cloud_auto_sync";
+      const CLOUD_LAST_SYNC_KEY = "rk_cloud_last_synced";
+
+      // DOM Elements
+      const btnOpenCloudSyncModal = document.getElementById('btnOpenCloudSyncModal');
+      const btnCloseCloudSyncModal = document.getElementById('btnCloseCloudSyncModal');
+      const btnCloseCloudSyncModalFooter = document.getElementById('btnCloseCloudSyncModalFooter');
+      const cloudSyncModal = document.getElementById('cloudSyncModal');
+
+      const googleScriptAppUrlInput = document.getElementById('googleScriptAppUrl');
+      const btnSaveCloudUrl = document.getElementById('btnSaveCloudUrl');
+      const btnTestCloudConn = document.getElementById('btnTestCloudConn');
+      const cloudStatusBadge = document.getElementById('cloudStatusBadge');
+      const cloudStatusIcon = document.getElementById('cloudStatusIcon');
+      const cloudLastSyncText = document.getElementById('cloudLastSyncText');
+      const cloudConnSpinner = document.getElementById('cloudConnSpinner');
+      const headerCloudSyncDot = document.getElementById('headerCloudSyncDot');
+
+      const btnPullCloudData = document.getElementById('btnPullCloudData');
+      const btnPushCloudData = document.getElementById('btnPushCloudData');
+      const chkAutoCloudSync = document.getElementById('chkAutoCloudSync');
+
+      const btnToggleCloudGuide = document.getElementById('btnToggleCloudGuide');
+      const cloudGuideContent = document.getElementById('cloudGuideContent');
+      const cloudGuideChevron = document.getElementById('cloudGuideChevron');
+      const btnCopyCodeGsModal = document.getElementById('btnCopyCodeGsModal');
+
+      const btnLibraryCloudSync = document.getElementById('btnLibraryCloudSync');
+      const btnSyncWidgetsCloud = document.getElementById('btnSyncWidgetsCloud');
+
+      // State
+      let cloudUrl = localStorage.getItem(CLOUD_URL_KEY) || '';
+      let isAutoSyncEnabled = localStorage.getItem(CLOUD_AUTO_SYNC_KEY) !== 'false';
+      let lastSyncedTime = localStorage.getItem(CLOUD_LAST_SYNC_KEY) || '';
+
+      if (googleScriptAppUrlInput) googleScriptAppUrlInput.value = cloudUrl;
+      if (chkAutoCloudSync) chkAutoCloudSync.checked = isAutoSyncEnabled;
+
+      function updateCloudStatusUI(status, label) {
+        if (!cloudStatusBadge) return;
+        if (status === 'connected') {
+          cloudStatusBadge.textContent = label || 'Connected';
+          cloudStatusBadge.className = 'font-bold px-2 py-0.5 rounded-full text-[11px] bg-emerald-100 text-emerald-800 border border-emerald-300';
+          if (cloudStatusIcon) cloudStatusIcon.className = 'w-9 h-9 rounded-xl bg-emerald-100 text-emerald-600 flex items-center justify-center text-base shrink-0';
+          if (headerCloudSyncDot) {
+            headerCloudSyncDot.className = 'w-2.5 h-2.5 rounded-full bg-emerald-500 shadow-sm shadow-emerald-500/50 transition-colors';
+            headerCloudSyncDot.title = 'Sheets Cloud: Connected';
+          }
+        } else if (status === 'testing' || status === 'syncing') {
+          cloudStatusBadge.textContent = label || (status === 'syncing' ? 'Syncing...' : 'Testing...');
+          cloudStatusBadge.className = 'font-bold px-2 py-0.5 rounded-full text-[11px] bg-indigo-100 text-indigo-800 border border-indigo-300';
+          if (cloudConnSpinner) cloudConnSpinner.classList.remove('hidden');
+          if (headerCloudSyncDot) {
+            headerCloudSyncDot.className = 'w-2.5 h-2.5 rounded-full bg-indigo-500 animate-pulse transition-colors';
+            headerCloudSyncDot.title = 'Sheets Cloud: Syncing...';
+          }
+        } else if (status === 'error') {
+          cloudStatusBadge.textContent = label || 'Connection Failed';
+          cloudStatusBadge.className = 'font-bold px-2 py-0.5 rounded-full text-[11px] bg-rose-100 text-rose-800 border border-rose-300';
+          if (cloudStatusIcon) cloudStatusIcon.className = 'w-9 h-9 rounded-xl bg-rose-100 text-rose-600 flex items-center justify-center text-base shrink-0';
+          if (cloudConnSpinner) cloudConnSpinner.classList.add('hidden');
+          if (headerCloudSyncDot) {
+            headerCloudSyncDot.className = 'w-2.5 h-2.5 rounded-full bg-rose-500 transition-colors';
+            headerCloudSyncDot.title = 'Sheets Cloud: Error';
+          }
+        } else {
+          cloudStatusBadge.textContent = label || 'Not Configured';
+          cloudStatusBadge.className = 'font-bold px-2 py-0.5 rounded-full text-[11px] bg-slate-200 text-slate-700';
+          if (cloudStatusIcon) cloudStatusIcon.className = 'w-9 h-9 rounded-xl bg-slate-200 text-slate-600 flex items-center justify-center text-base shrink-0';
+          if (cloudConnSpinner) cloudConnSpinner.classList.add('hidden');
+          if (headerCloudSyncDot) {
+            headerCloudSyncDot.className = 'w-2.5 h-2.5 rounded-full bg-slate-300 transition-colors';
+            headerCloudSyncDot.title = 'Sheets Cloud: Not Configured';
+          }
+        }
+        if (status !== 'testing' && status !== 'syncing' && cloudConnSpinner) {
+          cloudConnSpinner.classList.add('hidden');
+        }
+        updateLastSyncUI();
+      }
+
+      function updateLastSyncUI() {
+        if (!cloudLastSyncText) return;
+        if (!lastSyncedTime) {
+          cloudLastSyncText.textContent = 'Last synced: Never';
+        } else {
+          try {
+            const d = new Date(lastSyncedTime);
+            cloudLastSyncText.textContent = `Last synced: ${d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} (${d.toLocaleDateString()})`;
+          } catch (e) {
+            cloudLastSyncText.textContent = `Last synced: ${lastSyncedTime}`;
+          }
+        }
+      }
+
+      function recordSyncTime() {
+        lastSyncedTime = new Date().toISOString();
+        localStorage.setItem(CLOUD_LAST_SYNC_KEY, lastSyncedTime);
+        updateLastSyncUI();
+      }
+
+      function openCloudSyncModal() {
+        if (cloudSyncModal) {
+          cloudSyncModal.classList.remove('hidden');
+          if (cloudUrl) {
+            updateCloudStatusUI('connected');
+          } else {
+            updateCloudStatusUI('not_configured');
+          }
+        }
+      }
+
+      function closeCloudSyncModal() {
+        if (cloudSyncModal) cloudSyncModal.classList.add('hidden');
+      }
+
+      async function postToCloud(payload) {
+        const url = localStorage.getItem(CLOUD_URL_KEY);
+        if (!url) throw new Error("No Google Script URL configured");
+        const resp = await fetch(url, {
+          method: "POST",
+          mode: "cors",
+          headers: { "Content-Type": "text/plain;charset=utf-8" },
+          body: JSON.stringify(payload)
+        });
+        if (!resp.ok) throw new Error(`HTTP ${resp.status} ${resp.statusText}`);
+        return await resp.json();
+      }
+
+      async function testCloudConnection() {
+        const url = (googleScriptAppUrlInput ? googleScriptAppUrlInput.value.trim() : '') || localStorage.getItem(CLOUD_URL_KEY);
+        if (!url) {
+          showToast("Please paste your Google Apps Script Web App URL.", "warning");
+          updateCloudStatusUI('not_configured');
+          return false;
+        }
+
+        updateCloudStatusUI('testing', 'Testing Connection...');
+        try {
+          const testUrl = url + (url.includes('?') ? '&' : '?') + 'action=ping&_t=' + Date.now();
+          const resp = await fetch(testUrl, { method: "GET", mode: "cors", cache: "no-store" });
+          if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+          const json = await resp.json();
+          if (json && json.status === "success") {
+            updateCloudStatusUI('connected', 'Connected');
+            showToast("✓ Connected to Google Sheets Cloud Database!", "success");
+            return true;
+          } else {
+            throw new Error((json && json.message) || "Invalid response");
+          }
+        } catch (err) {
+          console.error("Cloud testConnection error:", err);
+          updateCloudStatusUI('error', 'Connection Failed');
+          showToast("Connection failed: Check Web App URL & 'Anyone' access.", "danger");
+          return false;
+        }
+      }
+
+      async function fetchAllFromCloud(silent = false) {
+        const url = localStorage.getItem(CLOUD_URL_KEY);
+        if (!url) {
+          if (!silent) showToast("No Google Script URL configured. Click Sheets Cloud to configure.", "warning");
+          return null;
+        }
+
+        updateCloudStatusUI('syncing', 'Pulling from Cloud...');
+        try {
+          const fetchUrl = url + (url.includes('?') ? '&' : '?') + 'action=fetchAll&_t=' + Date.now();
+          const resp = await fetch(fetchUrl, { method: "GET", mode: "cors", cache: "no-store" });
+          if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+          const json = await resp.json();
+
+          if (json && json.status === "success") {
+            applyFetchedCloudData(json);
+            updateCloudStatusUI('connected');
+            recordSyncTime();
+            if (!silent) {
+              const qCount = (json.quizzes && json.quizzes.length) || 0;
+              const wCount = (json.widgets && json.widgets.length) || 0;
+              showToast(`✓ Pulled ${qCount} quizzes & ${wCount} widget groups from Google Sheets!`, "success");
+            }
+            return json;
+          } else {
+            throw new Error((json && json.message) || "Unknown error");
+          }
+        } catch (err) {
+          console.error("fetchAllFromCloud error:", err);
+          updateCloudStatusUI('error', 'Pull Failed');
+          if (!silent) showToast("Cloud fetch error: " + err.message, "danger");
+          return null;
+        }
+      }
+
+      function applyFetchedCloudData(json) {
+        try {
+          // 1. Quizzes
+          if (Array.isArray(json.quizzes) && json.quizzes.length > 0) {
+            const localQuizzes = getSavedQuizzes();
+            const mergedMap = new Map();
+            localQuizzes.forEach(q => mergedMap.set(q.id, q));
+            json.quizzes.forEach(cloudQ => {
+              if (cloudQ && cloudQ.id) {
+                mergedMap.set(cloudQ.id, cloudQ);
+              }
+            });
+            const mergedList = Array.from(mergedMap.values());
+            setSavedQuizzes(mergedList);
+            renderSavedQuizzesList();
+          }
+
+          // 2. Widgets
+          if (Array.isArray(json.widgets) && json.widgets.length > 0) {
+            const localGroups = getButtonGroups();
+            const grpMap = new Map();
+            localGroups.forEach(g => grpMap.set(g.id, g));
+            json.widgets.forEach(w => {
+              if (w && w.id) {
+                grpMap.set(w.id, w);
+              }
+            });
+            currentButtonGroups = Array.from(grpMap.values());
+            saveButtonGroups(currentButtonGroups);
+            renderGroupTabs();
+            renderActiveGroup();
+          }
+
+          // 3. Settings (Social profiles, etc.)
+          if (json.settings && typeof json.settings === 'object') {
+            if (json.settings.social_profiles) {
+              saveSocialProfiles(json.settings.social_profiles);
+              populateProfilesInputs();
+            }
+          }
+
+          document.dispatchEvent(new CustomEvent("rk-cloud-data-fetched", {
+            detail: {
+              quizzes: json.quizzes || [],
+              widgets: json.widgets || [],
+              settings: json.settings || {}
+            }
+          }));
+
+        } catch (e) {
+          console.error("applyFetchedCloudData error:", e);
+        }
+      }
+
+      async function pushAllToCloud(silent = false) {
+        const url = localStorage.getItem(CLOUD_URL_KEY);
+        if (!url) {
+          if (!silent) showToast("Please configure Google Apps Script Web App URL first.", "warning");
+          return;
+        }
+
+        updateCloudStatusUI('syncing', 'Pushing to Cloud...');
+        try {
+          const localQuizzes = getSavedQuizzes();
+          const localWidgets = getButtonGroups();
+          const localProfiles = getSocialProfiles();
+
+          const payload = {
+            action: "syncAll",
+            payload: {
+              quizzes: localQuizzes,
+              widgets: localWidgets,
+              settings: {
+                social_profiles: localProfiles,
+                gh_user: localStorage.getItem(GITHUB_USER_KEY) || '',
+                gh_repo: localStorage.getItem(GITHUB_REPO_KEY) || ''
+              }
+            }
+          };
+
+          const res = await postToCloud(payload);
+          if (res && res.status === "success") {
+            updateCloudStatusUI('connected');
+            recordSyncTime();
+            if (!silent) showToast(`✓ Pushed ${localQuizzes.length} quizzes & ${localWidgets.length} widget groups to Google Sheets!`, "success");
+          } else {
+            throw new Error((res && res.message) || "Push failed");
+          }
+        } catch (err) {
+          console.error("pushAllToCloud error:", err);
+          updateCloudStatusUI('error', 'Push Failed');
+          if (!silent) showToast("Cloud push failed: " + err.message, "danger");
+        }
+      }
+
+      async function syncQuizWithCloud(quiz) {
+        if (!isAutoSyncEnabled || !localStorage.getItem(CLOUD_URL_KEY)) return;
+        try {
+          const payload = { action: "saveQuiz", type: "quiz", payload: quiz };
+          await postToCloud(payload);
+          recordSyncTime();
+        } catch (e) {
+          console.warn("Auto syncQuizWithCloud background error:", e);
+        }
+      }
+
+      async function deleteQuizFromCloudInternal(id) {
+        if (!localStorage.getItem(CLOUD_URL_KEY)) return;
+        try {
+          const payload = { action: "deleteQuiz", type: "quiz", payload: { id: id } };
+          await postToCloud(payload);
+          recordSyncTime();
+        } catch (e) {
+          console.warn("deleteQuizFromCloudInternal background error:", e);
+        }
+      }
+
+      async function syncWidgetsWithCloud(groups) {
+        if (!isAutoSyncEnabled || !localStorage.getItem(CLOUD_URL_KEY)) return;
+        try {
+          const payload = {
+            action: "syncAll",
+            payload: {
+              widgets: groups,
+              settings: { social_profiles: getSocialProfiles() }
+            }
+          };
+          await postToCloud(payload);
+          recordSyncTime();
+        } catch (e) {
+          console.warn("Auto syncWidgetsWithCloud background error:", e);
+        }
+      }
+
+      async function syncSettingsWithCloud(settingsObj) {
+        if (!isAutoSyncEnabled || !localStorage.getItem(CLOUD_URL_KEY)) return;
+        try {
+          const payload = { action: "saveSettings", type: "settings", payload: settingsObj };
+          await postToCloud(payload);
+          recordSyncTime();
+        } catch (e) {
+          console.warn("Auto syncSettingsWithCloud background error:", e);
+        }
+      }
+
+      // Events for backward compatibility with user's commit 7ab5c03
+      document.addEventListener("rk-save-quiz", (ev) => {
+        const quiz = ev.detail;
+        if (!quiz) return;
+        if (!quiz.id) quiz.id = 'quiz_' + Date.now();
+        syncQuizWithCloud(quiz);
+      });
+
+      document.addEventListener("rk-delete-quiz", (ev) => {
+        const id = ev.detail && ev.detail.id;
+        if (id) deleteQuizFromCloudInternal(id);
+      });
+
+      document.addEventListener("rk-save-widget", (ev) => {
+        const widget = ev.detail;
+        if (widget) {
+          postToCloud({ action: "saveWidgetGroup", type: "widget", payload: widget }).catch(console.warn);
+        }
+      });
+
+      document.addEventListener("rk-save-settings", (ev) => {
+        const s = ev.detail || {};
+        syncSettingsWithCloud(s);
+      });
+
+      // Exposed Global API
+      window.RKCloudSync = {
+        testConnection: testCloudConnection,
+        fetchAll: fetchAllFromCloud,
+        pushAllToCloud: pushAllToCloud,
+        pullAllFromCloud: () => fetchAllFromCloud(false),
+        saveQuiz: (quiz) => document.dispatchEvent(new CustomEvent("rk-save-quiz", { detail: quiz })),
+        deleteQuiz: (id) => document.dispatchEvent(new CustomEvent("rk-delete-quiz", { detail: { id: id } })),
+        saveWidget: (widget) => document.dispatchEvent(new CustomEvent("rk-save-widget", { detail: widget })),
+        saveSettings: (settingsObj) => document.dispatchEvent(new CustomEvent("rk-save-settings", { detail: settingsObj })),
+        getCloudUrl: () => localStorage.getItem(CLOUD_URL_KEY),
+        setCloudUrl: (url) => {
+          localStorage.setItem(CLOUD_URL_KEY, url);
+          cloudUrl = url;
+          if (googleScriptAppUrlInput) googleScriptAppUrlInput.value = url;
+          updateCloudStatusUI(url ? 'connected' : 'not_configured');
+        }
+      };
+
+      // Wire Up Cloud Sync Modal Buttons
+      if (btnOpenCloudSyncModal) btnOpenCloudSyncModal.addEventListener('click', openCloudSyncModal);
+      if (btnCloseCloudSyncModal) btnCloseCloudSyncModal.addEventListener('click', closeCloudSyncModal);
+      if (btnCloseCloudSyncModalFooter) btnCloseCloudSyncModalFooter.addEventListener('click', closeCloudSyncModal);
+
+      if (cloudSyncModal) {
+        cloudSyncModal.addEventListener('click', (e) => {
+          if (e.target === cloudSyncModal) closeCloudSyncModal();
+        });
+      }
+
+      if (btnSaveCloudUrl) {
+        btnSaveCloudUrl.addEventListener('click', async () => {
+          const url = googleScriptAppUrlInput ? googleScriptAppUrlInput.value.trim() : '';
+          if (!url) {
+            showToast("Please enter a valid Google Apps Script URL.", "warning");
+            return;
+          }
+          localStorage.setItem(CLOUD_URL_KEY, url);
+          cloudUrl = url;
+          updateCloudStatusUI('testing', 'Saving and connecting...');
+          showToast("Saved Google Apps Script URL locally.", "info");
+          const ok = await testCloudConnection();
+          if (ok) {
+            await fetchAllFromCloud(true);
+          }
+        });
+      }
+
+      if (btnTestCloudConn) btnTestCloudConn.addEventListener('click', testCloudConnection);
+      if (btnPullCloudData) btnPullCloudData.addEventListener('click', () => fetchAllFromCloud(false));
+      if (btnPushCloudData) btnPushCloudData.addEventListener('click', () => pushAllToCloud(false));
+
+      if (btnLibraryCloudSync) btnLibraryCloudSync.addEventListener('click', openCloudSyncModal);
+      if (btnSyncWidgetsCloud) btnSyncWidgetsCloud.addEventListener('click', openCloudSyncModal);
+
+      if (chkAutoCloudSync) {
+        chkAutoCloudSync.addEventListener('change', () => {
+          isAutoSyncEnabled = chkAutoCloudSync.checked;
+          localStorage.setItem(CLOUD_AUTO_SYNC_KEY, isAutoSyncEnabled ? 'true' : 'false');
+          showToast(isAutoSyncEnabled ? "Auto-sync to Google Sheets enabled." : "Auto-sync disabled.", "info");
+        });
+      }
+
+      if (btnToggleCloudGuide && cloudGuideContent) {
+        btnToggleCloudGuide.addEventListener('click', () => {
+          const isHidden = cloudGuideContent.classList.toggle('hidden');
+          if (cloudGuideChevron) {
+            cloudGuideChevron.style.transform = isHidden ? 'rotate(0deg)' : 'rotate(180deg)';
+          }
+        });
+      }
+
+      if (btnCopyCodeGsModal) {
+        btnCopyCodeGsModal.addEventListener('click', async () => {
+          try {
+            const resp = await fetch('Code.gs');
+            if (resp.ok) {
+              const codeText = await resp.text();
+              await navigator.clipboard.writeText(codeText);
+              showToast("✓ Copied Code.gs script to clipboard! Paste into Google Apps Script.", "success");
+              return;
+            }
+          } catch (e) {}
+          showToast("Please copy Code.gs directly from your repository root.", "info");
+        });
+      }
+
       // Initial Boot
       const existingSaved = getSavedQuizzes();
       if (existingSaved.length === 0) {
         saveCurrentQuizToLibrary(false);
       }
       updateLibraryCountBadge();
+
+      // Initialize Cloud Sync status on boot
+      if (cloudUrl) {
+        updateCloudStatusUI('connected');
+        fetchAllFromCloud(true);
+      } else {
+        updateCloudStatusUI('not_configured');
+      }
 
       renderAllQuestions();
       updateIframePreview();
