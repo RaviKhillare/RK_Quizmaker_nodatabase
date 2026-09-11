@@ -46,8 +46,8 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
   <!-- Google Identity Services & Google API Client -->
-  <script src="https://accounts.google.com/gsi/client" async defer></script>
-  <script src="https://apis.google.com/js/api.js" async defer></script>
+  <script src="https://accounts.google.com/gsi/client" async defer onload="window.bspGisLoaded && window.bspGisLoaded()"></script>
+  <script src="https://apis.google.com/js/api.js" async defer onload="window.bspGapiLoaded && window.bspGapiLoaded()"></script>
 
   <style>
     body {
@@ -5627,7 +5627,8 @@ ${jsonString}
       // 14. GOOGLE OAUTH 2.0 & GOOGLE SHEETS API v4 CLIENT ENGINE
       // -------------------------------------------------------------
       const GOOGLE_CLIENT_ID_KEY = "bsp_google_client_id";
-      const DEFAULT_CLIENT_ID = "506174863758-9gu8g7b4v5j5j987v0j7m6d9q2b8f8g.apps.google.com";
+      const GOOGLE_CLIENT_ID = "506174863758-9gu8hsi31svt7e3pmehp20df9l2r03pk.apps.googleusercontent.com";
+      const DEFAULT_CLIENT_ID = GOOGLE_CLIENT_ID;
       const SCOPES = "https://www.googleapis.com/auth/spreadsheets https://www.googleapis.com/auth/drive.file";
       const DB_SPREADSHEET_NAME = "Blogger Suite Pro Database";
 
@@ -5710,7 +5711,10 @@ ${jsonString}
       }
 
       // State
+      let tokenClient = null;
       let googleTokenClient = null;
+      let gapiInited = false;
+      let gisInited = false;
       let googleAccessToken = localStorage.getItem('bsp_google_access_token') || null;
       let activeSpreadsheetId = localStorage.getItem('bsp_active_sheet_id') || null;
       let currentUserProfile = null;
@@ -5722,21 +5726,21 @@ ${jsonString}
       function isPlaceholderClientId(id) {
         if (!id) return true;
         const clean = id.trim();
-        return clean.includes("YOUR_GOOGLE_CLIENT_ID") || clean.includes("9gu8g7b4v5j5j987v0j7m6d9q2b8f8g") || clean.length < 25;
+        return clean.includes("YOUR_GOOGLE_CLIENT_ID") || clean.includes("9gu8g7b4v5j5j987v0j7m6d9q2b8f8g");
       }
 
       function getActiveClientId() {
-        let id = localStorage.getItem(GOOGLE_CLIENT_ID_KEY);
-        if (!id || !id.trim() || isPlaceholderClientId(id)) {
-          return isPlaceholderClientId(DEFAULT_CLIENT_ID) ? '' : DEFAULT_CLIENT_ID;
+        const saved = localStorage.getItem(GOOGLE_CLIENT_ID_KEY);
+        if (saved && saved.trim() && !isPlaceholderClientId(saved)) {
+          return saved.trim();
         }
-        return id.trim();
+        return GOOGLE_CLIENT_ID;
       }
 
       function openGoogleSettingsModal() {
         if (inputGoogleClientId) {
-          const id = localStorage.getItem(GOOGLE_CLIENT_ID_KEY) || '';
-          inputGoogleClientId.value = isPlaceholderClientId(id) ? '' : id;
+          const id = localStorage.getItem(GOOGLE_CLIENT_ID_KEY) || GOOGLE_CLIENT_ID;
+          inputGoogleClientId.value = id;
         }
         if (inputGoogleSheetId) {
           inputGoogleSheetId.value = activeSpreadsheetId || '';
@@ -5778,85 +5782,101 @@ ${jsonString}
         }
       }
 
-      // Initialize GIS token client
-      function initGoogleTokenClient() {
-        if (typeof google === 'undefined' || !google.accounts || !google.accounts.oauth2) {
-          return false;
-        }
-        const clientId = getActiveClientId();
-        if (!clientId || isPlaceholderClientId(clientId)) {
-          return false;
-        }
+      // Initialize GAPI and GIS
+      function gapiLoaded() {
+        if (typeof gapi === 'undefined') return;
+        gapi.load('client', async () => {
+          try {
+            await gapi.client.init({
+              discoveryDocs: [
+                'https://sheets.googleapis.com/$discovery/rest?version=v4',
+                'https://www.googleapis.com/discovery/v1/apis/drive/v3/rest'
+              ],
+            });
+            gapiInited = true;
+            checkAuthReady();
+          } catch (err) {
+            console.warn("gapi.client.init warning:", err);
+            gapiInited = true;
+            checkAuthReady();
+          }
+        });
+      }
 
-        try {
-          googleTokenClient = google.accounts.oauth2.initTokenClient({
-            client_id: clientId,
-            scope: SCOPES,
-            callback: async (tokenResponse) => {
-              if (tokenResponse && tokenResponse.access_token) {
-                googleAccessToken = tokenResponse.access_token;
-                localStorage.setItem('bsp_google_access_token', googleAccessToken);
-                if (window.gapi && window.gapi.client) {
-                  try { gapi.client.setToken(tokenResponse); } catch (e) {}
-                }
-                await handlePostLoginSync();
-              } else if (tokenResponse && tokenResponse.error) {
-                console.error("GIS Token Error:", tokenResponse.error);
-                if (tokenResponse.error === 'popup_closed_by_user') {
-                  showToast("Sign-in cancelled by user.", "info");
-                } else if (tokenResponse.error === 'access_denied') {
-                  showToast("Access denied. Please grant permissions to sync your data.", "warning");
-                } else {
-                  showToast("Google Sign-in failed: " + tokenResponse.error, "danger");
-                }
-              }
-            },
-            error_callback: (err) => {
-              console.error("GIS Error:", err);
-              if (err && (err.type === 'popup_failed_to_open' || (err.message && err.message.toLowerCase().includes('popup')))) {
-                showToast("Pop-up was blocked. Please allow pop-ups for this site to sign in with Google.", "danger");
+      function gisLoaded() {
+        if (typeof google === 'undefined' || !google.accounts || !google.accounts.oauth2) return;
+        const clientId = getActiveClientId();
+        tokenClient = google.accounts.oauth2.initTokenClient({
+          client_id: clientId,
+          scope: SCOPES,
+          callback: async (resp) => {
+            if (resp.error) {
+              console.error("Auth error:", resp);
+              if (resp.error === 'popup_closed_by_user') {
+                showToast("Sign-in cancelled by user.", "info");
+              } else if (resp.error === 'access_denied') {
+                showToast("Access denied. Please grant permissions to sync your data.", "warning");
               } else {
-                showToast("Sign-in issue: Please verify your Client ID in Settings (⚙️).", "warning");
+                showToast("Google Sign-In failed: " + resp.error, "danger");
               }
+              return;
             }
-          });
-          return true;
-        } catch (err) {
-          console.error("initGoogleTokenClient error:", err);
-          return false;
+            await handleSuccessfulLogin(resp.access_token);
+          },
+          error_callback: (err) => {
+            console.error("GIS Error:", err);
+            if (err && (err.type === 'popup_failed_to_open' || (err.message && err.message.toLowerCase().includes('popup')))) {
+              showToast("Pop-up was blocked. Please allow pop-ups for this site to sign in with Google.", "danger");
+            }
+          }
+        });
+        googleTokenClient = tokenClient;
+        gisInited = true;
+        checkAuthReady();
+      }
+
+      function checkAuthReady() {
+        const btn = document.getElementById('btnGoogleSignIn');
+        if (btn && gapiInited && gisInited) {
+          btn.disabled = false;
         }
       }
 
+      window.bspGapiLoaded = gapiLoaded;
+      window.bspGisLoaded = gisLoaded;
+
+      // Initialize GIS token client fallback
+      function initGoogleTokenClient() {
+        if (!gisInited) {
+          gisLoaded();
+        }
+        return !!tokenClient;
+      }
+
       function handleSignInClick() {
-        const clientId = getActiveClientId();
-        if (!clientId || isPlaceholderClientId(clientId)) {
-          openGoogleSettingsModal();
-          showToast("Please enter your official Google OAuth Client ID to connect.", "warning");
-          return;
+        if (!tokenClient && typeof google !== 'undefined' && google.accounts && google.accounts.oauth2) {
+          gisLoaded();
         }
 
-        if (!googleTokenClient) {
-          const ok = initGoogleTokenClient();
-          if (!ok) {
-            if (typeof google === 'undefined' || !google.accounts) {
-              showToast("Google Identity library is still loading, please retry in 2 seconds.", "warning");
-            } else {
-              openGoogleSettingsModal();
-              showToast("Please verify your Google OAuth Client ID.", "warning");
-            }
-            return;
-          }
-        }
-
-        if (googleTokenClient) {
+        if (tokenClient) {
           try {
-            googleTokenClient.requestAccessToken({ prompt: 'select_account' });
+            tokenClient.requestAccessToken({ prompt: 'select_account' });
           } catch (err) {
             console.error("requestAccessToken error:", err);
-            alert("Pop-up was blocked. Please allow pop-ups for this site to sign in with Google.");
             showToast("Pop-up was blocked. Please allow pop-ups for this site to sign in with Google.", "danger");
           }
+        } else {
+          showToast("Google Identity library is still loading, please retry in 2 seconds.", "info");
         }
+      }
+
+      async function handleSuccessfulLogin(accessToken) {
+        googleAccessToken = accessToken;
+        localStorage.setItem('bsp_google_access_token', googleAccessToken);
+        if (window.gapi && window.gapi.client) {
+          try { gapi.client.setToken({ access_token: accessToken }); } catch (e) {}
+        }
+        await handlePostLoginSync();
       }
 
       async function handlePostLoginSync() {
@@ -6366,16 +6386,15 @@ ${jsonString}
         updateAuthUI(false);
       }
 
-      initGoogleTokenClient();
+      if (typeof gapi !== 'undefined' && gapi.load) {
+        gapiLoaded();
+      }
+      if (typeof google !== 'undefined' && google.accounts && google.accounts.oauth2) {
+        gisLoaded();
+      }
       window.addEventListener('load', () => {
-        initGoogleTokenClient();
-        if (typeof gapi !== 'undefined') {
-          try {
-            gapi.load('client', () => {
-              console.log("gapi client ready");
-            });
-          } catch (e) {}
-        }
+        if (!gapiInited && typeof gapi !== 'undefined') gapiLoaded();
+        if (!gisInited && typeof google !== 'undefined') gisLoaded();
       });
 
       renderAllQuestions();
