@@ -5842,9 +5842,13 @@ ${jsonString}
       let googleTokenClient = null;
       let gapiInited = false;
       let gisInited = false;
+      const GOOGLE_TOKEN_EXPIRES_KEY = "bsp_google_token_expires_at";
       let googleAccessToken = localStorage.getItem('bsp_google_access_token') || null;
       let activeSpreadsheetId = localStorage.getItem('bsp_active_sheet_id') || null;
       let currentUserProfile = null;
+      let pendingAuthResolve = null;
+      let isRefreshingToken = false;
+      let pendingRefreshPromises = [];
       try {
         const savedProf = localStorage.getItem('bsp_google_user_profile');
         if (savedProf) currentUserProfile = JSON.parse(savedProf);
@@ -5862,6 +5866,137 @@ ${jsonString}
           return saved.trim();
         }
         return GOOGLE_CLIENT_ID;
+      }
+
+      function isTokenExpired() {
+        if (!googleAccessToken) return true;
+        const expiresAt = parseInt(localStorage.getItem(GOOGLE_TOKEN_EXPIRES_KEY) || '0', 10);
+        if (!expiresAt) return false;
+        // Buffer by 60 seconds to renew before actual expiration
+        return Date.now() > (expiresAt - 60000);
+      }
+
+      function handleAuthExpired(customMessage) {
+        googleAccessToken = null;
+        localStorage.removeItem('bsp_google_access_token');
+        localStorage.removeItem(GOOGLE_TOKEN_EXPIRES_KEY);
+        if (window.gapi && window.gapi.client) {
+          try { gapi.client.setToken(null); } catch (e) {}
+        }
+        updateAuthUI(false);
+        updateSyncStatusText("Session expired");
+
+        if (pushBtnIcon) pushBtnIcon.className = "fas fa-cloud-arrow-up text-white";
+        if (pushBtnText) pushBtnText.textContent = "Upload to Cloud";
+        if (btnPushToCloud) btnPushToCloud.disabled = false;
+
+        if (pullBtnIcon) pullBtnIcon.className = "fas fa-cloud-arrow-down text-white";
+        if (pullBtnText) pullBtnText.textContent = "Pull from Cloud";
+        if (btnPullFromCloud) btnPullFromCloud.disabled = false;
+
+        showToast(customMessage || "Google session expired. Please click 'Sign in with Google' to re-authenticate.", "warning");
+      }
+
+      async function ensureValidAccessToken(interactive = false) {
+        if (googleAccessToken && !isTokenExpired()) {
+          return true;
+        }
+
+        if (!googleAccessToken && !interactive) {
+          return false;
+        }
+
+        if (isRefreshingToken) {
+          return new Promise(resolve => pendingRefreshPromises.push(resolve));
+        }
+
+        isRefreshingToken = true;
+
+        try {
+          if (!tokenClient && typeof google !== 'undefined' && google.accounts && google.accounts.oauth2) {
+            gisLoaded();
+          }
+
+          if (!tokenClient) {
+            isRefreshingToken = false;
+            pendingRefreshPromises.forEach(r => r(false));
+            pendingRefreshPromises = [];
+            return false;
+          }
+
+          const success = await new Promise(resolve => {
+            pendingAuthResolve = resolve;
+            try {
+              tokenClient.requestAccessToken({ prompt: interactive ? 'select_account' : '' });
+            } catch (e) {
+              console.warn("requestAccessToken error:", e);
+              pendingAuthResolve = null;
+              resolve(false);
+            }
+          });
+
+          isRefreshingToken = false;
+          pendingRefreshPromises.forEach(r => r(success));
+          pendingRefreshPromises = [];
+          return success;
+        } catch (err) {
+          isRefreshingToken = false;
+          pendingRefreshPromises.forEach(r => r(false));
+          pendingRefreshPromises = [];
+          return false;
+        }
+      }
+
+      async function fetchWithAuth(url, options = {}, retryOn401 = true) {
+        if (!googleAccessToken) {
+          const valid = await ensureValidAccessToken(false);
+          if (!valid || !googleAccessToken) {
+            const err = new Error("NOT_AUTHENTICATED");
+            err.status = 401;
+            throw err;
+          }
+        } else if (isTokenExpired()) {
+          console.log("Access token expired, attempting silent renewal...");
+          const refreshed = await ensureValidAccessToken(false);
+          if (!refreshed || !googleAccessToken) {
+            handleAuthExpired("Google session expired. Please click 'Sign in with Google' to re-authenticate.");
+            const err = new Error("Session expired. Please sign in again.");
+            err.status = 401;
+            throw err;
+          }
+        }
+
+        const opts = { ...options };
+        opts.headers = {
+          ...(opts.headers || {}),
+          Authorization: `Bearer ${googleAccessToken}`
+        };
+
+        const response = await fetch(url, opts);
+
+        if (response.status === 401) {
+          console.warn("Detected 401 Unauthorized from Google API:", url);
+          if (retryOn401) {
+            console.log("Attempting silent token renewal after 401...");
+            const refreshed = await ensureValidAccessToken(false);
+            if (refreshed && googleAccessToken) {
+              opts.headers.Authorization = `Bearer ${googleAccessToken}`;
+              return await fetch(url, opts);
+            }
+          }
+
+          handleAuthExpired("Google session expired. Please click 'Sign in with Google' to re-authenticate.");
+          let errorDetail = "Request had invalid authentication credentials. Please sign in again.";
+          try {
+            const errData = await response.json();
+            if (errData.error && errData.error.message) errorDetail = errData.error.message;
+          } catch (_) {}
+          const err = new Error(errorDetail);
+          err.status = 401;
+          throw err;
+        }
+
+        return response;
       }
 
       function openGoogleSettingsModal() {
@@ -5939,19 +6074,34 @@ ${jsonString}
           callback: async (resp) => {
             if (resp.error) {
               console.error("Auth error:", resp);
+              if (pendingAuthResolve) {
+                const r = pendingAuthResolve;
+                pendingAuthResolve = null;
+                r(false);
+              }
               if (resp.error === 'popup_closed_by_user') {
                 showToast("Sign-in cancelled by user.", "info");
               } else if (resp.error === 'access_denied') {
                 showToast("Access denied. Please grant permissions to sync your data.", "warning");
-              } else {
+              } else if (resp.error !== 'immediate_failed') {
                 showToast("Google Sign-In failed: " + resp.error, "danger");
               }
               return;
             }
-            await handleSuccessfulLogin(resp.access_token);
+            await handleSuccessfulLogin(resp.access_token, resp.expires_in);
+            if (pendingAuthResolve) {
+              const r = pendingAuthResolve;
+              pendingAuthResolve = null;
+              r(true);
+            }
           },
           error_callback: (err) => {
             console.error("GIS Error:", err);
+            if (pendingAuthResolve) {
+              const r = pendingAuthResolve;
+              pendingAuthResolve = null;
+              r(false);
+            }
             if (err && (err.type === 'popup_failed_to_open' || (err.message && err.message.toLowerCase().includes('popup')))) {
               showToast("Pop-up was blocked. Please allow pop-ups for this site to sign in with Google.", "danger");
             }
@@ -5996,12 +6146,17 @@ ${jsonString}
         }
       }
 
-      async function handleSuccessfulLogin(accessToken) {
+      async function handleSuccessfulLogin(accessToken, expiresInSeconds = 3599) {
         googleAccessToken = accessToken;
         localStorage.setItem('bsp_google_access_token', googleAccessToken);
+        const ttl = Number(expiresInSeconds) || 3599;
+        const expiresAt = Date.now() + (ttl * 1000);
+        localStorage.setItem(GOOGLE_TOKEN_EXPIRES_KEY, expiresAt.toString());
+
         if (window.gapi && window.gapi.client) {
           try { gapi.client.setToken({ access_token: accessToken }); } catch (e) {}
         }
+        updateAuthUI(true, currentUserProfile);
         await handlePostLoginSync();
       }
 
@@ -6029,9 +6184,14 @@ ${jsonString}
         activeSpreadsheetId = null;
         currentUserProfile = null;
         localStorage.removeItem('bsp_google_access_token');
+        localStorage.removeItem(GOOGLE_TOKEN_EXPIRES_KEY);
         localStorage.removeItem('bsp_active_sheet_id');
         localStorage.removeItem('bsp_google_user_profile');
+        if (window.gapi && window.gapi.client) {
+          try { gapi.client.setToken(null); } catch (e) {}
+        }
         updateAuthUI(false);
+        updateSyncStatusText("Not connected");
         showToast("Signed out of Google account.", "info");
       }
 
@@ -6044,6 +6204,8 @@ ${jsonString}
             currentUserProfile = await res.json();
             localStorage.setItem('bsp_google_user_profile', JSON.stringify(currentUserProfile));
             updateAuthUI(true, currentUserProfile);
+          } else if (res.status === 401) {
+            handleAuthExpired();
           } else {
             currentUserProfile = { name: "Google User" };
             updateAuthUI(true, currentUserProfile);
@@ -6115,20 +6277,15 @@ ${jsonString}
       async function ensureMasterStoreTabExists(spreadsheetId) {
         if (!spreadsheetId || !googleAccessToken) return false;
         try {
-          const res = await fetch(`https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}?fields=sheets.properties.title`, {
-            headers: { Authorization: `Bearer ${googleAccessToken}` }
-          });
+          const res = await fetchWithAuth(`https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}?fields=sheets.properties.title`);
           if (!res.ok) return false;
           const meta = await res.json();
           const titles = (meta.sheets || []).map(s => s.properties && s.properties.title);
 
           if (!titles.includes(MASTER_STORE_SHEET_NAME)) {
-            const addRes = await fetch(`https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}:batchUpdate`, {
+            const addRes = await fetchWithAuth(`https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}:batchUpdate`, {
               method: "POST",
-              headers: {
-                Authorization: `Bearer ${googleAccessToken}`,
-                "Content-Type": "application/json"
-              },
+              headers: { "Content-Type": "application/json" },
               body: JSON.stringify({
                 requests: [{
                   addSheet: {
@@ -6146,12 +6303,9 @@ ${jsonString}
             }
 
             // Write Header Row A1:D1
-            await fetch(`https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}/values/${MASTER_STORE_SHEET_NAME}!A1:D1?valueInputOption=RAW`, {
+            await fetchWithAuth(`https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}/values/${MASTER_STORE_SHEET_NAME}!A1:D1?valueInputOption=RAW`, {
               method: "PUT",
-              headers: {
-                Authorization: `Bearer ${googleAccessToken}`,
-                "Content-Type": "application/json"
-              },
+              headers: { "Content-Type": "application/json" },
               body: JSON.stringify({
                 values: [["MASTER_JSON_PAYLOAD", "LAST_UPDATED", "VERSION", "ITEMS_SUMMARY"]]
               })
@@ -6160,6 +6314,7 @@ ${jsonString}
           return true;
         } catch (e) {
           console.warn("ensureMasterStoreTabExists error:", e);
+          if (e.status === 401) throw e;
           return false;
         }
       }
@@ -6167,8 +6322,18 @@ ${jsonString}
       // Push Master Snapshot to BSP_MASTER_STORE!A2:D2
       async function pushMasterSnapshotToCloud(silent = false) {
         if (!googleAccessToken) {
+          showToast("Please sign in with Google to sync data.", "info");
           handleSignInClick();
           return false;
+        }
+
+        if (isTokenExpired()) {
+          const refreshed = await ensureValidAccessToken(false);
+          if (!refreshed) {
+            showToast("Google session expired. Please sign in to upload.", "warning");
+            handleSignInClick();
+            return false;
+          }
         }
 
         if (!activeSpreadsheetId) {
@@ -6190,12 +6355,9 @@ ${jsonString}
           const summaryStr = `Quizzes: ${quizLen}, Widgets: ${widgetLen}`;
 
           // Atomic single-row update to BSP_MASTER_STORE!A2:D2
-          const masterRes = await fetch(`https://sheets.googleapis.com/v4/spreadsheets/${activeSpreadsheetId}/values/${MASTER_STORE_SHEET_NAME}!A2:D2?valueInputOption=RAW`, {
+          const masterRes = await fetchWithAuth(`https://sheets.googleapis.com/v4/spreadsheets/${activeSpreadsheetId}/values/${MASTER_STORE_SHEET_NAME}!A2:D2?valueInputOption=RAW`, {
             method: "PUT",
-            headers: {
-              Authorization: `Bearer ${googleAccessToken}`,
-              "Content-Type": "application/json"
-            },
+            headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
               values: [[payloadJson, snapshot.updatedAt, "2.0", summaryStr]]
             })
@@ -6226,7 +6388,9 @@ ${jsonString}
         } catch (err) {
           console.error("pushMasterSnapshotToCloud error:", err);
           const msg = err.message || "";
-          if (msg.includes("has not been used in project") || msg.includes("sheets.googleapis.com") || msg.includes("disabled")) {
+          if (err.status === 401 || msg.includes("invalid authentication credentials") || msg.includes("UNAUTHENTICATED") || msg === "NOT_AUTHENTICATED") {
+            handleAuthExpired("Google session expired. Please click 'Sign in with Google' to re-authenticate.");
+          } else if (msg.includes("has not been used in project") || msg.includes("sheets.googleapis.com") || msg.includes("disabled")) {
             showApiEnableModal(msg);
           } else {
             showToast("Upload to Cloud failed: " + msg, "danger");
@@ -6269,12 +6433,9 @@ ${jsonString}
             ["platform_version", "Blogger Suite Pro v2", new Date().toISOString()]
           ];
 
-          await fetch(`https://sheets.googleapis.com/v4/spreadsheets/${activeSpreadsheetId}/values:batchClear`, {
+          await fetchWithAuth(`https://sheets.googleapis.com/v4/spreadsheets/${activeSpreadsheetId}/values:batchClear`, {
             method: "POST",
-            headers: {
-              Authorization: `Bearer ${googleAccessToken}`,
-              "Content-Type": "application/json"
-            },
+            headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ ranges: ["Quizzes!A2:F", "Widgets!A2:E", "Settings!A2:C"] })
           });
 
@@ -6284,12 +6445,9 @@ ${jsonString}
           if (settingValues.length > 0) updates.push({ range: "Settings!A2", values: settingValues });
 
           if (updates.length > 0) {
-            await fetch(`https://sheets.googleapis.com/v4/spreadsheets/${activeSpreadsheetId}/values:batchUpdate`, {
+            await fetchWithAuth(`https://sheets.googleapis.com/v4/spreadsheets/${activeSpreadsheetId}/values:batchUpdate`, {
               method: "POST",
-              headers: {
-                Authorization: `Bearer ${googleAccessToken}`,
-                "Content-Type": "application/json"
-              },
+              headers: { "Content-Type": "application/json" },
               body: JSON.stringify({ valueInputOption: "USER_ENTERED", data: updates })
             });
           }
@@ -6300,7 +6458,32 @@ ${jsonString}
 
       // Pull Master Snapshot from BSP_MASTER_STORE!A2
       async function pullMasterSnapshotFromCloud(silent = false) {
-        if (!activeSpreadsheetId || !googleAccessToken) return false;
+        if (!googleAccessToken) {
+          if (!silent) {
+            showToast("Please sign in with Google to pull data.", "info");
+            handleSignInClick();
+          }
+          return false;
+        }
+
+        if (isTokenExpired()) {
+          const refreshed = await ensureValidAccessToken(false);
+          if (!refreshed) {
+            if (!silent) {
+              showToast("Google session expired. Please sign in to sync.", "warning");
+              handleSignInClick();
+            }
+            return false;
+          }
+        }
+
+        if (!activeSpreadsheetId) {
+          const sheetId = await discoverOrCreateSpreadsheet();
+          if (!sheetId) {
+            updateSyncStatusText(googleAccessToken ? "No sheet found" : "Session expired");
+            return false;
+          }
+        }
 
         if (pullBtnIcon) pullBtnIcon.className = "fa-solid fa-circle-notch fa-spin text-white";
         if (pullBtnText) pullBtnText.textContent = "Pulling...";
@@ -6312,9 +6495,7 @@ ${jsonString}
           let parsedSnapshot = null;
           try {
             const masterUrl = `https://sheets.googleapis.com/v4/spreadsheets/${activeSpreadsheetId}/values/${MASTER_STORE_SHEET_NAME}!A2:D2`;
-            const res = await fetch(masterUrl, {
-              headers: { Authorization: `Bearer ${googleAccessToken}` }
-            });
+            const res = await fetchWithAuth(masterUrl);
 
             if (res.ok) {
               const data = await res.json();
@@ -6328,6 +6509,7 @@ ${jsonString}
               }
             }
           } catch (fetchErr) {
+            if (fetchErr.status === 401) throw fetchErr;
             console.warn("BSP_MASTER_STORE fetch error (will fallback to legacy tabs):", fetchErr);
           }
 
@@ -6432,20 +6614,33 @@ ${jsonString}
           if (legacySuccess) {
             // Auto-migrate local state to BSP_MASTER_STORE (without blocking)
             pushMasterSnapshotToCloud(true).catch(e => console.warn("Auto-migration push warning:", e));
+            const now = new Date();
+            const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            updateSyncStatusText(`Synced ${timeStr}`);
+          } else {
+            updateSyncStatusText("Sheets Connected");
           }
           return legacySuccess;
 
         } catch (e) {
           console.error("pullMasterSnapshotFromCloud error:", e);
-          updateSyncStatusText("Pull failed");
-          if (!silent) {
-            showToast("Cloud pull failed: " + (e.message || e), "danger");
+          const msg = e.message || "";
+          if (e.status === 401 || msg.includes("invalid authentication credentials") || msg.includes("UNAUTHENTICATED") || msg === "NOT_AUTHENTICATED") {
+            handleAuthExpired("Google session expired. Please click 'Sign in with Google' to re-authenticate.");
+          } else {
+            updateSyncStatusText("Pull failed");
+            if (!silent) {
+              showToast("Cloud pull failed: " + msg, "danger");
+            }
           }
           return false;
         } finally {
           if (pullBtnIcon) pullBtnIcon.className = "fas fa-cloud-arrow-down text-white";
           if (pullBtnText) pullBtnText.textContent = "Pull from Cloud";
           if (btnPullFromCloud) btnPullFromCloud.disabled = false;
+          if (googleSyncStatusText && googleSyncStatusText.textContent === "Pulling Cloud Data...") {
+            updateSyncStatusText(googleAccessToken ? "Sheets Connected" : "Session expired");
+          }
         }
       }
 
@@ -6455,9 +6650,7 @@ ${jsonString}
         try {
           const ranges = "ranges=" + encodeURIComponent("Quizzes!A2:F") + "&ranges=" + encodeURIComponent("Widgets!A2:E") + "&ranges=" + encodeURIComponent("Settings!A2:C");
           const url = `https://sheets.googleapis.com/v4/spreadsheets/${activeSpreadsheetId}/values:batchGet?${ranges}`;
-          const res = await fetch(url, {
-            headers: { Authorization: `Bearer ${googleAccessToken}` }
-          });
+          const res = await fetchWithAuth(url);
           if (!res.ok) return false;
           const data = await res.json();
           const valueRanges = (data && Array.isArray(data.valueRanges)) ? data.valueRanges : [];
@@ -6581,9 +6774,7 @@ ${jsonString}
         try {
           const q = encodeURIComponent(`name = '${DB_SPREADSHEET_NAME}' and mimeType = 'application/vnd.google-apps.spreadsheet' and trashed = false`);
           const searchUrl = `https://www.googleapis.com/drive/v3/files?q=${q}&fields=files(id,name)`;
-          const res = await fetch(searchUrl, {
-            headers: { Authorization: `Bearer ${googleAccessToken}` }
-          });
+          const res = await fetchWithAuth(searchUrl);
 
           if (!res.ok) {
             const err = await res.json();
@@ -6604,12 +6795,15 @@ ${jsonString}
           }
         } catch (err) {
           console.error("discoverOrCreateSpreadsheet error:", err);
-          updateSyncStatusText("Connection error");
           const msg = err.message || "";
-          if (msg.includes("has not been used in project") || msg.includes("drive.googleapis.com") || msg.includes("disabled")) {
+          if (err.status === 401 || msg.includes("invalid authentication credentials") || msg.includes("UNAUTHENTICATED") || msg === "NOT_AUTHENTICATED") {
+            handleAuthExpired("Google session expired. Please click 'Sign in with Google' to re-authenticate.");
+          } else if (msg.includes("has not been used in project") || msg.includes("drive.googleapis.com") || msg.includes("disabled")) {
             showApiEnableModal(msg);
+            updateSyncStatusText("Connection error");
           } else {
             showToast("Drive discovery error: " + msg, "danger");
+            updateSyncStatusText("Connection error");
           }
           return null;
         }
@@ -6686,12 +6880,9 @@ ${jsonString}
             ]
           };
 
-          const res = await fetch("https://sheets.googleapis.com/v4/spreadsheets", {
+          const res = await fetchWithAuth("https://sheets.googleapis.com/v4/spreadsheets", {
             method: "POST",
-            headers: {
-              Authorization: `Bearer ${googleAccessToken}`,
-              "Content-Type": "application/json"
-            },
+            headers: { "Content-Type": "application/json" },
             body: JSON.stringify(createPayload)
           });
 
@@ -6711,12 +6902,15 @@ ${jsonString}
 
         } catch (err) {
           console.error("createInitialSpreadsheet error:", err);
-          updateSyncStatusText("Creation error");
           const msg = err.message || "";
-          if (msg.includes("has not been used in project") || msg.includes("sheets.googleapis.com") || msg.includes("disabled")) {
+          if (err.status === 401 || msg.includes("invalid authentication credentials") || msg.includes("UNAUTHENTICATED") || msg === "NOT_AUTHENTICATED") {
+            handleAuthExpired("Google session expired. Please click 'Sign in with Google' to re-authenticate.");
+          } else if (msg.includes("has not been used in project") || msg.includes("sheets.googleapis.com") || msg.includes("disabled")) {
             showApiEnableModal(msg);
+            updateSyncStatusText("Creation error");
           } else {
             showToast("Could not create Google Sheet: " + msg, "danger");
+            updateSyncStatusText("Creation error");
           }
         }
       }
@@ -6748,9 +6942,7 @@ ${jsonString}
         if (cloudInspectorSummary) cloudInspectorSummary.textContent = "Fetching cell BSP_MASTER_STORE!A2...";
 
         try {
-          const res = await fetch(`https://sheets.googleapis.com/v4/spreadsheets/${activeSpreadsheetId}/values/${MASTER_STORE_SHEET_NAME}!A2:D2`, {
-            headers: { Authorization: `Bearer ${googleAccessToken}` }
-          });
+          const res = await fetchWithAuth(`https://sheets.googleapis.com/v4/spreadsheets/${activeSpreadsheetId}/values/${MASTER_STORE_SHEET_NAME}!A2:D2`);
 
           if (!res.ok) {
             const err = await res.json();
@@ -6785,6 +6977,12 @@ ${jsonString}
             if (cloudInspectorSummary) cloudInspectorSummary.textContent = "Empty Payload";
           }
         } catch (e) {
+          if (e.status === 401) {
+            handleAuthExpired();
+            cloudInspectorJson.textContent = "Session expired. Please sign in with Google again.";
+            if (cloudInspectorSummary) cloudInspectorSummary.textContent = "Session expired";
+            return;
+          }
           cloudInspectorJson.textContent = `Error loading cloud data: ${e.message}\n\nMake sure Google Sheets API is enabled and you have granted access permissions.`;
           if (cloudInspectorSummary) cloudInspectorSummary.textContent = "Failed to load";
         }
@@ -6879,18 +7077,26 @@ ${jsonString}
 
       // Check Google Auth state on load
       if (googleAccessToken) {
-        updateAuthUI(true, currentUserProfile);
-        const lastUp = localStorage.getItem("bsp_last_uploaded_time");
-        if (lastUp) {
-          try {
-            const d = new Date(lastUp);
-            updateSyncStatusText(`Last uploaded: ${d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`);
-          } catch (e) {
+        if (isTokenExpired()) {
+          console.log("Saved Google access token expired, resetting auth session...");
+          handleAuthExpired();
+        } else {
+          updateAuthUI(true, currentUserProfile);
+          const lastUp = localStorage.getItem("bsp_last_uploaded_time");
+          if (lastUp) {
+            try {
+              const d = new Date(lastUp);
+              updateSyncStatusText(`Last uploaded: ${d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`);
+            } catch (e) {
+              updateSyncStatusText("Sheets Connected");
+            }
+          } else {
             updateSyncStatusText("Sheets Connected");
           }
         }
       } else {
         updateAuthUI(false);
+        updateSyncStatusText("Not connected");
       }
 
       if (typeof gapi !== 'undefined' && gapi.load) {
