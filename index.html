@@ -1427,9 +1427,9 @@
             <span>Google OAuth 2.0 Client ID</span>
             <span class="text-slate-400 font-normal">Auto-saved in browser</span>
           </label>
-          <input type="text" id="inputGoogleClientId" class="w-full px-3.5 py-2.5 rounded-xl border border-border-light bg-slate-50 focus:bg-white text-xs font-semibold focus:border-primary outline-none font-mono" placeholder="your-client-id.apps.googleusercontent.com">
+          <input type="text" id="inputGoogleClientId" class="w-full px-3.5 py-2.5 rounded-xl border border-border-light bg-slate-50 focus:bg-white text-xs font-semibold focus:border-primary outline-none font-mono" placeholder="506174863758-xxxxxxxxxx.apps.googleusercontent.com">
           <p class="text-[11px] text-slate-500 leading-relaxed">
-            Get your Client ID from <a href="https://console.cloud.google.com/apis/credentials" target="_blank" class="text-primary underline font-bold">Google Cloud Console</a> with <strong>Authorized JavaScript origins</strong> matching your site domain.
+            Copy your Client ID from <a href="https://console.cloud.google.com/apis/credentials?project=506174863758" target="_blank" class="text-primary underline font-bold inline-flex items-center gap-1">Google Cloud Credentials <i class="fa-solid fa-arrow-up-right-from-square text-[9px]"></i></a> under <strong>OAuth 2.0 Client IDs</strong>.
           </p>
         </div>
 
@@ -5719,18 +5719,24 @@ ${jsonString}
         if (savedProf) currentUserProfile = JSON.parse(savedProf);
       } catch (e) {}
 
+      function isPlaceholderClientId(id) {
+        if (!id) return true;
+        const clean = id.trim();
+        return clean.includes("YOUR_GOOGLE_CLIENT_ID") || clean.includes("9gu8g7b4v5j5j987v0j7m6d9q2b8f8g") || clean.length < 25;
+      }
+
       function getActiveClientId() {
         let id = localStorage.getItem(GOOGLE_CLIENT_ID_KEY);
-        if (!id || !id.trim() || id === "YOUR_GOOGLE_CLIENT_ID.apps.google.com") {
-          id = DEFAULT_CLIENT_ID;
+        if (!id || !id.trim() || isPlaceholderClientId(id)) {
+          return isPlaceholderClientId(DEFAULT_CLIENT_ID) ? '' : DEFAULT_CLIENT_ID;
         }
         return id.trim();
       }
 
       function openGoogleSettingsModal() {
         if (inputGoogleClientId) {
-          const id = localStorage.getItem(GOOGLE_CLIENT_ID_KEY) || DEFAULT_CLIENT_ID;
-          inputGoogleClientId.value = id;
+          const id = localStorage.getItem(GOOGLE_CLIENT_ID_KEY) || '';
+          inputGoogleClientId.value = isPlaceholderClientId(id) ? '' : id;
         }
         if (inputGoogleSheetId) {
           inputGoogleSheetId.value = activeSpreadsheetId || '';
@@ -5778,7 +5784,7 @@ ${jsonString}
           return false;
         }
         const clientId = getActiveClientId();
-        if (!clientId) {
+        if (!clientId || isPlaceholderClientId(clientId)) {
           return false;
         }
 
@@ -5807,8 +5813,11 @@ ${jsonString}
             },
             error_callback: (err) => {
               console.error("GIS Error:", err);
-              alert("Google Sign-in failed or pop-up was blocked. Please check pop-up permissions for this site.");
-              showToast("Pop-up was blocked. Please allow pop-ups for this site to sign in with Google.", "danger");
+              if (err && (err.type === 'popup_failed_to_open' || (err.message && err.message.toLowerCase().includes('popup')))) {
+                showToast("Pop-up was blocked. Please allow pop-ups for this site to sign in with Google.", "danger");
+              } else {
+                showToast("Sign-in issue: Please verify your Client ID in Settings (⚙️).", "warning");
+              }
             }
           });
           return true;
@@ -5820,9 +5829,9 @@ ${jsonString}
 
       function handleSignInClick() {
         const clientId = getActiveClientId();
-        if (!clientId) {
+        if (!clientId || isPlaceholderClientId(clientId)) {
           openGoogleSettingsModal();
-          showToast("Please save your Google OAuth Client ID to connect Google Sheets.", "info");
+          showToast("Please enter your official Google OAuth Client ID to connect.", "warning");
           return;
         }
 
