@@ -613,417 +613,411 @@
         <!-- ============================================================= -->
         <!-- MODULE B: BLOGGER & EDUCATIONAL WIDGETS STUDIO VIEW           -->
         <!-- ============================================================= -->
-        <div id="viewBloggerWidgets" class="tab-view hidden space-y-6 max-w-7xl mx-auto pb-12">
         
-        <!-- Header Hero Banner -->
-        <div class="bg-gradient-to-r from-primary via-indigo-600 to-indigo-800 p-6 sm:p-7 rounded-2xl text-white shadow-md relative overflow-hidden">
-          <div class="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-4">
-            <div class="space-y-1.5 max-w-2xl">
-              <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-surface-container/15 text-indigo-100 text-xs font-bold backdrop-blur-sm mb-1">
-                <i class="fa-solid fa-wand-magic-sparkles text-amber-300"></i> No-Database Interactive Widget Studio
+        <!-- ============================================================= -->
+        <!-- MODULE B: BLOGGER & EDUCATIONAL WIDGETS STUDIO VIEW           -->
+        <!-- ============================================================= -->
+        <div id="viewBloggerWidgets" class="tab-view hidden space-y-6 pb-12">
+          
+          <!-- TOP HERO STUDIO STRIP -->
+          <section class="relative overflow-hidden rounded-xl bg-surface-container-low p-space-lg shadow-xl border border-outline-variant/30">
+            <div class="absolute -right-24 -top-24 h-96 w-96 rounded-full bg-primary/5 blur-3xl pointer-events-none"></div>
+            <div class="absolute -left-20 -bottom-20 h-80 w-80 rounded-full bg-secondary/5 blur-3xl pointer-events-none"></div>
+            <div class="relative z-10 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-space-md">
+              <div class="flex flex-col gap-space-xs">
+                <div class="flex items-center gap-space-sm">
+                  <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-primary-container/20 text-primary font-label-sm text-label-sm uppercase tracking-wider font-bold">
+                    <span class="material-symbols-outlined text-[14px]">auto_awesome</span> No-Database Architecture
+                  </span>
+                  <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-secondary-container/20 text-secondary font-label-sm text-label-sm uppercase tracking-wider font-bold">
+                    <span class="material-symbols-outlined text-[14px]">verified</span> Blogger &amp; WP 100% Ready
+                  </span>
+                </div>
+                <h1 class="font-headline-lg text-headline-lg text-on-surface tracking-tight font-bold">RK Widgets Studio • Blogger Suite Pro</h1>
+                <p class="font-body-md text-body-md text-on-surface-variant max-w-2xl">
+                  Design high-performance interactive flashcards, line-by-line code steppers, search grids, and callouts. Zero external dependencies, pure lightweight client code with zero database calls.
+                </p>
               </div>
-              <h2 class="text-xl sm:text-2xl font-extrabold tracking-tight flex items-center gap-2.5">
-                <i class="fa-solid fa-cubes"></i> Blogger &amp; Educational Widgets Studio
-              </h2>
-              <p class="text-indigo-100 text-xs sm:text-sm leading-relaxed">
-                Design interactive educational flashcards, step-by-step code steppers, syntax cheatsheets, social button bars, and notice callouts. 100% self-contained, mobile-friendly &amp; ready to embed directly into Blogger &amp; WordPress!
-              </p>
-            </div>
-            <div class="flex flex-wrap items-center gap-2.5 shrink-0">
-              <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-surface-container/10 text-white text-xs font-bold border border-white/20 backdrop-blur-sm">
-                <i class="fa-solid fa-layer-group text-amber-300"></i> 6 Pro Widgets
-              </span>
-              <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-emerald-500/20 text-emerald-200 text-xs font-bold border border-emerald-400/30">
-                <i class="fa-solid fa-bolt text-emerald-300"></i> Zero Dependencies
-              </span>
-            </div>
-          </div>
-          <div class="absolute -right-10 -bottom-10 w-48 h-48 bg-surface-container/5 rounded-full blur-2xl pointer-events-none"></div>
-        </div>
 
-        <!-- Main Responsive 2-Column Dashboard Layout -->
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
-
-          <!-- ============================================================= -->
-          <!-- LEFT COLUMN: WIDGET PICKER & DYNAMIC CONFIGURATION (7 COLS)   -->
-          <!-- ============================================================= -->
-          <div class="lg:col-span-7 space-y-5">
-
-            <!-- Card 1: Widget Type Selector (6 Visual Tiles) -->
-            <div class="bg-surface-container p-5 rounded-2xl border border-outline-variant/30 shadow-sm space-y-4">
-              <div class="flex items-center justify-between border-b border-outline-variant/30 pb-3">
-                <div class="flex items-center gap-2.5">
-                  <div class="w-8 h-8 rounded-xl bg-primary/10 text-primary flex items-center justify-center font-bold">
-                    <i class="fa-solid fa-shapes text-sm"></i>
+              <!-- Quick Telemetry Chips -->
+              <div class="flex flex-wrap lg:flex-col xl:flex-row items-start lg:items-end gap-space-sm">
+                <div class="flex items-center gap-space-md px-space-md py-space-sm rounded-lg bg-surface-container border border-outline-variant/30">
+                  <div class="flex flex-col">
+                    <span class="font-label-sm text-label-sm text-outline uppercase font-bold">Active Format</span>
+                    <span id="activeWidgetTypeBadge" class="font-headline-sm text-headline-sm text-primary font-bold">3D Flip Decks</span>
                   </div>
-                  <div>
-                    <h3 class="font-extrabold text-sm sm:text-base text-on-surface">1. Select Widget Type</h3>
-                    <p class="text-xs text-outline">Pick the educational or blog component to customize</p>
+                  <div class="h-7 w-px bg-surface-variant"></div>
+                  <div class="flex flex-col">
+                    <span class="font-label-sm text-label-sm text-outline uppercase font-bold">Bundle Size</span>
+                    <span class="font-headline-sm text-headline-sm text-secondary font-mono font-bold">3.8 KB min</span>
+                  </div>
+                  <div class="h-7 w-px bg-surface-variant"></div>
+                  <div class="flex flex-col">
+                    <span class="font-label-sm text-label-sm text-outline uppercase font-bold">Rendering</span>
+                    <span class="font-headline-sm text-headline-sm text-on-surface font-mono font-bold">Native DOM</span>
                   </div>
                 </div>
-                <span id="activeWidgetTypeBadge" class="text-xs font-bold px-2.5 py-1 rounded-full bg-primary/10 text-primary border border-primary/20">
-                  Interactive Flip Cards
-                </span>
-              </div>
-
-              <!-- 6 Selection Tiles Grid -->
-              <div class="grid grid-cols-2 sm:grid-cols-3 gap-2.5" id="widgetTypeSelectorGrid">
-                <!-- Tile 1: Flip Cards -->
-                <button type="button" class="widget-type-btn p-3 rounded-xl border border-primary bg-primary-bg/30 text-left transition relative flex flex-col justify-between group" data-wtype="flipcards">
-                  <div>
-                    <div class="flex items-center justify-between mb-1.5">
-                      <span class="text-lg">🗂️</span>
-                      <span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-indigo-100 text-indigo-700">CS / IT</span>
-                    </div>
-                    <div class="font-extrabold text-xs text-on-surface group-hover:text-primary">Flip Cards</div>
-                    <div class="text-[10px] text-outline leading-tight line-clamp-2">3D flashcards for terms &amp; definitions</div>
-                  </div>
-                </button>
-
-                <!-- Tile 2: Code Stepper -->
-                <button type="button" class="widget-type-btn p-3 rounded-xl border border-outline-variant/30 bg-surface-container hover:bg-surface-container-lowest text-left transition relative flex flex-col justify-between group" data-wtype="codestepper">
-                  <div>
-                    <div class="flex items-center justify-between mb-1.5">
-                      <span class="text-lg">💻</span>
-                      <span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-sky-100 text-sky-700">Code</span>
-                    </div>
-                    <div class="font-extrabold text-xs text-on-surface group-hover:text-primary">Code Stepper</div>
-                    <div class="text-[10px] text-outline leading-tight line-clamp-2">Line-by-line syntax &amp; output runner</div>
-                  </div>
-                </button>
-
-                <!-- Tile 3: Cheatsheet Grid -->
-                <button type="button" class="widget-type-btn p-3 rounded-xl border border-outline-variant/30 bg-surface-container hover:bg-surface-container-lowest text-left transition relative flex flex-col justify-between group" data-wtype="cheatsheet">
-                  <div>
-                    <div class="flex items-center justify-between mb-1.5">
-                      <span class="text-lg">📑</span>
-                      <span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-emerald-100 text-emerald-700">Searchable</span>
-                    </div>
-                    <div class="font-extrabold text-xs text-on-surface group-hover:text-primary">Cheatsheet Grid</div>
-                    <div class="text-[10px] text-outline leading-tight line-clamp-2">Searchable syntax, shortcuts &amp; tables</div>
-                  </div>
-                </button>
-
-                <!-- Tile 4: Social Button Groups -->
-                <button type="button" class="widget-type-btn p-3 rounded-xl border border-outline-variant/30 bg-surface-container hover:bg-surface-container-lowest text-left transition relative flex flex-col justify-between group" data-wtype="buttons">
-                  <div>
-                    <div class="flex items-center justify-between mb-1.5">
-                      <span class="text-lg">🔗</span>
-                      <span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-amber-100 text-amber-700">Social</span>
-                    </div>
-                    <div class="font-extrabold text-xs text-on-surface group-hover:text-primary">Social Buttons</div>
-                    <div class="text-[10px] text-outline leading-tight line-clamp-2">Follow &amp; subscribe button bars</div>
-                  </div>
-                </button>
-
-                <!-- Tile 5: Callout Box -->
-                <button type="button" class="widget-type-btn p-3 rounded-xl border border-outline-variant/30 bg-surface-container hover:bg-surface-container-lowest text-left transition relative flex flex-col justify-between group" data-wtype="callout">
-                  <div>
-                    <div class="flex items-center justify-between mb-1.5">
-                      <span class="text-lg">📢</span>
-                      <span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-orange-100 text-orange-700">Notice</span>
-                    </div>
-                    <div class="font-extrabold text-xs text-on-surface group-hover:text-primary">Callout Boxes</div>
-                    <div class="text-[10px] text-outline leading-tight line-clamp-2">Important alerts, tips &amp; downloads</div>
-                  </div>
-                </button>
-
-                <!-- Tile 6: Resource Grid -->
-                <button type="button" class="widget-type-btn p-3 rounded-xl border border-outline-variant/30 bg-surface-container hover:bg-surface-container-lowest text-left transition relative flex flex-col justify-between group" data-wtype="grid">
-                  <div>
-                    <div class="flex items-center justify-between mb-1.5">
-                      <span class="text-lg">📚</span>
-                      <span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-purple-100 text-purple-700">Download</span>
-                    </div>
-                    <div class="font-extrabold text-xs text-on-surface group-hover:text-primary">Resource Grid</div>
-                    <div class="text-[10px] text-outline leading-tight line-clamp-2">Chapter notes &amp; paper link cards</div>
-                  </div>
-                </button>
               </div>
             </div>
 
-            <!-- Card 2: Dynamic Content & Configuration Panel -->
-            <div class="bg-surface-container p-5 sm:p-6 rounded-2xl border border-outline-variant/30 shadow-sm space-y-5">
+            <!-- 6 Interactive Widget Category Selectors -->
+            <div class="mt-space-lg grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-space-sm" id="widgetTypeSelectorGrid">
+              <!-- 1: Flip Cards (ACTIVE) -->
+              <button class="widget-type-btn group flex flex-col gap-space-xs p-space-md rounded-xl bg-primary-container text-on-primary-container shadow-lg shadow-primary-container/25 text-left transition-all relative overflow-hidden font-bold is-active" type="button" data-wtype="flipcards">
+                <div class="flex items-center justify-between w-full">
+                  <span class="material-symbols-outlined text-[24px]">style</span>
+                  <span class="font-label-sm text-label-sm px-1.5 py-0.5 rounded bg-surface-container-lowest/30 uppercase tracking-widest font-bold">Active</span>
+                </div>
+                <div class="mt-space-xs">
+                  <div class="font-headline-sm text-headline-sm font-bold text-on-primary-container">Flip Cards</div>
+                  <div class="font-body-sm text-body-sm opacity-90 truncate font-normal">3D Terms &amp; Definitions</div>
+                </div>
+              </button>
+
+              <!-- 2: Code Stepper -->
+              <button class="widget-type-btn group flex flex-col gap-space-xs p-space-md rounded-xl bg-surface-container hover:bg-surface-container-high text-on-surface text-left transition-all border border-outline-variant/30 font-bold" type="button" data-wtype="codestepper">
+                <div class="flex items-center justify-between w-full">
+                  <span class="material-symbols-outlined text-[24px] text-primary group-hover:scale-110 transition-transform">terminal</span>
+                  <span class="font-label-sm text-label-sm text-outline uppercase font-mono">v2.1</span>
+                </div>
+                <div class="mt-space-xs">
+                  <div class="font-headline-sm text-headline-sm font-bold text-on-surface">Code Stepper</div>
+                  <div class="font-body-sm text-body-sm text-on-surface-variant truncate font-normal">Line-by-line runner</div>
+                </div>
+              </button>
+
+              <!-- 3: Cheatsheet Grid -->
+              <button class="widget-type-btn group flex flex-col gap-space-xs p-space-md rounded-xl bg-surface-container hover:bg-surface-container-high text-on-surface text-left transition-all border border-outline-variant/30 font-bold" type="button" data-wtype="cheatsheet">
+                <div class="flex items-center justify-between w-full">
+                  <span class="material-symbols-outlined text-[24px] text-secondary group-hover:scale-110 transition-transform">table_chart</span>
+                  <span class="font-label-sm text-label-sm text-outline uppercase">Filter</span>
+                </div>
+                <div class="mt-space-xs">
+                  <div class="font-headline-sm text-headline-sm font-bold text-on-surface">Cheatsheet Grid</div>
+                  <div class="font-body-sm text-body-sm text-on-surface-variant truncate font-normal">Searchable syntax table</div>
+                </div>
+              </button>
+
+              <!-- 4: Social Buttons -->
+              <button class="widget-type-btn group flex flex-col gap-space-xs p-space-md rounded-xl bg-surface-container hover:bg-surface-container-high text-on-surface text-left transition-all border border-outline-variant/30 font-bold" type="button" data-wtype="buttons">
+                <div class="flex items-center justify-between w-full">
+                  <span class="material-symbols-outlined text-[24px] text-tertiary group-hover:scale-110 transition-transform">share</span>
+                  <span class="font-label-sm text-label-sm text-outline uppercase">Bar</span>
+                </div>
+                <div class="mt-space-xs">
+                  <div class="font-headline-sm text-headline-sm font-bold text-on-surface">Social Buttons</div>
+                  <div class="font-body-sm text-body-sm text-on-surface-variant truncate font-normal">Follow &amp; CTA strips</div>
+                </div>
+              </button>
+
+              <!-- 5: Notice Boxes -->
+              <button class="widget-type-btn group flex flex-col gap-space-xs p-space-md rounded-xl bg-surface-container hover:bg-surface-container-high text-on-surface text-left transition-all border border-outline-variant/30 font-bold" type="button" data-wtype="callout">
+                <div class="flex items-center justify-between w-full">
+                  <span class="material-symbols-outlined text-[24px] text-secondary-fixed group-hover:scale-110 transition-transform">campaign</span>
+                  <span class="font-label-sm text-label-sm text-outline uppercase">Alerts</span>
+                </div>
+                <div class="mt-space-xs">
+                  <div class="font-headline-sm text-headline-sm font-bold text-on-surface">Notice Callouts</div>
+                  <div class="font-body-sm text-body-sm text-on-surface-variant truncate font-normal">Tips &amp; warning alerts</div>
+                </div>
+              </button>
+
+              <!-- 6: Resource Grid -->
+              <button class="widget-type-btn group flex flex-col gap-space-xs p-space-md rounded-xl bg-surface-container hover:bg-surface-container-high text-on-surface text-left transition-all border border-outline-variant/30 font-bold" type="button" data-wtype="grid">
+                <div class="flex items-center justify-between w-full">
+                  <span class="material-symbols-outlined text-[24px] text-surface-tint group-hover:scale-110 transition-transform">folder_zip</span>
+                  <span class="font-label-sm text-label-sm text-outline uppercase">Links</span>
+                </div>
+                <div class="mt-space-xs">
+                  <div class="font-headline-sm text-headline-sm font-bold text-on-surface">Resource Links</div>
+                  <div class="font-body-sm text-body-sm text-on-surface-variant truncate font-normal">Downloads &amp; papers</div>
+                </div>
+              </button>
+            </div>
+          </section>
+
+          <!-- MAIN 2-COLUMN STUDIO WORKSPACE -->
+          <div class="grid grid-cols-1 xl:grid-cols-12 gap-space-lg items-start">
+            
+            <!-- LEFT COLUMN: WIDGET EDITORS & DRAWER CONTROLS (7 COLS) -->
+            <div class="xl:col-span-7 flex flex-col gap-space-lg">
 
               <!-- ======================================================= -->
               <!-- SUB-PANEL 1: FLIP CARDS (FLASHCARDS) BUILDER            -->
               <!-- ======================================================= -->
-              <div id="panelWidgetFlipCards" class="widget-subpanel space-y-5">
-                <div class="flex flex-wrap items-center justify-between gap-3 border-b border-outline-variant/30 pb-3.5">
+              <div id="panelWidgetFlipCards" class="widget-subpanel rounded-xl bg-surface-container-low p-space-lg shadow-xl flex flex-col gap-space-md border border-outline-variant/30">
+                <div class="flex flex-wrap items-center justify-between gap-3 border-b border-outline-variant/20 pb-3.5">
                   <div class="flex items-center gap-2.5">
-                    <div class="w-9 h-9 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center font-bold">
-                      <i class="fa-solid fa-clone text-base"></i>
+                    <div class="w-9 h-9 rounded-xl bg-primary-container/20 text-primary flex items-center justify-center font-bold">
+                      <span class="material-symbols-outlined text-[20px]">style</span>
                     </div>
                     <div>
-                      <h4 class="font-extrabold text-base text-on-surface">Interactive Flip Cards (Flashcards)</h4>
-                      <p class="text-xs text-outline">Design 3D interactive flashcards for computer science terms &amp; definitions</p>
+                      <h4 class="font-headline-sm text-headline-sm text-on-surface font-bold">Interactive Flip Cards (Flashcards)</h4>
+                      <p class="font-body-sm text-body-sm text-on-surface-variant">Design 3D interactive flashcards for terms &amp; definitions</p>
                     </div>
                   </div>
                   <div class="flex items-center gap-2">
-                    <select id="fcPresetSelect" class="px-2.5 py-1.5 rounded-xl border border-outline-variant/30 bg-surface-container-lowest text-xs font-bold text-on-surface-variant outline-none focus:border-primary">
+                    <select id="fcPresetSelect" class="px-2.5 py-1.5 rounded-lg border border-outline-variant/30 bg-surface-container-lowest text-xs font-bold text-on-surface outline-none focus:border-primary">
                       <option value="cbse_it">Preset: CBSE IT 402 Terms</option>
                       <option value="python_terms">Preset: Python Fundamentals</option>
                       <option value="shortcuts">Preset: Windows &amp; Web Shortcuts</option>
                     </select>
-                    <button type="button" id="btnLoadFcPreset" class="tactile-btn px-3 py-1.5 rounded-xl bg-indigo-50 hover:bg-indigo-100 text-indigo-700 font-bold text-xs border border-indigo-200">
-                      Load
+                    <button type="button" id="btnLoadFcPreset" class="px-3 py-1.5 rounded-lg bg-surface-container-high hover:bg-surface-bright text-primary font-bold text-xs border border-outline-variant/30 transition">
+                      Load Preset
                     </button>
                   </div>
                 </div>
 
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
-                  <div>
-                    <label class="block text-xs font-bold text-on-surface-variant uppercase mb-1">Deck Title</label>
-                    <input type="text" id="fcDeckTitleInput" class="w-full px-3 py-2 rounded-xl border border-outline-variant/30 bg-surface-container-lowest text-xs font-bold focus:border-primary outline-none" value="CBSE IT 402 - Networking &amp; Internet Basics">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <div class="space-y-1">
+                    <label class="block font-label-md text-label-md text-outline uppercase font-bold">Deck Heading / Title</label>
+                    <input type="text" id="fcDeckTitleInput" class="w-full px-3 py-2 rounded-lg border border-outline-variant/30 bg-surface-container-lowest text-on-surface font-headline-sm text-sm focus:border-primary outline-none" value="CBSE Class 10 IT - Networking Flashcards">
                   </div>
-                  <div>
-                    <label class="block text-xs font-bold text-on-surface-variant uppercase mb-1">Deck Badge / Tag</label>
-                    <input type="text" id="fcDeckBadgeInput" class="w-full px-3 py-2 rounded-xl border border-outline-variant/30 bg-surface-container-lowest text-xs font-semibold focus:border-primary outline-none" value="Computer Science">
+                  <div class="space-y-1">
+                    <label class="block font-label-md text-label-md text-outline uppercase font-bold">Subject Badge Tag</label>
+                    <input type="text" id="fcDeckBadgeInput" class="w-full px-3 py-2 rounded-lg border border-outline-variant/30 bg-surface-container-lowest text-primary font-headline-sm text-sm focus:border-primary outline-none" value="Computer Science">
                   </div>
                 </div>
 
-                <!-- Flashcards List Manager -->
+                <!-- Flashcard Cards Container -->
                 <div class="space-y-3">
                   <div class="flex items-center justify-between">
-                    <span class="text-xs font-bold text-on-surface-variant uppercase tracking-wider flex items-center gap-1.5">
-                      <i class="fa-solid fa-list-check text-indigo-500"></i> Cards in Deck (<span id="fcCardsCount">5</span>)
-                    </span>
-                    <button type="button" id="btnAddFcCard" class="tactile-btn px-3 py-1.5 rounded-xl bg-primary hover:bg-primary-dark text-white font-bold text-xs flex items-center gap-1.5 shadow-sm shadow-primary/20">
-                      <i class="fa-solid fa-plus"></i> Add Card
+                    <label class="font-label-md text-label-md text-outline uppercase font-bold flex items-center gap-1.5">
+                      <span class="material-symbols-outlined text-[16px] text-primary">layers</span> Cards In Deck (<span id="fcCardsCount">0</span>)
+                    </label>
+                    <button type="button" id="btnAddFcCard" class="px-3 py-1 rounded-lg bg-primary-container text-on-primary-container font-label-md text-label-md font-bold flex items-center gap-1 hover:bg-inverse-primary transition shadow-md">
+                      <span class="material-symbols-outlined text-[16px]">add</span> Add Card
                     </button>
                   </div>
-                  <div id="fcCardsContainer" class="space-y-3 max-h-[420px] overflow-y-auto pr-1">
-                    <!-- Rendered by JS -->
+                  <div id="fcCardsContainer" class="space-y-3 max-h-[380px] overflow-y-auto pr-1">
+                    <!-- Populated by JS -->
                   </div>
                 </div>
               </div>
 
               <!-- ======================================================= -->
-              <!-- SUB-PANEL 2: STEP-BY-STEP CODE STEPPER BUILDER          -->
+              <!-- SUB-PANEL 2: STEP-BY-STEP CODE RUNNER (CODE STEPPER)    -->
               <!-- ======================================================= -->
-              <div id="panelWidgetCodeStepper" class="widget-subpanel hidden space-y-5">
-                <div class="flex flex-wrap items-center justify-between gap-3 border-b border-outline-variant/30 pb-3.5">
+              <div id="panelWidgetCodeStepper" class="widget-subpanel hidden rounded-xl bg-surface-container-low p-space-lg shadow-xl flex flex-col gap-space-md border border-outline-variant/30">
+                <div class="flex flex-wrap items-center justify-between gap-3 border-b border-outline-variant/20 pb-3.5">
                   <div class="flex items-center gap-2.5">
-                    <div class="w-9 h-9 rounded-xl bg-sky-50 text-sky-600 flex items-center justify-center font-bold">
-                      <i class="fa-solid fa-terminal text-base"></i>
+                    <div class="w-9 h-9 rounded-xl bg-primary-container/20 text-primary flex items-center justify-center font-bold">
+                      <span class="material-symbols-outlined text-[20px]">terminal</span>
                     </div>
                     <div>
-                      <h4 class="font-extrabold text-base text-on-surface">Step-by-Step Code Stepper</h4>
-                      <p class="text-xs text-outline">Highlight syntax and simulate line-by-line code execution for students</p>
+                      <h4 class="font-headline-sm text-headline-sm text-on-surface font-bold">Step-by-Step Code Stepper</h4>
+                      <p class="font-body-sm text-body-sm text-on-surface-variant">Line-by-line syntax highlighter with animated explanations &amp; console</p>
                     </div>
                   </div>
                   <div class="flex items-center gap-2">
-                    <select id="codePresetSelect" class="px-2.5 py-1.5 rounded-xl border border-outline-variant/30 bg-surface-container-lowest text-xs font-bold text-on-surface-variant outline-none focus:border-primary">
-                      <option value="python_prime">Preset: Python Prime Number</option>
-                      <option value="js_filter">Preset: JS Array Filter &amp; Map</option>
-                      <option value="css_flex">Preset: CSS Flexbox Centering</option>
+                    <select id="codePresetSelect" class="px-2.5 py-1.5 rounded-lg border border-outline-variant/30 bg-surface-container-lowest text-xs font-bold text-on-surface outline-none focus:border-primary">
+                      <option value="python_loop">Preset: Python For Loop</option>
+                      <option value="py_functions">Preset: Python Function Call</option>
+                      <option value="cpp_intro">Preset: C++ Basic Syntax</option>
                     </select>
-                    <button type="button" id="btnLoadCodePreset" class="tactile-btn px-3 py-1.5 rounded-xl bg-sky-50 hover:bg-sky-100 text-sky-700 font-bold text-xs border border-sky-200">
-                      Load
+                    <button type="button" id="btnLoadCodePreset" class="px-3 py-1.5 rounded-lg bg-surface-container-high hover:bg-surface-bright text-primary font-bold text-xs border border-outline-variant/30 transition">
+                      Load Preset
                     </button>
                   </div>
                 </div>
 
-                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3.5">
-                  <div class="sm:col-span-2">
-                    <label class="block text-xs font-bold text-on-surface-variant uppercase mb-1">Code Snippet Title</label>
-                    <input type="text" id="codeSnippetTitleInput" class="w-full px-3 py-2 rounded-xl border border-outline-variant/30 bg-surface-container-lowest text-xs font-bold focus:border-primary outline-none" value="Python: Check If a Number is Prime">
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                  <div class="sm:col-span-2 space-y-1">
+                    <label class="block font-label-md text-label-md text-outline uppercase font-bold">Code Title / Heading</label>
+                    <input type="text" id="codeSnippetTitleInput" class="w-full px-3 py-2 rounded-lg border border-outline-variant/30 bg-surface-container-lowest text-on-surface text-xs font-bold focus:border-primary outline-none" value="Python For Loop Execution Trace">
                   </div>
-                  <div>
-                    <label class="block text-xs font-bold text-on-surface-variant uppercase mb-1">Language</label>
-                    <select id="codeLanguageSelect" class="w-full px-3 py-2 rounded-xl border border-outline-variant/30 bg-surface-container-lowest text-xs font-bold text-on-surface-variant outline-none focus:border-primary">
-                      <option value="python" selected>Python 3</option>
-                      <option value="javascript">JavaScript</option>
-                      <option value="cpp">C++</option>
-                      <option value="java">Java</option>
-                      <option value="html">HTML / CSS</option>
+                  <div class="space-y-1">
+                    <label class="block font-label-md text-label-md text-outline uppercase font-bold">Language</label>
+                    <select id="codeLanguageSelect" class="w-full px-3 py-2 rounded-lg border border-outline-variant/30 bg-surface-container-lowest text-xs font-bold text-on-surface outline-none focus:border-primary">
+                      <option value="Python">Python</option>
+                      <option value="C++">C++</option>
+                      <option value="JavaScript">JavaScript</option>
+                      <option value="Java">Java</option>
+                      <option value="HTML">HTML</option>
                     </select>
                   </div>
                 </div>
 
-                <div>
-                  <label class="block text-xs font-bold text-on-surface-variant uppercase mb-1">Full Source Code</label>
-                  <textarea id="codeSourceTextarea" rows="6" class="w-full p-3 rounded-xl border border-outline-variant/30 bg-slate-900 text-emerald-400 font-mono text-xs focus:border-primary outline-none resize-none leading-relaxed"></textarea>
+                <div class="space-y-1">
+                  <label class="block font-label-md text-label-md text-outline uppercase font-bold">Raw Source Code (1 Line = 1 Line Number)</label>
+                  <textarea id="codeSourceTextarea" rows="5" class="w-full p-3 rounded-lg border border-outline-variant/30 bg-surface-container-lowest text-secondary font-mono text-xs focus:border-primary outline-none resize-none leading-relaxed"></textarea>
                 </div>
 
-                <!-- Execution Steps Manager -->
                 <div class="space-y-3">
                   <div class="flex items-center justify-between">
-                    <span class="text-xs font-bold text-on-surface-variant uppercase tracking-wider flex items-center gap-1.5">
-                      <i class="fa-solid fa-list-ol text-sky-500"></i> Execution Steps (<span id="codeStepsCount">5</span>)
-                    </span>
-                    <button type="button" id="btnAddCodeStep" class="tactile-btn px-3 py-1.5 rounded-xl bg-sky-600 hover:bg-sky-700 text-white font-bold text-xs flex items-center gap-1.5 shadow-sm">
-                      <i class="fa-solid fa-plus"></i> Add Step
+                    <label class="font-label-md text-label-md text-outline uppercase font-bold flex items-center gap-1.5">
+                      <span class="material-symbols-outlined text-[16px] text-secondary">step</span> Step-by-Step Execution Sequence (<span id="codeStepsCount">0</span>)
+                    </label>
+                    <button type="button" id="btnAddCodeStep" class="px-3 py-1 rounded-lg bg-secondary-container text-on-secondary-container font-label-md text-label-md font-bold flex items-center gap-1 hover:bg-secondary transition shadow-md">
+                      <span class="material-symbols-outlined text-[16px]">add</span> Add Step
                     </button>
                   </div>
-                  <div id="codeStepsContainer" class="space-y-3 max-h-[360px] overflow-y-auto pr-1">
-                    <!-- Rendered by JS -->
+                  <div id="codeStepsContainer" class="space-y-2.5 max-h-[300px] overflow-y-auto pr-1">
+                    <!-- Populated by JS -->
                   </div>
                 </div>
               </div>
 
               <!-- ======================================================= -->
-              <!-- SUB-PANEL 3: SMART SEARCHABLE CHEATSHEET BUILDER        -->
+              <!-- SUB-PANEL 3: SEARCHABLE CHEATSHEET & SHORTCUTS GRID     -->
               <!-- ======================================================= -->
-              <div id="panelWidgetCheatsheet" class="widget-subpanel hidden space-y-5">
-                <div class="flex flex-wrap items-center justify-between gap-3 border-b border-outline-variant/30 pb-3.5">
+              <div id="panelWidgetCheatsheet" class="widget-subpanel hidden rounded-xl bg-surface-container-low p-space-lg shadow-xl flex flex-col gap-space-md border border-outline-variant/30">
+                <div class="flex flex-wrap items-center justify-between gap-3 border-b border-outline-variant/20 pb-3.5">
                   <div class="flex items-center gap-2.5">
-                    <div class="w-9 h-9 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center font-bold">
-                      <i class="fa-solid fa-table-list text-base"></i>
+                    <div class="w-9 h-9 rounded-xl bg-secondary-container/20 text-secondary flex items-center justify-center font-bold">
+                      <span class="material-symbols-outlined text-[20px]">table_chart</span>
                     </div>
                     <div>
-                      <h4 class="font-extrabold text-base text-on-surface">Smart Searchable Cheatsheet Grid</h4>
-                      <p class="text-xs text-outline">Create instant searchable &amp; filterable syntax, shortcuts or formula grids</p>
+                      <h4 class="font-headline-sm text-headline-sm text-on-surface font-bold">Searchable Cheatsheet &amp; Table</h4>
+                      <p class="font-body-sm text-body-sm text-on-surface-variant">Clean filterable reference grid for shortcut keys, formulas &amp; syntax</p>
                     </div>
                   </div>
                   <div class="flex items-center gap-2">
-                    <select id="sheetPresetSelect" class="px-2.5 py-1.5 rounded-xl border border-outline-variant/30 bg-surface-container-lowest text-xs font-bold text-on-surface-variant outline-none focus:border-primary">
-                      <option value="python_methods">Preset: Python String &amp; List Methods</option>
-                      <option value="html5_tags">Preset: HTML5 Core Tags</option>
-                      <option value="vscode_keys">Preset: VS Code &amp; Windows Keys</option>
+                    <select id="sheetPresetSelect" class="px-2.5 py-1.5 rounded-lg border border-outline-variant/30 bg-surface-container-lowest text-xs font-bold text-on-surface outline-none focus:border-primary">
+                      <option value="win_keys">Preset: Windows 11 Shortcuts</option>
+                      <option value="linux_cmd">Preset: Linux Basic Commands</option>
+                      <option value="git_basics">Preset: Git Essential Commands</option>
+                      <option value="html_tags">Preset: HTML5 Key Tags</option>
                     </select>
-                    <button type="button" id="btnLoadSheetPreset" class="tactile-btn px-3 py-1.5 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-emerald-700 font-bold text-xs border border-emerald-200">
-                      Load
+                    <button type="button" id="btnLoadSheetPreset" class="px-3 py-1.5 rounded-lg bg-surface-container-high hover:bg-surface-bright text-secondary font-bold text-xs border border-outline-variant/30 transition">
+                      Load Preset
                     </button>
                   </div>
                 </div>
 
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
-                  <div>
-                    <label class="block text-xs font-bold text-on-surface-variant uppercase mb-1">Cheatsheet Title</label>
-                    <input type="text" id="sheetTitleInput" class="w-full px-3 py-2 rounded-xl border border-outline-variant/30 bg-surface-container-lowest text-xs font-bold focus:border-primary outline-none" value="Python 3 Essential Methods &amp; Syntax">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <div class="space-y-1">
+                    <label class="block font-label-md text-label-md text-outline uppercase font-bold">Cheatsheet Title</label>
+                    <input type="text" id="sheetTitleInput" class="w-full px-3 py-2 rounded-lg border border-outline-variant/30 bg-surface-container-lowest text-on-surface text-xs font-bold focus:border-primary outline-none" value="Windows Keyboard Shortcuts Cheatsheet">
                   </div>
-                  <div>
-                    <label class="block text-xs font-bold text-on-surface-variant uppercase mb-1">Category Tabs (comma-separated)</label>
-                    <input type="text" id="sheetCategoriesInput" class="w-full px-3 py-2 rounded-xl border border-outline-variant/30 bg-surface-container-lowest text-xs font-semibold focus:border-primary outline-none" value="All, Strings, Lists, Dictionaries, Files">
+                  <div class="space-y-1">
+                    <label class="block font-label-md text-label-md text-outline uppercase font-bold">Categories (Comma separated for pills)</label>
+                    <input type="text" id="sheetCategoriesInput" class="w-full px-3 py-2 rounded-lg border border-outline-variant/30 bg-surface-container-lowest text-on-surface text-xs font-semibold focus:border-primary outline-none" value="System, Navigation, Text, Productivity">
                   </div>
                 </div>
 
-                <!-- Items Manager -->
                 <div class="space-y-3">
                   <div class="flex items-center justify-between">
-                    <span class="text-xs font-bold text-on-surface-variant uppercase tracking-wider flex items-center gap-1.5">
-                      <i class="fa-solid fa-list-check text-emerald-500"></i> Cheatsheet Items (<span id="sheetItemsCount">6</span>)
-                    </span>
-                    <button type="button" id="btnAddSheetItem" class="tactile-btn px-3 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs flex items-center gap-1.5 shadow-sm">
-                      <i class="fa-solid fa-plus"></i> Add Item
+                    <label class="font-label-md text-label-md text-outline uppercase font-bold flex items-center gap-1.5">
+                      <span class="material-symbols-outlined text-[16px] text-secondary">list</span> Table Rows (<span id="sheetItemsCount">0</span>)
+                    </label>
+                    <button type="button" id="btnAddSheetItem" class="px-3 py-1 rounded-lg bg-secondary-container text-on-secondary-container font-label-md text-label-md font-bold flex items-center gap-1 hover:bg-secondary transition shadow-md">
+                      <span class="material-symbols-outlined text-[16px]">add</span> Add Row
                     </button>
                   </div>
-                  <div id="sheetItemsContainer" class="space-y-3 max-h-[380px] overflow-y-auto pr-1">
-                    <!-- Rendered by JS -->
+                  <div id="sheetItemsContainer" class="space-y-2 max-h-[350px] overflow-y-auto pr-1">
+                    <!-- Populated by JS -->
                   </div>
                 </div>
               </div>
 
               <!-- ======================================================= -->
-              <!-- SUB-PANEL 4: MULTI-GROUP CUSTOM BUTTON BUILDER          -->
+              <!-- SUB-PANEL 4: SOCIAL BUTTON BARS BUILDER                  -->
               <!-- ======================================================= -->
-              <div id="panelWidgetButtons" class="widget-subpanel hidden space-y-5">
-                <div class="flex flex-wrap items-center justify-between gap-3 border-b border-outline-variant/30 pb-3.5">
+              <div id="panelWidgetButtons" class="widget-subpanel hidden rounded-xl bg-surface-container-low p-space-lg shadow-xl flex flex-col gap-space-md border border-outline-variant/30">
+                <div class="flex flex-wrap items-center justify-between gap-3 border-b border-outline-variant/20 pb-3.5">
                   <div class="flex items-center gap-2.5">
-                    <div class="w-9 h-9 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center font-bold">
-                      <i class="fa-solid fa-layer-group text-base"></i>
+                    <div class="w-9 h-9 rounded-xl bg-tertiary-container/30 text-tertiary flex items-center justify-center font-bold">
+                      <span class="material-symbols-outlined text-[20px]">share</span>
                     </div>
                     <div>
-                      <h4 class="font-extrabold text-base text-on-surface">Custom Button Groups &amp; Social Links</h4>
-                      <p class="text-xs text-outline">Create branded social follow bars and conversion link buttons</p>
+                      <h4 class="font-headline-sm text-headline-sm text-on-surface font-bold">Social &amp; Follow Button Groups</h4>
+                      <p class="font-body-sm text-body-sm text-on-surface-variant">Follow, join channel &amp; subscribe button bars for your blog</p>
                     </div>
                   </div>
-                  <button id="btnAddButtonGroup" type="button" class="tactile-btn px-3 py-1.5 rounded-xl bg-primary hover:bg-primary-dark text-white font-bold text-xs flex items-center gap-1.5 shadow-sm shadow-primary/20">
-                    <i class="fa-solid fa-plus"></i> New Button Group
+                  <button id="btnAddButtonGroup" type="button" class="px-3 py-1.5 rounded-lg bg-primary-container hover:bg-inverse-primary text-on-primary-container font-bold text-xs flex items-center gap-1.5 shadow-md transition">
+                    <span class="material-symbols-outlined text-[16px]">add_circle</span> New Group
                   </button>
                 </div>
 
-                <!-- Group Tabs Row -->
-                <div class="flex items-center gap-2 overflow-x-auto pb-1.5 pt-1" id="btnGroupTabsContainer">
-                  <!-- Rendered dynamically by JS -->
-                </div>
-
-                <!-- Active Group Header Bar & Rename / Delete Controls -->
-                <div class="flex flex-wrap items-center justify-between gap-3 p-3.5 bg-surface-container-lowest rounded-2xl border border-outline-variant/30">
-                  <div class="flex items-center gap-2 flex-1 min-w-[220px]">
-                    <span class="text-xs font-bold text-outline uppercase shrink-0">Group Name:</span>
-                    <input type="text" id="activeGroupNameInput" class="flex-1 px-3 py-1.5 rounded-xl border border-outline-variant/30 bg-surface-container text-xs font-bold text-on-surface focus:border-primary outline-none" placeholder="e.g. Top Social Follow Bar">
-                  </div>
-                  <div class="flex items-center gap-2 shrink-0">
-                    <button id="btnDuplicateGroup" type="button" class="tactile-btn px-3 py-1.5 rounded-xl bg-surface-container hover:bg-surface-container-low text-on-surface-variant font-bold text-xs border border-outline-variant/30 flex items-center gap-1" title="Duplicate this group">
-                      <i class="fa-regular fa-copy"></i> Duplicate
-                    </button>
-                    <button id="btnDeleteGroup" type="button" class="tactile-btn px-3 py-1.5 rounded-xl bg-surface-container hover:bg-rose-50 text-rose-600 font-bold text-xs border border-rose-200 flex items-center gap-1" title="Delete this group">
-                      <i class="fa-solid fa-trash-can"></i> Delete
-                    </button>
+                <!-- Group Tabs Strip -->
+                <div class="space-y-1.5">
+                  <label class="block font-label-md text-label-md text-outline uppercase font-bold">Select Active Button Group</label>
+                  <div id="btnGroupTabsContainer" class="flex items-center gap-2 overflow-x-auto pb-1">
+                    <!-- Populated by JS -->
                   </div>
                 </div>
 
-                <!-- Buttons in Active Group -->
-                <div class="space-y-3">
-                  <div class="flex flex-wrap items-center justify-between gap-2">
-                    <span class="text-xs font-bold text-on-surface-variant uppercase tracking-wider flex items-center gap-1.5">
-                      <i class="fa-solid fa-list-check text-indigo-500"></i> Buttons in this Group (<span id="grpButtonsCount">0</span>)
-                    </span>
-                    <div class="flex items-center gap-2">
-                      <button id="btnOpenPresetModal" type="button" class="tactile-btn px-3 py-1.5 rounded-xl bg-indigo-50 hover:bg-indigo-100 text-indigo-700 font-bold text-xs flex items-center gap-1.5 border border-indigo-200">
-                        <i class="fa-solid fa-bolt text-amber-500"></i> Add Preset Social Button
+                <div class="p-4 rounded-xl bg-surface-container border border-outline-variant/20 space-y-4">
+                  <div class="flex items-center justify-between gap-3">
+                    <div class="space-y-1 flex-1">
+                      <label class="block font-label-md text-label-md text-outline uppercase font-bold">Group Display Name</label>
+                      <input type="text" id="activeGroupNameInput" class="w-full px-3 py-1.5 rounded-lg border border-outline-variant/30 bg-surface-container-lowest text-on-surface text-xs font-bold focus:border-primary outline-none">
+                    </div>
+                    <div class="flex items-center gap-1.5 pt-4">
+                      <button id="btnDuplicateGroup" type="button" class="p-2 rounded-lg bg-surface-container-high hover:bg-surface-bright text-outline hover:text-on-surface transition" title="Duplicate Group">
+                        <span class="material-symbols-outlined text-[16px]">content_copy</span>
                       </button>
-                      <button id="btnAddCustomBtn" type="button" class="tactile-btn px-3 py-1.5 rounded-xl bg-surface-container-low hover:bg-slate-200 text-on-surface-variant font-bold text-xs flex items-center gap-1.5 border border-outline-variant/30">
-                        <i class="fa-solid fa-plus-circle text-primary"></i> Add Custom Link Button
+                      <button id="btnDeleteGroup" type="button" class="p-2 rounded-lg bg-surface-container-high hover:bg-error-container text-outline hover:text-error transition" title="Delete Group">
+                        <span class="material-symbols-outlined text-[16px]">delete</span>
                       </button>
                     </div>
                   </div>
 
-                  <!-- Buttons List (Cards) Container -->
-                  <div id="groupButtonsListContainer" class="space-y-2.5 max-h-[380px] overflow-y-auto pr-1">
-                    <!-- Rendered by JS -->
+                  <div class="space-y-2.5">
+                    <div class="flex items-center justify-between">
+                      <label class="font-label-md text-label-md text-outline uppercase font-bold flex items-center gap-1.5">
+                        <span class="material-symbols-outlined text-[16px] text-tertiary">buttons_alt</span> Buttons in this Group (<span id="grpButtonsCount">0</span>)
+                      </label>
+                      <div class="flex items-center gap-2">
+                        <button id="btnOpenPresetModal" type="button" class="px-2.5 py-1 rounded-lg bg-surface-container-high hover:bg-surface-bright text-on-surface font-bold text-xs border border-outline-variant/30">
+                          + Preset Platform
+                        </button>
+                        <button id="btnAddCustomBtn" type="button" class="px-2.5 py-1 rounded-lg bg-primary-container text-on-primary-container font-bold text-xs hover:bg-inverse-primary shadow-sm">
+                          + Custom Button
+                        </button>
+                      </div>
+                    </div>
+                    <div id="groupButtonsListContainer" class="space-y-2.5 max-h-[300px] overflow-y-auto pr-1">
+                      <!-- Populated by JS -->
+                    </div>
                   </div>
                 </div>
               </div>
 
               <!-- ======================================================= -->
-              <!-- SUB-PANEL 5: EDUCATIONAL ALERT & CALLOUT BOXES          -->
+              <!-- SUB-PANEL 5: NOTICE & CALLOUT BOXES                      -->
               <!-- ======================================================= -->
-              <div id="panelWidgetCallout" class="widget-subpanel hidden space-y-5">
-                <div class="flex items-center justify-between border-b border-outline-variant/30 pb-3.5">
-                  <div class="flex items-center gap-2.5">
-                    <div class="w-9 h-9 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center font-bold">
-                      <i class="fa-solid fa-bullhorn text-base"></i>
-                    </div>
-                    <div>
-                      <h4 class="font-extrabold text-base text-on-surface">Educational Alert &amp; Callout Boxes</h4>
-                      <p class="text-xs text-outline">Styled notice banners for instructions, tips, warnings &amp; downloads</p>
-                    </div>
+              <div id="panelWidgetCallout" class="widget-subpanel hidden rounded-xl bg-surface-container-low p-space-lg shadow-xl flex flex-col gap-space-md border border-outline-variant/30">
+                <div class="flex items-center gap-2.5 border-b border-outline-variant/20 pb-3.5">
+                  <div class="w-9 h-9 rounded-xl bg-secondary-container/20 text-secondary flex items-center justify-center font-bold">
+                    <span class="material-symbols-outlined text-[20px]">campaign</span>
                   </div>
-                  <span class="text-xs font-bold text-outline">Notice Box</span>
+                  <div>
+                    <h4 class="font-headline-sm text-headline-sm text-on-surface font-bold">Notice &amp; Alert Callout Box</h4>
+                    <p class="font-body-sm text-body-sm text-on-surface-variant">Important notes, exam tips, warnings and download callouts</p>
+                  </div>
                 </div>
 
-                <!-- Inputs -->
-                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3.5">
-                  <div>
-                    <label class="block text-xs font-bold text-on-surface-variant uppercase mb-1">Callout Type</label>
-                    <select id="calloutTypeSelect" class="w-full px-3 py-2 rounded-xl border border-outline-variant/30 bg-surface-container-lowest text-xs font-bold text-on-surface-variant outline-none focus:border-primary">
-                      <option value="info" selected>Important Note (Blue)</option>
-                      <option value="warning">Warning / Caution (Amber)</option>
-                      <option value="download">Download Resource / Notes (Emerald)</option>
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                  <div class="space-y-1">
+                    <label class="block font-label-md text-label-md text-outline uppercase font-bold">Callout Theme</label>
+                    <select id="calloutTypeSelect" class="w-full px-3 py-2 rounded-lg border border-outline-variant/30 bg-surface-container-lowest text-xs font-bold text-on-surface outline-none focus:border-primary">
+                      <option value="tip">💡 Pro Tip / Solution (Emerald)</option>
+                      <option value="important">⭐ Important Notice (Indigo)</option>
+                      <option value="warning">⚠️ Warning / Exam Alert (Amber)</option>
+                      <option value="download">📥 Download / File Resource (Violet)</option>
                     </select>
                   </div>
-                  <div class="sm:col-span-2">
-                    <label class="block text-xs font-bold text-on-surface-variant uppercase mb-1">Callout Title</label>
-                    <input type="text" id="calloutTitleInput" class="w-full px-3 py-2 rounded-xl border border-outline-variant/30 bg-surface-container-lowest text-xs font-bold focus:border-primary outline-none" value="📌 Important Student Instruction">
+                  <div class="sm:col-span-2 space-y-1">
+                    <label class="block font-label-md text-label-md text-outline uppercase font-bold">Callout Heading / Title</label>
+                    <input type="text" id="calloutTitleInput" class="w-full px-3 py-2 rounded-lg border border-outline-variant/30 bg-surface-container-lowest text-on-surface text-xs font-bold focus:border-primary outline-none" value="Important Exam Instructions • Term 2">
                   </div>
                 </div>
 
-                <div>
-                  <label class="block text-xs font-bold text-on-surface-variant uppercase mb-1">Message Content</label>
-                  <textarea id="calloutMessageInput" rows="2" class="w-full p-3 rounded-xl border border-outline-variant/30 bg-surface-container-lowest text-xs font-medium focus:border-primary outline-none resize-none leading-relaxed">Attempt all questions in this session before checking your final score. Review notes will appear immediately after completion.</textarea>
+                <div class="space-y-1">
+                  <label class="block font-label-md text-label-md text-outline uppercase font-bold">Callout Message Text</label>
+                  <textarea id="calloutMessageInput" rows="3" class="w-full p-3 rounded-lg border border-outline-variant/30 bg-surface-container-lowest text-on-surface text-xs font-medium focus:border-primary outline-none resize-none leading-relaxed">Attempt all questions in this session before checking your final score. Review notes will appear immediately after completion.</textarea>
                 </div>
 
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
-                  <div>
-                    <label class="block text-xs font-bold text-on-surface-variant uppercase mb-1">Optional Action Button Text</label>
-                    <input type="text" id="calloutBtnTextInput" class="w-full px-3 py-2 rounded-xl border border-outline-variant/30 bg-surface-container-lowest text-xs font-semibold focus:border-primary outline-none" placeholder="e.g. Download Chapter PDF ➔" value="Download PDF Notes ➔">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <div class="space-y-1">
+                    <label class="block font-label-md text-label-md text-outline uppercase font-bold">Button CTA Label (Optional)</label>
+                    <input type="text" id="calloutBtnTextInput" class="w-full px-3 py-2 rounded-lg border border-outline-variant/30 bg-surface-container-lowest text-on-surface text-xs font-semibold focus:border-primary outline-none" placeholder="e.g. Download Chapter PDF ➔" value="Download PDF Notes ➔">
                   </div>
-                  <div>
-                    <label class="block text-xs font-bold text-on-surface-variant uppercase mb-1">Action Button URL</label>
-                    <input type="text" id="calloutBtnUrlInput" class="w-full px-3 py-2 rounded-xl border border-outline-variant/30 bg-surface-container-lowest text-xs font-semibold focus:border-primary outline-none" placeholder="https://yourblog.com/notes.pdf" value="https://example.com/download.pdf">
+                  <div class="space-y-1">
+                    <label class="block font-label-md text-label-md text-outline uppercase font-bold">Button Destination URL</label>
+                    <input type="text" id="calloutBtnUrlInput" class="w-full px-3 py-2 rounded-lg border border-outline-variant/30 bg-surface-container-lowest text-on-surface text-xs font-semibold focus:border-primary outline-none" placeholder="https://yourblog.com/notes.pdf" value="https://example.com/download.pdf">
                   </div>
                 </div>
               </div>
@@ -1031,370 +1025,302 @@
               <!-- ======================================================= -->
               <!-- SUB-PANEL 6: RESOURCE & SUBJECT LINK GRID               -->
               <!-- ======================================================= -->
-              <div id="panelWidgetGrid" class="widget-subpanel hidden space-y-5">
-                <div class="flex items-center justify-between border-b border-outline-variant/30 pb-3.5">
+              <div id="panelWidgetGrid" class="widget-subpanel hidden rounded-xl bg-surface-container-low p-space-lg shadow-xl flex flex-col gap-space-md border border-outline-variant/30">
+                <div class="flex items-center justify-between border-b border-outline-variant/20 pb-3.5">
                   <div class="flex items-center gap-2.5">
-                    <div class="w-9 h-9 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center font-bold">
-                      <i class="fa-solid fa-table-cells-large text-base"></i>
+                    <div class="w-9 h-9 rounded-xl bg-surface-tint/20 text-surface-tint flex items-center justify-center font-bold">
+                      <span class="material-symbols-outlined text-[20px]">folder_zip</span>
                     </div>
                     <div>
-                      <h4 class="font-extrabold text-base text-on-surface">Resource &amp; Subject Link Grid</h4>
-                      <p class="text-xs text-outline">Clean cards grid for downloadable chapter notes, blueprints &amp; papers</p>
+                      <h4 class="font-headline-sm text-headline-sm text-on-surface font-bold">Resource &amp; Link Cards Grid</h4>
+                      <p class="font-body-sm text-body-sm text-on-surface-variant">Visual grid of study materials, question papers, and download notes</p>
                     </div>
                   </div>
-                  <button id="btnAddGridItem" type="button" class="px-3 py-1 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-emerald-700 font-bold text-xs flex items-center gap-1 border border-emerald-200">
-                    <i class="fa-solid fa-plus-circle"></i> Add Link Card
+                  <button id="btnAddGridItem" type="button" class="px-3 py-1.5 rounded-lg bg-secondary-container text-on-secondary-container font-label-md text-label-md font-bold flex items-center gap-1 hover:bg-secondary transition shadow-md">
+                    <span class="material-symbols-outlined text-[16px]">add</span> Add Resource Card
                   </button>
                 </div>
 
-                <div>
-                  <label class="block text-xs font-bold text-on-surface-variant uppercase mb-1">Section Heading</label>
-                  <input type="text" id="gridHeadingInput" class="w-full px-3 py-2 rounded-xl border border-outline-variant/30 bg-surface-container-lowest text-xs font-bold focus:border-primary outline-none" value="📚 Recommended Study Materials &amp; Papers">
+                <div class="space-y-1">
+                  <label class="block font-label-md text-label-md text-outline uppercase font-bold">Grid Section Title</label>
+                  <input type="text" id="gridHeadingInput" class="w-full px-3 py-2 rounded-lg border border-outline-variant/30 bg-surface-container-lowest text-on-surface text-xs font-bold focus:border-primary outline-none" value="📚 Recommended Study Materials &amp; Papers">
                 </div>
 
-                <!-- Dynamic Resource Cards Editor List -->
                 <div id="gridItemsContainer" class="space-y-3 max-h-[380px] overflow-y-auto pr-1">
-                  <!-- Rendered by JS -->
+                  <!-- Populated by JS -->
                 </div>
               </div>
 
-            </div>
-
-            <!-- Card 3: Collapsible Drawer: Visual Styling & Layout Options -->
-            <div class="bg-surface-container rounded-2xl border border-outline-variant/30 shadow-sm overflow-hidden" id="drawerWidgetStyling">
-              <button type="button" class="w-full p-4 flex items-center justify-between text-left hover:bg-surface-container-lowest transition select-none accordion-toggle" aria-expanded="false" id="btnToggleStylingDrawer">
-                <div class="flex items-center gap-2.5">
-                  <div class="w-7 h-7 rounded-lg bg-surface-container-low text-on-surface-variant flex items-center justify-center text-xs">
-                    <i class="fa-solid fa-palette"></i>
-                  </div>
-                  <div>
-                    <span class="font-bold text-xs sm:text-sm text-on-surface">Advanced Styling &amp; Layout Options</span>
-                    <span class="block text-[11px] text-outline">Customize orientations, color themes, and button formats</span>
-                  </div>
-                </div>
-                <div class="flex items-center gap-2">
-                  <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-surface-container-low text-on-surface-variant">Customizable</span>
-                  <i class="fa-solid fa-chevron-down text-xs text-outline/80 accordion-chevron"></i>
-                </div>
-              </button>
-
-              <div id="panelStylingContent" class="p-4 sm:p-5 border-t border-outline-variant/30 space-y-4 hidden bg-surface-container-lowest">
-                <!-- Display & Styling Controls for Button Groups -->
-                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3.5" id="socialStylingControlsGroup">
-                  <!-- 1. Layout Orientation -->
-                  <div>
-                    <label class="block text-[11px] font-bold text-on-surface-variant uppercase mb-1.5">Layout Orientation</label>
-                    <div class="grid grid-cols-3 gap-1.5" id="grpLayoutRadiosContainer">
-                      <label class="grp-layout-option flex flex-col items-center justify-center p-2 rounded-xl border border-primary bg-primary-bg/30 cursor-pointer text-center select-none transition">
-                        <input type="radio" name="grpLayout" value="horizontal" checked class="sr-only">
-                        <i class="fa-solid fa-arrows-left-right text-xs text-primary mb-1"></i>
-                        <span class="text-[11px] font-bold text-primary">Horizontal</span>
-                      </label>
-                      <label class="grp-layout-option flex flex-col items-center justify-center p-2 rounded-xl border border-outline-variant/30 bg-surface-container cursor-pointer hover:border-slate-300 text-center select-none transition">
-                        <input type="radio" name="grpLayout" value="vertical" class="sr-only">
-                        <i class="fa-solid fa-bars text-xs text-outline mb-1"></i>
-                        <span class="text-[11px] font-bold text-on-surface-variant">Vertical</span>
-                      </label>
-                      <label class="grp-layout-option flex flex-col items-center justify-center p-2 rounded-xl border border-outline-variant/30 bg-surface-container cursor-pointer hover:border-slate-300 text-center select-none transition">
-                        <input type="radio" name="grpLayout" value="grid2" class="sr-only">
-                        <i class="fa-solid fa-table-cells-large text-xs text-outline mb-1"></i>
-                        <span class="text-[11px] font-bold text-on-surface-variant">2-Col Grid</span>
-                      </label>
+              <!-- COLLAPSIBLE DRAWER 1: WIDGET STYLING & SIZING -->
+              <div class="rounded-xl bg-surface-container-low border border-outline-variant/30 shadow-md overflow-hidden" id="drawerWidgetStyling">
+                <button type="button" class="w-full p-4 flex items-center justify-between text-left hover:bg-surface-container transition select-none accordion-toggle" aria-expanded="false" id="btnToggleStylingDrawer">
+                  <div class="flex items-center gap-2.5">
+                    <span class="material-symbols-outlined text-primary text-[20px]">palette</span>
+                    <div>
+                      <h4 class="font-headline-sm text-headline-sm text-on-surface font-bold">Widget Layout &amp; Visual Styling</h4>
+                      <p class="font-body-sm text-body-sm text-on-surface-variant">Adjust alignment, layout, and visual button themes</p>
                     </div>
                   </div>
+                  <span class="material-symbols-outlined text-outline text-[20px] accordion-chevron">expand_more</span>
+                </button>
 
-                  <!-- 2. Button Style -->
-                  <div>
-                    <label class="block text-[11px] font-bold text-on-surface-variant uppercase mb-1.5">Button Style</label>
-                    <select id="grpStyleSelect" class="w-full px-3 py-2 rounded-xl border border-outline-variant/30 bg-surface-container text-xs font-bold text-on-surface-variant outline-none focus:border-primary">
-                      <option value="pill_glow" selected>Modern Pill with Glow</option>
-                      <option value="minimal_solid">Minimal Solid</option>
-                      <option value="outlined">Outlined Border</option>
-                      <option value="gradient">Gradient Accent</option>
-                    </select>
-                  </div>
+                <div id="panelStylingContent" class="p-4 sm:p-5 border-t border-outline-variant/20 space-y-4 hidden bg-surface-container-lowest">
+                  <div class="grid grid-cols-1 sm:grid-cols-3 gap-3.5" id="socialStylingControlsGroup">
+                    <div class="space-y-1.5">
+                      <label class="block font-label-md text-label-md text-outline uppercase font-bold">Layout Alignment</label>
+                      <div class="grid grid-cols-3 gap-1.5" id="grpLayoutRadiosContainer">
+                        <label class="flex flex-col items-center p-2 rounded-lg border border-outline-variant/30 bg-surface-container cursor-pointer hover:border-primary">
+                          <input type="radio" name="grpLayout" value="horizontal" checked class="sr-only">
+                          <span class="material-symbols-outlined text-[16px] text-primary">view_stream</span>
+                          <span class="text-[10px] font-bold mt-1 text-on-surface">Horiz</span>
+                        </label>
+                        <label class="flex flex-col items-center p-2 rounded-lg border border-outline-variant/30 bg-surface-container cursor-pointer hover:border-primary">
+                          <input type="radio" name="grpLayout" value="vertical" class="sr-only">
+                          <span class="material-symbols-outlined text-[16px] text-outline">view_agenda</span>
+                          <span class="text-[10px] font-bold mt-1 text-on-surface">Vert</span>
+                        </label>
+                        <label class="flex flex-col items-center p-2 rounded-lg border border-outline-variant/30 bg-surface-container cursor-pointer hover:border-primary">
+                          <input type="radio" name="grpLayout" value="grid" class="sr-only">
+                          <span class="material-symbols-outlined text-[16px] text-outline">grid_view</span>
+                          <span class="text-[10px] font-bold mt-1 text-on-surface">Grid</span>
+                        </label>
+                      </div>
+                    </div>
 
-                  <!-- 3. Display Format -->
-                  <div>
-                    <label class="block text-[11px] font-bold text-on-surface-variant uppercase mb-1.5">Display Format</label>
-                    <select id="grpFormatSelect" class="w-full px-3 py-2 rounded-xl border border-outline-variant/30 bg-surface-container text-xs font-bold text-on-surface-variant outline-none focus:border-primary">
-                      <option value="both" selected>Icon + Label Text</option>
-                      <option value="icon_only">Icon Only (Compact)</option>
-                    </select>
+                    <div class="space-y-1.5">
+                      <label class="block font-label-md text-label-md text-outline uppercase font-bold">Visual Button Theme</label>
+                      <select id="grpStyleSelect" class="w-full px-3 py-2 rounded-lg border border-outline-variant/30 bg-surface-container text-xs font-bold text-on-surface outline-none focus:border-primary">
+                        <option value="brand">Authentic Brand Colors</option>
+                        <option value="modern-pill">Modern Rounded Pills</option>
+                        <option value="minimal-outline">Subtle Outlines</option>
+                        <option value="floating-gradient">Vibrant Gradient Glow</option>
+                        <option value="tactile-3d">Tactile 3D Soft Buttons</option>
+                      </select>
+                    </div>
+
+                    <div class="space-y-1.5">
+                      <label class="block font-label-md text-label-md text-outline uppercase font-bold">Button Content Format</label>
+                      <select id="grpFormatSelect" class="w-full px-3 py-2 rounded-lg border border-outline-variant/30 bg-surface-container text-xs font-bold text-on-surface outline-none focus:border-primary">
+                        <option value="icon-text">Icon + Text Label</option>
+                        <option value="icon-only">Icon Only (Compact Bar)</option>
+                        <option value="badge-counter">Icon + Text + Badge</option>
+                      </select>
+                    </div>
                   </div>
                 </div>
+              </div>
 
-                <!-- Educational Theme Options -->
-                <div class="pt-2 border-t border-slate-200/60 flex flex-wrap items-center justify-between gap-3 text-xs text-on-surface-variant">
+              <!-- COLLAPSIBLE DRAWER 2: GLOBAL SOCIAL PROFILES VAULT -->
+              <div class="rounded-xl bg-surface-container-low border border-outline-variant/30 shadow-md overflow-hidden" id="drawerGlobalProfiles">
+                <div class="p-4 flex flex-wrap items-center justify-between gap-3">
+                  <div class="flex items-center gap-2.5">
+                    <span class="material-symbols-outlined text-secondary text-[20px]">public</span>
+                    <div>
+                      <h4 class="font-headline-sm text-headline-sm text-on-surface font-bold">Global Social Channels Vault</h4>
+                      <p class="font-body-sm text-body-sm text-on-surface-variant">Store your YouTube, Telegram, WhatsApp &amp; Instagram channels once</p>
+                    </div>
+                  </div>
                   <div class="flex items-center gap-2">
-                    <span class="font-bold text-on-surface-variant">Theme Palette:</span>
-                    <span class="px-2 py-0.5 rounded bg-indigo-100 text-indigo-800 font-semibold text-[11px]">Dynamic Indigo</span>
-                    <span class="px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 font-semibold text-[11px]">Emerald Light</span>
-                  </div>
-                  <span class="text-[11px] text-outline">Auto-formatted for zero CSS conflicts</span>
-                </div>
-              </div>
-            </div>
-
-            <!-- Card 4: Collapsible Drawer: Global Social Profiles Store -->
-            <div class="bg-surface-container rounded-2xl border border-outline-variant/30 shadow-sm overflow-hidden" id="drawerGlobalProfiles">
-              <div class="p-4 flex flex-wrap items-center justify-between gap-2 bg-surface-container">
-                <div class="flex items-center gap-2.5">
-                  <div class="w-7 h-7 rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center text-xs font-bold">
-                    <i class="fa-solid fa-address-card"></i>
-                  </div>
-                  <div>
-                    <h3 class="font-extrabold text-xs sm:text-sm text-on-surface">My Social Profiles (Global Store)</h3>
-                    <p class="text-[11px] text-outline">Save once, auto-fill everywhere across all custom button groups</p>
-                  </div>
-                </div>
-                <div class="flex items-center gap-2">
-                  <span id="globalProfilesStatusBadge" class="text-[11px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200/60 flex items-center gap-1">
-                    <i class="fa-solid fa-circle-check text-emerald-600"></i> Saved &amp; Synced
-                  </span>
-                  <button id="btnToggleGlobalProfiles" type="button" class="tactile-btn px-2.5 py-1 rounded-xl bg-surface-container-low hover:bg-slate-200 text-on-surface-variant font-bold text-xs flex items-center gap-1">
-                    <i class="fa-solid fa-pen-to-square"></i> <span id="toggleGlobalProfilesText">Edit Profiles</span>
-                  </button>
-                </div>
-              </div>
-
-              <!-- Collapsible Global Profiles Inputs Panel -->
-              <div id="globalProfilesPanel" class="p-4 border-t border-outline-variant/30 space-y-3 bg-surface-container-lowest">
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5">
-                  <!-- YouTube -->
-                  <div class="p-2.5 rounded-xl border border-outline-variant/30 bg-surface-container space-y-1">
-                    <label class="block text-[11px] font-bold text-on-surface-variant flex items-center gap-1.5">
-                      <i class="fa-brands fa-youtube text-red-600"></i> YouTube Channel URL
-                    </label>
-                    <input type="url" id="global_soc_yt" class="w-full px-2 py-1 rounded-lg border border-outline-variant/30 bg-surface-container-lowest text-xs font-semibold focus:border-primary outline-none" placeholder="https://youtube.com/@yourchannel">
-                  </div>
-
-                  <!-- Telegram -->
-                  <div class="p-2.5 rounded-xl border border-outline-variant/30 bg-surface-container space-y-1">
-                    <label class="block text-[11px] font-bold text-on-surface-variant flex items-center gap-1.5">
-                      <i class="fa-brands fa-telegram text-sky-500"></i> Telegram Channel / Group
-                    </label>
-                    <input type="url" id="global_soc_tg" class="w-full px-2 py-1 rounded-lg border border-outline-variant/30 bg-surface-container-lowest text-xs font-semibold focus:border-primary outline-none" placeholder="https://t.me/yourchannel">
-                  </div>
-
-                  <!-- WhatsApp -->
-                  <div class="p-2.5 rounded-xl border border-outline-variant/30 bg-surface-container space-y-1">
-                    <label class="block text-[11px] font-bold text-on-surface-variant flex items-center gap-1.5">
-                      <i class="fa-brands fa-whatsapp text-emerald-600"></i> WhatsApp Channel / Group
-                    </label>
-                    <input type="url" id="global_soc_wa" class="w-full px-2 py-1 rounded-lg border border-outline-variant/30 bg-surface-container-lowest text-xs font-semibold focus:border-primary outline-none" placeholder="https://whatsapp.com/channel/yourchannel">
-                  </div>
-
-                  <!-- Instagram -->
-                  <div class="p-2.5 rounded-xl border border-outline-variant/30 bg-surface-container space-y-1">
-                    <label class="block text-[11px] font-bold text-on-surface-variant flex items-center gap-1.5">
-                      <i class="fa-brands fa-instagram text-pink-600"></i> Instagram Profile URL
-                    </label>
-                    <input type="url" id="global_soc_ig" class="w-full px-2 py-1 rounded-lg border border-outline-variant/30 bg-surface-container-lowest text-xs font-semibold focus:border-primary outline-none" placeholder="https://instagram.com/yourhandle">
-                  </div>
-
-                  <!-- Facebook -->
-                  <div class="p-2.5 rounded-xl border border-outline-variant/30 bg-surface-container space-y-1">
-                    <label class="block text-[11px] font-bold text-on-surface-variant flex items-center gap-1.5">
-                      <i class="fa-brands fa-facebook text-blue-600"></i> Facebook Page / Group
-                    </label>
-                    <input type="url" id="global_soc_fb" class="w-full px-2 py-1 rounded-lg border border-outline-variant/30 bg-surface-container-lowest text-xs font-semibold focus:border-primary outline-none" placeholder="https://facebook.com/yourpage">
-                  </div>
-
-                  <!-- Website / Blog -->
-                  <div class="p-2.5 rounded-xl border border-outline-variant/30 bg-surface-container space-y-1">
-                    <label class="block text-[11px] font-bold text-on-surface-variant flex items-center gap-1.5">
-                      <i class="fa-solid fa-globe text-indigo-600"></i> Website / Main Blog URL
-                    </label>
-                    <input type="url" id="global_soc_web" class="w-full px-2 py-1 rounded-lg border border-outline-variant/30 bg-surface-container-lowest text-xs font-semibold focus:border-primary outline-none" placeholder="https://yourblog.blogspot.com">
+                    <span id="globalProfilesStatusBadge" class="text-[11px] font-bold text-secondary bg-secondary/15 px-2.5 py-0.5 rounded-full border border-secondary/30 flex items-center gap-1">
+                      <span class="w-1.5 h-1.5 rounded-full bg-secondary"></span> Auto-Filled
+                    </span>
+                    <button id="btnToggleGlobalProfiles" type="button" class="px-2.5 py-1 rounded-lg bg-surface-container-high hover:bg-surface-bright text-on-surface font-bold text-xs flex items-center gap-1 border border-outline-variant/30 transition">
+                      <span class="material-symbols-outlined text-[14px]">edit</span> <span id="toggleGlobalProfilesText">Edit Profiles</span>
+                    </button>
                   </div>
                 </div>
 
-                <div class="flex items-center justify-end gap-2 pt-1">
-                  <button id="btnSaveGlobalProfiles" type="button" class="tactile-btn px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs flex items-center gap-1.5 shadow-sm shadow-indigo-600/20">
-                    <i class="fa-solid fa-floppy-disk"></i> Save Profiles to Global Store
-                  </button>
-                </div>
-              </div>
-            </div>
-
-          </div>
-
-          <!-- ============================================================= -->
-          <!-- RIGHT COLUMN: STICKY LIVE SANDBOX & EXPORTER (5 COLS)         -->
-          <!-- ============================================================= -->
-          <div class="lg:col-span-5 lg:sticky lg:top-20 space-y-5">
-
-            <!-- Card 1: Live Interactive Preview Sandbox -->
-            <div class="bg-surface-container p-5 rounded-2xl border border-outline-variant/30 shadow-sm space-y-3.5">
-              <div class="flex items-center justify-between border-b border-outline-variant/30 pb-3">
-                <div class="flex items-center gap-2">
-                  <div class="w-7 h-7 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center font-bold text-xs">
-                    <i class="fa-solid fa-play"></i>
+                <div id="globalProfilesPanel" class="p-4 border-t border-outline-variant/20 space-y-3 hidden bg-surface-container-lowest">
+                  <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div>
+                      <label class="block text-[11px] font-bold text-outline uppercase mb-1">YouTube Channel URL</label>
+                      <input type="url" id="global_soc_yt" class="w-full px-2.5 py-1.5 rounded-lg border border-outline-variant/30 bg-surface-container text-xs font-semibold text-on-surface focus:border-primary outline-none" placeholder="https://youtube.com/@yourchannel">
+                    </div>
+                    <div>
+                      <label class="block text-[11px] font-bold text-outline uppercase mb-1">Telegram Channel Link</label>
+                      <input type="url" id="global_soc_tg" class="w-full px-2.5 py-1.5 rounded-lg border border-outline-variant/30 bg-surface-container text-xs font-semibold text-on-surface focus:border-primary outline-none" placeholder="https://t.me/yourchannel">
+                    </div>
+                    <div>
+                      <label class="block text-[11px] font-bold text-outline uppercase mb-1">WhatsApp Channel / Group</label>
+                      <input type="url" id="global_soc_wa" class="w-full px-2.5 py-1.5 rounded-lg border border-outline-variant/30 bg-surface-container text-xs font-semibold text-on-surface focus:border-primary outline-none" placeholder="https://whatsapp.com/channel/yourchannel">
+                    </div>
+                    <div>
+                      <label class="block text-[11px] font-bold text-outline uppercase mb-1">Instagram Handle</label>
+                      <input type="url" id="global_soc_ig" class="w-full px-2.5 py-1.5 rounded-lg border border-outline-variant/30 bg-surface-container text-xs font-semibold text-on-surface focus:border-primary outline-none" placeholder="https://instagram.com/yourhandle">
+                    </div>
+                    <div>
+                      <label class="block text-[11px] font-bold text-outline uppercase mb-1">Facebook Page</label>
+                      <input type="url" id="global_soc_fb" class="w-full px-2.5 py-1.5 rounded-lg border border-outline-variant/30 bg-surface-container text-xs font-semibold text-on-surface focus:border-primary outline-none" placeholder="https://facebook.com/yourpage">
+                    </div>
+                    <div>
+                      <label class="block text-[11px] font-bold text-outline uppercase mb-1">Main Blog / Website</label>
+                      <input type="url" id="global_soc_web" class="w-full px-2.5 py-1.5 rounded-lg border border-outline-variant/30 bg-surface-container text-xs font-semibold text-on-surface focus:border-primary outline-none" placeholder="https://yourblog.blogspot.com">
+                    </div>
                   </div>
-                  <div>
-                    <h3 class="font-extrabold text-sm text-on-surface">Live Preview Sandbox</h3>
-                    <p class="text-[10px] text-outline/80">Interactive live output</p>
-                  </div>
-                </div>
-
-                <!-- Viewport & Device Toggles -->
-                <div class="flex items-center gap-1 bg-surface-container-low p-1 rounded-xl">
-                  <button type="button" id="btnViewportDesktop" class="px-2 py-1 rounded-lg bg-surface-container text-primary text-xs font-bold shadow-xs flex items-center gap-1" title="Desktop Full Width">
-                    <i class="fa-solid fa-desktop"></i> <span class="hidden sm:inline text-[11px]">Desktop</span>
-                  </button>
-                  <button type="button" id="btnViewportMobile" class="px-2 py-1 rounded-lg text-outline hover:text-on-surface text-xs font-bold flex items-center gap-1" title="Mobile 375px Simulation">
-                    <i class="fa-solid fa-mobile-screen"></i> <span class="hidden sm:inline text-[11px]">Mobile</span>
-                  </button>
-                </div>
-              </div>
-
-              <!-- Live Sandbox Render Viewport -->
-              <div id="sandboxCanvasFrame" class="p-3.5 rounded-xl bg-surface-container-lowest border border-outline-variant/30 min-h-[300px] flex flex-col justify-center items-center transition-all duration-300">
-                
-                <!-- 1. Flipcards / Educational Widgets Container -->
-                <div id="eduWidgetLivePreview" class="w-full">
-                  <!-- Dynamically rendered -->
-                </div>
-
-                <!-- 2. Button Groups Live Preview Container (Preserved ID) -->
-                <div id="groupLivePreviewContainer" class="w-full hidden flex-col items-center">
-                  <div class="w-full flex items-center justify-between mb-2">
-                    <span class="text-[10px] font-bold text-outline uppercase tracking-wider">Active Group:</span>
-                    <span id="previewGroupBadge" class="text-[10px] font-bold text-outline/80 font-mono">Real-Time</span>
-                  </div>
-                  <div id="groupLivePreview" class="w-full flex justify-center">
-                    <!-- Preserved for Section 9 button renderer -->
-                  </div>
-                </div>
-
-                <!-- 3. Callout Box Live Preview (Preserved ID) -->
-                <div id="calloutLivePreviewContainer" class="w-full hidden">
-                  <div id="calloutLivePreview">
-                    <!-- Preserved for Section 9 callout renderer -->
-                  </div>
-                </div>
-
-                <!-- 4. Resource Grid Live Preview (Preserved ID) -->
-                <div id="gridLivePreviewContainer" class="w-full hidden">
-                  <div id="gridLivePreview">
-                    <!-- Preserved for Section 9 grid renderer -->
-                  </div>
-                </div>
-
-              </div>
-
-              <div class="flex items-center justify-between text-[11px] text-outline/80 px-1">
-                <span><i class="fa-solid fa-hand-pointer text-indigo-400"></i> Interactive in sandbox</span>
-                <span class="font-mono text-[10px]">Pure HTML/CSS/JS</span>
-              </div>
-            </div>
-
-            <!-- Card 2: Ready-to-Embed Code Exporter -->
-            <div class="bg-slate-900 text-white p-5 rounded-2xl shadow-md space-y-4">
-              <div class="flex items-center justify-between border-b border-slate-800 pb-3">
-                <div class="flex items-center gap-2">
-                  <i class="fa-solid fa-cloud-arrow-down text-emerald-400 text-sm"></i>
-                  <span class="font-extrabold text-sm tracking-wide">Export &amp; Blogger Embed</span>
-                </div>
-                <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-400/30">
-                  Zero Dependency
-                </span>
-              </div>
-
-              <!-- Big Primary Action: One-Click Copy Embed Code -->
-              <button id="btnUnifiedCopyEmbed" type="button" class="w-full tactile-btn py-3.5 px-4 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white font-extrabold text-sm flex items-center justify-center gap-2.5 shadow-lg shadow-emerald-600/30 border-b-2 border-teal-800 transition">
-                <i class="fa-solid fa-copy text-amber-200 text-base"></i>
-                <span id="btnUnifiedCopyEmbedText">Copy Embed Code (HTML)</span>
-              </button>
-
-              <!-- Secondary Actions Bar -->
-              <div class="grid grid-cols-2 gap-2">
-                <button id="btnUnifiedCopyCompose" type="button" class="tactile-btn p-2.5 rounded-xl bg-primary hover:bg-primary-dark text-white text-xs font-bold flex items-center justify-center gap-1.5 shadow-sm" title="Copy visual HTML to paste into Blogger Post Compose View (Ctrl+V)">
-                  <i class="fa-solid fa-wand-magic-sparkles text-yellow-300"></i>
-                  <span>Copy for Compose</span>
-                </button>
-                <button id="btnUnifiedPreviewNewTab" type="button" class="tactile-btn p-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold flex items-center justify-center gap-1.5 border border-slate-700" title="Open preview in new browser tab">
-                  <i class="fa-solid fa-arrow-up-right-from-square text-sky-400"></i>
-                  <span>Preview Tab</span>
-                </button>
-              </div>
-
-              <!-- Legacy & Direct Target Copy Buttons (Hidden or Preserved IDs for full backward compatibility) -->
-              <div class="hidden">
-                <button id="btnCopyGroupGadget"></button>
-                <button id="btnCopyGroupCompose"></button>
-                <button id="btnCopyGroupHtml"></button>
-                <button id="btnCopyCalloutCompose"></button>
-                <button id="btnCopyCalloutHtml"></button>
-                <button id="btnCopyGridCompose"></button>
-                <button id="btnCopyGridHtml"></button>
-              </div>
-
-              <!-- Minify Toggle & Raw Code Drawer -->
-              <div class="pt-2 border-t border-slate-800 space-y-2">
-                <div class="flex items-center justify-between">
-                  <label class="flex items-center gap-2 cursor-pointer select-none">
-                    <input type="checkbox" id="chkMinifyEmbedCode" class="w-4 h-4 rounded text-primary focus:ring-0">
-                    <span class="text-xs font-bold text-slate-300">Minify Output (Production)</span>
-                  </label>
-                  <button type="button" id="btnToggleRawCode" class="text-xs text-indigo-400 hover:text-indigo-300 font-bold flex items-center gap-1">
-                    <i class="fa-solid fa-code"></i> <span id="toggleRawCodeText">View Code</span>
-                  </button>
-                </div>
-
-                <!-- Collapsible Raw Code Textarea -->
-                <div id="rawCodeContainer" class="hidden pt-2 space-y-2">
-                  <textarea id="unifiedCodeViewer" readonly rows="5" class="w-full p-2.5 rounded-xl bg-slate-950 border border-slate-800 text-[11px] font-mono text-emerald-400 focus:outline-none resize-none"></textarea>
-                  <div class="flex justify-end">
-                    <button type="button" id="btnCopyFromViewer" class="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-[11px] font-bold">
-                      <i class="fa-regular fa-copy mr-1"></i> Copy Code Block
+                  <div class="pt-2 flex justify-end">
+                    <button id="btnSaveGlobalProfiles" type="button" class="px-4 py-2 rounded-lg bg-primary-container hover:bg-inverse-primary text-on-primary-container font-bold text-xs flex items-center gap-1.5 shadow-md transition">
+                      <span class="material-symbols-outlined text-[16px]">save</span> Save Channels to Browser Memory
                     </button>
                   </div>
                 </div>
               </div>
 
-              <!-- Collapsible Step-by-Step Blogger Instructions Drawer -->
-              <div class="pt-2 border-t border-slate-800">
-                <button type="button" id="btnToggleBloggerGuide" class="w-full flex items-center justify-between text-left text-xs font-bold text-outline/80 hover:text-white transition accordion-toggle" aria-expanded="false">
-                  <span class="flex items-center gap-1.5"><i class="fa-brands fa-blogger text-orange-400"></i> How to Paste into Blogger</span>
-                  <i class="fa-solid fa-chevron-down text-[10px] accordion-chevron" id="guideChevron"></i>
-                </button>
-                <div id="panelBloggerGuide" class="hidden pt-3 text-xs text-slate-300 space-y-2 leading-relaxed">
-                  <div class="p-2.5 rounded-xl bg-slate-950 border border-slate-800 space-y-1.5">
-                    <p class="font-bold text-emerald-400">Method 1: Blogger Post (HTML View - Recommended)</p>
-                    <ol class="list-decimal pl-4 space-y-1 text-slate-300 text-[11px]">
-                      <li>In Blogger post editor, click the pencil/pen icon in top left.</li>
-                      <li>Switch from <strong>Compose view</strong> to <strong>&lt;&gt; HTML view</strong>.</li>
-                      <li>Paste (Ctrl+V) the copied embed code where you want it to appear.</li>
-                      <li>Switch back to <strong>Compose view</strong> to continue editing or click <strong>Publish</strong>.</li>
-                    </ol>
+            </div>
+
+            <!-- RIGHT COLUMN: STICKY LIVE SANDBOX & EXPORTER (5 COLS) -->
+            <div class="xl:col-span-5 flex flex-col gap-space-lg sticky top-20">
+              
+              <!-- Card 1: Live Interactive Preview Sandbox -->
+              <div class="rounded-xl bg-surface-container-low p-space-lg shadow-xl flex flex-col gap-space-md border border-outline-variant/30">
+                <div class="flex items-center justify-between border-b border-outline-variant/20 pb-3">
+                  <div class="flex items-center gap-space-sm">
+                    <span class="relative flex h-3 w-3">
+                      <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-secondary opacity-75"></span>
+                      <span class="relative inline-flex rounded-full h-3 w-3 bg-secondary"></span>
+                    </span>
+                    <div>
+                      <h4 class="font-headline-sm text-headline-sm text-on-surface font-bold">Live Interactive Sandbox</h4>
+                      <p class="font-body-sm text-body-sm text-on-surface-variant font-mono text-[11px]">Real-time DOM rendering</p>
+                    </div>
                   </div>
-                  <div class="p-2.5 rounded-xl bg-slate-950 border border-slate-800 space-y-1.5">
-                    <p class="font-bold text-indigo-400">Method 2: Sidebar or Footer Gadget</p>
-                    <p class="text-[11px] text-slate-300">Go to Blogger ➔ <strong>Layout</strong> ➔ <strong>Add a Gadget</strong> ➔ Select <strong>HTML/JavaScript</strong> ➔ Paste the code &amp; Save.</p>
+
+                  <!-- Device Viewport Toggle -->
+                  <div class="flex items-center gap-1 bg-surface-container-lowest p-1 rounded-lg border border-outline-variant/20">
+                    <button type="button" id="btnViewportDesktop" class="px-2.5 py-1 rounded bg-primary-container text-on-primary-container text-xs font-bold shadow-xs flex items-center gap-1 transition" title="Desktop Full Width">
+                      <span class="material-symbols-outlined text-[15px]">desktop_windows</span> Desktop
+                    </button>
+                    <button type="button" id="btnViewportMobile" class="px-2.5 py-1 rounded text-outline hover:text-on-surface text-xs font-bold flex items-center gap-1 transition" title="Mobile 375px Simulation">
+                      <span class="material-symbols-outlined text-[15px]">smartphone</span> Mobile
+                    </button>
                   </div>
                 </div>
+
+                <!-- Sandbox Canvas Area -->
+                <div id="sandboxCanvasFrame" class="p-3.5 rounded-xl bg-surface-container-lowest border border-outline-variant/20 min-h-[300px] flex flex-col justify-center items-center transition-all duration-300">
+                  
+                  <!-- Main Live Sandbox Container for Edu Widgets -->
+                  <div id="eduWidgetLivePreview" class="w-full">
+                    <!-- Dynamic preview injected by JS -->
+                  </div>
+
+                  <!-- Fallback group previews (Buttons, Callouts, Grids) -->
+                  <div id="groupLivePreviewContainer" class="w-full hidden flex-col items-center">
+                    <div class="w-full flex items-center justify-between mb-2">
+                      <span class="text-[10px] font-bold text-outline uppercase tracking-wider">Button Bar Sandbox</span>
+                      <span id="previewGroupBadge" class="text-[10px] font-bold text-secondary font-mono">Real-Time</span>
+                    </div>
+                    <div id="groupLivePreview" class="w-full flex justify-center"></div>
+                  </div>
+
+                  <div id="calloutLivePreviewContainer" class="w-full hidden">
+                    <div id="calloutLivePreview"></div>
+                  </div>
+
+                  <div id="gridLivePreviewContainer" class="w-full hidden">
+                    <div id="gridLivePreview"></div>
+                  </div>
+
+                </div>
+
+                <div class="flex items-center justify-between text-outline font-body-sm text-body-sm px-1">
+                  <span class="flex items-center gap-1 text-[11px]"><span class="material-symbols-outlined text-[14px] text-secondary">flash_on</span> CSS 3D transforms &amp; zero frameworks</span>
+                  <span class="text-on-surface-variant text-[11px]">Interactive Sandbox</span>
+                </div>
+              </div>
+
+              <!-- Card 2: Ready-to-Embed Code Exporter -->
+              <div class="rounded-xl bg-surface-container-low p-space-lg shadow-xl flex flex-col gap-space-md border border-outline-variant/30">
+                <div class="flex items-center justify-between">
+                  <div class="flex items-center gap-space-sm">
+                    <span class="material-symbols-outlined text-secondary text-[22px]">publish</span>
+                    <div>
+                      <h4 class="font-headline-sm text-headline-sm text-on-surface font-bold">Blogger &amp; WordPress Embed Hub</h4>
+                      <p class="font-body-sm text-body-sm text-on-surface-variant text-[11px]">Self-contained pure HTML/CSS. Zero external script tags.</p>
+                    </div>
+                  </div>
+                  <label class="flex items-center gap-1.5 cursor-pointer select-none">
+                    <input type="checkbox" id="chkMinifyEmbedCode" class="rounded bg-surface-container-lowest text-primary focus:ring-0">
+                    <span class="font-label-sm text-label-sm text-on-surface-variant font-bold">Minify</span>
+                  </label>
+                </div>
+
+                <!-- Primary Action Buttons -->
+                <div class="flex flex-col gap-2">
+                  <button id="btnUnifiedCopyEmbed" type="button" class="w-full py-3 px-space-md rounded-xl bg-secondary-container hover:bg-secondary text-on-secondary-container font-label-lg text-label-lg flex items-center justify-center gap-space-sm shadow-md transition-all font-bold">
+                    <span class="material-symbols-outlined text-[20px]">content_copy</span>
+                    <span id="btnUnifiedCopyEmbedText">Copy Embed Code (HTML)</span>
+                  </button>
+
+                  <div class="grid grid-cols-2 gap-2">
+                    <button id="btnUnifiedCopyCompose" type="button" class="py-2 px-space-sm rounded-lg bg-primary-container hover:bg-inverse-primary text-on-primary-container font-label-md text-label-md flex items-center justify-center gap-1.5 shadow-sm transition font-bold" title="Copy visual HTML to paste into Blogger Post Compose View (Ctrl+V)">
+                      <span class="material-symbols-outlined text-[16px] text-tertiary">auto_stories</span>
+                      <span>Compose View</span>
+                    </button>
+                    <button id="btnUnifiedPreviewNewTab" type="button" class="py-2 px-space-sm rounded-lg bg-surface-container-high hover:bg-surface-bright text-on-surface font-label-md text-label-md flex items-center justify-center gap-1.5 border border-outline-variant/30 transition font-bold" title="Open preview in new browser tab">
+                      <span class="material-symbols-outlined text-[16px]">open_in_new</span>
+                      <span>New Tab</span>
+                    </button>
+                  </div>
+
+                  <!-- Hidden backward-compatibility triggers -->
+                  <div class="hidden">
+                    <button id="btnCopyGroupGadget"></button>
+                    <button id="btnCopyGroupCompose"></button>
+                    <button id="btnCopyGroupHtml"></button>
+                    <button id="btnCopyCalloutCompose"></button>
+                    <button id="btnCopyCalloutHtml"></button>
+                    <button id="btnCopyGridCompose"></button>
+                    <button id="btnCopyGridHtml"></button>
+                  </div>
+                </div>
+
+                <!-- Raw Code Inspection Container -->
+                <div class="pt-1 border-t border-outline-variant/20">
+                  <div class="flex items-center justify-between mb-1">
+                    <span class="font-label-sm text-label-sm uppercase text-outline font-bold">Production Embed Snippet</span>
+                    <button type="button" id="btnToggleRawCode" class="text-xs text-primary hover:text-on-surface font-bold flex items-center gap-1">
+                      <span class="material-symbols-outlined text-[14px]">code</span> <span id="toggleRawCodeText">View Code</span>
+                    </button>
+                  </div>
+                  <div id="rawCodeContainer" class="hidden pt-2 space-y-2">
+                    <textarea id="unifiedCodeViewer" readonly rows="5" class="w-full p-2.5 rounded-lg bg-surface-container-lowest border border-outline-variant/30 text-[11px] font-mono text-secondary focus:outline-none resize-none"></textarea>
+                    <div class="flex justify-end">
+                      <button type="button" id="btnCopyFromViewer" class="px-2.5 py-1 rounded-lg bg-surface-container-high hover:bg-surface-bright text-on-surface text-[11px] font-bold border border-outline-variant/30">
+                        Copy to Clipboard
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- How to Paste into Blogger Guide Card -->
+                <div class="rounded-lg bg-surface-container p-space-md border border-outline-variant/20 space-y-2">
+                  <button type="button" id="btnToggleBloggerGuide" class="w-full flex items-center justify-between text-left text-xs font-bold text-on-surface hover:text-primary transition accordion-toggle" aria-expanded="false">
+                    <span class="flex items-center gap-1.5">
+                      <span class="material-symbols-outlined text-[16px] text-primary">help</span>
+                      <span>How to Paste into Blogger (2-Step Guide)</span>
+                    </span>
+                    <span class="material-symbols-outlined text-[16px] text-outline accordion-chevron" id="guideChevron">expand_more</span>
+                  </button>
+
+                  <div id="panelBloggerGuide" class="hidden pt-2 text-xs text-on-surface-variant space-y-2 leading-relaxed border-t border-outline-variant/20">
+                    <div class="flex gap-2">
+                      <span class="w-5 h-5 rounded-full bg-primary-container text-on-primary-container text-[11px] font-bold flex items-center justify-center shrink-0">1</span>
+                      <p>In Blogger Post Editor, click pencil icon in top left and switch to <strong>&lt; &gt; HTML view</strong>. Paste code directly and switch back to Compose.</p>
+                    </div>
+                    <div class="flex gap-2">
+                      <span class="w-5 h-5 rounded-full bg-secondary-container text-on-secondary-container text-[11px] font-bold flex items-center justify-center shrink-0">2</span>
+                      <p>For sidebars: Navigate to <strong>Blogger &gt; Layout &gt; Add a Gadget</strong>, choose <strong>HTML/JavaScript</strong>, paste snippet and click Save.</p>
+                    </div>
+                  </div>
+                </div>
+
               </div>
 
             </div>
 
           </div>
-
         </div>
-
-      </div>
-
-
-      <!-- ============================================================= -->
-      <!-- MODULE C: JSON MANAGER VIEW                                   -->
-      <!-- ============================================================= -->
-      
-
-        <!-- ============================================================= -->
-        <!-- MODULE C: JSON MANAGER VIEW                                   -->
-        <!-- ============================================================= -->
-        <div id="viewJsonManager" class="tab-view hidden">
+<div id="viewJsonManager" class="tab-view hidden">
           <div class="flex flex-col w-full gap-space-lg">
             
             <!-- Top Bar: Mode Switcher & Engine Telemetry -->
@@ -5185,18 +5111,18 @@ ${codeLinesHtml}
           btns.forEach(btn => {
             const btype = btn.getAttribute('data-wtype');
             if (btype === type) {
-              btn.classList.add('is-active', 'border-primary', 'bg-primary-bg/30');
-              btn.classList.remove('bg-white', 'border-border-light');
+              btn.classList.add('is-active', 'bg-primary-container', 'text-on-primary-container', 'shadow-lg');
+              btn.classList.remove('bg-surface-container', 'text-on-surface');
             } else {
-              btn.classList.remove('is-active', 'border-primary', 'bg-primary-bg/30');
-              btn.classList.add('bg-white', 'border-border-light');
+              btn.classList.remove('is-active', 'bg-primary-container', 'text-on-primary-container', 'shadow-lg');
+              btn.classList.add('bg-surface-container', 'text-on-surface');
             }
           });
         }
 
         // Update Badge Text
         const titles = {
-          flipcards: 'Interactive Flip Cards',
+          flipcards: '3D Flip Decks',
           codestepper: 'Code Stepper Card',
           cheatsheet: 'Cheatsheet Grid',
           buttons: 'Social Button Groups',
@@ -5242,28 +5168,28 @@ ${codeLinesHtml}
 
         let html = '';
         (flipCardsState.cards || []).forEach((card, idx) => {
-          html += '<div class="p-3 rounded-xl border border-border-light bg-slate-50/70 space-y-2 relative group">' +
+          html += '<div class="p-space-md rounded-xl border border-outline-variant/30 bg-surface-container space-y-2 relative group">' +
             '<div class="flex items-center justify-between">' +
-              '<span class="text-xs font-bold text-slate-700">Card #' + (idx + 1) + '</span>' +
-              '<button type="button" class="btn-del-fc-card text-xs text-rose-500 hover:text-rose-700 font-bold" data-idx="' + idx + '"><i class="fa-solid fa-trash-can"></i></button>' +
+              '<span class="font-label-sm text-label-sm text-primary uppercase font-bold">Card #' + (idx + 1) + '</span>' +
+              '<button type="button" class="btn-del-fc-card text-xs text-error hover:text-error/80 font-bold p-1 rounded" data-idx="' + idx + '"><span class="material-symbols-outlined text-[16px]">delete</span></button>' +
             '</div>' +
             '<div class="grid grid-cols-1 sm:grid-cols-2 gap-2">' +
               '<div>' +
-                '<label class="block text-[10px] font-bold text-slate-500 uppercase">Term / Question</label>' +
-                '<input type="text" class="fc-term-input w-full px-2 py-1 rounded-lg border border-border-light bg-white text-xs font-bold" data-idx="' + idx + '" value="' + escapeHtml(card.term || '') + '">' +
+                '<label class="block text-[10px] font-bold text-outline uppercase">Term / Question</label>' +
+                '<input type="text" class="fc-term-input w-full px-2.5 py-1.5 rounded-lg border border-outline-variant/30 bg-surface-container-lowest text-on-surface text-xs font-bold focus:border-primary outline-none" data-idx="' + idx + '" value="' + escapeHtml(card.term || '') + '">' +
               '</div>' +
               '<div>' +
-                '<label class="block text-[10px] font-bold text-slate-500 uppercase">Category Tag</label>' +
-                '<input type="text" class="fc-cat-input w-full px-2 py-1 rounded-lg border border-border-light bg-white text-xs font-semibold" data-idx="' + idx + '" value="' + escapeHtml(card.category || '') + '">' +
+                '<label class="block text-[10px] font-bold text-outline uppercase">Category Tag</label>' +
+                '<input type="text" class="fc-cat-input w-full px-2.5 py-1.5 rounded-lg border border-outline-variant/30 bg-surface-container-lowest text-primary text-xs font-semibold focus:border-primary outline-none" data-idx="' + idx + '" value="' + escapeHtml(card.category || '') + '">' +
               '</div>' +
             '</div>' +
             '<div>' +
-              '<label class="block text-[10px] font-bold text-slate-500 uppercase">Front Hint</label>' +
-              '<input type="text" class="fc-hint-input w-full px-2 py-1 rounded-lg border border-border-light bg-white text-xs" data-idx="' + idx + '" value="' + escapeHtml(card.hint || '') + '">' +
+              '<label class="block text-[10px] font-bold text-outline uppercase">Front Hint</label>' +
+              '<input type="text" class="fc-hint-input w-full px-2.5 py-1.5 rounded-lg border border-outline-variant/30 bg-surface-container-lowest text-on-surface-variant text-xs focus:border-primary outline-none" data-idx="' + idx + '" value="' + escapeHtml(card.hint || '') + '">' +
             '</div>' +
             '<div>' +
-              '<label class="block text-[10px] font-bold text-slate-500 uppercase">Back Explanation / Definition</label>' +
-              '<textarea rows="2" class="fc-desc-input w-full p-2 rounded-lg border border-border-light bg-white text-xs resize-none" data-idx="' + idx + '">' + escapeHtml(card.definition || '') + '</textarea>' +
+              '<label class="block text-[10px] font-bold text-outline uppercase">Back Explanation / Definition</label>' +
+              '<textarea rows="2" class="fc-desc-input w-full p-2 rounded-lg border border-outline-variant/30 bg-surface-container-lowest text-on-surface text-xs focus:border-primary outline-none resize-none leading-relaxed" data-idx="' + idx + '">' + escapeHtml(card.definition || '') + '</textarea>' +
             '</div>' +
           '</div>';
         });
