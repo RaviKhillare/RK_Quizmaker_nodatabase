@@ -2448,21 +2448,38 @@
           v.classList.add('hidden');
         });
 
+        const previewSidebar = document.getElementById('previewSidebar');
         if (target === 'quiz') {
+          if (previewSidebar) {
+            previewSidebar.classList.remove('hidden');
+            previewSidebar.classList.add('xl:flex');
+          }
           tabBtnQuiz.classList.add('active', 'bg-primary-bg', 'text-primary');
           tabBtnQuiz.classList.remove('text-slate-600');
           viewQuizBuilder.classList.remove('hidden');
         } else if (target === 'widgets') {
+          if (previewSidebar) {
+            previewSidebar.classList.add('hidden');
+            previewSidebar.classList.remove('xl:flex');
+          }
           tabBtnWidgets.classList.add('active', 'bg-primary-bg', 'text-primary');
           tabBtnWidgets.classList.remove('text-slate-600');
           viewBloggerWidgets.classList.remove('hidden');
           updateAllWidgetPreviews();
         } else if (target === 'json') {
+          if (previewSidebar) {
+            previewSidebar.classList.add('hidden');
+            previewSidebar.classList.remove('xl:flex');
+          }
           tabBtnJson.classList.add('active', 'bg-primary-bg', 'text-primary');
           tabBtnJson.classList.remove('text-slate-600');
           viewJsonManager.classList.remove('hidden');
           syncJsonEditor();
         } else if (target === 'library') {
+          if (previewSidebar) {
+            previewSidebar.classList.add('hidden');
+            previewSidebar.classList.remove('xl:flex');
+          }
           tabBtnLibrary.classList.add('active', 'bg-primary-bg', 'text-primary');
           tabBtnLibrary.classList.remove('text-slate-600');
           viewSavedQuizzes.classList.remove('hidden');
@@ -4366,94 +4383,94 @@ ${cards}
         const title = escapeHtml(d.title || 'Interactive Flashcards');
         const badge = escapeHtml(d.badge || 'Study Deck');
 
-        const html = '<!-- Educational Flip Cards Widget by Blogger Suite Pro -->\\n' +
-'<div class="it-fc-wrapper" id="' + uid + '">\\n' +
-'  <style>\\n' +
-'    #' + uid + ' { box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; max-width: 520px; margin: 16px auto; background: #ffffff; border-radius: 18px; border: 1px solid #e2e8f0; box-shadow: 0 8px 24px -4px rgba(15, 23, 42, 0.08); padding: 20px; color: #0f172a; user-select: none; }\\n' +
-'    #' + uid + ' *, #' + uid + ' *::before, #' + uid + ' *::after { box-sizing: inherit; }\\n' +
-'    #' + uid + ' .it-fc-topbar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }\\n' +
-'    #' + uid + ' .it-fc-badge { background: #eef2ff; color: #4338ca; font-size: 12px; font-weight: 700; padding: 5px 12px; border-radius: 9999px; }\\n' +
-'    #' + uid + ' .it-fc-counter { font-size: 12px; font-weight: 700; color: #64748b; font-family: monospace; }\\n' +
-'    #' + uid + ' .it-fc-viewport { perspective: 1200px; width: 100%; min-height: 280px; cursor: pointer; }\\n' +
-'    #' + uid + ' .it-fc-card { position: relative; width: 100%; min-height: 280px; transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1); transform-style: preserve-3d; }\\n' +
-'    #' + uid + ' .it-fc-card.is-flipped { transform: rotateY(180deg); }\\n' +
-'    #' + uid + ' .it-fc-face { position: absolute; width: 100%; height: 100%; min-height: 280px; backface-visibility: hidden; -webkit-backface-visibility: hidden; border-radius: 16px; padding: 22px; display: flex; flex-direction: column; justify-content: space-between; border: 1px solid #e2e8f0; }\\n' +
-'    #' + uid + ' .it-fc-front { background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%); }\\n' +
-'    #' + uid + ' .it-fc-back { background: #ffffff; transform: rotateY(180deg); box-shadow: inset 0 2px 4px rgba(0,0,0,0.02); overflow-y: auto; }\\n' +
-'    #' + uid + ' .it-fc-cat { font-size: 11px; font-weight: 700; text-transform: uppercase; padding: 4px 10px; border-radius: 6px; background: #e0e7ff; color: #3730a3; align-self: flex-start; }\\n' +
-'    #' + uid + ' .it-fc-term { font-size: 22px; font-weight: 800; color: #0f172a; margin: 16px 0 8px 0; text-align: center; }\\n' +
-'    #' + uid + ' .it-fc-hint { font-size: 13px; color: #64748b; text-align: center; margin: 0; }\\n' +
-'    #' + uid + ' .it-fc-tip { font-size: 12px; font-weight: 600; color: #6366f1; text-align: center; }\\n' +
-'    #' + uid + ' .it-fc-back-title { font-size: 14px; font-weight: 700; color: #312e81; border-bottom: 1px solid #f1f5f9; padding-bottom: 8px; margin-bottom: 10px; }\\n' +
-'    #' + uid + ' .it-fc-desc { font-size: 13.5px; color: #334155; line-height: 1.55; }\\n' +
-'    #' + uid + ' .it-fc-controls { display: flex; align-items: center; justify-content: space-between; margin-top: 16px; gap: 10px; }\\n' +
-'    #' + uid + ' .it-fc-btn { background: #4f46e5; color: #ffffff; border: none; border-radius: 10px; padding: 9px 16px; font-size: 13px; font-weight: 600; cursor: pointer; transition: 0.2s; }\\n' +
-'    #' + uid + ' .it-fc-btn:hover:not(:disabled) { background: #4338ca; }\\n' +
-'    #' + uid + ' .it-fc-btn:disabled { background: #cbd5e1; cursor: not-allowed; opacity: 0.6; }\\n' +
-'    #' + uid + ' .it-fc-btn-sub { background: #f1f5f9; border: none; color: #475569; font-size: 12px; font-weight: 600; padding: 5px 12px; border-radius: 6px; cursor: pointer; align-self: flex-end; }\\n' +
-'  </style>\\n' +
-'  <div class="it-fc-topbar">\\n' +
-'    <span class="it-fc-badge">' + title + '</span>\\n' +
-'    <span class="it-fc-counter" id="' + uid + '_counter">1 / ' + cards.length + '</span>\\n' +
-'  </div>\\n' +
-'  <div class="it-fc-viewport" id="' + uid + '_viewport" title="Click to Flip">\\n' +
-'    <div class="it-fc-card" id="' + uid + '_card">\\n' +
-'      <div class="it-fc-face it-fc-front">\\n' +
-'        <span class="it-fc-cat" id="' + uid + '_cat">' + escapeHtml(cards[0].category || badge) + '</span>\\n' +
-'        <div>\\n' +
-'          <div class="it-fc-term" id="' + uid + '_term">' + escapeHtml(cards[0].term || '') + '</div>\\n' +
-'          <div class="it-fc-hint" id="' + uid + '_hint">' + escapeHtml(cards[0].hint || '') + '</div>\\n' +
-'        </div>\\n' +
-'        <div class="it-fc-tip">🔄 Click or tap to reveal definition</div>\\n' +
-'      </div>\\n' +
-'      <div class="it-fc-face it-fc-back">\\n' +
-'        <div>\\n' +
-'          <div class="it-fc-back-title">Definition &amp; Key Details</div>\\n' +
-'          <div class="it-fc-desc" id="' + uid + '_desc">' + escapeHtml(cards[0].definition || '') + '</div>\\n' +
-'        </div>\\n' +
-'        <button type="button" class="it-fc-btn-sub" id="' + uid + '_flipBack">↩ Flip back</button>\\n' +
-'      </div>\\n' +
-'    </div>\\n' +
-'  </div>\\n' +
-'  <div class="it-fc-controls">\\n' +
-'    <button type="button" class="it-fc-btn" id="' + uid + '_prev" disabled>← Previous</button>\\n' +
-'    <button type="button" class="it-fc-btn" id="' + uid + '_next"' + (cards.length <= 1 ? ' disabled' : '') + '>Next →</button>\\n' +
-'  </div>\\n' +
-'  <script>\\n' +
-'  (function() {\\n' +
-'    var cards = ' + cardsJson + ';\\n' +
-'    var cur = 0;\\n' +
-'    var card = document.getElementById("' + uid + '_card");\\n' +
-'    var vp = document.getElementById("' + uid + '_viewport");\\n' +
-'    var prev = document.getElementById("' + uid + '_prev");\\n' +
-'    var next = document.getElementById("' + uid + '_next");\\n' +
-'    var cnt = document.getElementById("' + uid + '_counter");\\n' +
-'    var cat = document.getElementById("' + uid + '_cat");\\n' +
-'    var term = document.getElementById("' + uid + '_term");\\n' +
-'    var hint = document.getElementById("' + uid + '_hint");\\n' +
-'    var desc = document.getElementById("' + uid + '_desc");\\n' +
-'    var fb = document.getElementById("' + uid + '_flipBack");\\n' +
-'    function update(idx) {\\n' +
-'      if (!cards.length) return;\\n' +
-'      card.classList.remove("is-flipped");\\n' +
-'      var item = cards[idx];\\n' +
-'      cat.textContent = item.category || "' + badge + '";\\n' +
-'      term.textContent = item.term || "";\\n' +
-'      hint.textContent = item.hint || "";\\n' +
-'      desc.textContent = item.definition || "";\\n' +
-'      cnt.textContent = (idx + 1) + " / " + cards.length;\\n' +
-'      prev.disabled = (idx === 0);\\n' +
-'      next.disabled = (idx === cards.length - 1);\\n' +
-'    }\\n' +
-'    function flip(e) { if (e) e.stopPropagation(); card.classList.toggle("is-flipped"); }\\n' +
-'    if (vp) vp.addEventListener("click", flip);\\n' +
-'    if (fb) fb.addEventListener("click", flip);\\n' +
-'    if (prev) prev.addEventListener("click", function(e) { e.stopPropagation(); if (cur > 0) { cur--; update(cur); } });\\n' +
-'    if (next) next.addEventListener("click", function(e) { e.stopPropagation(); if (cur < cards.length - 1) { cur++; update(cur); } });\\n' +
-'    update(0);\\n' +
-'  })();\\n' +
-'  <' + '/script>\\n' +
-'</div>';
+        const html = `<!-- Educational Flip Cards Widget by Blogger Suite Pro -->
+<div class="it-fc-wrapper" id="${uid}">
+  <style>
+    #${uid} { box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; max-width: 520px; margin: 16px auto; background: #ffffff; border-radius: 18px; border: 1px solid #e2e8f0; box-shadow: 0 8px 24px -4px rgba(15, 23, 42, 0.08); padding: 20px; color: #0f172a; user-select: none; }
+    #${uid} *, #${uid} *::before, #${uid} *::after { box-sizing: inherit; }
+    #${uid} .it-fc-topbar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+    #${uid} .it-fc-badge { background: #eef2ff; color: #4338ca; font-size: 12px; font-weight: 700; padding: 5px 12px; border-radius: 9999px; }
+    #${uid} .it-fc-counter { font-size: 12px; font-weight: 700; color: #64748b; font-family: monospace; }
+    #${uid} .it-fc-viewport { perspective: 1200px; width: 100%; min-height: 280px; cursor: pointer; }
+    #${uid} .it-fc-card { position: relative; width: 100%; min-height: 280px; transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1); transform-style: preserve-3d; }
+    #${uid} .it-fc-card.is-flipped { transform: rotateY(180deg); }
+    #${uid} .it-fc-face { position: absolute; width: 100%; height: 100%; min-height: 280px; backface-visibility: hidden; -webkit-backface-visibility: hidden; border-radius: 16px; padding: 22px; display: flex; flex-direction: column; justify-content: space-between; border: 1px solid #e2e8f0; }
+    #${uid} .it-fc-front { background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%); }
+    #${uid} .it-fc-back { background: #ffffff; transform: rotateY(180deg); box-shadow: inset 0 2px 4px rgba(0,0,0,0.02); overflow-y: auto; }
+    #${uid} .it-fc-cat { font-size: 11px; font-weight: 700; text-transform: uppercase; padding: 4px 10px; border-radius: 6px; background: #e0e7ff; color: #3730a3; align-self: flex-start; }
+    #${uid} .it-fc-term { font-size: 22px; font-weight: 800; color: #0f172a; margin: 16px 0 8px 0; text-align: center; }
+    #${uid} .it-fc-hint { font-size: 13px; color: #64748b; text-align: center; margin: 0; }
+    #${uid} .it-fc-tip { font-size: 12px; font-weight: 600; color: #6366f1; text-align: center; }
+    #${uid} .it-fc-back-title { font-size: 14px; font-weight: 700; color: #312e81; border-bottom: 1px solid #f1f5f9; padding-bottom: 8px; margin-bottom: 10px; }
+    #${uid} .it-fc-desc { font-size: 13.5px; color: #334155; line-height: 1.55; }
+    #${uid} .it-fc-controls { display: flex; align-items: center; justify-content: space-between; margin-top: 16px; gap: 10px; }
+    #${uid} .it-fc-btn { background: #4f46e5; color: #ffffff; border: none; border-radius: 10px; padding: 9px 16px; font-size: 13px; font-weight: 600; cursor: pointer; transition: 0.2s; }
+    #${uid} .it-fc-btn:hover:not(:disabled) { background: #4338ca; }
+    #${uid} .it-fc-btn:disabled { background: #cbd5e1; cursor: not-allowed; opacity: 0.6; }
+    #${uid} .it-fc-btn-sub { background: #f1f5f9; border: none; color: #475569; font-size: 12px; font-weight: 600; padding: 5px 12px; border-radius: 6px; cursor: pointer; align-self: flex-end; }
+  </style>
+  <div class="it-fc-topbar">
+    <span class="it-fc-badge">${title}</span>
+    <span class="it-fc-counter" id="${uid}_counter">1 / ${cards.length}</span>
+  </div>
+  <div class="it-fc-viewport" id="${uid}_viewport" title="Click to Flip">
+    <div class="it-fc-card" id="${uid}_card">
+      <div class="it-fc-face it-fc-front">
+        <span class="it-fc-cat" id="${uid}_cat">${escapeHtml(cards[0].category || badge)}</span>
+        <div>
+          <div class="it-fc-term" id="${uid}_term">${escapeHtml(cards[0].term || '')}</div>
+          <div class="it-fc-hint" id="${uid}_hint">${escapeHtml(cards[0].hint || '')}</div>
+        </div>
+        <div class="it-fc-tip">🔄 Click or tap to reveal definition</div>
+      </div>
+      <div class="it-fc-face it-fc-back">
+        <div>
+          <div class="it-fc-back-title">Definition &amp; Key Details</div>
+          <div class="it-fc-desc" id="${uid}_desc">${escapeHtml(cards[0].definition || '')}</div>
+        </div>
+        <button type="button" class="it-fc-btn-sub" id="${uid}_flipBack">↩ Flip back</button>
+      </div>
+    </div>
+  </div>
+  <div class="it-fc-controls">
+    <button type="button" class="it-fc-btn" id="${uid}_prev" disabled>← Previous</button>
+    <button type="button" class="it-fc-btn" id="${uid}_next"${cards.length <= 1 ? ' disabled' : ''}>Next →</button>
+  </div>
+  <script>
+  (function() {
+    var cards = ${cardsJson};
+    var cur = 0;
+    var card = document.getElementById("${uid}_card");
+    var vp = document.getElementById("${uid}_viewport");
+    var prev = document.getElementById("${uid}_prev");
+    var next = document.getElementById("${uid}_next");
+    var cnt = document.getElementById("${uid}_counter");
+    var cat = document.getElementById("${uid}_cat");
+    var term = document.getElementById("${uid}_term");
+    var hint = document.getElementById("${uid}_hint");
+    var desc = document.getElementById("${uid}_desc");
+    var fb = document.getElementById("${uid}_flipBack");
+    function update(idx) {
+      if (!cards.length) return;
+      card.classList.remove("is-flipped");
+      var item = cards[idx];
+      cat.textContent = item.category || "${badge}";
+      term.textContent = item.term || "";
+      hint.textContent = item.hint || "";
+      desc.textContent = item.definition || "";
+      cnt.textContent = (idx + 1) + " / " + cards.length;
+      prev.disabled = (idx === 0);
+      next.disabled = (idx === cards.length - 1);
+    }
+    function flip(e) { if (e) e.stopPropagation(); card.classList.toggle("is-flipped"); }
+    if (vp) vp.addEventListener("click", flip);
+    if (fb) fb.addEventListener("click", flip);
+    if (prev) prev.addEventListener("click", function(e) { e.stopPropagation(); if (cur > 0) { cur--; update(cur); } });
+    if (next) next.addEventListener("click", function(e) { e.stopPropagation(); if (cur < cards.length - 1) { cur++; update(cur); } });
+    update(0);
+  })();
+  <\/script>
+</div>`;
 
         return minify ? cleanMinifyWidget(html) : html;
       }
@@ -4470,99 +4487,99 @@ ${cards}
         const title = escapeHtml(d.title || 'Code Stepper');
         const lang = escapeHtml(d.language || 'Python');
 
-        const lines = code.split('\\n');
+        const lines = code.split('\n');
         const codeLinesHtml = lines.map((l, idx) => {
           const lineNum = idx + 1;
-          return '<div class="it-cs-line" data-line="' + lineNum + '"><span class="it-cs-ln">' + lineNum + '</span><span class="it-cs-txt">' + (escapeHtml(l) || '&nbsp;') + '</span></div>';
-        }).join('');
+          return `<div class="it-cs-line" data-line="${lineNum}"><span class="it-cs-ln">${lineNum}</span><span class="it-cs-txt">${escapeHtml(l) || '&nbsp;'}</span></div>`;
+        }).join('\n');
 
-        const html = '<!-- Educational Code Stepper Widget by Blogger Suite Pro -->\\n' +
-'<div class="it-cs-wrapper" id="' + uid + '">\\n' +
-'  <style>\\n' +
-'    #' + uid + ' { box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; max-width: 580px; margin: 16px auto; background: #0f172a; border-radius: 18px; border: 1px solid #334155; box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.3); padding: 18px; color: #f8fafc; }\\n' +
-'    #' + uid + ' *, #' + uid + ' *::before, #' + uid + ' *::after { box-sizing: inherit; }\\n' +
-'    #' + uid + ' .it-cs-topbar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }\\n' +
-'    #' + uid + ' .it-cs-title { font-size: 13px; font-weight: 700; color: #38bdf8; display: flex; align-items: center; gap: 6px; }\\n' +
-'    #' + uid + ' .it-cs-lang { background: #1e293b; color: #94a3b8; font-size: 11px; font-weight: 600; padding: 3px 8px; border-radius: 6px; text-transform: uppercase; }\\n' +
-'    #' + uid + ' .it-cs-editor { background: #020617; border: 1px solid #1e293b; border-radius: 12px; overflow-x: auto; font-family: ui-monospace, monospace; font-size: 12.5px; line-height: 1.6; padding: 10px 0; margin-bottom: 12px; }\\n' +
-'    #' + uid + ' .it-cs-line { display: flex; padding: 2px 12px; transition: background 0.2s; }\\n' +
-'    #' + uid + ' .it-cs-line.is-active { background: rgba(56, 189, 248, 0.18); border-left: 3px solid #38bdf8; }\\n' +
-'    #' + uid + ' .it-cs-ln { width: 28px; color: #475569; user-select: none; flex-shrink: 0; }\\n' +
-'    #' + uid + ' .it-cs-txt { color: #e2e8f0; white-space: pre; }\\n' +
-'    #' + uid + ' .it-cs-expl-card { background: #1e293b; border: 1px solid #334155; border-radius: 12px; padding: 12px 14px; margin-bottom: 12px; }\\n' +
-'    #' + uid + ' .it-cs-expl-header { display: flex; justify-content: space-between; align-items: center; font-size: 11px; font-weight: 700; color: #38bdf8; margin-bottom: 6px; }\\n' +
-'    #' + uid + ' .it-cs-expl-text { font-size: 13px; color: #cbd5e1; line-height: 1.5; margin: 0; }\\n' +
-'    #' + uid + ' .it-cs-console { background: #000000; border: 1px solid #1e293b; border-radius: 10px; padding: 10px 12px; font-family: monospace; font-size: 12px; margin-bottom: 14px; }\\n' +
-'    #' + uid + ' .it-cs-console-title { font-size: 10px; font-weight: 700; text-transform: uppercase; color: #64748b; margin-bottom: 4px; }\\n' +
-'    #' + uid + ' .it-cs-console-out { color: #4ade80; margin: 0; white-space: pre-wrap; word-break: break-all; }\\n' +
-'    #' + uid + ' .it-cs-nav { display: flex; align-items: center; justify-content: space-between; gap: 8px; }\\n' +
-'    #' + uid + ' .it-cs-btn { background: #38bdf8; color: #0f172a; border: none; border-radius: 8px; padding: 8px 14px; font-size: 12px; font-weight: 700; cursor: pointer; transition: 0.2s; }\\n' +
-'    #' + uid + ' .it-cs-btn:hover:not(:disabled) { background: #7dd3fc; }\\n' +
-'    #' + uid + ' .it-cs-btn:disabled { background: #334155; color: #64748b; cursor: not-allowed; }\\n' +
-'    #' + uid + ' .it-cs-btn-reset { background: transparent; border: 1px solid #475569; color: #94a3b8; padding: 7px 12px; border-radius: 8px; font-size: 11px; cursor: pointer; }\\n' +
-'    #' + uid + ' .it-cs-btn-reset:hover { background: #334155; color: #ffffff; }\\n' +
-'  </style>\\n' +
-'  <div class="it-cs-topbar">\\n' +
-'    <div class="it-cs-title"><span>💻</span> ' + title + '</div>\\n' +
-'    <span class="it-cs-lang">' + lang + '</span>\\n' +
-'  </div>\\n' +
-'  <div class="it-cs-editor" id="' + uid + '_editor">\\n' +
-     codeLinesHtml + '\\n' +
-'  </div>\\n' +
-'  <div class="it-cs-expl-card">\\n' +
-'    <div class="it-cs-expl-header">\\n' +
-'      <span id="' + uid + '_stepBadge">Step 1 of ' + steps.length + '</span>\\n' +
-'      <span id="' + uid + '_lineBadge">Lines: ' + steps[0].lines.join(', ') + '</span>\\n' +
-'    </div>\\n' +
-'    <p class="it-cs-expl-text" id="' + uid + '_explText">' + escapeHtml(steps[0].explanation || '') + '</p>\\n' +
-'  </div>\\n' +
-'  <div class="it-cs-console">\\n' +
-'    <div class="it-cs-console-title">Console Output Simulator</div>\\n' +
-'    <div class="it-cs-console-out" id="' + uid + '_consoleOut">' + escapeHtml(steps[0].output || '') + '</div>\\n' +
-'  </div>\\n' +
-'  <div class="it-cs-nav">\\n' +
-'    <button type="button" class="it-cs-btn" id="' + uid + '_prev" disabled>← Previous Step</button>\\n' +
-'    <button type="button" class="it-cs-btn-reset" id="' + uid + '_reset">↺ Reset</button>\\n' +
-'    <button type="button" class="it-cs-btn" id="' + uid + '_next"' + (steps.length <= 1 ? ' disabled' : '') + '>Next Step →</button>\\n' +
-'  </div>\\n' +
-'  <script>\\n' +
-'  (function() {\\n' +
-'    var steps = ' + stepsJson + ';\\n' +
-'    var cur = 0;\\n' +
-'    var root = document.getElementById("' + uid + '");\\n' +
-'    if (!root) return;\\n' +
-'    var lines = root.querySelectorAll(".it-cs-line");\\n' +
-'    var stepBadge = document.getElementById("' + uid + '_stepBadge");\\n' +
-'    var lineBadge = document.getElementById("' + uid + '_lineBadge");\\n' +
-'    var explText = document.getElementById("' + uid + '_explText");\\n' +
-'    var consoleOut = document.getElementById("' + uid + '_consoleOut");\\n' +
-'    var prev = document.getElementById("' + uid + '_prev");\\n' +
-'    var next = document.getElementById("' + uid + '_next");\\n' +
-'    var reset = document.getElementById("' + uid + '_reset");\\n' +
-'    function highlightLines(targetLines) {\\n' +
-'      lines.forEach(function(el) {\\n' +
-'        var num = parseInt(el.getAttribute("data-line"), 10);\\n' +
-'        if (targetLines.indexOf(num) !== -1) { el.classList.add("is-active"); } else { el.classList.remove("is-active"); }\\n' +
-'      });\\n' +
-'    }\\n' +
-'    function renderStep(idx) {\\n' +
-'      if (!steps.length) return;\\n' +
-'      var s = steps[idx];\\n' +
-'      stepBadge.textContent = "Step " + (idx + 1) + " of " + steps.length;\\n' +
-'      lineBadge.textContent = "Lines: " + s.lines.join(", ");\\n' +
-'      explText.textContent = s.explanation || "";\\n' +
-'      consoleOut.textContent = s.output || "";\\n' +
-'      highlightLines(s.lines || []);\\n' +
-'      prev.disabled = (idx === 0);\\n' +
-'      next.disabled = (idx === steps.length - 1);\\n' +
-'    }\\n' +
-'    if (prev) prev.addEventListener("click", function() { if (cur > 0) { cur--; renderStep(cur); } });\\n' +
-'    if (next) next.addEventListener("click", function() { if (cur < steps.length - 1) { cur++; renderStep(cur); } });\\n' +
-'    if (reset) reset.addEventListener("click", function() { cur = 0; renderStep(0); });\\n' +
-'    renderStep(0);\\n' +
-'  })();\\n' +
-'  <' + '/script>\\n' +
-'</div>';
+        const html = `<!-- Educational Code Stepper Widget by Blogger Suite Pro -->
+<div class="it-cs-wrapper" id="${uid}">
+  <style>
+    #${uid} { box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; max-width: 580px; margin: 16px auto; background: #0f172a; border-radius: 18px; border: 1px solid #334155; box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.3); padding: 18px; color: #f8fafc; }
+    #${uid} *, #${uid} *::before, #${uid} *::after { box-sizing: inherit; }
+    #${uid} .it-cs-topbar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+    #${uid} .it-cs-title { font-size: 13px; font-weight: 700; color: #38bdf8; display: flex; align-items: center; gap: 6px; }
+    #${uid} .it-cs-lang { background: #1e293b; color: #94a3b8; font-size: 11px; font-weight: 600; padding: 3px 8px; border-radius: 6px; text-transform: uppercase; }
+    #${uid} .it-cs-editor { background: #020617; border: 1px solid #1e293b; border-radius: 12px; overflow-x: auto; font-family: ui-monospace, monospace; font-size: 12.5px; line-height: 1.6; padding: 10px 0; margin-bottom: 12px; }
+    #${uid} .it-cs-line { display: flex; padding: 2px 12px; transition: background 0.2s; }
+    #${uid} .it-cs-line.is-active { background: rgba(56, 189, 248, 0.18); border-left: 3px solid #38bdf8; }
+    #${uid} .it-cs-ln { width: 28px; color: #475569; user-select: none; flex-shrink: 0; }
+    #${uid} .it-cs-txt { color: #e2e8f0; white-space: pre; }
+    #${uid} .it-cs-expl-card { background: #1e293b; border: 1px solid #334155; border-radius: 12px; padding: 12px 14px; margin-bottom: 12px; }
+    #${uid} .it-cs-expl-header { display: flex; justify-content: space-between; align-items: center; font-size: 11px; font-weight: 700; color: #38bdf8; margin-bottom: 6px; }
+    #${uid} .it-cs-expl-text { font-size: 13px; color: #cbd5e1; line-height: 1.5; margin: 0; }
+    #${uid} .it-cs-console { background: #000000; border: 1px solid #1e293b; border-radius: 10px; padding: 10px 12px; font-family: monospace; font-size: 12px; margin-bottom: 14px; }
+    #${uid} .it-cs-console-title { font-size: 10px; font-weight: 700; text-transform: uppercase; color: #64748b; margin-bottom: 4px; }
+    #${uid} .it-cs-console-out { color: #4ade80; margin: 0; white-space: pre-wrap; word-break: break-all; }
+    #${uid} .it-cs-nav { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+    #${uid} .it-cs-btn { background: #38bdf8; color: #0f172a; border: none; border-radius: 8px; padding: 8px 14px; font-size: 12px; font-weight: 700; cursor: pointer; transition: 0.2s; }
+    #${uid} .it-cs-btn:hover:not(:disabled) { background: #7dd3fc; }
+    #${uid} .it-cs-btn:disabled { background: #334155; color: #64748b; cursor: not-allowed; }
+    #${uid} .it-cs-btn-reset { background: transparent; border: 1px solid #475569; color: #94a3b8; padding: 7px 12px; border-radius: 8px; font-size: 11px; cursor: pointer; }
+    #${uid} .it-cs-btn-reset:hover { background: #334155; color: #ffffff; }
+  </style>
+  <div class="it-cs-topbar">
+    <div class="it-cs-title"><span>💻</span> ${title}</div>
+    <span class="it-cs-lang">${lang}</span>
+  </div>
+  <div class="it-cs-editor" id="${uid}_editor">
+${codeLinesHtml}
+  </div>
+  <div class="it-cs-expl-card">
+    <div class="it-cs-expl-header">
+      <span id="${uid}_stepBadge">Step 1 of ${steps.length}</span>
+      <span id="${uid}_lineBadge">Lines: ${steps[0].lines.join(', ')}</span>
+    </div>
+    <p class="it-cs-expl-text" id="${uid}_explText">${escapeHtml(steps[0].explanation || '')}</p>
+  </div>
+  <div class="it-cs-console">
+    <div class="it-cs-console-title">Console Output Simulator</div>
+    <div class="it-cs-console-out" id="${uid}_consoleOut">${escapeHtml(steps[0].output || '')}</div>
+  </div>
+  <div class="it-cs-nav">
+    <button type="button" class="it-cs-btn" id="${uid}_prev" disabled>← Previous Step</button>
+    <button type="button" class="it-cs-btn-reset" id="${uid}_reset">↺ Reset</button>
+    <button type="button" class="it-cs-btn" id="${uid}_next"${steps.length <= 1 ? ' disabled' : ''}>Next Step →</button>
+  </div>
+  <script>
+  (function() {
+    var steps = ${stepsJson};
+    var cur = 0;
+    var root = document.getElementById("${uid}");
+    if (!root) return;
+    var lines = root.querySelectorAll(".it-cs-line");
+    var stepBadge = document.getElementById("${uid}_stepBadge");
+    var lineBadge = document.getElementById("${uid}_lineBadge");
+    var explText = document.getElementById("${uid}_explText");
+    var consoleOut = document.getElementById("${uid}_consoleOut");
+    var prev = document.getElementById("${uid}_prev");
+    var next = document.getElementById("${uid}_next");
+    var reset = document.getElementById("${uid}_reset");
+    function highlightLines(targetLines) {
+      lines.forEach(function(el) {
+        var num = parseInt(el.getAttribute("data-line"), 10);
+        if (targetLines.indexOf(num) !== -1) { el.classList.add("is-active"); } else { el.classList.remove("is-active"); }
+      });
+    }
+    function renderStep(idx) {
+      if (!steps.length) return;
+      var s = steps[idx];
+      stepBadge.textContent = "Step " + (idx + 1) + " of " + steps.length;
+      lineBadge.textContent = "Lines: " + s.lines.join(", ");
+      explText.textContent = s.explanation || "";
+      consoleOut.textContent = s.output || "";
+      highlightLines(s.lines || []);
+      prev.disabled = (idx === 0);
+      next.disabled = (idx === steps.length - 1);
+    }
+    if (prev) prev.addEventListener("click", function() { if (cur > 0) { cur--; renderStep(cur); } });
+    if (next) next.addEventListener("click", function() { if (cur < steps.length - 1) { cur++; renderStep(cur); } });
+    if (reset) reset.addEventListener("click", function() { cur = 0; renderStep(0); });
+    renderStep(0);
+  })();
+  <\/script>
+</div>`;
 
         return minify ? cleanMinifyWidget(html) : html;
       }
@@ -4579,86 +4596,86 @@ ${cards}
         const title = escapeHtml(d.title || 'Cheatsheet Reference');
 
         const catPills = cats.map((c, i) =>
-          '<button type="button" class="it-csheet-pill' + (i === 0 ? ' is-active' : '') + '" data-cat="' + escapeHtml(c) + '">' + escapeHtml(c) + '</button>'
+          `<button type="button" class="it-csheet-pill${i === 0 ? ' is-active' : ''}" data-cat="${escapeHtml(c)}">${escapeHtml(c)}</button>`
         ).join('');
 
-        const html = '<!-- Educational Cheatsheet Grid Widget by Blogger Suite Pro -->\\n' +
-'<div class="it-csheet-wrapper" id="' + uid + '">\\n' +
-'  <style>\\n' +
-'    #' + uid + ' { box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; max-width: 680px; margin: 16px auto; background: #ffffff; border-radius: 18px; border: 1px solid #e2e8f0; box-shadow: 0 8px 24px -4px rgba(15, 23, 42, 0.08); padding: 20px; color: #0f172a; }\\n' +
-'    #' + uid + ' *, #' + uid + ' *::before, #' + uid + ' *::after { box-sizing: inherit; }\\n' +
-'    #' + uid + ' .it-csheet-top { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 14px; }\\n' +
-'    #' + uid + ' .it-csheet-title { font-size: 16px; font-weight: 800; color: #1e1b4b; display: flex; align-items: center; gap: 8px; }\\n' +
-'    #' + uid + ' .it-csheet-search { width: 100%; max-width: 220px; padding: 7px 12px; border-radius: 10px; border: 1px solid #cbd5e1; font-size: 12px; outline: none; transition: border-color 0.2s; }\\n' +
-'    #' + uid + ' .it-csheet-search:focus { border-color: #4f46e5; }\\n' +
-'    #' + uid + ' .it-csheet-cats { display: flex; gap: 6px; overflow-x: auto; padding-bottom: 8px; margin-bottom: 12px; }\\n' +
-'    #' + uid + ' .it-csheet-pill { background: #f1f5f9; color: #475569; border: 1px solid #e2e8f0; border-radius: 9999px; padding: 4px 12px; font-size: 11px; font-weight: 600; cursor: pointer; white-space: nowrap; transition: 0.2s; }\\n' +
-'    #' + uid + ' .it-csheet-pill.is-active, #' + uid + ' .it-csheet-pill:hover { background: #4f46e5; color: #ffffff; border-color: #4f46e5; }\\n' +
-'    #' + uid + ' .it-csheet-list { display: grid; grid-template-columns: 1fr; gap: 10px; max-height: 420px; overflow-y: auto; padding-right: 4px; }\\n' +
-'    #' + uid + ' .it-csheet-item { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 12px 14px; transition: transform 0.15s; }\\n' +
-'    #' + uid + ' .it-csheet-item:hover { border-color: #cbd5e1; transform: translateY(-1px); }\\n' +
-'    #' + uid + ' .it-csheet-item-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px; }\\n' +
-'    #' + uid + ' .it-csheet-cmd { font-family: ui-monospace, monospace; font-size: 13px; font-weight: 700; color: #4338ca; }\\n' +
-'    #' + uid + ' .it-csheet-cat-badge { font-size: 10px; font-weight: 700; text-transform: uppercase; background: #e0e7ff; color: #3730a3; padding: 2px 7px; border-radius: 4px; }\\n' +
-'    #' + uid + ' .it-csheet-desc { font-size: 12.5px; color: #334155; margin-bottom: 6px; }\\n' +
-'    #' + uid + ' .it-csheet-syntax { font-family: monospace; font-size: 11.5px; background: #ffffff; border: 1px solid #e2e8f0; padding: 5px 8px; border-radius: 6px; color: #0f172a; word-break: break-all; }\\n' +
-'    #' + uid + ' .it-csheet-empty { text-align: center; padding: 24px; color: #94a3b8; font-size: 13px; font-weight: 600; }\\n' +
-'  </style>\\n' +
-'  <div class="it-csheet-top">\\n' +
-'    <div class="it-csheet-title"><span>📑</span> ' + title + '</div>\\n' +
-'    <input type="text" class="it-csheet-search" id="' + uid + '_search" placeholder="🔍 Search command or syntax...">\\n' +
-'  </div>\\n' +
-'  <div class="it-csheet-cats" id="' + uid + '_cats">\\n' +
-     catPills + '\\n' +
-'  </div>\\n' +
-'  <div class="it-csheet-list" id="' + uid + '_list">\\n' +
-'  </div>\\n' +
-'  <script>\\n' +
-'  (function() {\\n' +
-'    var items = ' + itemsJson + ';\\n' +
-'    var activeCat = "All";\\n' +
-'    var searchTerm = "";\\n' +
-'    var root = document.getElementById("' + uid + '");\\n' +
-'    if (!root) return;\\n' +
-'    var list = document.getElementById("' + uid + '_list");\\n' +
-'    var search = document.getElementById("' + uid + '_search");\\n' +
-'    var catButtons = root.querySelectorAll(".it-csheet-pill");\\n' +
-'    function escapeStr(s) { return (s || "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;"); }\\n' +
-'    function render() {\\n' +
-'      var filtered = items.filter(function(it) {\\n' +
-'        var matchCat = (activeCat === "All") || (it.cat && it.cat.toLowerCase() === activeCat.toLowerCase());\\n' +
-'        var term = searchTerm.toLowerCase();\\n' +
-'        var matchSearch = !term ||\\n' +
-'          (it.cmd && it.cmd.toLowerCase().indexOf(term) !== -1) ||\\n' +
-'          (it.syntax && it.syntax.toLowerCase().indexOf(term) !== -1) ||\\n' +
-'          (it.desc && it.desc.toLowerCase().indexOf(term) !== -1);\\n' +
-'        return matchCat && matchSearch;\\n' +
-'      });\\n' +
-'      if (!filtered.length) { list.innerHTML = "<div class=\\"it-csheet-empty\\">No matching syntax or methods found.</div>"; return; }\\n' +
-'      var html = "";\\n' +
-'      for (var i = 0; i < filtered.length; i++) {\\n' +
-'        var it = filtered[i];\\n' +
-'        html += "<div class=\\"it-csheet-item\\">";\\n' +
-'        html += "  <div class=\\"it-csheet-item-head\\"><span class=\\"it-csheet-cmd\\">" + escapeStr(it.cmd) + "</span><span class=\\"it-csheet-cat-badge\\">" + escapeStr(it.cat || "General") + "</span></div>";\\n' +
-'        if (it.desc) html += "  <div class=\\"it-csheet-desc\\">" + escapeStr(it.desc) + "</div>";\\n' +
-'        if (it.syntax) html += "  <div class=\\"it-csheet-syntax\\"><code>" + escapeStr(it.syntax) + "</code></div>";\\n' +
-'        html += "</div>";\\n' +
-'      }\\n' +
-'      list.innerHTML = html;\\n' +
-'    }\\n' +
-'    if (search) search.addEventListener("input", function(e) { searchTerm = e.target.value; render(); });\\n' +
-'    catButtons.forEach(function(btn) {\\n' +
-'      btn.addEventListener("click", function() {\\n' +
-'        catButtons.forEach(function(b) { b.classList.remove("is-active"); });\\n' +
-'        btn.classList.add("is-active");\\n' +
-'        activeCat = btn.getAttribute("data-cat") || "All";\\n' +
-'        render();\\n' +
-'      });\\n' +
-'    });\\n' +
-'    render();\\n' +
-'  })();\\n' +
-'  <' + '/script>\\n' +
-'</div>';
+        const html = `<!-- Educational Cheatsheet Grid Widget by Blogger Suite Pro -->
+<div class="it-csheet-wrapper" id="${uid}">
+  <style>
+    #${uid} { box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; max-width: 680px; margin: 16px auto; background: #ffffff; border-radius: 18px; border: 1px solid #e2e8f0; box-shadow: 0 8px 24px -4px rgba(15, 23, 42, 0.08); padding: 20px; color: #0f172a; }
+    #${uid} *, #${uid} *::before, #${uid} *::after { box-sizing: inherit; }
+    #${uid} .it-csheet-top { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 14px; }
+    #${uid} .it-csheet-title { font-size: 16px; font-weight: 800; color: #1e1b4b; display: flex; align-items: center; gap: 8px; }
+    #${uid} .it-csheet-search { width: 100%; max-width: 220px; padding: 7px 12px; border-radius: 10px; border: 1px solid #cbd5e1; font-size: 12px; outline: none; transition: border-color 0.2s; }
+    #${uid} .it-csheet-search:focus { border-color: #4f46e5; }
+    #${uid} .it-csheet-cats { display: flex; gap: 6px; overflow-x: auto; padding-bottom: 8px; margin-bottom: 12px; }
+    #${uid} .it-csheet-pill { background: #f1f5f9; color: #475569; border: 1px solid #e2e8f0; border-radius: 9999px; padding: 4px 12px; font-size: 11px; font-weight: 600; cursor: pointer; white-space: nowrap; transition: 0.2s; }
+    #${uid} .it-csheet-pill.is-active, #${uid} .it-csheet-pill:hover { background: #4f46e5; color: #ffffff; border-color: #4f46e5; }
+    #${uid} .it-csheet-list { display: grid; grid-template-columns: 1fr; gap: 10px; max-height: 420px; overflow-y: auto; padding-right: 4px; }
+    #${uid} .it-csheet-item { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 12px 14px; transition: transform 0.15s; }
+    #${uid} .it-csheet-item:hover { border-color: #cbd5e1; transform: translateY(-1px); }
+    #${uid} .it-csheet-item-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px; }
+    #${uid} .it-csheet-cmd { font-family: ui-monospace, monospace; font-size: 13px; font-weight: 700; color: #4338ca; }
+    #${uid} .it-csheet-cat-badge { font-size: 10px; font-weight: 700; text-transform: uppercase; background: #e0e7ff; color: #3730a3; padding: 2px 7px; border-radius: 4px; }
+    #${uid} .it-csheet-desc { font-size: 12.5px; color: #334155; margin-bottom: 6px; }
+    #${uid} .it-csheet-syntax { font-family: monospace; font-size: 11.5px; background: #ffffff; border: 1px solid #e2e8f0; padding: 5px 8px; border-radius: 6px; color: #0f172a; word-break: break-all; }
+    #${uid} .it-csheet-empty { text-align: center; padding: 24px; color: #94a3b8; font-size: 13px; font-weight: 600; }
+  </style>
+  <div class="it-csheet-top">
+    <div class="it-csheet-title"><span>📑</span> ${title}</div>
+    <input type="text" class="it-csheet-search" id="${uid}_search" placeholder="🔍 Search command or syntax...">
+  </div>
+  <div class="it-csheet-cats" id="${uid}_cats">
+    ${catPills}
+  </div>
+  <div class="it-csheet-list" id="${uid}_list">
+  </div>
+  <script>
+  (function() {
+    var items = ${itemsJson};
+    var activeCat = "All";
+    var searchTerm = "";
+    var root = document.getElementById("${uid}");
+    if (!root) return;
+    var list = document.getElementById("${uid}_list");
+    var search = document.getElementById("${uid}_search");
+    var catButtons = root.querySelectorAll(".it-csheet-pill");
+    function escapeStr(s) { return (s || "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;"); }
+    function render() {
+      var filtered = items.filter(function(it) {
+        var matchCat = (activeCat === "All") || (it.cat && it.cat.toLowerCase() === activeCat.toLowerCase());
+        var term = searchTerm.toLowerCase();
+        var matchSearch = !term ||
+          (it.cmd && it.cmd.toLowerCase().indexOf(term) !== -1) ||
+          (it.syntax && it.syntax.toLowerCase().indexOf(term) !== -1) ||
+          (it.desc && it.desc.toLowerCase().indexOf(term) !== -1);
+        return matchCat && matchSearch;
+      });
+      if (!filtered.length) { list.innerHTML = "<div class=\"it-csheet-empty\">No matching syntax or methods found.</div>"; return; }
+      var html = "";
+      for (var i = 0; i < filtered.length; i++) {
+        var it = filtered[i];
+        html += "<div class=\"it-csheet-item\">";
+        html += "  <div class=\"it-csheet-item-head\"><span class=\"it-csheet-cmd\">" + escapeStr(it.cmd) + "</span><span class=\"it-csheet-cat-badge\">" + escapeStr(it.cat || "General") + "</span></div>";
+        if (it.desc) html += "  <div class=\"it-csheet-desc\">" + escapeStr(it.desc) + "</div>";
+        if (it.syntax) html += "  <div class=\"it-csheet-syntax\"><code>" + escapeStr(it.syntax) + "</code></div>";
+        html += "</div>";
+      }
+      list.innerHTML = html;
+    }
+    if (search) search.addEventListener("input", function(e) { searchTerm = e.target.value; render(); });
+    catButtons.forEach(function(btn) {
+      btn.addEventListener("click", function() {
+        catButtons.forEach(function(b) { b.classList.remove("is-active"); });
+        btn.classList.add("is-active");
+        activeCat = btn.getAttribute("data-cat") || "All";
+        render();
+      });
+    });
+    render();
+  })();
+  <\/script>
+</div>`;
 
         return minify ? cleanMinifyWidget(html) : html;
       }
