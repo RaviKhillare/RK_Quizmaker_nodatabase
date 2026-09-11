@@ -579,16 +579,16 @@
                 <!-- Live Sheet URL & Fetch Tool -->
                 <div class="flex flex-col gap-1 mb-space-sm">
                   <label class="font-label-md text-label-md uppercase tracking-wider text-outline font-bold text-[11px]">Public Sheet URL (Import / CSV)</label>
-                  <input id="googleSheetUrlInput" class="w-full bg-surface-container-lowest text-on-surface font-mono text-xs px-space-sm py-2 rounded-lg truncate focus:outline-none border border-outline-variant/30" type="text" placeholder="Paste Google Sheet URL..." value="https://docs.google.com/spreadsheets/d/1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms/edit?usp=sharing">
+                  <input id="sidebarGoogleSheetUrlInput" class="w-full bg-surface-container-lowest text-on-surface font-mono text-xs px-space-sm py-2 rounded-lg truncate focus:outline-none border border-outline-variant/30" type="text" placeholder="Paste Google Sheet URL..." value="https://docs.google.com/spreadsheets/d/1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms/edit?usp=sharing">
                 </div>
 
                 <div class="flex items-center gap-space-xs">
-                  <button id="btnFetchGoogleSheet" type="button" class="flex-1 px-space-sm py-1.5 rounded-lg bg-surface-container-high hover:bg-surface-bright text-on-surface font-label-md text-label-md transition-all flex items-center justify-center gap-1 border border-outline-variant/30 font-bold">
-                    <span id="fetchSheetSpinner" class="material-symbols-outlined text-[16px] hidden animate-spin">sync</span>
-                    <span class="material-symbols-outlined text-[16px]">sync</span>
-                    <span id="fetchSheetBtnText">Fetch &amp; Rebuild</span>
+                  <button id="btnSidebarFetchSheet" type="button" class="flex-1 px-space-sm py-1.5 rounded-lg bg-surface-container-high hover:bg-surface-bright text-on-surface font-label-md text-label-md transition-all flex items-center justify-center gap-1 border border-outline-variant/30 font-bold" title="Fetch questions from this Google Sheet">
+                    <span id="sidebarFetchSpinner" class="material-symbols-outlined text-[16px] hidden animate-spin">sync</span>
+                    <span id="sidebarFetchIcon" class="material-symbols-outlined text-[16px]">sync</span>
+                    <span id="sidebarFetchBtnText">Fetch &amp; Rebuild</span>
                   </button>
-                  <a id="btnMakeSheetCopy" class="px-space-sm py-1.5 rounded-lg bg-surface-container-low hover:bg-surface-container-high text-on-surface-variant font-label-md text-label-md flex items-center gap-1 border border-outline-variant/20 font-bold" href="https://docs.google.com/spreadsheets/d/1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms/copy" rel="noopener" target="_blank">
+                  <a id="btnSidebarMakeSheetCopy" class="px-space-sm py-1.5 rounded-lg bg-surface-container-low hover:bg-surface-container-high text-on-surface-variant font-label-md text-label-md flex items-center gap-1 border border-outline-variant/20 font-bold" href="https://docs.google.com/spreadsheets/d/1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms/copy" rel="noopener" target="_blank">
                     <span class="material-symbols-outlined text-[16px]">content_copy</span>
                     <span>Clone</span>
                   </a>
@@ -2415,6 +2415,16 @@
             <button id="btnModalReceiveQuestions" type="button" class="py-2.5 px-space-md rounded-xl bg-primary-container hover:bg-inverse-primary text-on-primary-container font-label-md text-label-md font-bold flex items-center justify-center gap-2 shadow-md transition">
               <span class="material-symbols-outlined text-[18px]">cloud_download</span>
               <span>Receive Questions from Sheet</span>
+            </button>
+          </div>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-space-sm pt-1">
+            <button id="btnModalCopyQuestionsTsv" type="button" class="py-2 px-space-md rounded-xl bg-surface-container-high hover:bg-surface-bright text-on-surface font-label-md text-xs font-bold flex items-center justify-center gap-2 border border-outline-variant/30 transition shadow-sm" title="Copy formatted questions to clipboard for pasting (Ctrl+V) into Google Sheet">
+              <span class="material-symbols-outlined text-[16px] text-primary">content_copy</span>
+              <span>Copy for Sheet (Ctrl+V)</span>
+            </button>
+            <button id="btnModalDownloadQuestionsCsv" type="button" class="py-2 px-space-md rounded-xl bg-surface-container-high hover:bg-surface-bright text-on-surface font-label-md text-xs font-bold flex items-center justify-center gap-2 border border-outline-variant/30 transition shadow-sm" title="Download formatted .CSV file for Google Sheets import">
+              <span class="material-symbols-outlined text-[16px] text-tertiary">file_download</span>
+              <span>Download Sheet CSV</span>
             </button>
           </div>
         </div>
@@ -6262,12 +6272,20 @@ reorder,"Arrange the IPO cycle steps in order.","Input","Process","Output","Stor
       }
 
       async function executeGoogleSheetImport() {
-        const rawUrl = googleSheetUrlInput ? googleSheetUrlInput.value.trim() : '';
+        const modalInput = document.getElementById('googleSheetUrlInput');
+        const sidebarInput = document.getElementById('sidebarGoogleSheetUrlInput');
+        const rawUrl = (modalInput && modalInput.value.trim()) || (sidebarInput && sidebarInput.value.trim()) || '';
+
         if (!rawUrl) {
           showToast("Please paste your Google Sheet public sharing link!", "warning");
-          if (googleSheetUrlInput) googleSheetUrlInput.focus();
+          if (modalInput) modalInput.focus();
+          else if (sidebarInput) sidebarInput.focus();
           return;
         }
+
+        // Sync inputs
+        if (modalInput && !modalInput.value) modalInput.value = rawUrl;
+        if (sidebarInput && !sidebarInput.value) sidebarInput.value = rawUrl;
 
         const csvUrl = convertToCsvUrl(rawUrl);
         if (!csvUrl) {
@@ -6275,12 +6293,30 @@ reorder,"Arrange the IPO cycle steps in order.","Input","Process","Output","Stor
           return;
         }
 
-        const spinner = document.getElementById('fetchSheetSpinner');
-        const btnText = document.getElementById('fetchSheetBtnText');
+        // Cache spreadsheet ID for sync operations
+        const idMatch = rawUrl.match(/\/spreadsheets\/d\/([a-zA-Z0-9-_]{15,})/);
+        if (idMatch && idMatch[1] && !idMatch[1].includes('...')) {
+          activeSpreadsheetId = idMatch[1];
+          try { localStorage.setItem("bsp_active_sheet_id", activeSpreadsheetId); } catch (_) {}
+        }
 
-        if (btnFetchGoogleSheet) btnFetchGoogleSheet.disabled = true;
-        if (spinner) spinner.className = 'fa-solid fa-spinner fa-spin text-white';
-        if (btnText) btnText.textContent = 'Fetching Sheet Data...';
+        const modalSpinner = document.getElementById('fetchSheetSpinner');
+        const modalBtnText = document.getElementById('fetchSheetBtnText');
+        const modalBtn = document.getElementById('btnFetchGoogleSheet');
+
+        const sbBtn = document.getElementById('btnSidebarFetchSheet');
+        const sbSpinner = document.getElementById('sidebarFetchSpinner');
+        const sbIcon = document.getElementById('sidebarFetchIcon');
+        const sbBtnText = document.getElementById('sidebarFetchBtnText');
+
+        if (modalBtn) modalBtn.disabled = true;
+        if (modalSpinner) modalSpinner.className = 'fa-solid fa-spinner fa-spin text-white';
+        if (modalBtnText) modalBtnText.textContent = 'Fetching Sheet Data...';
+
+        if (sbBtn) sbBtn.disabled = true;
+        if (sbSpinner) sbSpinner.classList.remove('hidden');
+        if (sbIcon) sbIcon.classList.add('hidden');
+        if (sbBtnText) sbBtnText.textContent = 'Fetching...';
 
         try {
           const csvData = await fetchGoogleSheetCsv(csvUrl);
@@ -6301,14 +6337,19 @@ reorder,"Arrange the IPO cycle steps in order.","Input","Process","Output","Stor
           triggerPreviewUpdate();
           saveCurrentQuizToLibrary(false);
           closeBulkImportModal();
-          showToast(`Loaded ${parsed.length} questions successfully from Google Sheet!`, "success");
+          showToast(`✓ Loaded ${parsed.length} questions successfully from Google Sheet!`, "success");
         } catch (err) {
           console.error("Google Sheet Import Error:", err);
           showToast(err.message || "Failed to load Google Sheet. Ensure link sharing is public!", "danger");
         } finally {
-          if (btnFetchGoogleSheet) btnFetchGoogleSheet.disabled = false;
-          if (spinner) spinner.className = 'fa-solid fa-wand-magic-sparkles text-yellow-300';
-          if (btnText) btnText.textContent = 'Fetch & Build Question Paper';
+          if (modalBtn) modalBtn.disabled = false;
+          if (modalSpinner) modalSpinner.className = 'fa-solid fa-wand-magic-sparkles text-yellow-300';
+          if (modalBtnText) modalBtnText.textContent = 'Fetch & Build Question Paper';
+
+          if (sbBtn) sbBtn.disabled = false;
+          if (sbSpinner) sbSpinner.classList.add('hidden');
+          if (sbIcon) sbIcon.classList.remove('hidden');
+          if (sbBtnText) sbBtnText.textContent = 'Fetch & Rebuild';
         }
       }
 
@@ -8827,7 +8868,25 @@ ${jsonString}
         }
       }
 
-      // Automated Drive Discovery & Sheet Creation Logic
+      // Helper: Extract spreadsheet ID from inputs or local storage
+      function getSpreadsheetIdFromInputs() {
+        const candidates = [
+          document.getElementById('sidebarGoogleSheetUrlInput'),
+          document.getElementById('googleSheetUrlInput'),
+          document.getElementById('inputGoogleSheetId')
+        ];
+        for (const el of candidates) {
+          if (el && el.value) {
+            const val = el.value.trim();
+            const match = val.match(/\/spreadsheets\/d\/([a-zA-Z0-9-_]{15,})/);
+            if (match && match[1] && !match[1].includes('...')) return match[1];
+            if (/^[a-zA-Z0-9-_]{20,}$/.test(val)) return val;
+          }
+        }
+        return null;
+      }
+
+      // Automated Sheet Discovery & Creation Logic (Zero-fail fallback)
       async function discoverOrCreateSpreadsheet() {
         if (!googleAccessToken) return null;
 
@@ -8835,43 +8894,42 @@ ${jsonString}
           return activeSpreadsheetId;
         }
 
-        updateSyncStatusText("Searching Drive...");
+        // 1. Check if user configured a spreadsheet URL or ID in inputs
+        const idFromInput = getSpreadsheetIdFromInputs();
+        if (idFromInput) {
+          activeSpreadsheetId = idFromInput;
+          localStorage.setItem("bsp_active_sheet_id", activeSpreadsheetId);
+          updateSyncStatusText("Connected: Google Sheets");
+          return activeSpreadsheetId;
+        }
+
+        updateSyncStatusText("Locating Sheet...");
+
+        // 2. Safely attempt Drive search; if Drive API is disabled or throws, fall back directly to Sheets API
         try {
           const q = encodeURIComponent(`name = '${DB_SPREADSHEET_NAME}' and mimeType = 'application/vnd.google-apps.spreadsheet' and trashed = false`);
           const searchUrl = `https://www.googleapis.com/drive/v3/files?q=${q}&fields=files(id,name)`;
-          const res = await fetchWithAuth(searchUrl);
+          const res = await fetchWithAuth(searchUrl, {}, false);
 
-          if (!res.ok) {
-            const err = await res.json();
-            const errMsg = (err.error && err.error.message) || "Drive search error";
-            throw new Error(errMsg);
-          }
-
-          const data = await res.json();
-          if (data.files && data.files.length > 0) {
-            activeSpreadsheetId = data.files[0].id;
-            localStorage.setItem("bsp_active_sheet_id", activeSpreadsheetId);
-            updateSyncStatusText("Connected: Google Sheets");
-            showToast(`✓ Connected to "${DB_SPREADSHEET_NAME}" in your Google Drive!`, "success");
-            return activeSpreadsheetId;
+          if (res.ok) {
+            const data = await res.json();
+            if (data.files && data.files.length > 0) {
+              activeSpreadsheetId = data.files[0].id;
+              localStorage.setItem("bsp_active_sheet_id", activeSpreadsheetId);
+              updateSyncStatusText("Connected: Google Sheets");
+              showToast(`✓ Connected to "${DB_SPREADSHEET_NAME}" in your Google Drive!`, "success");
+              return activeSpreadsheetId;
+            }
           } else {
-            await createInitialSpreadsheet();
-            return activeSpreadsheetId;
+            console.warn("Drive search returned non-ok status:", res.status);
           }
-        } catch (err) {
-          console.error("discoverOrCreateSpreadsheet error:", err);
-          const msg = err.message || "";
-          if (err.status === 401 || msg.includes("invalid authentication credentials") || msg.includes("UNAUTHENTICATED") || msg === "NOT_AUTHENTICATED") {
-            handleAuthExpired("Google session expired. Please click 'Sign in with Google' to re-authenticate.");
-          } else if (msg.includes("has not been used in project") || msg.includes("drive.googleapis.com") || msg.includes("disabled")) {
-            showApiEnableModal(msg);
-            updateSyncStatusText("Connection error");
-          } else {
-            showToast("Drive discovery error: " + msg, "danger");
-            updateSyncStatusText("Connection error");
-          }
-          return null;
+        } catch (driveErr) {
+          console.warn("Drive search skipped (using Google Sheets API direct creation):", driveErr);
         }
+
+        // 3. Create directly via Google Sheets API (no Google Drive API dependency required!)
+        await createInitialSpreadsheet();
+        return activeSpreadsheetId;
       }
 
       async function createInitialSpreadsheet() {
@@ -9180,41 +9238,286 @@ ${jsonString}
       updateAllWidgetPreviews();
     
       // -------------------------------------------------------------
-      // High-Level Google Sheet Sync Handlers (Send & Receive)
+      // 6-in-1 Questions Tabular Conversion & Export Helpers
       // -------------------------------------------------------------
-      async function sendQuestionsToGoogleSheet() {
-        if (!googleAccessToken) {
-          showToast("Please sign in with Google to send questions.", "info");
-          handleSignInClick();
-          return false;
-        }
-        if (typeof saveCurrentQuizToLocalState === 'function') {
-          saveCurrentQuizToLocalState();
-        }
-        showToast("Sending questions to Google Sheet...", "info");
-        const success = await pushMasterSnapshotToCloud(false);
-        if (success) {
-          const count = currentQuiz && currentQuiz.questions ? currentQuiz.questions.length : 0;
-          showToast("✓ Successfully sent " + count + " questions to Google Sheet!", "success");
-        }
-        return success;
+      function convertQuestionsToSheetRows(questions) {
+        if (!Array.isArray(questions)) return [];
+        return questions.map(q => {
+          if (!q) return ['MCQ', '', '', '', '', '', 'A', ''];
+          const type = q.type || 'mcq';
+          const prompt = q.prompt || '';
+          const explanation = q.explanation || '';
+          if (type === 'mcq') {
+            const opts = Array.isArray(q.options) ? q.options : [];
+            const correctIdx = Number(q.correctAnswer) || 0;
+            const letter = ['A', 'B', 'C', 'D'][correctIdx] || 'A';
+            return ['MCQ', prompt, opts[0] || '', opts[1] || '', opts[2] || '', opts[3] || '', letter, explanation];
+          } else if (type === 'true_false') {
+            const isTrue = q.correctAnswer === 0 || q.correctAnswer === true || q.correctAnswer === '0';
+            return ['True/False', prompt, 'True', 'False', '', '', isTrue ? 'True' : 'False', explanation];
+          } else if (type === 'fill_in_blank') {
+            const ans = Array.isArray(q.acceptedAnswers) ? q.acceptedAnswers.join(', ') : (q.acceptedAnswer || '');
+            return ['Fill in Blanks', prompt, ans, q.hint || '', '', '', ans, explanation];
+          } else if (type === 'flashcard') {
+            return ['Flashcard', prompt, q.backDefinition || '', q.tag || '', '', '', '', explanation];
+          } else if (type === 'match') {
+            const pairsStr = Array.isArray(q.pairs) ? q.pairs.map(p => `${p.left || ''} :: ${p.right || ''}`).join(' | ') : '';
+            return ['Match Pairs', prompt, pairsStr, '', '', '', '', explanation];
+          } else if (type === 'reorder') {
+            const stepsStr = Array.isArray(q.steps) ? q.steps.join(' -> ') : '';
+            return ['Sequence Reorder', prompt, stepsStr, '', '', '', '', explanation];
+          }
+          return ['MCQ', prompt, '', '', '', '', 'A', explanation];
+        });
       }
 
-      async function receiveQuestionsFromGoogleSheet() {
-        if (googleAccessToken) {
-          showToast("Receiving questions from Google Sheet...", "info");
-          const success = await pullMasterSnapshotFromCloud(false);
-          if (success) {
-            const count = currentQuiz && currentQuiz.questions ? currentQuiz.questions.length : 0;
-            showToast("✓ Successfully received " + count + " questions from Google Sheet!", "success");
-          }
-          return success;
+      // 1-Click Copy Formatted Questions for direct pasting (Ctrl+V) into Google Sheet
+      function copyQuestionsForGoogleSheet(notify = true) {
+        if (typeof saveCurrentQuizToLibrary === 'function') {
+          saveCurrentQuizToLibrary(false);
+        }
+        const questions = currentQuiz && currentQuiz.questions ? currentQuiz.questions : [];
+        if (questions.length === 0) {
+          showToast("No questions to copy! Please add questions to the quiz first.", "warning");
+          return false;
+        }
+        const header = ['Type', 'Question Prompt', 'Option A', 'Option B', 'Option C', 'Option D', 'Correct Answer', 'Explanation'];
+        const rows = convertQuestionsToSheetRows(questions);
+        const tsv = [header.join('\t')].concat(rows.map(r => r.map(c => String(c === undefined || c === null ? '' : c).replace(/[\t\r\n]+/g, ' ')).join('\t'))).join('\n');
+
+        const onCopied = () => {
+          if (notify) showToast(`✓ Copied ${questions.length} questions! Open Google Sheet and press Ctrl+V to paste.`, "success");
+        };
+
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(tsv).then(onCopied).catch(() => {
+            copyViaTextarea(tsv);
+            onCopied();
+          });
         } else {
-          // If not signed in to Google, use the public Sheet URL importer
-          if (typeof executeGoogleSheetImport === 'function') {
-            await executeGoogleSheetImport();
+          copyViaTextarea(tsv);
+          onCopied();
+        }
+        return true;
+      }
+
+      // Download CSV formatted for Google Sheets import
+      function downloadQuestionsCsv() {
+        if (typeof saveCurrentQuizToLibrary === 'function') {
+          saveCurrentQuizToLibrary(false);
+        }
+        const questions = currentQuiz && currentQuiz.questions ? currentQuiz.questions : [];
+        if (questions.length === 0) {
+          showToast("No questions to export! Please add questions first.", "warning");
+          return;
+        }
+        const header = ['Type', 'Question Prompt', 'Option A', 'Option B', 'Option C', 'Option D', 'Correct Answer', 'Explanation'];
+        const rows = convertQuestionsToSheetRows(questions);
+        const escapeCsv = (val) => {
+          const str = String(val === undefined || val === null ? '' : val);
+          if (str.includes(',') || str.includes('"') || str.includes('\n')) {
+            return `"${str.replace(/"/g, '""')}"`;
+          }
+          return str;
+        };
+        const csvContent = [header.map(escapeCsv).join(',')].concat(rows.map(r => r.map(escapeCsv).join(','))).join('\r\n');
+        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        const filename = (currentQuiz.title || 'quiz_questions').toLowerCase().replace(/[^a-z0-9]+/g, '_') + '.csv';
+        a.href = url;
+        a.download = filename;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+        showToast(`✓ Downloaded ${questions.length} questions as "${filename}"!`, "success");
+      }
+
+      // Ensure all required tabs exist in the connected Google Sheet
+      async function ensureAllRequiredTabsExist(spreadsheetId) {
+        if (!spreadsheetId || !googleAccessToken) return false;
+        try {
+          const res = await fetchWithAuth(`https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}?fields=sheets.properties.title`);
+          if (!res.ok) return false;
+          const meta = await res.json();
+          const existingTitles = (meta.sheets || []).map(s => s.properties && s.properties.title);
+
+          const requiredTabs = [
+            { title: MASTER_STORE_SHEET_NAME, cols: 6, rows: 100, header: ["MASTER_JSON_PAYLOAD", "LAST_UPDATED", "VERSION", "ITEMS_SUMMARY"] },
+            { title: "Questions", cols: 8, rows: 500, header: ["Type", "Question Prompt", "Option A", "Option B", "Option C", "Option D", "Correct Answer", "Explanation"] },
+            { title: "Quizzes", cols: 6, rows: 200, header: ["Quiz ID", "Title", "Category", "Questions Count", "Payload JSON", "Updated At"] },
+            { title: "Widgets", cols: 5, rows: 200, header: ["Widget ID", "Group Name", "Layout", "Buttons JSON", "Updated At"] }
+          ];
+
+          const missingTabs = requiredTabs.filter(tab => !existingTitles.includes(tab.title));
+
+          if (missingTabs.length > 0) {
+            const addRequests = missingTabs.map(tab => ({
+              addSheet: {
+                properties: {
+                  title: tab.title,
+                  gridProperties: { frozenRowCount: 1, columnCount: tab.cols, rowCount: tab.rows }
+                }
+              }
+            }));
+
+            const batchRes = await fetchWithAuth(`https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}:batchUpdate`, {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ requests: addRequests })
+            });
+
+            if (batchRes.ok) {
+              const headerUpdates = missingTabs.map(tab => ({
+                range: `${tab.title}!A1:${String.fromCharCode(64 + tab.header.length)}1`,
+                values: [tab.header]
+              }));
+              await fetchWithAuth(`https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}/values:batchUpdate`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ valueInputOption: "RAW", data: headerUpdates })
+              }).catch(e => console.warn("Headers populate warning:", e));
+            }
+          }
+          return true;
+        } catch (e) {
+          console.warn("ensureAllRequiredTabsExist warning:", e);
+          return false;
+        }
+      }
+
+      // -------------------------------------------------------------
+      // High-Level Google Sheet Sync Handlers (Send & Receive)
+      // -------------------------------------------------------------
+      async function sendQuestionsToGoogleSheet(e) {
+        const clickedBtn = (e && e.currentTarget) ? e.currentTarget : (e && e.target ? e.target.closest('button') : null);
+        let origBtnContent = null;
+
+        if (clickedBtn) {
+          origBtnContent = clickedBtn.innerHTML;
+          clickedBtn.disabled = true;
+          clickedBtn.innerHTML = '<span class="material-symbols-outlined text-[16px] animate-spin">sync</span><span>Sending...</span>';
+        }
+
+        try {
+          // 1. Commit active quiz changes from DOM into library
+          if (typeof saveCurrentQuizToLibrary === 'function') {
+            saveCurrentQuizToLibrary(false);
+          }
+
+          const qCount = currentQuiz && currentQuiz.questions ? currentQuiz.questions.length : 0;
+          if (qCount === 0) {
+            showToast("Your quiz has 0 questions. Please add questions before sending to Google Sheet.", "warning");
+            return false;
+          }
+
+          // 2. Check if user is authenticated with Google
+          if (!googleAccessToken) {
+            const valid = await ensureValidAccessToken(false);
+            if (!valid || !googleAccessToken) {
+              // Copy formatted questions to clipboard for instant zero-auth use
+              copyQuestionsForGoogleSheet(false);
+              showToast("📋 Questions copied to clipboard! (Ctrl+V in Google Sheet). Or sign in below to sync directly.", "info");
+              openSheetSyncHubModal();
+              return false;
+            }
+          }
+
+          showToast("Sending questions to Google Sheet...", "info");
+
+          // 3. Resolve active spreadsheet ID
+          if (!activeSpreadsheetId) {
+            const sid = getSpreadsheetIdFromInputs();
+            if (sid) {
+              activeSpreadsheetId = sid;
+              localStorage.setItem("bsp_active_sheet_id", activeSpreadsheetId);
+            } else {
+              await discoverOrCreateSpreadsheet();
+            }
+          }
+
+          if (!activeSpreadsheetId) {
+            showToast("Could not locate or create Google Sheet. Please check your connection.", "danger");
+            return false;
+          }
+
+          // 4. Ensure all required tabs exist (BSP_MASTER_STORE, Questions, Quizzes, Widgets)
+          await ensureAllRequiredTabsExist(activeSpreadsheetId);
+
+          // 5. Upload Master Snapshot payload (silent = true to prevent double toast)
+          await pushMasterSnapshotToCloud(true);
+
+          // 6. Write tabular 6-in-1 format questions directly to "Questions" tab
+          const questionsRows = convertQuestionsToSheetRows(currentQuiz.questions);
+          const header = ['Type', 'Question Prompt', 'Option A', 'Option B', 'Option C', 'Option D', 'Correct Answer', 'Explanation'];
+          const fullQuestionData = [header, ...questionsRows];
+
+          // Clear previous Questions tab rows and write fresh rows
+          await fetchWithAuth(`https://sheets.googleapis.com/v4/spreadsheets/${activeSpreadsheetId}/values/Questions!A1:H?valueInputOption=RAW`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              values: fullQuestionData
+            })
+          }).catch(err => console.warn("Questions tab write warning:", err));
+
+          showToast(`✓ Successfully sent ${qCount} questions to Google Sheet!`, "success");
+          return true;
+
+        } catch (err) {
+          console.error("sendQuestionsToGoogleSheet error:", err);
+          const msg = err.message || "";
+          if (err.status === 401 || msg.includes("invalid authentication credentials") || msg.includes("UNAUTHENTICATED")) {
+            handleAuthExpired("Google session expired. Please sign in to re-authenticate.");
+          } else if (msg.includes("has not been used in project") || msg.includes("sheets.googleapis.com") || msg.includes("disabled")) {
+            showApiEnableModal(msg);
           } else {
-            handleSignInClick();
+            showToast("Error sending questions to Google Sheet: " + msg, "danger");
+          }
+          return false;
+        } finally {
+          if (clickedBtn && origBtnContent) {
+            clickedBtn.disabled = false;
+            clickedBtn.innerHTML = origBtnContent;
+          }
+        }
+      }
+
+      async function receiveQuestionsFromGoogleSheet(e) {
+        const clickedBtn = (e && e.currentTarget) ? e.currentTarget : (e && e.target ? e.target.closest('button') : null);
+        let origBtnContent = null;
+
+        if (clickedBtn) {
+          origBtnContent = clickedBtn.innerHTML;
+          clickedBtn.disabled = true;
+          clickedBtn.innerHTML = '<span class="material-symbols-outlined text-[16px] animate-spin">sync</span><span>Receiving...</span>';
+        }
+
+        try {
+          if (googleAccessToken) {
+            showToast("Receiving questions from Google Sheet...", "info");
+            const success = await pullMasterSnapshotFromCloud(true);
+            if (success) {
+              const count = currentQuiz && currentQuiz.questions ? currentQuiz.questions.length : 0;
+              showToast("✓ Successfully received " + count + " questions from Google Sheet!", "success");
+            }
+            return success;
+          } else {
+            // If not signed in with Google, use public Sheet URL importer
+            if (typeof executeGoogleSheetImport === 'function') {
+              await executeGoogleSheetImport();
+            } else {
+              handleSignInClick();
+            }
+          }
+        } catch (err) {
+          console.error("receiveQuestionsFromGoogleSheet error:", err);
+          showToast("Failed to receive questions: " + (err.message || err), "danger");
+        } finally {
+          if (clickedBtn && origBtnContent) {
+            clickedBtn.disabled = false;
+            clickedBtn.innerHTML = origBtnContent;
           }
         }
       }
@@ -9301,6 +9604,11 @@ ${jsonString}
         if (modal) modal.classList.add('hidden');
       });
 
+      const btnModalCopyQuestionsTsv = document.getElementById('btnModalCopyQuestionsTsv');
+      const btnModalDownloadQuestionsCsv = document.getElementById('btnModalDownloadQuestionsCsv');
+      const btnSidebarFetchSheet = document.getElementById('btnSidebarFetchSheet');
+      const sidebarGoogleSheetUrlInput = document.getElementById('sidebarGoogleSheetUrlInput');
+
       if (btnPodSendQuestions) btnPodSendQuestions.addEventListener('click', sendQuestionsToGoogleSheet);
       if (btnSyncSendQuestions) btnSyncSendQuestions.addEventListener('click', sendQuestionsToGoogleSheet);
       if (btnSyncReceiveQuestions) btnSyncReceiveQuestions.addEventListener('click', receiveQuestionsFromGoogleSheet);
@@ -9314,12 +9622,37 @@ ${jsonString}
       if (btnModalSendAll) btnModalSendAll.addEventListener('click', () => pushMasterSnapshotToCloud(false));
       if (btnModalReceiveAll) btnModalReceiveAll.addEventListener('click', () => pullMasterSnapshotFromCloud(false));
 
+      if (btnModalCopyQuestionsTsv) btnModalCopyQuestionsTsv.addEventListener('click', () => copyQuestionsForGoogleSheet(true));
+      if (btnModalDownloadQuestionsCsv) btnModalDownloadQuestionsCsv.addEventListener('click', downloadQuestionsCsv);
+
+      if (btnSidebarFetchSheet) btnSidebarFetchSheet.addEventListener('click', executeGoogleSheetImport);
+      if (sidebarGoogleSheetUrlInput) {
+        sidebarGoogleSheetUrlInput.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter') {
+            e.preventDefault();
+            executeGoogleSheetImport();
+          }
+        });
+        sidebarGoogleSheetUrlInput.addEventListener('input', () => {
+          const modalIn = document.getElementById('googleSheetUrlInput');
+          if (modalIn) modalIn.value = sidebarGoogleSheetUrlInput.value;
+        });
+      }
+      if (googleSheetUrlInput) {
+        googleSheetUrlInput.addEventListener('input', () => {
+          const sbIn = document.getElementById('sidebarGoogleSheetUrlInput');
+          if (sbIn) sbIn.value = googleSheetUrlInput.value;
+        });
+      }
+
       // Global window helpers
       window.bspSendQuestionsToSheet = sendQuestionsToGoogleSheet;
       window.bspReceiveQuestionsFromSheet = receiveQuestionsFromGoogleSheet;
       window.bspSendWidgetsToSheet = sendWidgetsToGoogleSheet;
       window.bspReceiveWidgetsFromSheet = receiveWidgetsFromGoogleSheet;
       window.bspOpenSyncHub = openSheetSyncHubModal;
+      window.bspCopyQuestionsForSheet = copyQuestionsForGoogleSheet;
+      window.bspDownloadQuestionsCsv = downloadQuestionsCsv;
 
     })();
   </script>
