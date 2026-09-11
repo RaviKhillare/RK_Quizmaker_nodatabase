@@ -45,12 +45,12 @@
             "on-tertiary-fixed-variant": "#653e00",
             "on-tertiary-fixed": "#2a1700",
             "secondary-fixed": "#85f8c4",
-            "on-secondary": "#003825",
+            "on-secondary": "#ffffff",
             "surface-container-lowest": "#060e20",
             "surface-variant": "#2d3449",
             "surface-bright": "#31394d",
             error: "#ffb4ab",
-            "on-secondary-container": "#00311f",
+            "on-secondary-container": "#ffffff",
             "secondary-fixed-dim": "#68dba9",
             "tertiary-container": "#996100",
             "secondary-container": "#25a475",
@@ -1644,7 +1644,7 @@
 
   <!-- All Application Modals (Preserved with Dark Styling) -->
   <div id="publishModal" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm hidden flex items-center justify-center p-4">
-    <div class="bg-white w-full max-w-xl rounded-3xl shadow-2xl border border-outline-variant/30 overflow-hidden flex flex-col animate-[fadeIn_0.2s_ease-out]">
+    <div class="w-full max-w-xl bg-surface-container rounded-2xl border border-outline-variant/30 shadow-2xl overflow-hidden flex flex-col text-on-surface animate-[fadeIn_0.2s_ease-out]">
       
       <!-- Modal Header -->
       <div class="p-5 sm:p-6 bg-gradient-to-r from-slate-900 to-indigo-950 text-white flex items-center justify-between">
@@ -1666,13 +1666,13 @@
       <div class="p-5 sm:p-6 space-y-5 overflow-y-auto max-h-[75vh]">
         
         <!-- Mode Info Banner -->
-        <div class="p-3.5 rounded-2xl bg-indigo-50 border border-indigo-200 text-xs text-indigo-900 flex items-center gap-3">
+        <div class="p-3.5 rounded-xl bg-surface-container-low border border-outline-variant/30 text-xs text-on-surface flex items-center gap-3">
           <div class="w-9 h-9 rounded-xl bg-indigo-600 text-white flex items-center justify-center shrink-0 shadow-sm">
             <i class="fa-solid fa-wand-magic-sparkles text-yellow-300 text-sm"></i>
           </div>
           <div class="leading-tight">
-            <h4 class="font-bold text-indigo-950">1-Click Instant Standalone Blogger Embedding</h4>
-            <p class="text-[11px] text-indigo-700 mt-0.5">Encodes complete quiz data directly into the player URL. Zero file hosting required.</p>
+            <h4 class="font-bold text-primary">1-Click Instant Standalone Blogger Embedding</h4>
+            <p class="text-[11px] text-on-surface-variant mt-0.5">Encodes complete quiz data directly into the player URL. Zero file hosting required.</p>
           </div>
         </div>
         <input type="hidden" id="modalGhUsername" value="RaviKhillare">
@@ -1763,39 +1763,39 @@
   <!-- ============================================================= -->
   <!-- MODAL: GOOGLE SHEETS / BULK QUIZ IMPORTER                     -->
   <!-- ============================================================= -->
-  <div id="bulkImportModal" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm hidden flex items-center justify-center p-4">
-    <div class="bg-white w-full max-w-2xl rounded-3xl shadow-2xl border border-outline-variant/30 overflow-hidden flex flex-col animate-[fadeIn_0.2s_ease-out]">
+  <div id="bulkImportModal" class="fixed inset-0 z-50 bg-slate-900/70 backdrop-blur-sm hidden flex items-center justify-center p-4">
+    <div class="w-full max-w-2xl bg-surface-container rounded-2xl border border-outline-variant/30 shadow-2xl overflow-hidden flex flex-col text-on-surface animate-[fadeIn_0.2s_ease-out]">
       <!-- Header -->
-      <div class="p-5 bg-gradient-to-r from-emerald-800 to-teal-900 text-white flex items-center justify-between">
+      <div class="px-space-lg py-space-md bg-surface-container-high border-b border-outline-variant/20 flex items-center justify-between">
         <div class="flex items-center gap-3">
-          <div class="w-10 h-10 rounded-xl bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 flex items-center justify-center">
+          <div class="w-10 h-10 rounded-xl bg-surface-container text-secondary border border-outline-variant/30 flex items-center justify-center">
             <i class="fa-solid fa-file-excel text-lg"></i>
           </div>
           <div>
-            <h3 class="font-extrabold text-base sm:text-lg">Google Sheet Public Link Auto-Importer</h3>
-            <p class="text-xs text-emerald-200">Import questions automatically via your Google Sheet sharing link</p>
+            <h3 class="font-headline-sm text-headline-sm font-bold text-on-surface">Google Sheet Auto-Importer</h3>
+            <p class="font-body-sm text-xs text-on-surface-variant">Import questions directly via your Google Sheet sharing link</p>
           </div>
         </div>
-        <button id="btnCloseBulkModal" class="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition">
+        <button id="btnCloseBulkModal" class="w-8 h-8 rounded-full bg-surface-container-lowest hover:bg-surface-container text-outline hover:text-on-surface flex items-center justify-center transition">
           <i class="fa-solid fa-times"></i>
         </button>
       </div>
 
       <!-- Body -->
-      <div class="p-5 sm:p-6 space-y-4 overflow-y-auto max-h-[75vh]">
+      <div class="p-space-lg space-y-space-md overflow-y-auto max-h-[75vh] text-on-surface">
         <!-- Step 1: Official Google Sheet Template Banner -->
-        <div class="p-4 rounded-2xl bg-emerald-50/80 border border-emerald-200 flex flex-col md:flex-row md:items-center justify-between gap-3">
+        <div class="p-4 rounded-xl bg-surface-container-low border border-outline-variant/30 flex flex-col md:flex-row md:items-center justify-between gap-3">
           <div class="space-y-1">
-            <span class="text-xs font-bold text-emerald-900 flex items-center gap-1.5">
-              <i class="fa-brands fa-google-drive text-emerald-600"></i> Official 6-in-1 Exam Master Template
+            <span class="text-xs font-bold text-secondary flex items-center gap-1.5">
+              <i class="fa-brands fa-google-drive"></i> Official 6-in-1 Exam Master Template
             </span>
-            <p class="text-[11px] text-emerald-700 font-medium">Clones all 6 question types directly into your personal Google Drive account.</p>
+            <p class="text-[11px] text-on-surface-variant">Clones all 6 question types directly into your personal Google Drive account.</p>
           </div>
           <div class="flex items-center gap-2 shrink-0 flex-wrap">
-            <button id="btnOpenTemplatePreview" type="button" class="tactile-btn px-3 py-2 rounded-xl bg-white hover:bg-emerald-50 text-emerald-800 border border-emerald-300 font-bold text-xs flex items-center gap-1.5 shadow-sm" title="Inspect columns and formatting rules">
-              <i class="fa-solid fa-table-cells text-emerald-600"></i> View Template Format
+            <button id="btnOpenTemplatePreview" type="button" class="px-3 py-2 rounded-xl bg-surface-container-high hover:bg-surface-bright text-on-surface border border-outline-variant/30 font-bold text-xs flex items-center gap-1.5 shadow-sm transition" title="Inspect columns and formatting rules">
+              <i class="fa-solid fa-table-cells text-secondary"></i> View Template Format
             </button>
-            <a id="btnMakeSheetCopy" href="https://docs.google.com/spreadsheets/d/1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms/copy" target="_blank" rel="noopener noreferrer" class="tactile-btn px-3.5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs flex items-center gap-1.5 shadow-sm" title="Opens Google Sheets 'Make a copy' page directly in Google Drive">
+            <a id="btnMakeSheetCopy" href="https://docs.google.com/spreadsheets/d/1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms/copy" target="_blank" rel="noopener noreferrer" class="px-3.5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs flex items-center gap-1.5 shadow-sm transition" title="Opens Google Sheets 'Make a copy' page directly in Google Drive">
               <i class="fa-brands fa-google-drive text-emerald-100"></i> Make a Copy in Google Sheets
             </a>
           </div>
@@ -1804,23 +1804,23 @@
         <!-- Step 2: Google Sheet URL Input -->
         <div class="space-y-2">
           <div class="flex items-center justify-between">
-            <label class="block text-xs font-bold text-on-surface-variant uppercase tracking-wider">
+            <label class="block text-xs font-bold text-on-surface uppercase tracking-wider font-label-md">
               Google Sheet Public Share Link
             </label>
-            <span class="text-[11px] text-emerald-700 font-bold flex items-center gap-1">
-              <i class="fa-solid fa-bolt text-amber-500"></i> Direct Auto-Sync
+            <span class="text-[11px] text-secondary font-bold flex items-center gap-1">
+              <i class="fa-solid fa-bolt text-tertiary"></i> Direct Auto-Sync
             </span>
           </div>
           <div class="relative">
-            <input type="url" id="googleSheetUrlInput" class="w-full pl-10 pr-4 py-3 rounded-2xl border border-outline-variant/30 bg-surface-container-lowest font-medium text-xs text-on-surface focus:bg-white focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 outline-none transition" placeholder="https://docs.google.com/spreadsheets/d/.../edit?usp=sharing">
-            <span class="absolute left-3.5 top-3.5 text-slate-400 text-sm">
+            <input type="url" id="googleSheetUrlInput" class="w-full pl-10 pr-4 py-2.5 rounded-xl border border-outline-variant/30 bg-surface-container-lowest font-mono text-xs text-on-surface focus:bg-surface-container-high focus:border-primary focus:ring-1 focus:ring-primary outline-none transition" placeholder="https://docs.google.com/spreadsheets/d/.../edit?usp=sharing">
+            <span class="absolute left-3.5 top-3 text-outline text-sm">
               <i class="fa-solid fa-link"></i>
             </span>
           </div>
-          <div class="p-3 rounded-xl bg-amber-50 border border-amber-200 text-xs text-amber-900 flex items-start gap-2.5">
-            <i class="fa-solid fa-circle-info text-amber-600 mt-0.5 shrink-0"></i>
+          <div class="p-3 rounded-xl bg-surface-container-lowest border border-outline-variant/20 text-xs text-on-surface-variant flex items-start gap-2.5">
+            <i class="fa-solid fa-circle-info text-secondary mt-0.5 shrink-0"></i>
             <span class="text-[11px] leading-relaxed">
-              Make sure your Google Sheet is set to <strong>"Anyone with the link can view"</strong> (File &gt; Share).
+              Make sure your Google Sheet is set to <strong class="text-on-surface">&quot;Anyone with the link can view&quot;</strong> (File &gt; Share).
             </span>
           </div>
         </div>
@@ -1828,12 +1828,12 @@
         <!-- Options: Append vs Replace -->
         <div class="flex flex-wrap items-center justify-between gap-3 pt-1">
           <div class="flex items-center gap-4 text-xs font-bold text-on-surface-variant">
-            <label class="flex items-center gap-1.5 cursor-pointer">
-              <input type="radio" name="bulkImportMode" value="append" checked class="text-emerald-600 focus:ring-emerald-500">
+            <label class="flex items-center gap-1.5 cursor-pointer text-on-surface">
+              <input type="radio" name="bulkImportMode" value="append" checked class="text-secondary focus:ring-secondary">
               <span>Append to current questions</span>
             </label>
-            <label class="flex items-center gap-1.5 cursor-pointer">
-              <input type="radio" name="bulkImportMode" value="replace" class="text-emerald-600 focus:ring-emerald-500">
+            <label class="flex items-center gap-1.5 cursor-pointer text-on-surface">
+              <input type="radio" name="bulkImportMode" value="replace" class="text-secondary focus:ring-secondary">
               <span>Replace existing questions</span>
             </label>
           </div>
@@ -1841,13 +1841,13 @@
       </div>
 
       <!-- Footer -->
-      <div class="p-4 sm:p-5 bg-surface-container-lowest border-t border-outline-variant/30 flex items-center justify-end gap-3">
-        <button id="btnCancelBulkModal" class="tactile-btn px-4 py-2.5 rounded-xl bg-white hover:bg-surface-container-low text-on-surface-variant font-bold text-xs border border-outline-variant/30">
+      <div class="px-space-lg py-space-md bg-surface-container-high border-t border-outline-variant/20 flex items-center justify-end gap-3">
+        <button id="btnCancelBulkModal" class="px-4 py-2 rounded-xl bg-surface-container hover:bg-surface-bright text-on-surface font-bold text-xs border border-outline-variant/30 transition">
           Cancel
         </button>
-        <button id="btnFetchGoogleSheet" class="tactile-btn px-5 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs flex items-center gap-2 shadow-md shadow-emerald-600/20">
+        <button id="btnFetchGoogleSheet" class="px-5 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs flex items-center gap-2 shadow-lg shadow-emerald-900/30 transition">
           <i id="fetchSheetSpinner" class="fa-solid fa-wand-magic-sparkles text-yellow-300"></i>
-          <span id="fetchSheetBtnText">Fetch & Build Question Paper</span>
+          <span id="fetchSheetBtnText">Fetch &amp; Build Question Paper</span>
         </button>
       </div>
     </div>
@@ -1857,7 +1857,7 @@
   <!-- MODAL: GOOGLE SHEET TEMPLATE PREVIEW & FORMAT RULES           -->
   <!-- ============================================================= -->
   <div id="templatePreviewModal" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm hidden flex items-center justify-center p-4">
-    <div class="bg-white w-full max-w-4xl rounded-3xl shadow-2xl border border-outline-variant/30 overflow-hidden flex flex-col animate-[fadeIn_0.2s_ease-out] max-h-[92vh]">
+    <div class="w-full max-w-4xl bg-surface-container rounded-2xl border border-outline-variant/30 shadow-2xl overflow-hidden flex flex-col text-on-surface animate-[fadeIn_0.2s_ease-out] max-h-[92vh]">
       <!-- Header -->
       <div class="p-5 bg-gradient-to-r from-emerald-900 via-teal-900 to-slate-900 text-white flex items-center justify-between">
         <div class="flex items-center gap-3">
@@ -1882,7 +1882,7 @@
             <h4 class="text-xs font-bold text-on-surface uppercase tracking-wider">How to structure your Google Sheet:</h4>
             <p class="text-xs text-on-surface-variant">Row 1 must contain column headers. Enter questions starting from Row 2 matching the structure below.</p>
           </div>
-          <button id="btnCopyFormatRules" type="button" class="tactile-btn px-3.5 py-2 rounded-xl bg-white hover:bg-surface-container-low text-on-surface-variant font-bold text-xs border border-outline-variant/30 flex items-center gap-1.5 shrink-0 shadow-sm">
+          <button id="btnCopyFormatRules" type="button" class="tactile-btn px-3.5 py-2 rounded-xl bg-surface-container-high hover:bg-surface-container-highest text-on-surface font-bold text-xs border border-outline-variant/30 flex items-center gap-1.5 shrink-0 shadow-sm">
             <i class="fa-solid fa-copy text-emerald-600"></i> Copy Format Rules
           </button>
         </div>
@@ -1903,7 +1903,7 @@
                   <th class="p-3 whitespace-nowrap min-w-[180px]">Explanation / Hint</th>
                 </tr>
               </thead>
-              <tbody class="divide-y divide-border-light bg-white font-medium text-on-surface-variant">
+              <tbody class="divide-y divide-outline-variant/20 bg-surface-container-lowest font-medium text-on-surface">
                 <!-- 1. MCQ -->
                 <tr class="hover:bg-surface-container-lowest/80 transition">
                   <td class="p-3 whitespace-nowrap">
@@ -2035,11 +2035,11 @@
 
       <!-- Footer -->
       <div class="p-4 sm:p-5 bg-surface-container-lowest border-t border-outline-variant/30 flex flex-wrap items-center justify-between gap-3">
-        <button id="btnCopyFormatRulesFooter" type="button" class="tactile-btn px-4 py-2 rounded-xl bg-white hover:bg-surface-container-low text-on-surface-variant font-bold text-xs border border-outline-variant/30 flex items-center gap-1.5">
+        <button id="btnCopyFormatRulesFooter" type="button" class="tactile-btn px-4 py-2 rounded-xl bg-surface-container-high hover:bg-surface-container-highest text-on-surface font-bold text-xs border border-outline-variant/30 flex items-center gap-1.5">
           <i class="fa-solid fa-copy text-emerald-600"></i> Copy Rules Text
         </button>
         <div class="flex items-center gap-2">
-          <button id="btnCloseTemplatePreviewFooter" class="tactile-btn px-4 py-2 rounded-xl bg-white hover:bg-surface-container-low text-on-surface-variant font-bold text-xs border border-outline-variant/30">
+          <button id="btnCloseTemplatePreviewFooter" class="tactile-btn px-4 py-2 rounded-xl bg-surface-container-high hover:bg-surface-container-highest text-on-surface font-bold text-xs border border-outline-variant/30">
             Close
           </button>
           <a id="btnPreviewModalCopyLink" href="https://docs.google.com/spreadsheets/d/1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms/copy" target="_blank" rel="noopener noreferrer" class="tactile-btn px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs flex items-center gap-1.5 shadow-md shadow-emerald-600/20">
@@ -2054,8 +2054,8 @@
   <!-- ============================================================= -->
   <!-- MODAL: ADD PRESET SOCIAL BUTTON PICKER                        -->
   <!-- ============================================================= -->
-  <div id="presetSocialModal" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm hidden flex items-center justify-center p-4">
-    <div class="bg-white w-full max-w-md rounded-3xl shadow-2xl border border-outline-variant/30 overflow-hidden flex flex-col animate-[fadeIn_0.2s_ease-out]">
+  <div id="presetSocialModal" class="fixed inset-0 z-50 bg-slate-900/70 backdrop-blur-sm hidden flex items-center justify-center p-4">
+    <div class="w-full max-w-md bg-surface-container rounded-2xl border border-outline-variant/30 shadow-2xl overflow-hidden flex flex-col text-on-surface animate-[fadeIn_0.2s_ease-out]">
       <div class="p-4 bg-slate-900 text-white flex items-center justify-between">
         <div class="flex items-center gap-2.5">
           <div class="w-8 h-8 rounded-xl bg-amber-500/20 text-amber-400 flex items-center justify-center">
@@ -2081,8 +2081,8 @@
   <!-- ============================================================= -->
   <!-- MODAL: NATIVE INLINE HTML QUIZ GENERATOR (SEO / NO IFRAME)   -->
   <!-- ============================================================= -->
-  <div id="inlineQuizModal" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm hidden flex items-center justify-center p-4">
-    <div class="bg-white w-full max-w-3xl rounded-3xl shadow-2xl border border-outline-variant/30 overflow-hidden flex flex-col animate-[fadeIn_0.2s_ease-out] max-h-[92vh]">
+  <div id="inlineQuizModal" class="fixed inset-0 z-50 bg-slate-900/70 backdrop-blur-sm hidden flex items-center justify-center p-4">
+    <div class="w-full max-w-3xl bg-surface-container rounded-2xl border border-outline-variant/30 shadow-2xl overflow-hidden flex flex-col text-on-surface animate-[fadeIn_0.2s_ease-out] max-h-[92vh]">
       <!-- Header -->
       <div class="p-5 bg-gradient-to-r from-violet-900 via-indigo-900 to-slate-900 text-white flex items-center justify-between">
         <div class="flex items-center gap-3">
@@ -2134,7 +2134,7 @@
       <div class="p-4 sm:p-5 bg-surface-container-lowest border-t border-outline-variant/30 flex flex-wrap items-center justify-between gap-3">
         <span class="text-xs font-medium text-outline">Paste in Compose View or HTML View</span>
         <div class="flex items-center gap-2">
-          <button id="btnCopyInlineHtml" class="tactile-btn px-4 py-2.5 rounded-xl bg-white hover:bg-surface-container-low text-on-surface-variant font-bold text-xs border border-outline-variant/30 flex items-center gap-1.5">
+          <button id="btnCopyInlineHtml" class="tactile-btn px-4 py-2.5 rounded-xl bg-surface-container hover:bg-surface-bright text-on-surface font-bold text-xs border border-outline-variant/30 flex items-center gap-1.5 transition">
             <i class="fa-solid fa-code text-primary"></i> Copy HTML Code
           </button>
           <button id="btnCopyInlineCompose" class="tactile-btn px-5 py-2.5 rounded-xl bg-violet-600 hover:bg-violet-700 text-white font-bold text-xs flex items-center gap-2 shadow-md shadow-violet-600/20">
@@ -2148,83 +2148,83 @@
   <!-- ============================================================= -->
   <!-- MODAL: GOOGLE OAUTH CLIENT ID SETTINGS                        -->
   <!-- ============================================================= -->
-  <div id="googleAuthSettingsModal" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm hidden flex items-center justify-center p-4">
-    <div class="bg-white w-full max-w-lg rounded-3xl shadow-2xl border border-outline-variant/30 overflow-hidden flex flex-col animate-[fadeIn_0.2s_ease-out]">
+  <div id="googleAuthSettingsModal" class="fixed inset-0 z-50 bg-slate-900/70 backdrop-blur-sm hidden flex items-center justify-center p-4">
+    <div class="w-full max-w-lg bg-surface-container rounded-2xl border border-outline-variant/30 shadow-2xl overflow-hidden flex flex-col text-on-surface animate-[fadeIn_0.2s_ease-out]">
       <!-- Header -->
-      <div class="p-5 bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 text-white flex items-center justify-between">
+      <div class="px-space-lg py-space-md bg-surface-container-high border-b border-outline-variant/20 flex items-center justify-between">
         <div class="flex items-center gap-3">
-          <div class="w-10 h-10 rounded-xl bg-white/10 text-white flex items-center justify-center text-lg">
-            <i class="fa-brands fa-google text-yellow-400"></i>
+          <div class="w-10 h-10 rounded-xl bg-surface-container text-yellow-400 border border-outline-variant/30 flex items-center justify-center text-lg">
+            <i class="fa-brands fa-google"></i>
           </div>
           <div>
-            <h3 class="font-extrabold text-base sm:text-lg">Google Cloud Settings</h3>
-            <p class="text-xs text-slate-300">Google OAuth 2.0 Client ID for Sheets & Drive API</p>
+            <h3 class="font-headline-sm text-headline-sm font-bold text-on-surface">Google Cloud Settings</h3>
+            <p class="font-body-sm text-xs text-on-surface-variant">Google OAuth 2.0 Client ID for Sheets &amp; Drive API</p>
           </div>
         </div>
-        <button id="btnCloseGoogleSettingsModal" class="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition">
+        <button id="btnCloseGoogleSettingsModal" type="button" class="w-8 h-8 rounded-full bg-surface-container-lowest hover:bg-surface-container text-outline hover:text-on-surface flex items-center justify-center transition">
           <i class="fa-solid fa-times"></i>
         </button>
       </div>
 
       <!-- Body -->
-      <div class="p-5 sm:p-6 space-y-4 text-xs">
+      <div class="p-space-lg space-y-space-md text-on-surface">
         <div class="space-y-1.5">
-          <label class="font-bold text-on-surface-variant uppercase tracking-wider text-[11px] flex items-center justify-between">
+          <label class="font-label-md font-bold text-on-surface uppercase tracking-wider text-[11px] flex items-center justify-between">
             <span>Google OAuth 2.0 Client ID</span>
-            <span class="text-slate-400 font-normal">Auto-saved in browser</span>
+            <span class="text-secondary font-mono text-[10px]">Auto-saved in browser</span>
           </label>
-          <input type="text" id="inputGoogleClientId" class="w-full px-3.5 py-2.5 rounded-xl border border-outline-variant/30 bg-surface-container-lowest focus:bg-white text-xs font-semibold focus:border-primary outline-none font-mono" placeholder="506174863758-xxxxxxxxxx.apps.googleusercontent.com">
-          <p class="text-[11px] text-outline leading-relaxed">
-            Copy your Client ID from <a href="https://console.cloud.google.com/apis/credentials?project=506174863758" target="_blank" class="text-primary underline font-bold inline-flex items-center gap-1">Google Cloud Credentials <i class="fa-solid fa-arrow-up-right-from-square text-[9px]"></i></a> under <strong>OAuth 2.0 Client IDs</strong>. Make sure <strong>Authorized JavaScript origins</strong> includes <code class="bg-surface-container-low px-1.5 py-0.5 rounded text-indigo-700 font-mono text-[10px] font-bold">https://ravikhillare.github.io</code> and <code class="bg-surface-container-low px-1.5 py-0.5 rounded text-indigo-700 font-mono text-[10px] font-bold">http://localhost</code>.
+          <input type="text" id="inputGoogleClientId" class="w-full px-3.5 py-2.5 rounded-xl border border-outline-variant/30 bg-surface-container-lowest text-on-surface focus:bg-surface-container-high focus:border-primary focus:ring-1 focus:ring-primary text-xs font-semibold outline-none font-mono transition" placeholder="506174863758-xxxxxxxxxx.apps.googleusercontent.com">
+          <p class="text-[11px] text-on-surface-variant leading-relaxed">
+            Copy your Client ID from <a href="https://console.cloud.google.com/apis/credentials?project=506174863758" target="_blank" class="text-primary underline font-bold inline-flex items-center gap-1">Google Cloud Credentials <i class="fa-solid fa-arrow-up-right-from-square text-[9px]"></i></a> under <strong class="text-on-surface">OAuth 2.0 Client IDs</strong>. Make sure <strong class="text-on-surface">Authorized JavaScript origins</strong> includes <code class="bg-surface-container-lowest px-1.5 py-0.5 rounded text-primary font-mono text-[10px] font-bold border border-outline-variant/20">https://ravikhillare.github.io</code> and <code class="bg-surface-container-lowest px-1.5 py-0.5 rounded text-primary font-mono text-[10px] font-bold border border-outline-variant/20">http://localhost</code>.
           </p>
         </div>
 
         <!-- Required APIs Section -->
-        <div class="p-3.5 rounded-2xl bg-amber-50 border border-amber-200 text-amber-900 space-y-2">
-          <div class="font-bold flex items-center gap-1.5 text-xs">
-            <i class="fa-solid fa-triangle-exclamation text-amber-600"></i> Required Google Cloud APIs
+        <div class="p-space-md rounded-xl bg-amber-950/30 border border-amber-500/30 text-amber-200 space-y-2">
+          <div class="font-bold flex items-center gap-1.5 text-xs text-amber-300">
+            <i class="fa-solid fa-triangle-exclamation text-amber-400"></i> Required Google Cloud APIs
           </div>
-          <p class="text-[11px] leading-relaxed text-amber-800">
-            Make sure both APIs are <strong>Enabled</strong> in your Google Cloud Project:
+          <p class="text-[11px] leading-relaxed text-amber-200/90">
+            Make sure both APIs are <strong class="text-amber-100 font-bold">Enabled</strong> in your Google Cloud Project:
           </p>
           <div class="flex flex-wrap gap-2 pt-0.5">
-            <a href="https://console.cloud.google.com/apis/library/drive.googleapis.com" target="_blank" class="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-white border border-amber-300 text-amber-950 hover:bg-amber-100 font-bold text-[11px] transition">
-              <i class="fab fa-google-drive text-emerald-600"></i> Enable Drive API <i class="fa-solid fa-arrow-up-right-from-square text-[9px] text-slate-400"></i>
+            <a href="https://console.cloud.google.com/apis/library/drive.googleapis.com" target="_blank" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-surface-container-high border border-amber-500/40 text-amber-200 hover:bg-surface-bright font-bold text-[11px] transition">
+              <i class="fab fa-google-drive text-emerald-400"></i> Enable Drive API <i class="fa-solid fa-arrow-up-right-from-square text-[9px] text-amber-400/60"></i>
             </a>
-            <a href="https://console.cloud.google.com/apis/library/sheets.googleapis.com" target="_blank" class="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-white border border-amber-300 text-amber-950 hover:bg-amber-100 font-bold text-[11px] transition">
-              <i class="fa-solid fa-table text-emerald-600"></i> Enable Sheets API <i class="fa-solid fa-arrow-up-right-from-square text-[9px] text-slate-400"></i>
+            <a href="https://console.cloud.google.com/apis/library/sheets.googleapis.com" target="_blank" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-surface-container-high border border-amber-500/40 text-amber-200 hover:bg-surface-bright font-bold text-[11px] transition">
+              <i class="fa-solid fa-table text-emerald-400"></i> Enable Sheets API <i class="fa-solid fa-arrow-up-right-from-square text-[9px] text-amber-400/60"></i>
             </a>
           </div>
         </div>
 
         <!-- Optional Spreadsheet ID / URL -->
         <div class="space-y-1.5">
-          <label class="font-bold text-on-surface-variant uppercase tracking-wider text-[11px] flex items-center justify-between">
+          <label class="font-label-md font-bold text-on-surface uppercase tracking-wider text-[11px] flex items-center justify-between">
             <span>Custom Google Sheet ID / Link (Optional)</span>
-            <span class="text-slate-400 font-normal">Auto-created if empty</span>
+            <span class="text-secondary font-mono text-[10px]">Auto-created if empty</span>
           </label>
-          <input type="text" id="inputGoogleSheetId" class="w-full px-3.5 py-2.5 rounded-xl border border-outline-variant/30 bg-surface-container-lowest focus:bg-white text-xs font-semibold focus:border-primary outline-none font-mono" placeholder="https://docs.google.com/spreadsheets/d/... OR sheet ID">
-          <p class="text-[11px] text-outline">
+          <input type="text" id="inputGoogleSheetId" class="w-full px-3.5 py-2.5 rounded-xl border border-outline-variant/30 bg-surface-container-lowest text-on-surface focus:bg-surface-container-high focus:border-primary focus:ring-1 focus:ring-primary text-xs font-semibold outline-none font-mono transition" placeholder="https://docs.google.com/spreadsheets/d/... OR sheet ID">
+          <p class="text-[11px] text-on-surface-variant">
             Leave blank to automatically find or create &quot;Blogger Suite Pro Database&quot; in Google Drive.
           </p>
         </div>
 
-        <div class="p-3.5 rounded-2xl bg-surface-container-lowest border border-outline-variant/30 space-y-2 text-[11px] text-on-surface-variant">
+        <div class="p-3.5 rounded-xl bg-surface-container-low border border-outline-variant/20 space-y-1.5 text-[11px] text-on-surface-variant">
           <div class="font-bold text-on-surface flex items-center gap-1.5">
-            <i class="fa-solid fa-shield-halved text-emerald-600"></i> Client-Side Direct & Secure
+            <i class="fa-solid fa-shield-halved text-emerald-400"></i> Client-Side Direct &amp; Secure
           </div>
-          <p>
+          <p class="leading-relaxed">
             Zero server required. Your browser communicates directly with Google Sheets API v4 using OAuth 2.0 tokens stored only in your active session.
           </p>
         </div>
       </div>
 
       <!-- Footer -->
-      <div class="p-4 sm:p-5 bg-surface-container-lowest border-t border-outline-variant/30 flex items-center justify-end gap-2">
-        <button id="btnCancelGoogleSettings" type="button" class="tactile-btn px-4 py-2 rounded-xl bg-white hover:bg-surface-container-low text-on-surface-variant font-bold text-xs border border-outline-variant/30">
+      <div class="px-space-lg py-space-md bg-surface-container-high border-t border-outline-variant/20 flex items-center justify-end gap-2">
+        <button id="btnCancelGoogleSettings" type="button" class="px-4 py-2 rounded-xl bg-surface-container hover:bg-surface-bright text-on-surface font-label-md text-xs font-bold border border-outline-variant/30 transition">
           Cancel
         </button>
-        <button id="btnSaveGoogleClientId" type="button" class="tactile-btn px-4 py-2 rounded-xl bg-primary hover:bg-primary-dark text-white font-bold text-xs flex items-center gap-1.5 shadow-sm shadow-primary/20">
+        <button id="btnSaveGoogleClientId" type="button" class="px-4 py-2 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-label-md text-xs font-bold flex items-center gap-1.5 shadow-lg shadow-blue-900/30 transition">
           <i class="fa-solid fa-floppy-disk"></i> Save Settings
         </button>
       </div>
@@ -2235,69 +2235,69 @@
   <!-- MODAL: GOOGLE CLOUD APIS REQUIRED / ENABLE HELPER             -->
   <!-- ============================================================= -->
   <div id="googleApiEnableModal" class="fixed inset-0 z-50 bg-slate-900/70 backdrop-blur-sm hidden flex items-center justify-center p-4">
-    <div class="bg-white w-full max-w-lg rounded-3xl shadow-2xl border border-rose-200 overflow-hidden flex flex-col animate-[fadeIn_0.2s_ease-out]">
-      <div class="p-5 bg-gradient-to-r from-rose-900 via-slate-900 to-rose-900 text-white flex items-center justify-between">
+    <div class="w-full max-w-lg bg-surface-container rounded-2xl border border-rose-500/30 shadow-2xl overflow-hidden flex flex-col text-on-surface animate-[fadeIn_0.2s_ease-out]">
+      <div class="px-space-lg py-space-md bg-surface-container-high border-b border-rose-500/20 flex items-center justify-between">
         <div class="flex items-center gap-3">
-          <div class="w-10 h-10 rounded-xl bg-rose-500/20 text-rose-300 flex items-center justify-center text-lg">
+          <div class="w-10 h-10 rounded-xl bg-rose-500/20 text-rose-300 flex items-center justify-center text-lg border border-rose-500/30">
             <i class="fa-solid fa-triangle-exclamation"></i>
           </div>
           <div>
-            <h3 class="font-extrabold text-base sm:text-lg">Google Cloud API Required</h3>
-            <p class="text-xs text-rose-200">Action needed in your Google Cloud Console</p>
+            <h3 class="font-headline-sm text-headline-sm font-bold text-on-surface">Google Cloud API Required</h3>
+            <p class="font-body-sm text-xs text-rose-300">Action needed in your Google Cloud Console</p>
           </div>
         </div>
-        <button id="btnCloseGoogleApiModal" class="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition">
+        <button id="btnCloseGoogleApiModal" class="w-8 h-8 rounded-full bg-surface-container-lowest hover:bg-surface-container text-outline hover:text-on-surface flex items-center justify-center transition">
           <i class="fa-solid fa-times"></i>
         </button>
       </div>
-      <div class="p-5 sm:p-6 space-y-4 text-xs">
-        <p id="googleApiErrorMessage" class="p-3 bg-rose-50 border border-rose-200 rounded-xl text-rose-800 leading-relaxed font-medium">
+      <div class="p-space-lg space-y-space-md text-xs text-on-surface">
+        <p id="googleApiErrorMessage" class="p-3 bg-rose-950/40 border border-rose-500/30 rounded-xl text-rose-200 leading-relaxed font-medium">
           Google Drive API or Google Sheets API is not enabled for your project. Click the buttons below to enable them.
         </p>
 
         <div class="space-y-2.5">
-          <p class="font-bold text-on-surface-variant">Click both links below to enable the required APIs in your Google project:</p>
+          <p class="font-bold text-on-surface">Click both links below to enable the required APIs in your Google project:</p>
           
-          <a id="btnLinkEnableDriveApi" href="https://console.cloud.google.com/apis/library/drive.googleapis.com" target="_blank" class="flex items-center justify-between p-3.5 rounded-2xl bg-surface-container-lowest border border-slate-200 hover:border-primary hover:bg-sky-50/50 transition group">
+          <a id="btnLinkEnableDriveApi" href="https://console.cloud.google.com/apis/library/drive.googleapis.com" target="_blank" class="flex items-center justify-between p-3.5 rounded-xl bg-surface-container-low border border-outline-variant/30 hover:border-primary transition group">
             <div class="flex items-center gap-3">
-              <div class="w-8 h-8 rounded-xl bg-amber-100 text-amber-600 flex items-center justify-center text-sm">
+              <div class="w-8 h-8 rounded-xl bg-amber-500/20 text-amber-400 flex items-center justify-center text-sm">
                 <i class="fab fa-google-drive"></i>
               </div>
               <div>
                 <div class="font-bold text-on-surface">1. Google Drive API</div>
-                <div class="text-[11px] text-outline">Allows finding & managing your database sheet</div>
+                <div class="text-[11px] text-on-surface-variant">Allows finding &amp; managing your database sheet</div>
               </div>
             </div>
-            <span class="px-3 py-1.5 rounded-xl bg-primary text-white font-bold text-xs group-hover:bg-primary-dark">
+            <span class="px-3 py-1.5 rounded-lg bg-primary-container text-white font-bold text-xs group-hover:bg-inverse-primary transition">
               Enable <i class="fa-solid fa-arrow-up-right-from-square ml-1 text-[10px]"></i>
             </span>
           </a>
 
-          <a id="btnLinkEnableSheetsApi" href="https://console.cloud.google.com/apis/library/sheets.googleapis.com" target="_blank" class="flex items-center justify-between p-3.5 rounded-2xl bg-surface-container-lowest border border-slate-200 hover:border-primary hover:bg-sky-50/50 transition group">
+          <a id="btnLinkEnableSheetsApi" href="https://console.cloud.google.com/apis/library/sheets.googleapis.com" target="_blank" class="flex items-center justify-between p-3.5 rounded-xl bg-surface-container-low border border-outline-variant/30 hover:border-primary transition group">
             <div class="flex items-center gap-3">
-              <div class="w-8 h-8 rounded-xl bg-emerald-100 text-emerald-600 flex items-center justify-center text-sm">
+              <div class="w-8 h-8 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-sm">
                 <i class="fa-solid fa-table"></i>
               </div>
               <div>
                 <div class="font-bold text-on-surface">2. Google Sheets API</div>
-                <div class="text-[11px] text-outline">Allows reading & saving quiz and widget data</div>
+                <div class="text-[11px] text-on-surface-variant">Allows reading &amp; saving quiz and widget data</div>
               </div>
             </div>
-            <span class="px-3 py-1.5 rounded-xl bg-primary text-white font-bold text-xs group-hover:bg-primary-dark">
+            <span class="px-3 py-1.5 rounded-lg bg-primary-container text-white font-bold text-xs group-hover:bg-inverse-primary transition">
               Enable <i class="fa-solid fa-arrow-up-right-from-square ml-1 text-[10px]"></i>
             </span>
           </a>
         </div>
 
-        <div class="p-3 bg-surface-container-low rounded-xl text-on-surface-variant text-[11px] leading-relaxed">
-          <strong>Tip:</strong> After clicking <strong>&quot;ENABLE&quot;</strong> in Google Cloud Console, wait ~1 minute for Google to activate the service, then click <strong>&quot;Retry Connection&quot;</strong> below.
+        <div class="p-3 bg-surface-container-lowest border border-outline-variant/20 rounded-xl text-on-surface-variant text-[11px] leading-relaxed">
+          <strong class="text-on-surface">Tip:</strong> After clicking <strong class="text-primary">&quot;ENABLE&quot;</strong> in Google Cloud Console, wait ~1 minute for Google to activate the service, then click <strong class="text-secondary">&quot;Retry Connection&quot;</strong> below.
         </div>
       </div>
-      <div class="p-4 sm:p-5 bg-surface-container-lowest border-t border-outline-variant/30 flex items-center justify-end gap-2">
-        <button id="btnDismissApiModal" type="button" class="tactile-btn px-4 py-2 rounded-xl bg-white hover:bg-surface-container-low text-on-surface-variant font-bold text-xs border border-outline-variant/30">
+      <div class="px-space-lg py-space-md bg-surface-container-high border-t border-outline-variant/20 flex items-center justify-end gap-2">
+        <button id="btnDismissApiModal" type="button" class="px-4 py-2 rounded-xl bg-surface-container hover:bg-surface-bright text-on-surface font-bold text-xs border border-outline-variant/30 transition">
           Close
         </button>
-        <button id="btnRetryApiConnection" type="button" class="tactile-btn px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs flex items-center gap-1.5 shadow-sm">
+        <button id="btnRetryApiConnection" type="button" class="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs flex items-center gap-1.5 shadow-sm transition">
           <i class="fa-solid fa-rotate"></i> Retry Connection
         </button>
       </div>
@@ -2307,46 +2307,46 @@
   <!-- ============================================================= -->
   <!-- MODAL: CLOUD DATA MASTER PAYLOAD INSPECTOR                    -->
   <!-- ============================================================= -->
-  <div id="cloudDataInspectorModal" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm hidden flex items-center justify-center p-4">
-    <div class="bg-white w-full max-w-2xl rounded-3xl shadow-2xl border border-outline-variant/30 overflow-hidden flex flex-col max-h-[85vh] animate-[fadeIn_0.2s_ease-out]">
+  <div id="cloudDataInspectorModal" class="fixed inset-0 z-50 bg-slate-900/70 backdrop-blur-sm hidden flex items-center justify-center p-4">
+    <div class="w-full max-w-2xl bg-surface-container rounded-2xl border border-outline-variant/30 shadow-2xl overflow-hidden flex flex-col max-h-[85vh] text-on-surface animate-[fadeIn_0.2s_ease-out]">
       <!-- Modal Header -->
-      <div class="p-4 sm:p-5 bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 text-white flex items-center justify-between">
+      <div class="px-space-lg py-space-md bg-surface-container-high border-b border-outline-variant/20 flex items-center justify-between">
         <div class="flex items-center gap-3">
-          <div class="w-9 h-9 rounded-xl bg-white/10 text-emerald-400 flex items-center justify-center text-base">
+          <div class="w-9 h-9 rounded-xl bg-surface-container text-secondary flex items-center justify-center text-base border border-outline-variant/30">
             <i class="fa-solid fa-code"></i>
           </div>
           <div>
-            <h3 class="font-extrabold text-base">Cloud Data Master Inspector</h3>
-            <p class="text-xs text-slate-300">Live JSON payload from <code class="text-emerald-300 font-mono text-[11px]">BSP_MASTER_STORE</code> tab</p>
+            <h3 class="font-headline-sm text-headline-sm font-bold text-on-surface">Cloud Data Master Inspector</h3>
+            <p class="font-body-sm text-xs text-on-surface-variant">Live JSON payload from <code class="text-secondary font-mono text-[11px]">BSP_MASTER_STORE</code> tab</p>
           </div>
         </div>
-        <button id="btnCloseCloudInspectorModal" class="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition">
+        <button id="btnCloseCloudInspectorModal" class="w-8 h-8 rounded-full bg-surface-container-lowest hover:bg-surface-container text-outline hover:text-on-surface flex items-center justify-center transition">
           <i class="fa-solid fa-times"></i>
         </button>
       </div>
 
       <!-- Modal Body -->
-      <div class="p-4 sm:p-6 flex-1 overflow-y-auto space-y-3">
+      <div class="p-space-lg flex-1 overflow-y-auto space-y-3 text-on-surface">
         <div class="flex items-center justify-between text-xs">
-          <span class="font-bold text-on-surface-variant flex items-center gap-1.5">
+          <span class="font-bold text-on-surface flex items-center gap-1.5">
             <i class="fa-solid fa-database text-primary"></i>
             <span id="cloudInspectorSummary">Loading payload from Google Sheet...</span>
           </span>
-          <span id="cloudInspectorTimestamp" class="text-slate-400 font-mono text-[11px]"></span>
+          <span id="cloudInspectorTimestamp" class="text-outline font-mono text-[11px]"></span>
         </div>
-        <pre id="cloudInspectorJson" class="font-mono text-[11px] leading-relaxed bg-slate-900 text-emerald-400 p-4 rounded-2xl overflow-x-auto max-h-[50vh] border border-slate-800 select-all"></pre>
+        <pre id="cloudInspectorJson" class="font-mono text-[11px] leading-relaxed bg-surface-container-lowest text-secondary p-4 rounded-xl overflow-x-auto max-h-[50vh] border border-outline-variant/20 select-all"></pre>
       </div>
 
       <!-- Modal Footer -->
-      <div class="p-4 sm:p-5 bg-surface-container-lowest border-t border-outline-variant/30 flex items-center justify-between">
-        <button id="btnRefreshCloudInspector" type="button" class="tactile-btn px-3.5 py-2 rounded-xl bg-white hover:bg-surface-container-low text-on-surface-variant font-bold text-xs border border-outline-variant/30 flex items-center gap-1.5">
+      <div class="px-space-lg py-space-md bg-surface-container-high border-t border-outline-variant/20 flex items-center justify-between">
+        <button id="btnRefreshCloudInspector" type="button" class="px-3.5 py-2 rounded-xl bg-surface-container hover:bg-surface-bright text-on-surface font-bold text-xs border border-outline-variant/30 flex items-center gap-1.5 transition">
           <i class="fa-solid fa-rotate"></i> Refresh from Cloud
         </button>
         <div class="flex items-center gap-2">
-          <button id="btnCopyCloudInspectorJson" type="button" class="tactile-btn px-4 py-2 rounded-xl bg-primary hover:bg-primary-dark text-white font-bold text-xs flex items-center gap-1.5 shadow-sm">
+          <button id="btnCopyCloudInspectorJson" type="button" class="px-4 py-2 rounded-xl bg-primary-container hover:bg-inverse-primary text-white font-bold text-xs flex items-center gap-1.5 shadow-md transition">
             <i class="fa-solid fa-copy"></i> Copy JSON
           </button>
-          <button id="btnDismissCloudInspector" type="button" class="tactile-btn px-4 py-2 rounded-xl bg-slate-200 hover:bg-slate-300 text-on-surface-variant font-bold text-xs">
+          <button id="btnDismissCloudInspector" type="button" class="px-4 py-2 rounded-xl bg-surface-container hover:bg-surface-bright text-on-surface font-bold text-xs border border-outline-variant/30 transition">
             Close
           </button>
         </div>
