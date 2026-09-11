@@ -150,6 +150,34 @@
       from { transform: translateY(20px); opacity: 0; }
       to { transform: translateY(0); opacity: 1; }
     }
+
+    /* Blogger Widgets Studio Scoped Enhancements */
+    .widget-type-btn {
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .widget-type-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px -2px rgba(0, 0, 0, 0.05);
+    }
+    .widget-type-btn.is-active {
+      border-color: #4f46e5 !important;
+      background-color: #eef2ff !important;
+      box-shadow: 0 0 0 2px #4f46e5, 0 8px 20px -4px rgba(79, 70, 229, 0.15) !important;
+    }
+    .accordion-toggle[aria-expanded="true"] .accordion-chevron {
+      transform: rotate(180deg);
+    }
+    .accordion-chevron {
+      transition: transform 0.25s ease;
+    }
+    .preview-sandbox-mobile {
+      max-width: 375px !important;
+      margin-left: auto;
+      margin-right: auto;
+      box-shadow: 0 20px 35px -10px rgba(15, 23, 42, 0.25), 0 0 0 8px #0f172a !important;
+      border-radius: 28px !important;
+      overflow: hidden;
+    }
   </style>
 </head>
 <body class="min-h-screen flex flex-col bg-[#f8fafc]">
@@ -414,366 +442,777 @@
       </div>
 
 
+<!-- ============================================================= -->
+      <!-- MODULE B: BLOGGER & EDUCATIONAL WIDGETS STUDIO VIEW           -->
       <!-- ============================================================= -->
-      <!-- MODULE B: BLOGGER WIDGETS GENERATOR VIEW                     -->
-      <!-- ============================================================= -->
-      <div id="viewBloggerWidgets" class="tab-view hidden space-y-8 max-w-4xl mx-auto">
+      <div id="viewBloggerWidgets" class="tab-view hidden space-y-6 max-w-7xl mx-auto pb-12">
         
-        <!-- Header Banner -->
-        <div class="bg-gradient-to-r from-primary via-indigo-600 to-indigo-800 p-6 rounded-2xl text-white shadow-md">
-          <h2 class="text-xl font-extrabold mb-1 flex items-center gap-2.5">
-            <i class="fa-solid fa-cubes"></i> Blogger Widget Generator
-          </h2>
-          <p class="text-indigo-100 text-sm">Create conversion-optimized social buttons, educational callouts, and study resource grids. Copy and paste directly into Blogger Compose View without writing code!</p>
-        </div>
-
-        <!-- ============================================================= -->
-        <!-- 1. GLOBAL SOCIAL PROFILES STORE (PERSISTENT LINKS)            -->
-        <!-- ============================================================= -->
-        <div class="bg-white p-5 rounded-2xl border border-border-light shadow-sm space-y-4">
-          <div class="flex flex-wrap items-center justify-between gap-2 border-b border-border-light pb-3">
-            <div class="flex items-center gap-2.5">
-              <div class="w-9 h-9 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center font-bold">
-                <i class="fa-solid fa-address-card text-base"></i>
+        <!-- Header Hero Banner -->
+        <div class="bg-gradient-to-r from-primary via-indigo-600 to-indigo-800 p-6 sm:p-7 rounded-2xl text-white shadow-md relative overflow-hidden">
+          <div class="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div class="space-y-1.5 max-w-2xl">
+              <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/15 text-indigo-100 text-xs font-bold backdrop-blur-sm mb-1">
+                <i class="fa-solid fa-wand-magic-sparkles text-amber-300"></i> No-Database Interactive Widget Studio
               </div>
-              <div>
-                <h3 class="font-extrabold text-sm sm:text-base text-slate-900">My Social Profiles (Global Store)</h3>
-                <p class="text-xs text-slate-500">Save once, auto-fill everywhere across all custom button groups</p>
-              </div>
+              <h2 class="text-xl sm:text-2xl font-extrabold tracking-tight flex items-center gap-2.5">
+                <i class="fa-solid fa-cubes"></i> Blogger &amp; Educational Widgets Studio
+              </h2>
+              <p class="text-indigo-100 text-xs sm:text-sm leading-relaxed">
+                Design interactive educational flashcards, step-by-step code steppers, syntax cheatsheets, social button bars, and notice callouts. 100% self-contained, mobile-friendly &amp; ready to embed directly into Blogger &amp; WordPress!
+              </p>
             </div>
-            <div class="flex items-center gap-2">
-              <span id="globalProfilesStatusBadge" class="text-[11px] font-bold text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-full border border-emerald-200/60 flex items-center gap-1">
-                <i class="fa-solid fa-circle-check text-emerald-600"></i> Saved & Synced
+            <div class="flex flex-wrap items-center gap-2.5 shrink-0">
+              <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white/10 text-white text-xs font-bold border border-white/20 backdrop-blur-sm">
+                <i class="fa-solid fa-layer-group text-amber-300"></i> 6 Pro Widgets
               </span>
-              <button id="btnToggleGlobalProfiles" type="button" class="tactile-btn px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs flex items-center gap-1.5">
-                <i class="fa-solid fa-pen-to-square"></i> <span id="toggleGlobalProfilesText">Edit Profiles</span>
-              </button>
+              <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-emerald-500/20 text-emerald-200 text-xs font-bold border border-emerald-400/30">
+                <i class="fa-solid fa-bolt text-emerald-300"></i> Zero Dependencies
+              </span>
             </div>
           </div>
-
-          <!-- Collapsible Global Profiles Inputs Panel -->
-          <div id="globalProfilesPanel" class="space-y-3.5">
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-              <!-- YouTube -->
-              <div class="p-2.5 rounded-xl border border-border-light bg-slate-50/70 space-y-1">
-                <label class="block text-[11px] font-bold text-slate-700 flex items-center gap-1.5">
-                  <i class="fa-brands fa-youtube text-red-600"></i> YouTube Channel URL
-                </label>
-                <input type="url" id="global_soc_yt" class="w-full px-2.5 py-1.5 rounded-lg border border-border-light bg-white text-xs font-semibold focus:border-primary outline-none" placeholder="https://youtube.com/@yourchannel">
-              </div>
-
-              <!-- Telegram -->
-              <div class="p-2.5 rounded-xl border border-border-light bg-slate-50/70 space-y-1">
-                <label class="block text-[11px] font-bold text-slate-700 flex items-center gap-1.5">
-                  <i class="fa-brands fa-telegram text-sky-500"></i> Telegram Channel / Group
-                </label>
-                <input type="url" id="global_soc_tg" class="w-full px-2.5 py-1.5 rounded-lg border border-border-light bg-white text-xs font-semibold focus:border-primary outline-none" placeholder="https://t.me/yourchannel">
-              </div>
-
-              <!-- WhatsApp -->
-              <div class="p-2.5 rounded-xl border border-border-light bg-slate-50/70 space-y-1">
-                <label class="block text-[11px] font-bold text-slate-700 flex items-center gap-1.5">
-                  <i class="fa-brands fa-whatsapp text-emerald-600"></i> WhatsApp Channel / Group
-                </label>
-                <input type="url" id="global_soc_wa" class="w-full px-2.5 py-1.5 rounded-lg border border-border-light bg-white text-xs font-semibold focus:border-primary outline-none" placeholder="https://whatsapp.com/channel/yourchannel">
-              </div>
-
-              <!-- Instagram -->
-              <div class="p-2.5 rounded-xl border border-border-light bg-slate-50/70 space-y-1">
-                <label class="block text-[11px] font-bold text-slate-700 flex items-center gap-1.5">
-                  <i class="fa-brands fa-instagram text-pink-600"></i> Instagram Profile URL
-                </label>
-                <input type="url" id="global_soc_ig" class="w-full px-2.5 py-1.5 rounded-lg border border-border-light bg-white text-xs font-semibold focus:border-primary outline-none" placeholder="https://instagram.com/yourhandle">
-              </div>
-
-              <!-- Facebook -->
-              <div class="p-2.5 rounded-xl border border-border-light bg-slate-50/70 space-y-1">
-                <label class="block text-[11px] font-bold text-slate-700 flex items-center gap-1.5">
-                  <i class="fa-brands fa-facebook text-blue-600"></i> Facebook Page / Group
-                </label>
-                <input type="url" id="global_soc_fb" class="w-full px-2.5 py-1.5 rounded-lg border border-border-light bg-white text-xs font-semibold focus:border-primary outline-none" placeholder="https://facebook.com/yourpage">
-              </div>
-
-              <!-- Website / Blog -->
-              <div class="p-2.5 rounded-xl border border-border-light bg-slate-50/70 space-y-1">
-                <label class="block text-[11px] font-bold text-slate-700 flex items-center gap-1.5">
-                  <i class="fa-solid fa-globe text-indigo-600"></i> Website / Main Blog URL
-                </label>
-                <input type="url" id="global_soc_web" class="w-full px-2.5 py-1.5 rounded-lg border border-border-light bg-white text-xs font-semibold focus:border-primary outline-none" placeholder="https://yourblog.blogspot.com">
-              </div>
-            </div>
-
-            <div class="flex items-center justify-end gap-2 pt-1">
-              <button id="btnSaveGlobalProfiles" type="button" class="tactile-btn px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs flex items-center gap-1.5 shadow-sm shadow-indigo-600/20">
-                <i class="fa-solid fa-floppy-disk"></i> Save Profiles to Global Store
-              </button>
-            </div>
-          </div>
+          <div class="absolute -right-10 -bottom-10 w-48 h-48 bg-white/5 rounded-full blur-2xl pointer-events-none"></div>
         </div>
 
-        <!-- ============================================================= -->
-        <!-- 2. MULTI-GROUP CUSTOM BUTTON BUILDER (GROUP MANAGER)          -->
-        <!-- ============================================================= -->
-        <div class="bg-white p-6 rounded-2xl border border-border-light shadow-sm space-y-6">
-          
-          <!-- Top Header: Title + Group Tabs Bar -->
-          <div class="space-y-3 border-b border-border-light pb-4">
-            <div class="flex flex-wrap items-center justify-between gap-3">
-              <div class="flex items-center gap-2.5">
-                <div class="w-9 h-9 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center font-bold">
-                  <i class="fa-solid fa-layer-group text-base"></i>
+        <!-- Main Responsive 2-Column Dashboard Layout -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+
+          <!-- ============================================================= -->
+          <!-- LEFT COLUMN: WIDGET PICKER & DYNAMIC CONFIGURATION (7 COLS)   -->
+          <!-- ============================================================= -->
+          <div class="lg:col-span-7 space-y-5">
+
+            <!-- Card 1: Widget Type Selector (6 Visual Tiles) -->
+            <div class="bg-white p-5 rounded-2xl border border-border-light shadow-sm space-y-4">
+              <div class="flex items-center justify-between border-b border-border-light pb-3">
+                <div class="flex items-center gap-2.5">
+                  <div class="w-8 h-8 rounded-xl bg-primary/10 text-primary flex items-center justify-center font-bold">
+                    <i class="fa-solid fa-shapes text-sm"></i>
+                  </div>
+                  <div>
+                    <h3 class="font-extrabold text-sm sm:text-base text-slate-900">1. Select Widget Type</h3>
+                    <p class="text-xs text-slate-500">Pick the educational or blog component to customize</p>
+                  </div>
                 </div>
+                <span id="activeWidgetTypeBadge" class="text-xs font-bold px-2.5 py-1 rounded-full bg-primary/10 text-primary border border-primary/20">
+                  Interactive Flip Cards
+                </span>
+              </div>
+
+              <!-- 6 Selection Tiles Grid -->
+              <div class="grid grid-cols-2 sm:grid-cols-3 gap-2.5" id="widgetTypeSelectorGrid">
+                <!-- Tile 1: Flip Cards -->
+                <button type="button" class="widget-type-btn p-3 rounded-xl border border-primary bg-primary-bg/30 text-left transition relative flex flex-col justify-between group" data-wtype="flipcards">
+                  <div>
+                    <div class="flex items-center justify-between mb-1.5">
+                      <span class="text-lg">🗂️</span>
+                      <span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-indigo-100 text-indigo-700">CS / IT</span>
+                    </div>
+                    <div class="font-extrabold text-xs text-slate-900 group-hover:text-primary">Flip Cards</div>
+                    <div class="text-[10px] text-slate-500 leading-tight line-clamp-2">3D flashcards for terms &amp; definitions</div>
+                  </div>
+                </button>
+
+                <!-- Tile 2: Code Stepper -->
+                <button type="button" class="widget-type-btn p-3 rounded-xl border border-border-light bg-white hover:bg-slate-50 text-left transition relative flex flex-col justify-between group" data-wtype="codestepper">
+                  <div>
+                    <div class="flex items-center justify-between mb-1.5">
+                      <span class="text-lg">💻</span>
+                      <span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-sky-100 text-sky-700">Code</span>
+                    </div>
+                    <div class="font-extrabold text-xs text-slate-900 group-hover:text-primary">Code Stepper</div>
+                    <div class="text-[10px] text-slate-500 leading-tight line-clamp-2">Line-by-line syntax &amp; output runner</div>
+                  </div>
+                </button>
+
+                <!-- Tile 3: Cheatsheet Grid -->
+                <button type="button" class="widget-type-btn p-3 rounded-xl border border-border-light bg-white hover:bg-slate-50 text-left transition relative flex flex-col justify-between group" data-wtype="cheatsheet">
+                  <div>
+                    <div class="flex items-center justify-between mb-1.5">
+                      <span class="text-lg">📑</span>
+                      <span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-emerald-100 text-emerald-700">Searchable</span>
+                    </div>
+                    <div class="font-extrabold text-xs text-slate-900 group-hover:text-primary">Cheatsheet Grid</div>
+                    <div class="text-[10px] text-slate-500 leading-tight line-clamp-2">Searchable syntax, shortcuts &amp; tables</div>
+                  </div>
+                </button>
+
+                <!-- Tile 4: Social Button Groups -->
+                <button type="button" class="widget-type-btn p-3 rounded-xl border border-border-light bg-white hover:bg-slate-50 text-left transition relative flex flex-col justify-between group" data-wtype="buttons">
+                  <div>
+                    <div class="flex items-center justify-between mb-1.5">
+                      <span class="text-lg">🔗</span>
+                      <span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-amber-100 text-amber-700">Social</span>
+                    </div>
+                    <div class="font-extrabold text-xs text-slate-900 group-hover:text-primary">Social Buttons</div>
+                    <div class="text-[10px] text-slate-500 leading-tight line-clamp-2">Follow &amp; subscribe button bars</div>
+                  </div>
+                </button>
+
+                <!-- Tile 5: Callout Box -->
+                <button type="button" class="widget-type-btn p-3 rounded-xl border border-border-light bg-white hover:bg-slate-50 text-left transition relative flex flex-col justify-between group" data-wtype="callout">
+                  <div>
+                    <div class="flex items-center justify-between mb-1.5">
+                      <span class="text-lg">📢</span>
+                      <span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-orange-100 text-orange-700">Notice</span>
+                    </div>
+                    <div class="font-extrabold text-xs text-slate-900 group-hover:text-primary">Callout Boxes</div>
+                    <div class="text-[10px] text-slate-500 leading-tight line-clamp-2">Important alerts, tips &amp; downloads</div>
+                  </div>
+                </button>
+
+                <!-- Tile 6: Resource Grid -->
+                <button type="button" class="widget-type-btn p-3 rounded-xl border border-border-light bg-white hover:bg-slate-50 text-left transition relative flex flex-col justify-between group" data-wtype="grid">
+                  <div>
+                    <div class="flex items-center justify-between mb-1.5">
+                      <span class="text-lg">📚</span>
+                      <span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-purple-100 text-purple-700">Download</span>
+                    </div>
+                    <div class="font-extrabold text-xs text-slate-900 group-hover:text-primary">Resource Grid</div>
+                    <div class="text-[10px] text-slate-500 leading-tight line-clamp-2">Chapter notes &amp; paper link cards</div>
+                  </div>
+                </button>
+              </div>
+            </div>
+
+            <!-- Card 2: Dynamic Content & Configuration Panel -->
+            <div class="bg-white p-5 sm:p-6 rounded-2xl border border-border-light shadow-sm space-y-5">
+
+              <!-- ======================================================= -->
+              <!-- SUB-PANEL 1: FLIP CARDS (FLASHCARDS) BUILDER            -->
+              <!-- ======================================================= -->
+              <div id="panelWidgetFlipCards" class="widget-subpanel space-y-5">
+                <div class="flex flex-wrap items-center justify-between gap-3 border-b border-border-light pb-3.5">
+                  <div class="flex items-center gap-2.5">
+                    <div class="w-9 h-9 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center font-bold">
+                      <i class="fa-solid fa-clone text-base"></i>
+                    </div>
+                    <div>
+                      <h4 class="font-extrabold text-base text-slate-900">Interactive Flip Cards (Flashcards)</h4>
+                      <p class="text-xs text-slate-500">Design 3D interactive flashcards for computer science terms &amp; definitions</p>
+                    </div>
+                  </div>
+                  <div class="flex items-center gap-2">
+                    <select id="fcPresetSelect" class="px-2.5 py-1.5 rounded-xl border border-border-light bg-slate-50 text-xs font-bold text-slate-700 outline-none focus:border-primary">
+                      <option value="cbse_it">Preset: CBSE IT 402 Terms</option>
+                      <option value="python_terms">Preset: Python Fundamentals</option>
+                      <option value="shortcuts">Preset: Windows &amp; Web Shortcuts</option>
+                    </select>
+                    <button type="button" id="btnLoadFcPreset" class="tactile-btn px-3 py-1.5 rounded-xl bg-indigo-50 hover:bg-indigo-100 text-indigo-700 font-bold text-xs border border-indigo-200">
+                      Load
+                    </button>
+                  </div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+                  <div>
+                    <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Deck Title</label>
+                    <input type="text" id="fcDeckTitleInput" class="w-full px-3 py-2 rounded-xl border border-border-light bg-slate-50 text-xs font-bold focus:border-primary outline-none" value="CBSE IT 402 - Networking &amp; Internet Basics">
+                  </div>
+                  <div>
+                    <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Deck Badge / Tag</label>
+                    <input type="text" id="fcDeckBadgeInput" class="w-full px-3 py-2 rounded-xl border border-border-light bg-slate-50 text-xs font-semibold focus:border-primary outline-none" value="Computer Science">
+                  </div>
+                </div>
+
+                <!-- Flashcards List Manager -->
+                <div class="space-y-3">
+                  <div class="flex items-center justify-between">
+                    <span class="text-xs font-bold text-slate-700 uppercase tracking-wider flex items-center gap-1.5">
+                      <i class="fa-solid fa-list-check text-indigo-500"></i> Cards in Deck (<span id="fcCardsCount">5</span>)
+                    </span>
+                    <button type="button" id="btnAddFcCard" class="tactile-btn px-3 py-1.5 rounded-xl bg-primary hover:bg-primary-dark text-white font-bold text-xs flex items-center gap-1.5 shadow-sm shadow-primary/20">
+                      <i class="fa-solid fa-plus"></i> Add Card
+                    </button>
+                  </div>
+                  <div id="fcCardsContainer" class="space-y-3 max-h-[420px] overflow-y-auto pr-1">
+                    <!-- Rendered by JS -->
+                  </div>
+                </div>
+              </div>
+
+              <!-- ======================================================= -->
+              <!-- SUB-PANEL 2: STEP-BY-STEP CODE STEPPER BUILDER          -->
+              <!-- ======================================================= -->
+              <div id="panelWidgetCodeStepper" class="widget-subpanel hidden space-y-5">
+                <div class="flex flex-wrap items-center justify-between gap-3 border-b border-border-light pb-3.5">
+                  <div class="flex items-center gap-2.5">
+                    <div class="w-9 h-9 rounded-xl bg-sky-50 text-sky-600 flex items-center justify-center font-bold">
+                      <i class="fa-solid fa-terminal text-base"></i>
+                    </div>
+                    <div>
+                      <h4 class="font-extrabold text-base text-slate-900">Step-by-Step Code Stepper</h4>
+                      <p class="text-xs text-slate-500">Highlight syntax and simulate line-by-line code execution for students</p>
+                    </div>
+                  </div>
+                  <div class="flex items-center gap-2">
+                    <select id="codePresetSelect" class="px-2.5 py-1.5 rounded-xl border border-border-light bg-slate-50 text-xs font-bold text-slate-700 outline-none focus:border-primary">
+                      <option value="python_prime">Preset: Python Prime Number</option>
+                      <option value="js_filter">Preset: JS Array Filter &amp; Map</option>
+                      <option value="css_flex">Preset: CSS Flexbox Centering</option>
+                    </select>
+                    <button type="button" id="btnLoadCodePreset" class="tactile-btn px-3 py-1.5 rounded-xl bg-sky-50 hover:bg-sky-100 text-sky-700 font-bold text-xs border border-sky-200">
+                      Load
+                    </button>
+                  </div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3.5">
+                  <div class="sm:col-span-2">
+                    <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Code Snippet Title</label>
+                    <input type="text" id="codeSnippetTitleInput" class="w-full px-3 py-2 rounded-xl border border-border-light bg-slate-50 text-xs font-bold focus:border-primary outline-none" value="Python: Check If a Number is Prime">
+                  </div>
+                  <div>
+                    <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Language</label>
+                    <select id="codeLanguageSelect" class="w-full px-3 py-2 rounded-xl border border-border-light bg-slate-50 text-xs font-bold text-slate-700 outline-none focus:border-primary">
+                      <option value="python" selected>Python 3</option>
+                      <option value="javascript">JavaScript</option>
+                      <option value="cpp">C++</option>
+                      <option value="java">Java</option>
+                      <option value="html">HTML / CSS</option>
+                    </select>
+                  </div>
+                </div>
+
                 <div>
-                  <h3 class="font-extrabold text-base text-slate-900">Custom Button Groups & Social Link Manager</h3>
-                  <p class="text-xs text-slate-500">Create and export independent button bars with custom layouts & styles</p>
+                  <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Full Source Code</label>
+                  <textarea id="codeSourceTextarea" rows="6" class="w-full p-3 rounded-xl border border-border-light bg-slate-900 text-emerald-400 font-mono text-xs focus:border-primary outline-none resize-none leading-relaxed"></textarea>
+                </div>
+
+                <!-- Execution Steps Manager -->
+                <div class="space-y-3">
+                  <div class="flex items-center justify-between">
+                    <span class="text-xs font-bold text-slate-700 uppercase tracking-wider flex items-center gap-1.5">
+                      <i class="fa-solid fa-list-ol text-sky-500"></i> Execution Steps (<span id="codeStepsCount">5</span>)
+                    </span>
+                    <button type="button" id="btnAddCodeStep" class="tactile-btn px-3 py-1.5 rounded-xl bg-sky-600 hover:bg-sky-700 text-white font-bold text-xs flex items-center gap-1.5 shadow-sm">
+                      <i class="fa-solid fa-plus"></i> Add Step
+                    </button>
+                  </div>
+                  <div id="codeStepsContainer" class="space-y-3 max-h-[360px] overflow-y-auto pr-1">
+                    <!-- Rendered by JS -->
+                  </div>
                 </div>
               </div>
 
-              <!-- Create New Group Button -->
-              <button id="btnAddButtonGroup" type="button" class="tactile-btn px-3.5 py-2 rounded-xl bg-primary hover:bg-primary-dark text-white font-bold text-xs flex items-center gap-1.5 shadow-sm shadow-primary/20">
-                <i class="fa-solid fa-plus"></i> New Button Group
-              </button>
+              <!-- ======================================================= -->
+              <!-- SUB-PANEL 3: SMART SEARCHABLE CHEATSHEET BUILDER        -->
+              <!-- ======================================================= -->
+              <div id="panelWidgetCheatsheet" class="widget-subpanel hidden space-y-5">
+                <div class="flex flex-wrap items-center justify-between gap-3 border-b border-border-light pb-3.5">
+                  <div class="flex items-center gap-2.5">
+                    <div class="w-9 h-9 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center font-bold">
+                      <i class="fa-solid fa-table-list text-base"></i>
+                    </div>
+                    <div>
+                      <h4 class="font-extrabold text-base text-slate-900">Smart Searchable Cheatsheet Grid</h4>
+                      <p class="text-xs text-slate-500">Create instant searchable &amp; filterable syntax, shortcuts or formula grids</p>
+                    </div>
+                  </div>
+                  <div class="flex items-center gap-2">
+                    <select id="sheetPresetSelect" class="px-2.5 py-1.5 rounded-xl border border-border-light bg-slate-50 text-xs font-bold text-slate-700 outline-none focus:border-primary">
+                      <option value="python_methods">Preset: Python String &amp; List Methods</option>
+                      <option value="html5_tags">Preset: HTML5 Core Tags</option>
+                      <option value="vscode_keys">Preset: VS Code &amp; Windows Keys</option>
+                    </select>
+                    <button type="button" id="btnLoadSheetPreset" class="tactile-btn px-3 py-1.5 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-emerald-700 font-bold text-xs border border-emerald-200">
+                      Load
+                    </button>
+                  </div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+                  <div>
+                    <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Cheatsheet Title</label>
+                    <input type="text" id="sheetTitleInput" class="w-full px-3 py-2 rounded-xl border border-border-light bg-slate-50 text-xs font-bold focus:border-primary outline-none" value="Python 3 Essential Methods &amp; Syntax">
+                  </div>
+                  <div>
+                    <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Category Tabs (comma-separated)</label>
+                    <input type="text" id="sheetCategoriesInput" class="w-full px-3 py-2 rounded-xl border border-border-light bg-slate-50 text-xs font-semibold focus:border-primary outline-none" value="All, Strings, Lists, Dictionaries, Files">
+                  </div>
+                </div>
+
+                <!-- Items Manager -->
+                <div class="space-y-3">
+                  <div class="flex items-center justify-between">
+                    <span class="text-xs font-bold text-slate-700 uppercase tracking-wider flex items-center gap-1.5">
+                      <i class="fa-solid fa-list-check text-emerald-500"></i> Cheatsheet Items (<span id="sheetItemsCount">6</span>)
+                    </span>
+                    <button type="button" id="btnAddSheetItem" class="tactile-btn px-3 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs flex items-center gap-1.5 shadow-sm">
+                      <i class="fa-solid fa-plus"></i> Add Item
+                    </button>
+                  </div>
+                  <div id="sheetItemsContainer" class="space-y-3 max-h-[380px] overflow-y-auto pr-1">
+                    <!-- Rendered by JS -->
+                  </div>
+                </div>
+              </div>
+
+              <!-- ======================================================= -->
+              <!-- SUB-PANEL 4: MULTI-GROUP CUSTOM BUTTON BUILDER          -->
+              <!-- ======================================================= -->
+              <div id="panelWidgetButtons" class="widget-subpanel hidden space-y-5">
+                <div class="flex flex-wrap items-center justify-between gap-3 border-b border-border-light pb-3.5">
+                  <div class="flex items-center gap-2.5">
+                    <div class="w-9 h-9 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center font-bold">
+                      <i class="fa-solid fa-layer-group text-base"></i>
+                    </div>
+                    <div>
+                      <h4 class="font-extrabold text-base text-slate-900">Custom Button Groups &amp; Social Links</h4>
+                      <p class="text-xs text-slate-500">Create branded social follow bars and conversion link buttons</p>
+                    </div>
+                  </div>
+                  <button id="btnAddButtonGroup" type="button" class="tactile-btn px-3 py-1.5 rounded-xl bg-primary hover:bg-primary-dark text-white font-bold text-xs flex items-center gap-1.5 shadow-sm shadow-primary/20">
+                    <i class="fa-solid fa-plus"></i> New Button Group
+                  </button>
+                </div>
+
+                <!-- Group Tabs Row -->
+                <div class="flex items-center gap-2 overflow-x-auto pb-1.5 pt-1" id="btnGroupTabsContainer">
+                  <!-- Rendered dynamically by JS -->
+                </div>
+
+                <!-- Active Group Header Bar & Rename / Delete Controls -->
+                <div class="flex flex-wrap items-center justify-between gap-3 p-3.5 bg-slate-50 rounded-2xl border border-border-light">
+                  <div class="flex items-center gap-2 flex-1 min-w-[220px]">
+                    <span class="text-xs font-bold text-slate-500 uppercase shrink-0">Group Name:</span>
+                    <input type="text" id="activeGroupNameInput" class="flex-1 px-3 py-1.5 rounded-xl border border-border-light bg-white text-xs font-bold text-slate-800 focus:border-primary outline-none" placeholder="e.g. Top Social Follow Bar">
+                  </div>
+                  <div class="flex items-center gap-2 shrink-0">
+                    <button id="btnDuplicateGroup" type="button" class="tactile-btn px-3 py-1.5 rounded-xl bg-white hover:bg-slate-100 text-slate-700 font-bold text-xs border border-border-light flex items-center gap-1" title="Duplicate this group">
+                      <i class="fa-regular fa-copy"></i> Duplicate
+                    </button>
+                    <button id="btnDeleteGroup" type="button" class="tactile-btn px-3 py-1.5 rounded-xl bg-white hover:bg-rose-50 text-rose-600 font-bold text-xs border border-rose-200 flex items-center gap-1" title="Delete this group">
+                      <i class="fa-solid fa-trash-can"></i> Delete
+                    </button>
+                  </div>
+                </div>
+
+                <!-- Buttons in Active Group -->
+                <div class="space-y-3">
+                  <div class="flex flex-wrap items-center justify-between gap-2">
+                    <span class="text-xs font-bold text-slate-700 uppercase tracking-wider flex items-center gap-1.5">
+                      <i class="fa-solid fa-list-check text-indigo-500"></i> Buttons in this Group (<span id="grpButtonsCount">0</span>)
+                    </span>
+                    <div class="flex items-center gap-2">
+                      <button id="btnOpenPresetModal" type="button" class="tactile-btn px-3 py-1.5 rounded-xl bg-indigo-50 hover:bg-indigo-100 text-indigo-700 font-bold text-xs flex items-center gap-1.5 border border-indigo-200">
+                        <i class="fa-solid fa-bolt text-amber-500"></i> Add Preset Social Button
+                      </button>
+                      <button id="btnAddCustomBtn" type="button" class="tactile-btn px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs flex items-center gap-1.5 border border-border-light">
+                        <i class="fa-solid fa-plus-circle text-primary"></i> Add Custom Link Button
+                      </button>
+                    </div>
+                  </div>
+
+                  <!-- Buttons List (Cards) Container -->
+                  <div id="groupButtonsListContainer" class="space-y-2.5 max-h-[380px] overflow-y-auto pr-1">
+                    <!-- Rendered by JS -->
+                  </div>
+                </div>
+              </div>
+
+              <!-- ======================================================= -->
+              <!-- SUB-PANEL 5: EDUCATIONAL ALERT & CALLOUT BOXES          -->
+              <!-- ======================================================= -->
+              <div id="panelWidgetCallout" class="widget-subpanel hidden space-y-5">
+                <div class="flex items-center justify-between border-b border-border-light pb-3.5">
+                  <div class="flex items-center gap-2.5">
+                    <div class="w-9 h-9 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center font-bold">
+                      <i class="fa-solid fa-bullhorn text-base"></i>
+                    </div>
+                    <div>
+                      <h4 class="font-extrabold text-base text-slate-900">Educational Alert &amp; Callout Boxes</h4>
+                      <p class="text-xs text-slate-500">Styled notice banners for instructions, tips, warnings &amp; downloads</p>
+                    </div>
+                  </div>
+                  <span class="text-xs font-bold text-slate-500">Notice Box</span>
+                </div>
+
+                <!-- Inputs -->
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3.5">
+                  <div>
+                    <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Callout Type</label>
+                    <select id="calloutTypeSelect" class="w-full px-3 py-2 rounded-xl border border-border-light bg-slate-50 text-xs font-bold text-slate-700 outline-none focus:border-primary">
+                      <option value="info" selected>Important Note (Blue)</option>
+                      <option value="warning">Warning / Caution (Amber)</option>
+                      <option value="download">Download Resource / Notes (Emerald)</option>
+                    </select>
+                  </div>
+                  <div class="sm:col-span-2">
+                    <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Callout Title</label>
+                    <input type="text" id="calloutTitleInput" class="w-full px-3 py-2 rounded-xl border border-border-light bg-slate-50 text-xs font-bold focus:border-primary outline-none" value="📌 Important Student Instruction">
+                  </div>
+                </div>
+
+                <div>
+                  <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Message Content</label>
+                  <textarea id="calloutMessageInput" rows="2" class="w-full p-3 rounded-xl border border-border-light bg-slate-50 text-xs font-medium focus:border-primary outline-none resize-none leading-relaxed">Attempt all questions in this session before checking your final score. Review notes will appear immediately after completion.</textarea>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+                  <div>
+                    <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Optional Action Button Text</label>
+                    <input type="text" id="calloutBtnTextInput" class="w-full px-3 py-2 rounded-xl border border-border-light bg-slate-50 text-xs font-semibold focus:border-primary outline-none" placeholder="e.g. Download Chapter PDF ➔" value="Download PDF Notes ➔">
+                  </div>
+                  <div>
+                    <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Action Button URL</label>
+                    <input type="text" id="calloutBtnUrlInput" class="w-full px-3 py-2 rounded-xl border border-border-light bg-slate-50 text-xs font-semibold focus:border-primary outline-none" placeholder="https://yourblog.com/notes.pdf" value="https://example.com/download.pdf">
+                  </div>
+                </div>
+              </div>
+
+              <!-- ======================================================= -->
+              <!-- SUB-PANEL 6: RESOURCE & SUBJECT LINK GRID               -->
+              <!-- ======================================================= -->
+              <div id="panelWidgetGrid" class="widget-subpanel hidden space-y-5">
+                <div class="flex items-center justify-between border-b border-border-light pb-3.5">
+                  <div class="flex items-center gap-2.5">
+                    <div class="w-9 h-9 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center font-bold">
+                      <i class="fa-solid fa-table-cells-large text-base"></i>
+                    </div>
+                    <div>
+                      <h4 class="font-extrabold text-base text-slate-900">Resource &amp; Subject Link Grid</h4>
+                      <p class="text-xs text-slate-500">Clean cards grid for downloadable chapter notes, blueprints &amp; papers</p>
+                    </div>
+                  </div>
+                  <button id="btnAddGridItem" type="button" class="px-3 py-1 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-emerald-700 font-bold text-xs flex items-center gap-1 border border-emerald-200">
+                    <i class="fa-solid fa-plus-circle"></i> Add Link Card
+                  </button>
+                </div>
+
+                <div>
+                  <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Section Heading</label>
+                  <input type="text" id="gridHeadingInput" class="w-full px-3 py-2 rounded-xl border border-border-light bg-slate-50 text-xs font-bold focus:border-primary outline-none" value="📚 Recommended Study Materials &amp; Papers">
+                </div>
+
+                <!-- Dynamic Resource Cards Editor List -->
+                <div id="gridItemsContainer" class="space-y-3 max-h-[380px] overflow-y-auto pr-1">
+                  <!-- Rendered by JS -->
+                </div>
+              </div>
+
             </div>
 
-            <!-- Group Tabs Row -->
-            <div class="flex items-center gap-2 overflow-x-auto pb-1.5 pt-1" id="btnGroupTabsContainer">
-              <!-- Rendered dynamically by JS -->
-            </div>
-          </div>
-
-          <!-- Active Group Header Bar & Rename / Delete Controls -->
-          <div class="flex flex-wrap items-center justify-between gap-3 p-3.5 bg-slate-50 rounded-2xl border border-border-light">
-            <div class="flex items-center gap-2 flex-1 min-w-[240px]">
-              <span class="text-xs font-bold text-slate-500 uppercase shrink-0">Group Name:</span>
-              <input type="text" id="activeGroupNameInput" class="flex-1 px-3 py-1.5 rounded-xl border border-border-light bg-white text-xs font-bold text-slate-800 focus:border-primary outline-none" placeholder="e.g. Top Social Follow Bar">
-            </div>
-            <div class="flex items-center gap-2 shrink-0">
-              <button id="btnDuplicateGroup" type="button" class="tactile-btn px-3 py-1.5 rounded-xl bg-white hover:bg-slate-100 text-slate-700 font-bold text-xs border border-border-light flex items-center gap-1" title="Duplicate this group">
-                <i class="fa-regular fa-copy"></i> Duplicate
+            <!-- Card 3: Collapsible Drawer: Visual Styling & Layout Options -->
+            <div class="bg-white rounded-2xl border border-border-light shadow-sm overflow-hidden" id="drawerWidgetStyling">
+              <button type="button" class="w-full p-4 flex items-center justify-between text-left hover:bg-slate-50 transition select-none accordion-toggle" aria-expanded="false" id="btnToggleStylingDrawer">
+                <div class="flex items-center gap-2.5">
+                  <div class="w-7 h-7 rounded-lg bg-slate-100 text-slate-700 flex items-center justify-center text-xs">
+                    <i class="fa-solid fa-palette"></i>
+                  </div>
+                  <div>
+                    <span class="font-bold text-xs sm:text-sm text-slate-900">Advanced Styling &amp; Layout Options</span>
+                    <span class="block text-[11px] text-slate-500">Customize orientations, color themes, and button formats</span>
+                  </div>
+                </div>
+                <div class="flex items-center gap-2">
+                  <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-slate-100 text-slate-600">Customizable</span>
+                  <i class="fa-solid fa-chevron-down text-xs text-slate-400 accordion-chevron"></i>
+                </div>
               </button>
-              <button id="btnDeleteGroup" type="button" class="tactile-btn px-3 py-1.5 rounded-xl bg-white hover:bg-rose-50 text-rose-600 font-bold text-xs border border-rose-200 flex items-center gap-1" title="Delete this group">
-                <i class="fa-solid fa-trash-can"></i> Delete
-              </button>
-            </div>
-          </div>
 
-          <!-- Display & Styling Controls for Active Group -->
-          <div class="grid grid-cols-1 sm:grid-cols-3 gap-3.5 bg-slate-50/80 p-4 rounded-2xl border border-border-light">
-            <!-- 1. Layout Orientation -->
-            <div>
-              <label class="block text-[11px] font-bold text-slate-600 uppercase mb-1.5">Layout Orientation</label>
-              <div class="grid grid-cols-3 gap-1.5" id="grpLayoutRadiosContainer">
-                <label class="grp-layout-option flex flex-col items-center justify-center p-2 rounded-xl border border-primary bg-primary-bg/30 cursor-pointer text-center select-none transition">
-                  <input type="radio" name="grpLayout" value="horizontal" checked class="sr-only">
-                  <i class="fa-solid fa-arrows-left-right text-xs text-primary mb-1"></i>
-                  <span class="text-[11px] font-bold text-primary">Horizontal</span>
-                </label>
-                <label class="grp-layout-option flex flex-col items-center justify-center p-2 rounded-xl border border-border-light bg-white cursor-pointer hover:border-slate-300 text-center select-none transition">
-                  <input type="radio" name="grpLayout" value="vertical" class="sr-only">
-                  <i class="fa-solid fa-bars text-xs text-slate-500 mb-1"></i>
-                  <span class="text-[11px] font-bold text-slate-700">Vertical</span>
-                </label>
-                <label class="grp-layout-option flex flex-col items-center justify-center p-2 rounded-xl border border-border-light bg-white cursor-pointer hover:border-slate-300 text-center select-none transition">
-                  <input type="radio" name="grpLayout" value="grid2" class="sr-only">
-                  <i class="fa-solid fa-table-cells-large text-xs text-slate-500 mb-1"></i>
-                  <span class="text-[11px] font-bold text-slate-700">2-Col Grid</span>
-                </label>
+              <div id="panelStylingContent" class="p-4 sm:p-5 border-t border-border-light space-y-4 hidden bg-slate-50/50">
+                <!-- Display & Styling Controls for Button Groups -->
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3.5" id="socialStylingControlsGroup">
+                  <!-- 1. Layout Orientation -->
+                  <div>
+                    <label class="block text-[11px] font-bold text-slate-600 uppercase mb-1.5">Layout Orientation</label>
+                    <div class="grid grid-cols-3 gap-1.5" id="grpLayoutRadiosContainer">
+                      <label class="grp-layout-option flex flex-col items-center justify-center p-2 rounded-xl border border-primary bg-primary-bg/30 cursor-pointer text-center select-none transition">
+                        <input type="radio" name="grpLayout" value="horizontal" checked class="sr-only">
+                        <i class="fa-solid fa-arrows-left-right text-xs text-primary mb-1"></i>
+                        <span class="text-[11px] font-bold text-primary">Horizontal</span>
+                      </label>
+                      <label class="grp-layout-option flex flex-col items-center justify-center p-2 rounded-xl border border-border-light bg-white cursor-pointer hover:border-slate-300 text-center select-none transition">
+                        <input type="radio" name="grpLayout" value="vertical" class="sr-only">
+                        <i class="fa-solid fa-bars text-xs text-slate-500 mb-1"></i>
+                        <span class="text-[11px] font-bold text-slate-700">Vertical</span>
+                      </label>
+                      <label class="grp-layout-option flex flex-col items-center justify-center p-2 rounded-xl border border-border-light bg-white cursor-pointer hover:border-slate-300 text-center select-none transition">
+                        <input type="radio" name="grpLayout" value="grid2" class="sr-only">
+                        <i class="fa-solid fa-table-cells-large text-xs text-slate-500 mb-1"></i>
+                        <span class="text-[11px] font-bold text-slate-700">2-Col Grid</span>
+                      </label>
+                    </div>
+                  </div>
+
+                  <!-- 2. Button Style -->
+                  <div>
+                    <label class="block text-[11px] font-bold text-slate-600 uppercase mb-1.5">Button Style</label>
+                    <select id="grpStyleSelect" class="w-full px-3 py-2 rounded-xl border border-border-light bg-white text-xs font-bold text-slate-700 outline-none focus:border-primary">
+                      <option value="pill_glow" selected>Modern Pill with Glow</option>
+                      <option value="minimal_solid">Minimal Solid</option>
+                      <option value="outlined">Outlined Border</option>
+                      <option value="gradient">Gradient Accent</option>
+                    </select>
+                  </div>
+
+                  <!-- 3. Display Format -->
+                  <div>
+                    <label class="block text-[11px] font-bold text-slate-600 uppercase mb-1.5">Display Format</label>
+                    <select id="grpFormatSelect" class="w-full px-3 py-2 rounded-xl border border-border-light bg-white text-xs font-bold text-slate-700 outline-none focus:border-primary">
+                      <option value="both" selected>Icon + Label Text</option>
+                      <option value="icon_only">Icon Only (Compact)</option>
+                    </select>
+                  </div>
+                </div>
+
+                <!-- Educational Theme Options -->
+                <div class="pt-2 border-t border-slate-200/60 flex flex-wrap items-center justify-between gap-3 text-xs text-slate-600">
+                  <div class="flex items-center gap-2">
+                    <span class="font-bold text-slate-700">Theme Palette:</span>
+                    <span class="px-2 py-0.5 rounded bg-indigo-100 text-indigo-800 font-semibold text-[11px]">Dynamic Indigo</span>
+                    <span class="px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 font-semibold text-[11px]">Emerald Light</span>
+                  </div>
+                  <span class="text-[11px] text-slate-500">Auto-formatted for zero CSS conflicts</span>
+                </div>
               </div>
             </div>
 
-            <!-- 2. Button Style -->
-            <div>
-              <label class="block text-[11px] font-bold text-slate-600 uppercase mb-1.5">Styling Style</label>
-              <select id="grpStyleSelect" class="w-full px-3 py-2.5 rounded-xl border border-border-light bg-white text-xs font-bold text-slate-700 outline-none focus:border-primary">
-                <option value="pill_glow" selected>Modern Pill with Glow</option>
-                <option value="minimal_solid">Minimal Solid</option>
-                <option value="outlined">Outlined Border</option>
-                <option value="gradient">Gradient Accent</option>
-              </select>
+            <!-- Card 4: Collapsible Drawer: Global Social Profiles Store -->
+            <div class="bg-white rounded-2xl border border-border-light shadow-sm overflow-hidden" id="drawerGlobalProfiles">
+              <div class="p-4 flex flex-wrap items-center justify-between gap-2 bg-white">
+                <div class="flex items-center gap-2.5">
+                  <div class="w-7 h-7 rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center text-xs font-bold">
+                    <i class="fa-solid fa-address-card"></i>
+                  </div>
+                  <div>
+                    <h3 class="font-extrabold text-xs sm:text-sm text-slate-900">My Social Profiles (Global Store)</h3>
+                    <p class="text-[11px] text-slate-500">Save once, auto-fill everywhere across all custom button groups</p>
+                  </div>
+                </div>
+                <div class="flex items-center gap-2">
+                  <span id="globalProfilesStatusBadge" class="text-[11px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200/60 flex items-center gap-1">
+                    <i class="fa-solid fa-circle-check text-emerald-600"></i> Saved &amp; Synced
+                  </span>
+                  <button id="btnToggleGlobalProfiles" type="button" class="tactile-btn px-2.5 py-1 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs flex items-center gap-1">
+                    <i class="fa-solid fa-pen-to-square"></i> <span id="toggleGlobalProfilesText">Edit Profiles</span>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Collapsible Global Profiles Inputs Panel -->
+              <div id="globalProfilesPanel" class="p-4 border-t border-border-light space-y-3 bg-slate-50/50">
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5">
+                  <!-- YouTube -->
+                  <div class="p-2.5 rounded-xl border border-border-light bg-white space-y-1">
+                    <label class="block text-[11px] font-bold text-slate-700 flex items-center gap-1.5">
+                      <i class="fa-brands fa-youtube text-red-600"></i> YouTube Channel URL
+                    </label>
+                    <input type="url" id="global_soc_yt" class="w-full px-2 py-1 rounded-lg border border-border-light bg-slate-50 text-xs font-semibold focus:border-primary outline-none" placeholder="https://youtube.com/@yourchannel">
+                  </div>
+
+                  <!-- Telegram -->
+                  <div class="p-2.5 rounded-xl border border-border-light bg-white space-y-1">
+                    <label class="block text-[11px] font-bold text-slate-700 flex items-center gap-1.5">
+                      <i class="fa-brands fa-telegram text-sky-500"></i> Telegram Channel / Group
+                    </label>
+                    <input type="url" id="global_soc_tg" class="w-full px-2 py-1 rounded-lg border border-border-light bg-slate-50 text-xs font-semibold focus:border-primary outline-none" placeholder="https://t.me/yourchannel">
+                  </div>
+
+                  <!-- WhatsApp -->
+                  <div class="p-2.5 rounded-xl border border-border-light bg-white space-y-1">
+                    <label class="block text-[11px] font-bold text-slate-700 flex items-center gap-1.5">
+                      <i class="fa-brands fa-whatsapp text-emerald-600"></i> WhatsApp Channel / Group
+                    </label>
+                    <input type="url" id="global_soc_wa" class="w-full px-2 py-1 rounded-lg border border-border-light bg-slate-50 text-xs font-semibold focus:border-primary outline-none" placeholder="https://whatsapp.com/channel/yourchannel">
+                  </div>
+
+                  <!-- Instagram -->
+                  <div class="p-2.5 rounded-xl border border-border-light bg-white space-y-1">
+                    <label class="block text-[11px] font-bold text-slate-700 flex items-center gap-1.5">
+                      <i class="fa-brands fa-instagram text-pink-600"></i> Instagram Profile URL
+                    </label>
+                    <input type="url" id="global_soc_ig" class="w-full px-2 py-1 rounded-lg border border-border-light bg-slate-50 text-xs font-semibold focus:border-primary outline-none" placeholder="https://instagram.com/yourhandle">
+                  </div>
+
+                  <!-- Facebook -->
+                  <div class="p-2.5 rounded-xl border border-border-light bg-white space-y-1">
+                    <label class="block text-[11px] font-bold text-slate-700 flex items-center gap-1.5">
+                      <i class="fa-brands fa-facebook text-blue-600"></i> Facebook Page / Group
+                    </label>
+                    <input type="url" id="global_soc_fb" class="w-full px-2 py-1 rounded-lg border border-border-light bg-slate-50 text-xs font-semibold focus:border-primary outline-none" placeholder="https://facebook.com/yourpage">
+                  </div>
+
+                  <!-- Website / Blog -->
+                  <div class="p-2.5 rounded-xl border border-border-light bg-white space-y-1">
+                    <label class="block text-[11px] font-bold text-slate-700 flex items-center gap-1.5">
+                      <i class="fa-solid fa-globe text-indigo-600"></i> Website / Main Blog URL
+                    </label>
+                    <input type="url" id="global_soc_web" class="w-full px-2 py-1 rounded-lg border border-border-light bg-slate-50 text-xs font-semibold focus:border-primary outline-none" placeholder="https://yourblog.blogspot.com">
+                  </div>
+                </div>
+
+                <div class="flex items-center justify-end gap-2 pt-1">
+                  <button id="btnSaveGlobalProfiles" type="button" class="tactile-btn px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs flex items-center gap-1.5 shadow-sm shadow-indigo-600/20">
+                    <i class="fa-solid fa-floppy-disk"></i> Save Profiles to Global Store
+                  </button>
+                </div>
+              </div>
             </div>
 
-            <!-- 3. Display Format -->
-            <div>
-              <label class="block text-[11px] font-bold text-slate-600 uppercase mb-1.5">Display Format</label>
-              <select id="grpFormatSelect" class="w-full px-3 py-2.5 rounded-xl border border-border-light bg-white text-xs font-bold text-slate-700 outline-none focus:border-primary">
-                <option value="both" selected>Icon + Label Text</option>
-                <option value="icon_only">Icon Only (Compact)</option>
-              </select>
-            </div>
           </div>
 
-          <!-- Buttons in Active Group -->
-          <div class="space-y-3">
-            <div class="flex flex-wrap items-center justify-between gap-2">
-              <span class="text-xs font-bold text-slate-700 uppercase tracking-wider flex items-center gap-1.5">
-                <i class="fa-solid fa-list-check text-indigo-500"></i> Buttons in this Group (<span id="grpButtonsCount">0</span>)
-              </span>
-              <div class="flex items-center gap-2">
-                <button id="btnOpenPresetModal" type="button" class="tactile-btn px-3 py-1.5 rounded-xl bg-indigo-50 hover:bg-indigo-100 text-indigo-700 font-bold text-xs flex items-center gap-1.5 border border-indigo-200">
-                  <i class="fa-solid fa-bolt text-amber-500"></i> Add Preset Social Button
+          <!-- ============================================================= -->
+          <!-- RIGHT COLUMN: STICKY LIVE SANDBOX & EXPORTER (5 COLS)         -->
+          <!-- ============================================================= -->
+          <div class="lg:col-span-5 lg:sticky lg:top-20 space-y-5">
+
+            <!-- Card 1: Live Interactive Preview Sandbox -->
+            <div class="bg-white p-5 rounded-2xl border border-border-light shadow-sm space-y-3.5">
+              <div class="flex items-center justify-between border-b border-border-light pb-3">
+                <div class="flex items-center gap-2">
+                  <div class="w-7 h-7 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center font-bold text-xs">
+                    <i class="fa-solid fa-play"></i>
+                  </div>
+                  <div>
+                    <h3 class="font-extrabold text-sm text-slate-900">Live Preview Sandbox</h3>
+                    <p class="text-[10px] text-slate-400">Interactive live output</p>
+                  </div>
+                </div>
+
+                <!-- Viewport & Device Toggles -->
+                <div class="flex items-center gap-1 bg-slate-100 p-1 rounded-xl">
+                  <button type="button" id="btnViewportDesktop" class="px-2 py-1 rounded-lg bg-white text-primary text-xs font-bold shadow-xs flex items-center gap-1" title="Desktop Full Width">
+                    <i class="fa-solid fa-desktop"></i> <span class="hidden sm:inline text-[11px]">Desktop</span>
+                  </button>
+                  <button type="button" id="btnViewportMobile" class="px-2 py-1 rounded-lg text-slate-500 hover:text-slate-800 text-xs font-bold flex items-center gap-1" title="Mobile 375px Simulation">
+                    <i class="fa-solid fa-mobile-screen"></i> <span class="hidden sm:inline text-[11px]">Mobile</span>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Live Sandbox Render Viewport -->
+              <div id="sandboxCanvasFrame" class="p-3.5 rounded-xl bg-slate-100/90 border border-slate-200/80 min-h-[300px] flex flex-col justify-center items-center transition-all duration-300">
+                
+                <!-- 1. Flipcards / Educational Widgets Container -->
+                <div id="eduWidgetLivePreview" class="w-full">
+                  <!-- Dynamically rendered -->
+                </div>
+
+                <!-- 2. Button Groups Live Preview Container (Preserved ID) -->
+                <div id="groupLivePreviewContainer" class="w-full hidden flex-col items-center">
+                  <div class="w-full flex items-center justify-between mb-2">
+                    <span class="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Active Group:</span>
+                    <span id="previewGroupBadge" class="text-[10px] font-bold text-slate-400 font-mono">Real-Time</span>
+                  </div>
+                  <div id="groupLivePreview" class="w-full flex justify-center">
+                    <!-- Preserved for Section 9 button renderer -->
+                  </div>
+                </div>
+
+                <!-- 3. Callout Box Live Preview (Preserved ID) -->
+                <div id="calloutLivePreviewContainer" class="w-full hidden">
+                  <div id="calloutLivePreview">
+                    <!-- Preserved for Section 9 callout renderer -->
+                  </div>
+                </div>
+
+                <!-- 4. Resource Grid Live Preview (Preserved ID) -->
+                <div id="gridLivePreviewContainer" class="w-full hidden">
+                  <div id="gridLivePreview">
+                    <!-- Preserved for Section 9 grid renderer -->
+                  </div>
+                </div>
+
+              </div>
+
+              <div class="flex items-center justify-between text-[11px] text-slate-400 px-1">
+                <span><i class="fa-solid fa-hand-pointer text-indigo-400"></i> Interactive in sandbox</span>
+                <span class="font-mono text-[10px]">Pure HTML/CSS/JS</span>
+              </div>
+            </div>
+
+            <!-- Card 2: Ready-to-Embed Code Exporter -->
+            <div class="bg-slate-900 text-white p-5 rounded-2xl shadow-md space-y-4">
+              <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+                <div class="flex items-center gap-2">
+                  <i class="fa-solid fa-cloud-arrow-down text-emerald-400 text-sm"></i>
+                  <span class="font-extrabold text-sm tracking-wide">Export &amp; Blogger Embed</span>
+                </div>
+                <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-400/30">
+                  Zero Dependency
+                </span>
+              </div>
+
+              <!-- Big Primary Action: One-Click Copy Embed Code -->
+              <button id="btnUnifiedCopyEmbed" type="button" class="w-full tactile-btn py-3.5 px-4 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white font-extrabold text-sm flex items-center justify-center gap-2.5 shadow-lg shadow-emerald-600/30 border-b-2 border-teal-800 transition">
+                <i class="fa-solid fa-copy text-amber-200 text-base"></i>
+                <span id="btnUnifiedCopyEmbedText">Copy Embed Code (HTML)</span>
+              </button>
+
+              <!-- Secondary Actions Bar -->
+              <div class="grid grid-cols-2 gap-2">
+                <button id="btnUnifiedCopyCompose" type="button" class="tactile-btn p-2.5 rounded-xl bg-primary hover:bg-primary-dark text-white text-xs font-bold flex items-center justify-center gap-1.5 shadow-sm" title="Copy visual HTML to paste into Blogger Post Compose View (Ctrl+V)">
+                  <i class="fa-solid fa-wand-magic-sparkles text-yellow-300"></i>
+                  <span>Copy for Compose</span>
                 </button>
-                <button id="btnAddCustomBtn" type="button" class="tactile-btn px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs flex items-center gap-1.5 border border-border-light">
-                  <i class="fa-solid fa-plus-circle text-primary"></i> Add Custom Link Button
+                <button id="btnUnifiedPreviewNewTab" type="button" class="tactile-btn p-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold flex items-center justify-center gap-1.5 border border-slate-700" title="Open preview in new browser tab">
+                  <i class="fa-solid fa-arrow-up-right-from-square text-sky-400"></i>
+                  <span>Preview Tab</span>
                 </button>
               </div>
-            </div>
 
-            <!-- Buttons List (Cards) Container -->
-            <div id="groupButtonsListContainer" class="space-y-2.5">
-              <!-- Rendered by JS -->
-            </div>
-          </div>
-
-          <!-- Live Responsive Visual Preview Box -->
-          <div class="p-5 rounded-2xl bg-slate-100 border border-border-light space-y-2">
-            <div class="flex items-center justify-between">
-              <span class="text-[11px] font-bold text-slate-500 uppercase tracking-wider flex items-center gap-1.5">
-                <i class="fa-solid fa-eye text-indigo-500"></i> Live Group Preview
-              </span>
-              <span id="previewGroupBadge" class="text-[10px] font-bold text-slate-400 font-mono">Real-Time</span>
-            </div>
-            <div class="p-4 rounded-xl bg-white border border-slate-200/80 min-h-[100px] flex items-center justify-center">
-              <div id="groupLivePreview" class="w-full flex justify-center">
-                <!-- Live preview rendered by JS -->
+              <!-- Legacy & Direct Target Copy Buttons (Hidden or Preserved IDs for full backward compatibility) -->
+              <div class="hidden">
+                <button id="btnCopyGroupGadget"></button>
+                <button id="btnCopyGroupCompose"></button>
+                <button id="btnCopyGroupHtml"></button>
+                <button id="btnCopyCalloutCompose"></button>
+                <button id="btnCopyCalloutHtml"></button>
+                <button id="btnCopyGridCompose"></button>
+                <button id="btnCopyGridHtml"></button>
               </div>
+
+              <!-- Minify Toggle & Raw Code Drawer -->
+              <div class="pt-2 border-t border-slate-800 space-y-2">
+                <div class="flex items-center justify-between">
+                  <label class="flex items-center gap-2 cursor-pointer select-none">
+                    <input type="checkbox" id="chkMinifyEmbedCode" class="w-4 h-4 rounded text-primary focus:ring-0">
+                    <span class="text-xs font-bold text-slate-300">Minify Output (Production)</span>
+                  </label>
+                  <button type="button" id="btnToggleRawCode" class="text-xs text-indigo-400 hover:text-indigo-300 font-bold flex items-center gap-1">
+                    <i class="fa-solid fa-code"></i> <span id="toggleRawCodeText">View Code</span>
+                  </button>
+                </div>
+
+                <!-- Collapsible Raw Code Textarea -->
+                <div id="rawCodeContainer" class="hidden pt-2 space-y-2">
+                  <textarea id="unifiedCodeViewer" readonly rows="5" class="w-full p-2.5 rounded-xl bg-slate-950 border border-slate-800 text-[11px] font-mono text-emerald-400 focus:outline-none resize-none"></textarea>
+                  <div class="flex justify-end">
+                    <button type="button" id="btnCopyFromViewer" class="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-[11px] font-bold">
+                      <i class="fa-regular fa-copy mr-1"></i> Copy Code Block
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Collapsible Step-by-Step Blogger Instructions Drawer -->
+              <div class="pt-2 border-t border-slate-800">
+                <button type="button" id="btnToggleBloggerGuide" class="w-full flex items-center justify-between text-left text-xs font-bold text-slate-400 hover:text-white transition accordion-toggle" aria-expanded="false">
+                  <span class="flex items-center gap-1.5"><i class="fa-brands fa-blogger text-orange-400"></i> How to Paste into Blogger</span>
+                  <i class="fa-solid fa-chevron-down text-[10px] accordion-chevron" id="guideChevron"></i>
+                </button>
+                <div id="panelBloggerGuide" class="hidden pt-3 text-xs text-slate-300 space-y-2 leading-relaxed">
+                  <div class="p-2.5 rounded-xl bg-slate-950 border border-slate-800 space-y-1.5">
+                    <p class="font-bold text-emerald-400">Method 1: Blogger Post (HTML View - Recommended)</p>
+                    <ol class="list-decimal pl-4 space-y-1 text-slate-300 text-[11px]">
+                      <li>In Blogger post editor, click the pencil/pen icon in top left.</li>
+                      <li>Switch from <strong>Compose view</strong> to <strong>&lt;&gt; HTML view</strong>.</li>
+                      <li>Paste (Ctrl+V) the copied embed code where you want it to appear.</li>
+                      <li>Switch back to <strong>Compose view</strong> to continue editing or click <strong>Publish</strong>.</li>
+                    </ol>
+                  </div>
+                  <div class="p-2.5 rounded-xl bg-slate-950 border border-slate-800 space-y-1.5">
+                    <p class="font-bold text-indigo-400">Method 2: Sidebar or Footer Gadget</p>
+                    <p class="text-[11px] text-slate-300">Go to Blogger ➔ <strong>Layout</strong> ➔ <strong>Add a Gadget</strong> ➔ Select <strong>HTML/JavaScript</strong> ➔ Paste the code &amp; Save.</p>
+                  </div>
+                </div>
+              </div>
+
             </div>
+
           </div>
 
-          <!-- Dedicated Group Export Action Bar -->
-          <div class="p-4 rounded-2xl bg-slate-900 text-white space-y-3">
-            <div class="flex items-center justify-between">
-              <span class="text-xs font-bold text-slate-300 uppercase tracking-wider flex items-center gap-1.5">
-                <i class="fa-solid fa-cloud-arrow-down text-emerald-400"></i> Export Active Group for Blogger
-              </span>
-              <span class="text-[10px] text-slate-400">100% Self-Contained Inline Styles</span>
-            </div>
-
-            <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
-              <!-- Button A: Blogger Layout Gadget -->
-              <button id="btnCopyGroupGadget" type="button" class="tactile-btn p-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold flex items-center justify-center gap-2 shadow-sm" title="Copy clean HTML ready for Blogger Layout -> Add a Gadget -> HTML/JavaScript">
-                <i class="fa-solid fa-table-columns text-emerald-200"></i>
-                <span>Copy for Layout Gadget</span>
-              </button>
-
-              <!-- Button B: Blogger Compose View -->
-              <button id="btnCopyGroupCompose" type="button" class="tactile-btn p-3 rounded-xl bg-primary hover:bg-primary-dark text-white text-xs font-bold flex items-center justify-center gap-2 shadow-sm shadow-primary/20" title="Copy visual HTML to paste directly in Blogger Post Compose View (Ctrl+V)">
-                <i class="fa-solid fa-wand-magic-sparkles text-yellow-300"></i>
-                <span>Copy for Compose View</span>
-              </button>
-
-              <!-- Button C: Clean HTML -->
-              <button id="btnCopyGroupHtml" type="button" class="tactile-btn p-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold flex items-center justify-center gap-2 border border-slate-700" title="Copy raw HTML snippet">
-                <i class="fa-solid fa-code text-indigo-400"></i>
-                <span>Copy Clean HTML</span>
-              </button>
-            </div>
-          </div>
-
-        </div>
-
-        <!-- Widget B: Educational Alert / Callout Boxes -->
-        <div class="bg-white p-6 rounded-2xl border border-border-light shadow-sm space-y-5">
-          <div class="flex items-center justify-between border-b border-border-light pb-3">
-            <div class="flex items-center gap-2">
-              <i class="fa-solid fa-bullhorn text-amber-500 text-lg"></i>
-              <h3 class="font-extrabold text-base text-slate-900">B. Educational Alert & Callout Boxes</h3>
-            </div>
-            <span class="text-xs font-bold text-slate-500">Notice Box</span>
-          </div>
-
-          <!-- Inputs -->
-          <div class="grid grid-cols-1 sm:grid-cols-3 gap-3.5">
-            <div>
-              <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Callout Type</label>
-              <select id="calloutTypeSelect" class="w-full px-3 py-2 rounded-xl border border-border-light bg-slate-50 text-xs font-bold text-slate-700 outline-none focus:border-primary">
-                <option value="info" selected>Important Note (Blue)</option>
-                <option value="warning">Warning / Caution (Amber)</option>
-                <option value="download">Download Resource / Notes (Emerald)</option>
-              </select>
-            </div>
-            <div class="sm:col-span-2">
-              <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Callout Title</label>
-              <input type="text" id="calloutTitleInput" class="w-full px-3 py-2 rounded-xl border border-border-light bg-slate-50 text-xs font-bold focus:border-primary outline-none" value="📌 Important Student Instruction">
-            </div>
-          </div>
-
-          <div>
-            <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Message Content</label>
-            <textarea id="calloutMessageInput" rows="2" class="w-full p-3 rounded-xl border border-border-light bg-slate-50 text-xs font-medium focus:border-primary outline-none resize-none leading-relaxed">Attempt all questions in this session before checking your final score. Review notes will appear immediately after completion.</textarea>
-          </div>
-
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
-            <div>
-              <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Optional Action Button Text</label>
-              <input type="text" id="calloutBtnTextInput" class="w-full px-3 py-2 rounded-xl border border-border-light bg-slate-50 text-xs font-semibold focus:border-primary outline-none" placeholder="e.g. Download Chapter PDF ➔" value="Download PDF Notes ➔">
-            </div>
-            <div>
-              <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Action Button URL</label>
-              <input type="text" id="calloutBtnUrlInput" class="w-full px-3 py-2 rounded-xl border border-border-light bg-slate-50 text-xs font-semibold focus:border-primary outline-none" placeholder="https://yourblog.com/notes.pdf" value="https://example.com/download.pdf">
-            </div>
-          </div>
-
-          <!-- Live Visual Preview Box -->
-          <div class="p-4 rounded-xl bg-slate-50 border border-border-light">
-            <div id="calloutLivePreview">
-              <!-- Live preview rendered by JS -->
-            </div>
-          </div>
-
-          <!-- Action Buttons -->
-          <div class="flex items-center justify-end gap-2.5 pt-1">
-            <button id="btnCopyCalloutCompose" class="tactile-btn flex items-center gap-2 px-4 py-2.5 rounded-xl bg-primary hover:bg-primary-dark text-white text-xs font-bold shadow-sm shadow-primary/20">
-              <i class="fa-solid fa-wand-magic-sparkles text-yellow-300"></i>
-              <span>Copy for Blogger (Compose View)</span>
-            </button>
-            <button id="btnCopyCalloutHtml" class="tactile-btn flex items-center gap-1.5 px-3.5 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold border border-border-light">
-              <i class="fa-solid fa-code text-primary"></i>
-              <span>Copy HTML</span>
-            </button>
-          </div>
-        </div>
-
-        <!-- Widget C: Resource & Subject Link Grid -->
-        <div class="bg-white p-6 rounded-2xl border border-border-light shadow-sm space-y-5">
-          <div class="flex items-center justify-between border-b border-border-light pb-3">
-            <div class="flex items-center gap-2">
-              <i class="fa-solid fa-table-cells-large text-emerald-600 text-lg"></i>
-              <h3 class="font-extrabold text-base text-slate-900">C. Resource & Subject Link Grid</h3>
-            </div>
-            <button id="btnAddGridItem" type="button" class="px-3 py-1 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-emerald-700 font-bold text-xs flex items-center gap-1 border border-emerald-200">
-              <i class="fa-solid fa-plus-circle"></i> Add Link Card
-            </button>
-          </div>
-
-          <div>
-            <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Section Heading</label>
-            <input type="text" id="gridHeadingInput" class="w-full px-3 py-2 rounded-xl border border-border-light bg-slate-50 text-xs font-bold focus:border-primary outline-none" value="📚 Recommended Study Materials & Papers">
-          </div>
-
-          <!-- Dynamic Resource Cards Editor List -->
-          <div id="gridItemsContainer" class="space-y-3">
-            <!-- Rendered by JS -->
-          </div>
-
-          <!-- Live Visual Preview Box -->
-          <div class="p-4 rounded-xl bg-slate-50 border border-border-light">
-            <div class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Live Grid Preview:</div>
-            <div id="gridLivePreview">
-              <!-- Live preview rendered by JS -->
-            </div>
-          </div>
-
-          <!-- Action Buttons -->
-          <div class="flex items-center justify-end gap-2.5 pt-1">
-            <button id="btnCopyGridCompose" class="tactile-btn flex items-center gap-2 px-4 py-2.5 rounded-xl bg-primary hover:bg-primary-dark text-white text-xs font-bold shadow-sm shadow-primary/20">
-              <i class="fa-solid fa-wand-magic-sparkles text-yellow-300"></i>
-              <span>Copy for Blogger (Compose View)</span>
-            </button>
-            <button id="btnCopyGridHtml" class="tactile-btn flex items-center gap-1.5 px-3.5 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold border border-border-light">
-              <i class="fa-solid fa-code text-primary"></i>
-              <span>Copy HTML</span>
-            </button>
-          </div>
         </div>
 
       </div>
@@ -3714,6 +4153,7 @@ ${cards}
         updateCalloutPreview();
         renderGridEditorItems();
         updateGridPreview();
+        if (typeof updateActiveStudioPreview === 'function') updateActiveStudioPreview();
       }
 
       // Universal Widget Copy Helpers
@@ -3748,6 +4188,1173 @@ ${cards}
           showToast(`${name} HTML copied!`, "success");
         }
       }
+
+const fs = require('fs');
+
+const completeController = `
+      // =============================================================
+      // 9.B. MODERN BLOGGER & EDUCATIONAL WIDGETS STUDIO CONTROLLER
+      // =============================================================
+
+      function cleanMinifyWidget(html) {
+        if (!html) return '';
+        return html
+          .replace(/<!--[\\s\\S]*?-->/g, '')
+          .split('\\n')
+          .map(line => line.trim())
+          .filter(line => line.length > 0 && !line.startsWith('//'))
+          .join('\\n');
+      }
+
+      const FC_STORAGE_KEY = 'bsp_widget_flipcards';
+      const CODE_STORAGE_KEY = 'bsp_widget_codestepper';
+      const SHEET_STORAGE_KEY = 'bsp_widget_cheatsheet';
+
+      const FC_PRESETS = {
+        cbse_it: {
+          title: "CBSE IT 402 - Networking & Web Concepts",
+          badge: "IT 402 / Class 10",
+          cards: [
+            { category: "Networking", term: "DNS", hint: "Internet Phonebook", definition: "Domain Name System translates human-friendly domain names (like google.com) to machine-readable numeric IP addresses (like 142.250.190.46)." },
+            { category: "Protocols", term: "HTTP vs HTTPS", hint: "Security Layer", definition: "HTTPS encrypts communication between the browser and web server using SSL/TLS encryption on Port 443, preventing eavesdropping and tampering." },
+            { category: "Database", term: "Primary Key", hint: "Unique Entity", definition: "A column or set of columns in a relational table that uniquely identifies each record. It cannot contain NULL values and must contain unique data." },
+            { category: "DBMS", term: "DBMS vs RDBMS", hint: "Relational Integrity", definition: "An RDBMS stores data in tabular format with relationships, primary keys, and foreign keys, strictly enforcing relational constraints and ACID properties." },
+            { category: "Web Basics", term: "Bandwidth", hint: "Data Highway", definition: "The maximum amount of digital data that can travel over an internet connection in a given amount of time, measured in bps, Kbps, or Mbps." }
+          ]
+        },
+        python_terms: {
+          title: "Python Core Fundamentals & Concepts",
+          badge: "Python 3",
+          cards: [
+            { category: "Data Types", term: "Mutable vs Immutable", hint: "In-Place Modification", definition: "Mutable objects (lists, dictionaries, sets) can be modified in-place; immutable objects (integers, strings, tuples) cannot have their state altered after creation." },
+            { category: "Syntax", term: "List Comprehension", hint: "Concise Looping", definition: "A concise, readable syntax for generating new lists: [x**2 for x in range(10) if x % 2 == 0]. Highly optimized in CPython." },
+            { category: "Functions", term: "Lambda Function", hint: "Anonymous Function", definition: "A small, anonymous inline function defined with the lambda keyword: square = lambda x: x * x. Useful for short transformations." },
+            { category: "Arguments", term: "*args & **kwargs", hint: "Variable Arguments", definition: "*args allows a function to accept any number of positional arguments as a tuple; **kwargs allows any number of keyword arguments as a dictionary." },
+            { category: "Best Practice", term: "PEP 8", hint: "Style Standard", definition: "Python Enhancement Proposal 8: The authoritative style guide specifying naming conventions, 4-space indentation, and layout for clean, readable Python code." }
+          ]
+        },
+        shortcuts: {
+          title: "Windows & Web Productivity Shortcuts",
+          badge: "Shortcuts",
+          cards: [
+            { category: "Windows", term: "Ctrl + Shift + Esc", hint: "Task Manager", definition: "Directly opens the Windows Task Manager instantly without passing through the intermediate Ctrl+Alt+Del lock screen." },
+            { category: "Screen Capture", term: "Win + Shift + S", hint: "Snipping Tool", definition: "Opens the Windows Snipping Tool overlay for precision rectangular, window, and freeform screenshot clipping directly to clipboard." },
+            { category: "Editor", term: "Ctrl + D (VS Code)", hint: "Multi-Cursor", definition: "Selects the next occurrence of the currently highlighted word or token, enabling simultaneous multi-cursor renaming." },
+            { category: "Dev Tools", term: "F12 / Ctrl+Shift+I", hint: "Inspect Element", definition: "Opens Chrome or Edge Developer Tools to inspect DOM elements, debug JavaScript console errors, and audit network traffic." },
+            { category: "Terminal", term: "Ctrl + \`", hint: "VS Code Terminal", definition: "Toggles the built-in integrated command prompt or PowerShell terminal inside VS Code without switching windows." }
+          ]
+        }
+      };
+
+      const CODE_PRESETS = {
+        python_prime: {
+          title: "Python: Check If a Number is Prime",
+          language: "python",
+          code: "def is_prime(n):\\n    if n <= 1:\\n        return False\\n    for i in range(2, int(n**0.5) + 1):\\n        if n % i == 0:\\n            return False\\n    return True\\n\\nnum = 17\\nresult = is_prime(num)\\nprint(f'{num} is Prime: {result}')",
+          steps: [
+            { lines: [1], explanation: "Define function is_prime(n) accepting an integer parameter n.", output: "Function loaded in memory." },
+            { lines: [2, 3], explanation: "Numbers <= 1 are not prime by definition. Immediately return False.", output: "Checked: n > 1 (True)" },
+            { lines: [4, 5, 6], explanation: "Iterate from 2 up to sqrt(n). If any factor divides n with 0 remainder, return False.", output: "Testing factors: 2, 3, 4" },
+            { lines: [7], explanation: "If no divisor was found throughout the search space, n is prime. Return True.", output: "All tests passed -> Prime" },
+            { lines: [9, 10, 11], explanation: "Execute test with num = 17. Output confirms 17 is indeed a prime number.", output: "17 is Prime: True" }
+          ]
+        },
+        js_filter: {
+          title: "JavaScript: Array Filter & Map",
+          language: "javascript",
+          code: "const scores = [45, 82, 91, 58, 76];\\nconst passing = scores\\n  .filter(s => s >= 60)\\n  .map(s => s + 5);\\n\\nconsole.log('Passing (curved):', passing);",
+          steps: [
+            { lines: [1], explanation: "Initialize an array of student exam scores.", output: "[45, 82, 91, 58, 76]" },
+            { lines: [2, 3], explanation: "filter() keeps only scores >= 60, discarding failing grades (45 and 58).", output: "Passing: [82, 91, 76]" },
+            { lines: [4], explanation: "map() applies a 5-point curve boost to all qualifying scores.", output: "Curved: [87, 96, 81]" },
+            { lines: [6], explanation: "Output transformed array to the browser developer console.", output: "Passing (curved): [87, 96, 81]" }
+          ]
+        },
+        css_flex: {
+          title: "CSS Flexbox: Perfect Centering",
+          language: "html",
+          code: ".container {\\n  display: flex;\\n  justify-content: center;\\n  align-items: center;\\n  min-height: 100vh;\\n}\\n.card {\\n  padding: 24px;\\n  background: #ffffff;\\n}",
+          steps: [
+            { lines: [1, 2], explanation: "Set container display to flex to activate Flexbox formatting rules.", output: "Flex context established" },
+            { lines: [3], explanation: "justify-content: center aligns child cards along the horizontal main-axis.", output: "Horizontal centering applied" },
+            { lines: [4, 5], explanation: "align-items: center aligns cards vertically across the full viewport height.", output: "Vertical centering applied across 100vh" },
+            { lines: [7, 8, 9, 10], explanation: "Child element gets 24px padding and a clean white background card.", output: "Content centered dead-center" }
+          ]
+        }
+      };
+
+      const SHEET_PRESETS = {
+        python_methods: {
+          title: "Python 3 Essential Methods & Syntax",
+          categories: ["All", "Strings", "Lists", "Dictionaries", "Files"],
+          items: [
+            { cat: "Strings", cmd: ".split(sep)", syntax: "str.split(',')", desc: "Splits string into a list using delimiter", eg: "'a,b,c'.split(',') -> ['a', 'b', 'c']" },
+            { cat: "Strings", cmd: ".strip()", syntax: "str.strip()", desc: "Trims leading and trailing whitespace", eg: "'  hello  '.strip() -> 'hello'" },
+            { cat: "Strings", cmd: ".join(iter)", syntax: "','.join(['x', 'y'])", desc: "Joins elements with separator string", eg: "'-'.join(['a','b']) -> 'a-b'" },
+            { cat: "Lists", cmd: ".append(x)", syntax: "list.append(item)", desc: "Appends single element to end of list", eg: "numbers.append(10)" },
+            { cat: "Lists", cmd: "[start:end:step]", syntax: "lst[::-1]", desc: "Slice notation. Slicing with -1 reverses list", eg: "[1, 2, 3][::-1] -> [3, 2, 1]" },
+            { cat: "Dictionaries", cmd: ".get(k, default)", syntax: "dict.get(key, val)", desc: "Safe access returning fallback if key missing", eg: "user.get('role', 'guest')" },
+            { cat: "Files", cmd: "with open(...) as f:", syntax: "with open('data.txt') as f:", desc: "Context manager to open and automatically close file", eg: "content = f.read()" }
+          ]
+        },
+        html5_tags: {
+          title: "HTML5 Essential Semantic Tags",
+          categories: ["All", "Semantic", "Structure", "Media", "Forms"],
+          items: [
+            { cat: "Semantic", cmd: "<main>", syntax: "<main>...</main>", desc: "Primary unique content of document body", eg: "<main><h1>Topic</h1></main>" },
+            { cat: "Structure", cmd: "<nav>", syntax: "<nav>...</nav>", desc: "Section of navigation links", eg: "<nav><a href='/'>Home</a></nav>" },
+            { cat: "Media", cmd: "<picture>", syntax: "<picture><source><img></picture>", desc: "Responsive image art-direction container", eg: "<picture><source media='(min-width:800px)'></picture>" },
+            { cat: "Forms", cmd: "<input type='date'>", syntax: "<input type='date'>", desc: "Native browser date picker control", eg: "<input type='date' name='bday'>" },
+            { cat: "Semantic", cmd: "<code>", syntax: "<code>...</code>", desc: "Formatted inline computer code snippet", eg: "<code>console.log()</code>" }
+          ]
+        },
+        vscode_keys: {
+          title: "VS Code & Windows Productivity Shortcuts",
+          categories: ["All", "Editing", "Navigation", "System"],
+          items: [
+            { cat: "Editing", cmd: "Ctrl + D", syntax: "Ctrl + D", desc: "Multi-select next matching occurrence of word", eg: "Batch rename identifiers" },
+            { cat: "Editing", cmd: "Alt + Up/Down", syntax: "Alt + Arrow", desc: "Move active line or selected block up/down", eg: "Reorder code statements" },
+            { cat: "Navigation", cmd: "Ctrl + P", syntax: "Ctrl + P", desc: "Quick Open file search by filename", eg: "Jump between project files" },
+            { cat: "Navigation", cmd: "Ctrl + Shift + F", syntax: "Ctrl + Shift + F", desc: "Global workspace text and regex search", eg: "Find all occurrences in folder" },
+            { cat: "System", cmd: "Ctrl + Shift + Esc", syntax: "Ctrl + Shift + Esc", desc: "Directly open Windows Task Manager", eg: "Inspect memory & processes" }
+          ]
+        }
+      };
+
+      // State Objects
+      let activeStudioWidgetType = 'flipcards';
+
+      let flipCardsState = (function() {
+        try {
+          const raw = localStorage.getItem(FC_STORAGE_KEY);
+          if (raw) return JSON.parse(raw);
+        } catch(e) {}
+        return JSON.parse(JSON.stringify(FC_PRESETS.cbse_it));
+      })();
+
+      let codeStepperState = (function() {
+        try {
+          const raw = localStorage.getItem(CODE_STORAGE_KEY);
+          if (raw) return JSON.parse(raw);
+        } catch(e) {}
+        return JSON.parse(JSON.stringify(CODE_PRESETS.python_prime));
+      })();
+
+      let cheatsheetState = (function() {
+        try {
+          const raw = localStorage.getItem(SHEET_STORAGE_KEY);
+          if (raw) return JSON.parse(raw);
+        } catch(e) {}
+        return JSON.parse(JSON.stringify(SHEET_PRESETS.python_methods));
+      })();
+
+      function saveFlipCardsState() {
+        try { localStorage.setItem(FC_STORAGE_KEY, JSON.stringify(flipCardsState)); } catch(e) {}
+      }
+      function saveCodeStepperState() {
+        try { localStorage.setItem(CODE_STORAGE_KEY, JSON.stringify(codeStepperState)); } catch(e) {}
+      }
+      function saveCheatsheetState() {
+        try { localStorage.setItem(SHEET_STORAGE_KEY, JSON.stringify(cheatsheetState)); } catch(e) {}
+      }
+
+      // Generator: Flip Cards HTML
+      function generateFlipCardsHtml(data, minify) {
+        const d = data || flipCardsState;
+        const cards = (d.cards && d.cards.length) ? d.cards : [
+          { category: "General", term: "Sample Term", hint: "Hint", definition: "Explanation here." }
+        ];
+        const cardsJson = JSON.stringify(cards).replace(/<\\/script>/gi, '<\\\\/script>');
+        const uid = 'itfc_' + Math.random().toString(36).substring(2, 9);
+        const title = escapeHtml(d.title || 'Interactive Flashcards');
+        const badge = escapeHtml(d.badge || 'Study Deck');
+
+        const html = '<!-- Educational Flip Cards Widget by Blogger Suite Pro -->\\n' +
+'<div class="it-fc-wrapper" id="' + uid + '">\\n' +
+'  <style>\\n' +
+'    #' + uid + ' { box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; max-width: 520px; margin: 16px auto; background: #ffffff; border-radius: 18px; border: 1px solid #e2e8f0; box-shadow: 0 8px 24px -4px rgba(15, 23, 42, 0.08); padding: 20px; color: #0f172a; user-select: none; }\\n' +
+'    #' + uid + ' *, #' + uid + ' *::before, #' + uid + ' *::after { box-sizing: inherit; }\\n' +
+'    #' + uid + ' .it-fc-topbar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }\\n' +
+'    #' + uid + ' .it-fc-badge { background: #eef2ff; color: #4338ca; font-size: 12px; font-weight: 700; padding: 5px 12px; border-radius: 9999px; }\\n' +
+'    #' + uid + ' .it-fc-counter { font-size: 12px; font-weight: 700; color: #64748b; font-family: monospace; }\\n' +
+'    #' + uid + ' .it-fc-viewport { perspective: 1200px; width: 100%; min-height: 280px; cursor: pointer; }\\n' +
+'    #' + uid + ' .it-fc-card { position: relative; width: 100%; min-height: 280px; transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1); transform-style: preserve-3d; }\\n' +
+'    #' + uid + ' .it-fc-card.is-flipped { transform: rotateY(180deg); }\\n' +
+'    #' + uid + ' .it-fc-face { position: absolute; width: 100%; height: 100%; min-height: 280px; backface-visibility: hidden; -webkit-backface-visibility: hidden; border-radius: 16px; padding: 22px; display: flex; flex-direction: column; justify-content: space-between; border: 1px solid #e2e8f0; }\\n' +
+'    #' + uid + ' .it-fc-front { background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%); }\\n' +
+'    #' + uid + ' .it-fc-back { background: #ffffff; transform: rotateY(180deg); box-shadow: inset 0 2px 4px rgba(0,0,0,0.02); overflow-y: auto; }\\n' +
+'    #' + uid + ' .it-fc-cat { font-size: 11px; font-weight: 700; text-transform: uppercase; padding: 4px 10px; border-radius: 6px; background: #e0e7ff; color: #3730a3; align-self: flex-start; }\\n' +
+'    #' + uid + ' .it-fc-term { font-size: 22px; font-weight: 800; color: #0f172a; margin: 16px 0 8px 0; text-align: center; }\\n' +
+'    #' + uid + ' .it-fc-hint { font-size: 13px; color: #64748b; text-align: center; margin: 0; }\\n' +
+'    #' + uid + ' .it-fc-tip { font-size: 12px; font-weight: 600; color: #6366f1; text-align: center; }\\n' +
+'    #' + uid + ' .it-fc-back-title { font-size: 14px; font-weight: 700; color: #312e81; border-bottom: 1px solid #f1f5f9; padding-bottom: 8px; margin-bottom: 10px; }\\n' +
+'    #' + uid + ' .it-fc-desc { font-size: 13.5px; color: #334155; line-height: 1.55; }\\n' +
+'    #' + uid + ' .it-fc-controls { display: flex; align-items: center; justify-content: space-between; margin-top: 16px; gap: 10px; }\\n' +
+'    #' + uid + ' .it-fc-btn { background: #4f46e5; color: #ffffff; border: none; border-radius: 10px; padding: 9px 16px; font-size: 13px; font-weight: 600; cursor: pointer; transition: 0.2s; }\\n' +
+'    #' + uid + ' .it-fc-btn:hover:not(:disabled) { background: #4338ca; }\\n' +
+'    #' + uid + ' .it-fc-btn:disabled { background: #cbd5e1; cursor: not-allowed; opacity: 0.6; }\\n' +
+'    #' + uid + ' .it-fc-btn-sub { background: #f1f5f9; border: none; color: #475569; font-size: 12px; font-weight: 600; padding: 5px 12px; border-radius: 6px; cursor: pointer; align-self: flex-end; }\\n' +
+'  </style>\\n' +
+'  <div class="it-fc-topbar">\\n' +
+'    <span class="it-fc-badge">' + title + '</span>\\n' +
+'    <span class="it-fc-counter" id="' + uid + '_counter">1 / ' + cards.length + '</span>\\n' +
+'  </div>\\n' +
+'  <div class="it-fc-viewport" id="' + uid + '_viewport" title="Click to Flip">\\n' +
+'    <div class="it-fc-card" id="' + uid + '_card">\\n' +
+'      <div class="it-fc-face it-fc-front">\\n' +
+'        <span class="it-fc-cat" id="' + uid + '_cat">' + escapeHtml(cards[0].category || badge) + '</span>\\n' +
+'        <div>\\n' +
+'          <div class="it-fc-term" id="' + uid + '_term">' + escapeHtml(cards[0].term || '') + '</div>\\n' +
+'          <div class="it-fc-hint" id="' + uid + '_hint">' + escapeHtml(cards[0].hint || '') + '</div>\\n' +
+'        </div>\\n' +
+'        <div class="it-fc-tip">🔄 Click or tap to reveal definition</div>\\n' +
+'      </div>\\n' +
+'      <div class="it-fc-face it-fc-back">\\n' +
+'        <div>\\n' +
+'          <div class="it-fc-back-title">Definition &amp; Key Details</div>\\n' +
+'          <div class="it-fc-desc" id="' + uid + '_desc">' + escapeHtml(cards[0].definition || '') + '</div>\\n' +
+'        </div>\\n' +
+'        <button type="button" class="it-fc-btn-sub" id="' + uid + '_flipBack">↩ Flip back</button>\\n' +
+'      </div>\\n' +
+'    </div>\\n' +
+'  </div>\\n' +
+'  <div class="it-fc-controls">\\n' +
+'    <button type="button" class="it-fc-btn" id="' + uid + '_prev" disabled>← Previous</button>\\n' +
+'    <button type="button" class="it-fc-btn" id="' + uid + '_next"' + (cards.length <= 1 ? ' disabled' : '') + '>Next →</button>\\n' +
+'  </div>\\n' +
+'  <script>\\n' +
+'  (function() {\\n' +
+'    var cards = ' + cardsJson + ';\\n' +
+'    var cur = 0;\\n' +
+'    var card = document.getElementById("' + uid + '_card");\\n' +
+'    var vp = document.getElementById("' + uid + '_viewport");\\n' +
+'    var prev = document.getElementById("' + uid + '_prev");\\n' +
+'    var next = document.getElementById("' + uid + '_next");\\n' +
+'    var cnt = document.getElementById("' + uid + '_counter");\\n' +
+'    var cat = document.getElementById("' + uid + '_cat");\\n' +
+'    var term = document.getElementById("' + uid + '_term");\\n' +
+'    var hint = document.getElementById("' + uid + '_hint");\\n' +
+'    var desc = document.getElementById("' + uid + '_desc");\\n' +
+'    var fb = document.getElementById("' + uid + '_flipBack");\\n' +
+'    function update(idx) {\\n' +
+'      if (!cards.length) return;\\n' +
+'      card.classList.remove("is-flipped");\\n' +
+'      var item = cards[idx];\\n' +
+'      cat.textContent = item.category || "' + badge + '";\\n' +
+'      term.textContent = item.term || "";\\n' +
+'      hint.textContent = item.hint || "";\\n' +
+'      desc.textContent = item.definition || "";\\n' +
+'      cnt.textContent = (idx + 1) + " / " + cards.length;\\n' +
+'      prev.disabled = (idx === 0);\\n' +
+'      next.disabled = (idx === cards.length - 1);\\n' +
+'    }\\n' +
+'    function flip(e) { if (e) e.stopPropagation(); card.classList.toggle("is-flipped"); }\\n' +
+'    if (vp) vp.addEventListener("click", flip);\\n' +
+'    if (fb) fb.addEventListener("click", flip);\\n' +
+'    if (prev) prev.addEventListener("click", function(e) { e.stopPropagation(); if (cur > 0) { cur--; update(cur); } });\\n' +
+'    if (next) next.addEventListener("click", function(e) { e.stopPropagation(); if (cur < cards.length - 1) { cur++; update(cur); } });\\n' +
+'    update(0);\\n' +
+'  })();\\n' +
+'  <' + '/script>\\n' +
+'</div>';
+
+        return minify ? cleanMinifyWidget(html) : html;
+      }
+
+      // Generator: Code Stepper HTML
+      function generateCodeStepperHtml(data, minify) {
+        const d = data || codeStepperState;
+        const code = d.code || 'print("Hello World")';
+        const steps = (d.steps && d.steps.length) ? d.steps : [
+          { lines: [1], explanation: "Code executes and prints output.", output: "Hello World" }
+        ];
+        const stepsJson = JSON.stringify(steps).replace(/<\\/script>/gi, '<\\\\/script>');
+        const uid = 'itcs_' + Math.random().toString(36).substring(2, 9);
+        const title = escapeHtml(d.title || 'Code Stepper');
+        const lang = escapeHtml(d.language || 'Python');
+
+        const lines = code.split('\\n');
+        const codeLinesHtml = lines.map((l, idx) => {
+          const lineNum = idx + 1;
+          return '<div class="it-cs-line" data-line="' + lineNum + '"><span class="it-cs-ln">' + lineNum + '</span><span class="it-cs-txt">' + (escapeHtml(l) || '&nbsp;') + '</span></div>';
+        }).join('');
+
+        const html = '<!-- Educational Code Stepper Widget by Blogger Suite Pro -->\\n' +
+'<div class="it-cs-wrapper" id="' + uid + '">\\n' +
+'  <style>\\n' +
+'    #' + uid + ' { box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; max-width: 580px; margin: 16px auto; background: #0f172a; border-radius: 18px; border: 1px solid #334155; box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.3); padding: 18px; color: #f8fafc; }\\n' +
+'    #' + uid + ' *, #' + uid + ' *::before, #' + uid + ' *::after { box-sizing: inherit; }\\n' +
+'    #' + uid + ' .it-cs-topbar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }\\n' +
+'    #' + uid + ' .it-cs-title { font-size: 13px; font-weight: 700; color: #38bdf8; display: flex; align-items: center; gap: 6px; }\\n' +
+'    #' + uid + ' .it-cs-lang { background: #1e293b; color: #94a3b8; font-size: 11px; font-weight: 600; padding: 3px 8px; border-radius: 6px; text-transform: uppercase; }\\n' +
+'    #' + uid + ' .it-cs-editor { background: #020617; border: 1px solid #1e293b; border-radius: 12px; overflow-x: auto; font-family: ui-monospace, monospace; font-size: 12.5px; line-height: 1.6; padding: 10px 0; margin-bottom: 12px; }\\n' +
+'    #' + uid + ' .it-cs-line { display: flex; padding: 2px 12px; transition: background 0.2s; }\\n' +
+'    #' + uid + ' .it-cs-line.is-active { background: rgba(56, 189, 248, 0.18); border-left: 3px solid #38bdf8; }\\n' +
+'    #' + uid + ' .it-cs-ln { width: 28px; color: #475569; user-select: none; flex-shrink: 0; }\\n' +
+'    #' + uid + ' .it-cs-txt { color: #e2e8f0; white-space: pre; }\\n' +
+'    #' + uid + ' .it-cs-expl-card { background: #1e293b; border: 1px solid #334155; border-radius: 12px; padding: 12px 14px; margin-bottom: 12px; }\\n' +
+'    #' + uid + ' .it-cs-expl-header { display: flex; justify-content: space-between; align-items: center; font-size: 11px; font-weight: 700; color: #38bdf8; margin-bottom: 6px; }\\n' +
+'    #' + uid + ' .it-cs-expl-text { font-size: 13px; color: #cbd5e1; line-height: 1.5; margin: 0; }\\n' +
+'    #' + uid + ' .it-cs-console { background: #000000; border: 1px solid #1e293b; border-radius: 10px; padding: 10px 12px; font-family: monospace; font-size: 12px; margin-bottom: 14px; }\\n' +
+'    #' + uid + ' .it-cs-console-title { font-size: 10px; font-weight: 700; text-transform: uppercase; color: #64748b; margin-bottom: 4px; }\\n' +
+'    #' + uid + ' .it-cs-console-out { color: #4ade80; margin: 0; white-space: pre-wrap; word-break: break-all; }\\n' +
+'    #' + uid + ' .it-cs-nav { display: flex; align-items: center; justify-content: space-between; gap: 8px; }\\n' +
+'    #' + uid + ' .it-cs-btn { background: #38bdf8; color: #0f172a; border: none; border-radius: 8px; padding: 8px 14px; font-size: 12px; font-weight: 700; cursor: pointer; transition: 0.2s; }\\n' +
+'    #' + uid + ' .it-cs-btn:hover:not(:disabled) { background: #7dd3fc; }\\n' +
+'    #' + uid + ' .it-cs-btn:disabled { background: #334155; color: #64748b; cursor: not-allowed; }\\n' +
+'    #' + uid + ' .it-cs-btn-reset { background: transparent; border: 1px solid #475569; color: #94a3b8; padding: 7px 12px; border-radius: 8px; font-size: 11px; cursor: pointer; }\\n' +
+'    #' + uid + ' .it-cs-btn-reset:hover { background: #334155; color: #ffffff; }\\n' +
+'  </style>\\n' +
+'  <div class="it-cs-topbar">\\n' +
+'    <div class="it-cs-title"><span>💻</span> ' + title + '</div>\\n' +
+'    <span class="it-cs-lang">' + lang + '</span>\\n' +
+'  </div>\\n' +
+'  <div class="it-cs-editor" id="' + uid + '_editor">\\n' +
+     codeLinesHtml + '\\n' +
+'  </div>\\n' +
+'  <div class="it-cs-expl-card">\\n' +
+'    <div class="it-cs-expl-header">\\n' +
+'      <span id="' + uid + '_stepBadge">Step 1 of ' + steps.length + '</span>\\n' +
+'      <span id="' + uid + '_lineBadge">Lines: ' + steps[0].lines.join(', ') + '</span>\\n' +
+'    </div>\\n' +
+'    <p class="it-cs-expl-text" id="' + uid + '_explText">' + escapeHtml(steps[0].explanation || '') + '</p>\\n' +
+'  </div>\\n' +
+'  <div class="it-cs-console">\\n' +
+'    <div class="it-cs-console-title">Console Output Simulator</div>\\n' +
+'    <div class="it-cs-console-out" id="' + uid + '_consoleOut">' + escapeHtml(steps[0].output || '') + '</div>\\n' +
+'  </div>\\n' +
+'  <div class="it-cs-nav">\\n' +
+'    <button type="button" class="it-cs-btn" id="' + uid + '_prev" disabled>← Previous Step</button>\\n' +
+'    <button type="button" class="it-cs-btn-reset" id="' + uid + '_reset">↺ Reset</button>\\n' +
+'    <button type="button" class="it-cs-btn" id="' + uid + '_next"' + (steps.length <= 1 ? ' disabled' : '') + '>Next Step →</button>\\n' +
+'  </div>\\n' +
+'  <script>\\n' +
+'  (function() {\\n' +
+'    var steps = ' + stepsJson + ';\\n' +
+'    var cur = 0;\\n' +
+'    var root = document.getElementById("' + uid + '");\\n' +
+'    if (!root) return;\\n' +
+'    var lines = root.querySelectorAll(".it-cs-line");\\n' +
+'    var stepBadge = document.getElementById("' + uid + '_stepBadge");\\n' +
+'    var lineBadge = document.getElementById("' + uid + '_lineBadge");\\n' +
+'    var explText = document.getElementById("' + uid + '_explText");\\n' +
+'    var consoleOut = document.getElementById("' + uid + '_consoleOut");\\n' +
+'    var prev = document.getElementById("' + uid + '_prev");\\n' +
+'    var next = document.getElementById("' + uid + '_next");\\n' +
+'    var reset = document.getElementById("' + uid + '_reset");\\n' +
+'    function highlightLines(targetLines) {\\n' +
+'      lines.forEach(function(el) {\\n' +
+'        var num = parseInt(el.getAttribute("data-line"), 10);\\n' +
+'        if (targetLines.indexOf(num) !== -1) { el.classList.add("is-active"); } else { el.classList.remove("is-active"); }\\n' +
+'      });\\n' +
+'    }\\n' +
+'    function renderStep(idx) {\\n' +
+'      if (!steps.length) return;\\n' +
+'      var s = steps[idx];\\n' +
+'      stepBadge.textContent = "Step " + (idx + 1) + " of " + steps.length;\\n' +
+'      lineBadge.textContent = "Lines: " + s.lines.join(", ");\\n' +
+'      explText.textContent = s.explanation || "";\\n' +
+'      consoleOut.textContent = s.output || "";\\n' +
+'      highlightLines(s.lines || []);\\n' +
+'      prev.disabled = (idx === 0);\\n' +
+'      next.disabled = (idx === steps.length - 1);\\n' +
+'    }\\n' +
+'    if (prev) prev.addEventListener("click", function() { if (cur > 0) { cur--; renderStep(cur); } });\\n' +
+'    if (next) next.addEventListener("click", function() { if (cur < steps.length - 1) { cur++; renderStep(cur); } });\\n' +
+'    if (reset) reset.addEventListener("click", function() { cur = 0; renderStep(0); });\\n' +
+'    renderStep(0);\\n' +
+'  })();\\n' +
+'  <' + '/script>\\n' +
+'</div>';
+
+        return minify ? cleanMinifyWidget(html) : html;
+      }
+
+      // Generator: Cheatsheet HTML
+      function generateCheatsheetHtml(data, minify) {
+        const d = data || cheatsheetState;
+        const items = (d.items && d.items.length) ? d.items : [
+          { cat: "General", cmd: "print()", syntax: "print(*args)", desc: "Prints values to console", eg: "print('Hi')" }
+        ];
+        const cats = (d.categories && d.categories.length) ? d.categories : ["All", "General"];
+        const itemsJson = JSON.stringify(items).replace(/<\\/script>/gi, '<\\\\/script>');
+        const uid = 'itcsheet_' + Math.random().toString(36).substring(2, 9);
+        const title = escapeHtml(d.title || 'Cheatsheet Reference');
+
+        const catPills = cats.map((c, i) =>
+          '<button type="button" class="it-csheet-pill' + (i === 0 ? ' is-active' : '') + '" data-cat="' + escapeHtml(c) + '">' + escapeHtml(c) + '</button>'
+        ).join('');
+
+        const html = '<!-- Educational Cheatsheet Grid Widget by Blogger Suite Pro -->\\n' +
+'<div class="it-csheet-wrapper" id="' + uid + '">\\n' +
+'  <style>\\n' +
+'    #' + uid + ' { box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; max-width: 680px; margin: 16px auto; background: #ffffff; border-radius: 18px; border: 1px solid #e2e8f0; box-shadow: 0 8px 24px -4px rgba(15, 23, 42, 0.08); padding: 20px; color: #0f172a; }\\n' +
+'    #' + uid + ' *, #' + uid + ' *::before, #' + uid + ' *::after { box-sizing: inherit; }\\n' +
+'    #' + uid + ' .it-csheet-top { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 14px; }\\n' +
+'    #' + uid + ' .it-csheet-title { font-size: 16px; font-weight: 800; color: #1e1b4b; display: flex; align-items: center; gap: 8px; }\\n' +
+'    #' + uid + ' .it-csheet-search { width: 100%; max-width: 220px; padding: 7px 12px; border-radius: 10px; border: 1px solid #cbd5e1; font-size: 12px; outline: none; transition: border-color 0.2s; }\\n' +
+'    #' + uid + ' .it-csheet-search:focus { border-color: #4f46e5; }\\n' +
+'    #' + uid + ' .it-csheet-cats { display: flex; gap: 6px; overflow-x: auto; padding-bottom: 8px; margin-bottom: 12px; }\\n' +
+'    #' + uid + ' .it-csheet-pill { background: #f1f5f9; color: #475569; border: 1px solid #e2e8f0; border-radius: 9999px; padding: 4px 12px; font-size: 11px; font-weight: 600; cursor: pointer; white-space: nowrap; transition: 0.2s; }\\n' +
+'    #' + uid + ' .it-csheet-pill.is-active, #' + uid + ' .it-csheet-pill:hover { background: #4f46e5; color: #ffffff; border-color: #4f46e5; }\\n' +
+'    #' + uid + ' .it-csheet-list { display: grid; grid-template-columns: 1fr; gap: 10px; max-height: 420px; overflow-y: auto; padding-right: 4px; }\\n' +
+'    #' + uid + ' .it-csheet-item { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 12px 14px; transition: transform 0.15s; }\\n' +
+'    #' + uid + ' .it-csheet-item:hover { border-color: #cbd5e1; transform: translateY(-1px); }\\n' +
+'    #' + uid + ' .it-csheet-item-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px; }\\n' +
+'    #' + uid + ' .it-csheet-cmd { font-family: ui-monospace, monospace; font-size: 13px; font-weight: 700; color: #4338ca; }\\n' +
+'    #' + uid + ' .it-csheet-cat-badge { font-size: 10px; font-weight: 700; text-transform: uppercase; background: #e0e7ff; color: #3730a3; padding: 2px 7px; border-radius: 4px; }\\n' +
+'    #' + uid + ' .it-csheet-desc { font-size: 12.5px; color: #334155; margin-bottom: 6px; }\\n' +
+'    #' + uid + ' .it-csheet-syntax { font-family: monospace; font-size: 11.5px; background: #ffffff; border: 1px solid #e2e8f0; padding: 5px 8px; border-radius: 6px; color: #0f172a; word-break: break-all; }\\n' +
+'    #' + uid + ' .it-csheet-empty { text-align: center; padding: 24px; color: #94a3b8; font-size: 13px; font-weight: 600; }\\n' +
+'  </style>\\n' +
+'  <div class="it-csheet-top">\\n' +
+'    <div class="it-csheet-title"><span>📑</span> ' + title + '</div>\\n' +
+'    <input type="text" class="it-csheet-search" id="' + uid + '_search" placeholder="🔍 Search command or syntax...">\\n' +
+'  </div>\\n' +
+'  <div class="it-csheet-cats" id="' + uid + '_cats">\\n' +
+     catPills + '\\n' +
+'  </div>\\n' +
+'  <div class="it-csheet-list" id="' + uid + '_list">\\n' +
+'  </div>\\n' +
+'  <script>\\n' +
+'  (function() {\\n' +
+'    var items = ' + itemsJson + ';\\n' +
+'    var activeCat = "All";\\n' +
+'    var searchTerm = "";\\n' +
+'    var root = document.getElementById("' + uid + '");\\n' +
+'    if (!root) return;\\n' +
+'    var list = document.getElementById("' + uid + '_list");\\n' +
+'    var search = document.getElementById("' + uid + '_search");\\n' +
+'    var catButtons = root.querySelectorAll(".it-csheet-pill");\\n' +
+'    function escapeStr(s) { return (s || "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;"); }\\n' +
+'    function render() {\\n' +
+'      var filtered = items.filter(function(it) {\\n' +
+'        var matchCat = (activeCat === "All") || (it.cat && it.cat.toLowerCase() === activeCat.toLowerCase());\\n' +
+'        var term = searchTerm.toLowerCase();\\n' +
+'        var matchSearch = !term ||\\n' +
+'          (it.cmd && it.cmd.toLowerCase().indexOf(term) !== -1) ||\\n' +
+'          (it.syntax && it.syntax.toLowerCase().indexOf(term) !== -1) ||\\n' +
+'          (it.desc && it.desc.toLowerCase().indexOf(term) !== -1);\\n' +
+'        return matchCat && matchSearch;\\n' +
+'      });\\n' +
+'      if (!filtered.length) { list.innerHTML = "<div class=\\"it-csheet-empty\\">No matching syntax or methods found.</div>"; return; }\\n' +
+'      var html = "";\\n' +
+'      for (var i = 0; i < filtered.length; i++) {\\n' +
+'        var it = filtered[i];\\n' +
+'        html += "<div class=\\"it-csheet-item\\">";\\n' +
+'        html += "  <div class=\\"it-csheet-item-head\\"><span class=\\"it-csheet-cmd\\">" + escapeStr(it.cmd) + "</span><span class=\\"it-csheet-cat-badge\\">" + escapeStr(it.cat || "General") + "</span></div>";\\n' +
+'        if (it.desc) html += "  <div class=\\"it-csheet-desc\\">" + escapeStr(it.desc) + "</div>";\\n' +
+'        if (it.syntax) html += "  <div class=\\"it-csheet-syntax\\"><code>" + escapeStr(it.syntax) + "</code></div>";\\n' +
+'        html += "</div>";\\n' +
+'      }\\n' +
+'      list.innerHTML = html;\\n' +
+'    }\\n' +
+'    if (search) search.addEventListener("input", function(e) { searchTerm = e.target.value; render(); });\\n' +
+'    catButtons.forEach(function(btn) {\\n' +
+'      btn.addEventListener("click", function() {\\n' +
+'        catButtons.forEach(function(b) { b.classList.remove("is-active"); });\\n' +
+'        btn.classList.add("is-active");\\n' +
+'        activeCat = btn.getAttribute("data-cat") || "All";\\n' +
+'        render();\\n' +
+'      });\\n' +
+'    });\\n' +
+'    render();\\n' +
+'  })();\\n' +
+'  <' + '/script>\\n' +
+'</div>';
+
+        return minify ? cleanMinifyWidget(html) : html;
+      }
+
+      // DOM Elements for Blogger Studio
+      const widgetTypeSelectorGrid = document.getElementById('widgetTypeSelectorGrid');
+      const activeWidgetTypeBadge = document.getElementById('activeWidgetTypeBadge');
+
+      const panelWidgetFlipCards = document.getElementById('panelWidgetFlipCards');
+      const panelWidgetCodeStepper = document.getElementById('panelWidgetCodeStepper');
+      const panelWidgetCheatsheet = document.getElementById('panelWidgetCheatsheet');
+      const panelWidgetButtons = document.getElementById('panelWidgetButtons');
+      const panelWidgetCallout = document.getElementById('panelWidgetCallout');
+      const panelWidgetGrid = document.getElementById('panelWidgetGrid');
+
+      const eduWidgetLivePreview = document.getElementById('eduWidgetLivePreview');
+      const groupLivePreviewContainer = document.getElementById('groupLivePreviewContainer');
+      const calloutLivePreviewContainer = document.getElementById('calloutLivePreviewContainer');
+      const gridLivePreviewContainer = document.getElementById('gridLivePreviewContainer');
+
+      const btnUnifiedCopyEmbed = document.getElementById('btnUnifiedCopyEmbed');
+      const btnUnifiedCopyEmbedText = document.getElementById('btnUnifiedCopyEmbedText');
+      const btnUnifiedCopyCompose = document.getElementById('btnUnifiedCopyCompose');
+      const btnUnifiedPreviewNewTab = document.getElementById('btnUnifiedPreviewNewTab');
+      const chkMinifyEmbedCode = document.getElementById('chkMinifyEmbedCode');
+
+      const btnToggleRawCode = document.getElementById('btnToggleRawCode');
+      const toggleRawCodeText = document.getElementById('toggleRawCodeText');
+      const rawCodeContainer = document.getElementById('rawCodeContainer');
+      const unifiedCodeViewer = document.getElementById('unifiedCodeViewer');
+      const btnCopyFromViewer = document.getElementById('btnCopyFromViewer');
+
+      const btnToggleStylingDrawer = document.getElementById('btnToggleStylingDrawer');
+      const panelStylingContent = document.getElementById('panelStylingContent');
+      const btnToggleBloggerGuide = document.getElementById('btnToggleBloggerGuide');
+      const panelBloggerGuide = document.getElementById('panelBloggerGuide');
+
+      const sandboxCanvasFrame = document.getElementById('sandboxCanvasFrame');
+      const btnViewportDesktop = document.getElementById('btnViewportDesktop');
+      const btnViewportMobile = document.getElementById('btnViewportMobile');
+
+      // Flip Cards Editor Elements
+      const fcDeckTitleInput = document.getElementById('fcDeckTitleInput');
+      const fcDeckBadgeInput = document.getElementById('fcDeckBadgeInput');
+      const fcPresetSelect = document.getElementById('fcPresetSelect');
+      const btnLoadFcPreset = document.getElementById('btnLoadFcPreset');
+      const fcCardsCount = document.getElementById('fcCardsCount');
+      const btnAddFcCard = document.getElementById('btnAddFcCard');
+      const fcCardsContainer = document.getElementById('fcCardsContainer');
+
+      // Code Stepper Editor Elements
+      const codeSnippetTitleInput = document.getElementById('codeSnippetTitleInput');
+      const codeLanguageSelect = document.getElementById('codeLanguageSelect');
+      const codePresetSelect = document.getElementById('codePresetSelect');
+      const btnLoadCodePreset = document.getElementById('btnLoadCodePreset');
+      const codeSourceTextarea = document.getElementById('codeSourceTextarea');
+      const codeStepsCount = document.getElementById('codeStepsCount');
+      const btnAddCodeStep = document.getElementById('btnAddCodeStep');
+      const codeStepsContainer = document.getElementById('codeStepsContainer');
+
+      // Cheatsheet Editor Elements
+      const sheetTitleInput = document.getElementById('sheetTitleInput');
+      const sheetCategoriesInput = document.getElementById('sheetCategoriesInput');
+      const sheetPresetSelect = document.getElementById('sheetPresetSelect');
+      const btnLoadSheetPreset = document.getElementById('btnLoadSheetPreset');
+      const sheetItemsCount = document.getElementById('sheetItemsCount');
+      const btnAddSheetItem = document.getElementById('btnAddSheetItem');
+      const sheetItemsContainer = document.getElementById('sheetItemsContainer');
+
+      // Get Active Widget HTML
+      function getActiveStudioWidgetHtml(minify) {
+        const isMin = !!minify;
+        switch (activeStudioWidgetType) {
+          case 'flipcards':
+            return generateFlipCardsHtml(flipCardsState, isMin);
+          case 'codestepper':
+            return generateCodeStepperHtml(codeStepperState, isMin);
+          case 'cheatsheet':
+            return generateCheatsheetHtml(cheatsheetState, isMin);
+          case 'buttons':
+            return typeof generateGroupHtml === 'function' ? (isMin ? cleanMinifyWidget(generateGroupHtml()) : generateGroupHtml()) : '';
+          case 'callout':
+            return typeof generateCalloutHtml === 'function' ? (isMin ? cleanMinifyWidget(generateCalloutHtml()) : generateCalloutHtml()) : '';
+          case 'grid':
+            return typeof generateGridHtml === 'function' ? (isMin ? cleanMinifyWidget(generateGridHtml()) : generateGridHtml()) : '';
+          default:
+            return '';
+        }
+      }
+
+      // Render Active Studio Widget into Live Sandbox
+      function updateActiveStudioPreview() {
+        // Synchronize previews based on active widget
+        if (activeStudioWidgetType === 'flipcards') {
+          if (eduWidgetLivePreview) {
+            eduWidgetLivePreview.classList.remove('hidden');
+            eduWidgetLivePreview.innerHTML = generateFlipCardsHtml(flipCardsState, false);
+            // Execute script in iframe or execute inner scripts
+            runScriptsInElement(eduWidgetLivePreview);
+          }
+          if (groupLivePreviewContainer) groupLivePreviewContainer.classList.add('hidden');
+          if (calloutLivePreviewContainer) calloutLivePreviewContainer.classList.add('hidden');
+          if (gridLivePreviewContainer) gridLivePreviewContainer.classList.add('hidden');
+        } else if (activeStudioWidgetType === 'codestepper') {
+          if (eduWidgetLivePreview) {
+            eduWidgetLivePreview.classList.remove('hidden');
+            eduWidgetLivePreview.innerHTML = generateCodeStepperHtml(codeStepperState, false);
+            runScriptsInElement(eduWidgetLivePreview);
+          }
+          if (groupLivePreviewContainer) groupLivePreviewContainer.classList.add('hidden');
+          if (calloutLivePreviewContainer) calloutLivePreviewContainer.classList.add('hidden');
+          if (gridLivePreviewContainer) gridLivePreviewContainer.classList.add('hidden');
+        } else if (activeStudioWidgetType === 'cheatsheet') {
+          if (eduWidgetLivePreview) {
+            eduWidgetLivePreview.classList.remove('hidden');
+            eduWidgetLivePreview.innerHTML = generateCheatsheetHtml(cheatsheetState, false);
+            runScriptsInElement(eduWidgetLivePreview);
+          }
+          if (groupLivePreviewContainer) groupLivePreviewContainer.classList.add('hidden');
+          if (calloutLivePreviewContainer) calloutLivePreviewContainer.classList.add('hidden');
+          if (gridLivePreviewContainer) gridLivePreviewContainer.classList.add('hidden');
+        } else if (activeStudioWidgetType === 'buttons') {
+          if (eduWidgetLivePreview) eduWidgetLivePreview.classList.add('hidden');
+          if (groupLivePreviewContainer) {
+            groupLivePreviewContainer.classList.remove('hidden');
+            if (typeof renderActiveGroup === 'function') renderActiveGroup();
+          }
+          if (calloutLivePreviewContainer) calloutLivePreviewContainer.classList.add('hidden');
+          if (gridLivePreviewContainer) gridLivePreviewContainer.classList.add('hidden');
+        } else if (activeStudioWidgetType === 'callout') {
+          if (eduWidgetLivePreview) eduWidgetLivePreview.classList.add('hidden');
+          if (groupLivePreviewContainer) groupLivePreviewContainer.classList.add('hidden');
+          if (calloutLivePreviewContainer) {
+            calloutLivePreviewContainer.classList.remove('hidden');
+            if (typeof updateCalloutPreview === 'function') updateCalloutPreview();
+          }
+          if (gridLivePreviewContainer) gridLivePreviewContainer.classList.add('hidden');
+        } else if (activeStudioWidgetType === 'grid') {
+          if (eduWidgetLivePreview) eduWidgetLivePreview.classList.add('hidden');
+          if (groupLivePreviewContainer) groupLivePreviewContainer.classList.add('hidden');
+          if (calloutLivePreviewContainer) calloutLivePreviewContainer.classList.add('hidden');
+          if (gridLivePreviewContainer) {
+            gridLivePreviewContainer.classList.remove('hidden');
+            if (typeof updateGridPreview === 'function') updateGridPreview();
+          }
+        }
+
+        // Update raw code viewer if open
+        if (unifiedCodeViewer && rawCodeContainer && !rawCodeContainer.classList.contains('hidden')) {
+          unifiedCodeViewer.value = getActiveStudioWidgetHtml(chkMinifyEmbedCode && chkMinifyEmbedCode.checked);
+        }
+      }
+
+      // Safe script executor for dynamically inserted HTML previews
+      function runScriptsInElement(el) {
+        if (!el) return;
+        const scripts = el.querySelectorAll('script');
+        scripts.forEach(oldScript => {
+          const newScript = document.createElement('script');
+          Array.from(oldScript.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value));
+          newScript.appendChild(document.createTextNode(oldScript.innerHTML));
+          oldScript.parentNode.replaceChild(newScript, oldScript);
+        });
+      }
+
+      // Set Active Widget Type
+      function setActiveStudioWidgetType(type) {
+        activeStudioWidgetType = type;
+
+        // Update selector grid tiles
+        if (widgetTypeSelectorGrid) {
+          const btns = widgetTypeSelectorGrid.querySelectorAll('.widget-type-btn');
+          btns.forEach(btn => {
+            const btype = btn.getAttribute('data-wtype');
+            if (btype === type) {
+              btn.classList.add('is-active', 'border-primary', 'bg-primary-bg/30');
+              btn.classList.remove('bg-white', 'border-border-light');
+            } else {
+              btn.classList.remove('is-active', 'border-primary', 'bg-primary-bg/30');
+              btn.classList.add('bg-white', 'border-border-light');
+            }
+          });
+        }
+
+        // Update Badge Text
+        const titles = {
+          flipcards: 'Interactive Flip Cards',
+          codestepper: 'Code Stepper Card',
+          cheatsheet: 'Cheatsheet Grid',
+          buttons: 'Social Button Groups',
+          callout: 'Notice Callout Box',
+          grid: 'Resource Link Grid'
+        };
+        if (activeWidgetTypeBadge) {
+          activeWidgetTypeBadge.textContent = titles[type] || 'Widget Studio';
+        }
+
+        // Switch Subpanels in Left Column
+        const subpanels = [panelWidgetFlipCards, panelWidgetCodeStepper, panelWidgetCheatsheet, panelWidgetButtons, panelWidgetCallout, panelWidgetGrid];
+        subpanels.forEach(p => { if (p) p.classList.add('hidden'); });
+
+        if (type === 'flipcards' && panelWidgetFlipCards) panelWidgetFlipCards.classList.remove('hidden');
+        if (type === 'codestepper' && panelWidgetCodeStepper) panelWidgetCodeStepper.classList.remove('hidden');
+        if (type === 'cheatsheet' && panelWidgetCheatsheet) panelWidgetCheatsheet.classList.remove('hidden');
+        if (type === 'buttons' && panelWidgetButtons) panelWidgetButtons.classList.remove('hidden');
+        if (type === 'callout' && panelWidgetCallout) panelWidgetCallout.classList.remove('hidden');
+        if (type === 'grid' && panelWidgetGrid) panelWidgetGrid.classList.remove('hidden');
+
+        updateActiveStudioPreview();
+      }
+
+      // Initialize Widget Type Buttons Click
+      if (widgetTypeSelectorGrid) {
+        widgetTypeSelectorGrid.addEventListener('click', (e) => {
+          const btn = e.target.closest('.widget-type-btn');
+          if (!btn) return;
+          const wtype = btn.getAttribute('data-wtype');
+          if (wtype) setActiveStudioWidgetType(wtype);
+        });
+      }
+
+      // -----------------------------------------------------------
+      // Flip Cards Editor Rendering & Bindings
+      // -----------------------------------------------------------
+      function renderFcEditor() {
+        if (!fcDeckTitleInput || !fcCardsContainer) return;
+        fcDeckTitleInput.value = flipCardsState.title || '';
+        if (fcDeckBadgeInput) fcDeckBadgeInput.value = flipCardsState.badge || '';
+        if (fcCardsCount) fcCardsCount.textContent = (flipCardsState.cards || []).length;
+
+        let html = '';
+        (flipCardsState.cards || []).forEach((card, idx) => {
+          html += '<div class="p-3 rounded-xl border border-border-light bg-slate-50/70 space-y-2 relative group">' +
+            '<div class="flex items-center justify-between">' +
+              '<span class="text-xs font-bold text-slate-700">Card #' + (idx + 1) + '</span>' +
+              '<button type="button" class="btn-del-fc-card text-xs text-rose-500 hover:text-rose-700 font-bold" data-idx="' + idx + '"><i class="fa-solid fa-trash-can"></i></button>' +
+            '</div>' +
+            '<div class="grid grid-cols-1 sm:grid-cols-2 gap-2">' +
+              '<div>' +
+                '<label class="block text-[10px] font-bold text-slate-500 uppercase">Term / Question</label>' +
+                '<input type="text" class="fc-term-input w-full px-2 py-1 rounded-lg border border-border-light bg-white text-xs font-bold" data-idx="' + idx + '" value="' + escapeHtml(card.term || '') + '">' +
+              '</div>' +
+              '<div>' +
+                '<label class="block text-[10px] font-bold text-slate-500 uppercase">Category Tag</label>' +
+                '<input type="text" class="fc-cat-input w-full px-2 py-1 rounded-lg border border-border-light bg-white text-xs font-semibold" data-idx="' + idx + '" value="' + escapeHtml(card.category || '') + '">' +
+              '</div>' +
+            '</div>' +
+            '<div>' +
+              '<label class="block text-[10px] font-bold text-slate-500 uppercase">Front Hint</label>' +
+              '<input type="text" class="fc-hint-input w-full px-2 py-1 rounded-lg border border-border-light bg-white text-xs" data-idx="' + idx + '" value="' + escapeHtml(card.hint || '') + '">' +
+            '</div>' +
+            '<div>' +
+              '<label class="block text-[10px] font-bold text-slate-500 uppercase">Back Explanation / Definition</label>' +
+              '<textarea rows="2" class="fc-desc-input w-full p-2 rounded-lg border border-border-light bg-white text-xs resize-none" data-idx="' + idx + '">' + escapeHtml(card.definition || '') + '</textarea>' +
+            '</div>' +
+          '</div>';
+        });
+
+        fcCardsContainer.innerHTML = html;
+      }
+
+      if (fcDeckTitleInput) {
+        fcDeckTitleInput.addEventListener('input', (e) => {
+          flipCardsState.title = e.target.value;
+          saveFlipCardsState();
+          updateActiveStudioPreview();
+        });
+      }
+      if (fcDeckBadgeInput) {
+        fcDeckBadgeInput.addEventListener('input', (e) => {
+          flipCardsState.badge = e.target.value;
+          saveFlipCardsState();
+          updateActiveStudioPreview();
+        });
+      }
+
+      if (fcCardsContainer) {
+        fcCardsContainer.addEventListener('input', (e) => {
+          const idx = parseInt(e.target.getAttribute('data-idx'), 10);
+          if (isNaN(idx) || !flipCardsState.cards[idx]) return;
+          if (e.target.classList.contains('fc-term-input')) flipCardsState.cards[idx].term = e.target.value;
+          if (e.target.classList.contains('fc-cat-input')) flipCardsState.cards[idx].category = e.target.value;
+          if (e.target.classList.contains('fc-hint-input')) flipCardsState.cards[idx].hint = e.target.value;
+          if (e.target.classList.contains('fc-desc-input')) flipCardsState.cards[idx].definition = e.target.value;
+          saveFlipCardsState();
+          updateActiveStudioPreview();
+        });
+
+        fcCardsContainer.addEventListener('click', (e) => {
+          const btn = e.target.closest('.btn-del-fc-card');
+          if (!btn) return;
+          const idx = parseInt(btn.getAttribute('data-idx'), 10);
+          if (isNaN(idx)) return;
+          if (flipCardsState.cards.length <= 1) {
+            showToast("Deck must have at least 1 card!", "warning");
+            return;
+          }
+          flipCardsState.cards.splice(idx, 1);
+          saveFlipCardsState();
+          renderFcEditor();
+          updateActiveStudioPreview();
+        });
+      }
+
+      if (btnAddFcCard) {
+        btnAddFcCard.addEventListener('click', () => {
+          flipCardsState.cards.push({
+            category: flipCardsState.badge || "Concept",
+            term: "New Term",
+            hint: "Tap to reveal concept",
+            definition: "Clear definition or explanation goes here."
+          });
+          saveFlipCardsState();
+          renderFcEditor();
+          updateActiveStudioPreview();
+        });
+      }
+
+      if (btnLoadFcPreset && fcPresetSelect) {
+        btnLoadFcPreset.addEventListener('click', () => {
+          const p = FC_PRESETS[fcPresetSelect.value];
+          if (p) {
+            flipCardsState = JSON.parse(JSON.stringify(p));
+            saveFlipCardsState();
+            renderFcEditor();
+            updateActiveStudioPreview();
+            showToast("Flashcards preset loaded!", "success");
+          }
+        });
+      }
+
+      // -----------------------------------------------------------
+      // Code Stepper Editor Rendering & Bindings
+      // -----------------------------------------------------------
+      function renderCodeStepperEditor() {
+        if (!codeSnippetTitleInput || !codeStepsContainer) return;
+        codeSnippetTitleInput.value = codeStepperState.title || '';
+        if (codeLanguageSelect) codeLanguageSelect.value = codeStepperState.language || 'python';
+        if (codeSourceTextarea) codeSourceTextarea.value = codeStepperState.code || '';
+        if (codeStepsCount) codeStepsCount.textContent = (codeStepperState.steps || []).length;
+
+        let html = '';
+        (codeStepperState.steps || []).forEach((step, idx) => {
+          const lineStr = (step.lines || []).join(', ');
+          html += '<div class="p-3 rounded-xl border border-border-light bg-slate-50/70 space-y-2">' +
+            '<div class="flex items-center justify-between">' +
+              '<span class="text-xs font-bold text-slate-700">Step ' + (idx + 1) + '</span>' +
+              '<button type="button" class="btn-del-code-step text-xs text-rose-500 hover:text-rose-700 font-bold" data-idx="' + idx + '"><i class="fa-solid fa-trash-can"></i></button>' +
+            '</div>' +
+            '<div class="grid grid-cols-1 sm:grid-cols-2 gap-2">' +
+              '<div>' +
+                '<label class="block text-[10px] font-bold text-slate-500 uppercase">Target Lines (e.g. 1, 2 or 3, 4)</label>' +
+                '<input type="text" class="code-lines-input w-full px-2 py-1 rounded-lg border border-border-light bg-white text-xs font-mono font-bold" data-idx="' + idx + '" value="' + escapeHtml(lineStr) + '">' +
+              '</div>' +
+              '<div>' +
+                '<label class="block text-[10px] font-bold text-slate-500 uppercase">Simulated Output</label>' +
+                '<input type="text" class="code-out-input w-full px-2 py-1 rounded-lg border border-border-light bg-white text-xs font-mono" data-idx="' + idx + '" value="' + escapeHtml(step.output || '') + '">' +
+              '</div>' +
+            '</div>' +
+            '<div>' +
+              '<label class="block text-[10px] font-bold text-slate-500 uppercase">Step Explanation for Students</label>' +
+              '<input type="text" class="code-expl-input w-full px-2 py-1 rounded-lg border border-border-light bg-white text-xs" data-idx="' + idx + '" value="' + escapeHtml(step.explanation || '') + '">' +
+            '</div>' +
+          '</div>';
+        });
+
+        codeStepsContainer.innerHTML = html;
+      }
+
+      if (codeSnippetTitleInput) {
+        codeSnippetTitleInput.addEventListener('input', (e) => {
+          codeStepperState.title = e.target.value;
+          saveCodeStepperState();
+          updateActiveStudioPreview();
+        });
+      }
+      if (codeLanguageSelect) {
+        codeLanguageSelect.addEventListener('change', (e) => {
+          codeStepperState.language = e.target.value;
+          saveCodeStepperState();
+          updateActiveStudioPreview();
+        });
+      }
+      if (codeSourceTextarea) {
+        codeSourceTextarea.addEventListener('input', (e) => {
+          codeStepperState.code = e.target.value;
+          saveCodeStepperState();
+          updateActiveStudioPreview();
+        });
+      }
+
+      if (codeStepsContainer) {
+        codeStepsContainer.addEventListener('input', (e) => {
+          const idx = parseInt(e.target.getAttribute('data-idx'), 10);
+          if (isNaN(idx) || !codeStepperState.steps[idx]) return;
+          if (e.target.classList.contains('code-lines-input')) {
+            const raw = e.target.value;
+            const parsed = raw.split(',').map(s => parseInt(s.trim(), 10)).filter(n => !isNaN(n));
+            codeStepperState.steps[idx].lines = parsed.length ? parsed : [1];
+          }
+          if (e.target.classList.contains('code-out-input')) codeStepperState.steps[idx].output = e.target.value;
+          if (e.target.classList.contains('code-expl-input')) codeStepperState.steps[idx].explanation = e.target.value;
+          saveCodeStepperState();
+          updateActiveStudioPreview();
+        });
+
+        codeStepsContainer.addEventListener('click', (e) => {
+          const btn = e.target.closest('.btn-del-code-step');
+          if (!btn) return;
+          const idx = parseInt(btn.getAttribute('data-idx'), 10);
+          if (isNaN(idx)) return;
+          if (codeStepperState.steps.length <= 1) {
+            showToast("Code stepper must have at least 1 step!", "warning");
+            return;
+          }
+          codeStepperState.steps.splice(idx, 1);
+          saveCodeStepperState();
+          renderCodeStepperEditor();
+          updateActiveStudioPreview();
+        });
+      }
+
+      if (btnAddCodeStep) {
+        btnAddCodeStep.addEventListener('click', () => {
+          codeStepperState.steps.push({
+            lines: [codeStepperState.steps.length + 1],
+            explanation: "Explanation of this execution step.",
+            output: "Output or state change."
+          });
+          saveCodeStepperState();
+          renderCodeStepperEditor();
+          updateActiveStudioPreview();
+        });
+      }
+
+      if (btnLoadCodePreset && codePresetSelect) {
+        btnLoadCodePreset.addEventListener('click', () => {
+          const p = CODE_PRESETS[codePresetSelect.value];
+          if (p) {
+            codeStepperState = JSON.parse(JSON.stringify(p));
+            saveCodeStepperState();
+            renderCodeStepperEditor();
+            updateActiveStudioPreview();
+            showToast("Code stepper preset loaded!", "success");
+          }
+        });
+      }
+
+      // -----------------------------------------------------------
+      // Cheatsheet Editor Rendering & Bindings
+      // -----------------------------------------------------------
+      function renderCheatsheetEditor() {
+        if (!sheetTitleInput || !sheetItemsContainer) return;
+        sheetTitleInput.value = cheatsheetState.title || '';
+        if (sheetCategoriesInput) sheetCategoriesInput.value = (cheatsheetState.categories || []).join(', ');
+        if (sheetItemsCount) sheetItemsCount.textContent = (cheatsheetState.items || []).length;
+
+        let html = '';
+        (cheatsheetState.items || []).forEach((item, idx) => {
+          html += '<div class="p-3 rounded-xl border border-border-light bg-slate-50/70 space-y-2">' +
+            '<div class="flex items-center justify-between">' +
+              '<span class="text-xs font-bold text-slate-700">Item #' + (idx + 1) + '</span>' +
+              '<button type="button" class="btn-del-sheet-item text-xs text-rose-500 hover:text-rose-700 font-bold" data-idx="' + idx + '"><i class="fa-solid fa-trash-can"></i></button>' +
+            '</div>' +
+            '<div class="grid grid-cols-1 sm:grid-cols-3 gap-2">' +
+              '<div>' +
+                '<label class="block text-[10px] font-bold text-slate-500 uppercase">Category</label>' +
+                '<input type="text" class="sheet-cat-input w-full px-2 py-1 rounded-lg border border-border-light bg-white text-xs font-semibold" data-idx="' + idx + '" value="' + escapeHtml(item.cat || '') + '">' +
+              '</div>' +
+              '<div>' +
+                '<label class="block text-[10px] font-bold text-slate-500 uppercase">Command / Name</label>' +
+                '<input type="text" class="sheet-cmd-input w-full px-2 py-1 rounded-lg border border-border-light bg-white text-xs font-mono font-bold text-indigo-700" data-idx="' + idx + '" value="' + escapeHtml(item.cmd || '') + '">' +
+              '</div>' +
+              '<div>' +
+                '<label class="block text-[10px] font-bold text-slate-500 uppercase">Syntax / Shortcut</label>' +
+                '<input type="text" class="sheet-syntax-input w-full px-2 py-1 rounded-lg border border-border-light bg-white text-xs font-mono" data-idx="' + idx + '" value="' + escapeHtml(item.syntax || '') + '">' +
+              '</div>' +
+            '</div>' +
+            '<div>' +
+              '<label class="block text-[10px] font-bold text-slate-500 uppercase">Short Description</label>' +
+              '<input type="text" class="sheet-desc-input w-full px-2 py-1 rounded-lg border border-border-light bg-white text-xs" data-idx="' + idx + '" value="' + escapeHtml(item.desc || '') + '">' +
+            '</div>' +
+          '</div>';
+        });
+
+        sheetItemsContainer.innerHTML = html;
+      }
+
+      if (sheetTitleInput) {
+        sheetTitleInput.addEventListener('input', (e) => {
+          cheatsheetState.title = e.target.value;
+          saveCheatsheetState();
+          updateActiveStudioPreview();
+        });
+      }
+      if (sheetCategoriesInput) {
+        sheetCategoriesInput.addEventListener('input', (e) => {
+          const cats = e.target.value.split(',').map(s => s.trim()).filter(Boolean);
+          cheatsheetState.categories = cats.length ? cats : ["All", "General"];
+          saveCheatsheetState();
+          updateActiveStudioPreview();
+        });
+      }
+
+      if (sheetItemsContainer) {
+        sheetItemsContainer.addEventListener('input', (e) => {
+          const idx = parseInt(e.target.getAttribute('data-idx'), 10);
+          if (isNaN(idx) || !cheatsheetState.items[idx]) return;
+          if (e.target.classList.contains('sheet-cat-input')) cheatsheetState.items[idx].cat = e.target.value;
+          if (e.target.classList.contains('sheet-cmd-input')) cheatsheetState.items[idx].cmd = e.target.value;
+          if (e.target.classList.contains('sheet-syntax-input')) cheatsheetState.items[idx].syntax = e.target.value;
+          if (e.target.classList.contains('sheet-desc-input')) cheatsheetState.items[idx].desc = e.target.value;
+          saveCheatsheetState();
+          updateActiveStudioPreview();
+        });
+
+        sheetItemsContainer.addEventListener('click', (e) => {
+          const btn = e.target.closest('.btn-del-sheet-item');
+          if (!btn) return;
+          const idx = parseInt(btn.getAttribute('data-idx'), 10);
+          if (isNaN(idx)) return;
+          if (cheatsheetState.items.length <= 1) {
+            showToast("Cheatsheet must have at least 1 item!", "warning");
+            return;
+          }
+          cheatsheetState.items.splice(idx, 1);
+          saveCheatsheetState();
+          renderCheatsheetEditor();
+          updateActiveStudioPreview();
+        });
+      }
+
+      if (btnAddSheetItem) {
+        btnAddSheetItem.addEventListener('click', () => {
+          cheatsheetState.items.push({
+            cat: "General",
+            cmd: "command()",
+            syntax: "command(args)",
+            desc: "Description of syntax or formula."
+          });
+          saveCheatsheetState();
+          renderCheatsheetEditor();
+          updateActiveStudioPreview();
+        });
+      }
+
+      if (btnLoadSheetPreset && sheetPresetSelect) {
+        btnLoadSheetPreset.addEventListener('click', () => {
+          const p = SHEET_PRESETS[sheetPresetSelect.value];
+          if (p) {
+            cheatsheetState = JSON.parse(JSON.stringify(p));
+            saveCheatsheetState();
+            renderCheatsheetEditor();
+            updateActiveStudioPreview();
+            showToast("Cheatsheet preset loaded!", "success");
+          }
+        });
+      }
+
+      // -----------------------------------------------------------
+      // Viewport & Device Simulation Controls
+      // -----------------------------------------------------------
+      if (btnViewportDesktop && btnViewportMobile && sandboxCanvasFrame) {
+        btnViewportDesktop.addEventListener('click', () => {
+          sandboxCanvasFrame.classList.remove('preview-sandbox-mobile');
+          btnViewportDesktop.classList.add('bg-white', 'text-primary', 'shadow-xs');
+          btnViewportDesktop.classList.remove('text-slate-500');
+          btnViewportMobile.classList.remove('bg-white', 'text-primary', 'shadow-xs');
+          btnViewportMobile.classList.add('text-slate-500');
+        });
+
+        btnViewportMobile.addEventListener('click', () => {
+          sandboxCanvasFrame.classList.add('preview-sandbox-mobile');
+          btnViewportMobile.classList.add('bg-white', 'text-primary', 'shadow-xs');
+          btnViewportMobile.classList.remove('text-slate-500');
+          btnViewportDesktop.classList.remove('bg-white', 'text-primary', 'shadow-xs');
+          btnViewportDesktop.classList.add('text-slate-500');
+        });
+      }
+
+      // -----------------------------------------------------------
+      // Accordion & Drawer Toggles
+      // -----------------------------------------------------------
+      if (btnToggleStylingDrawer && panelStylingContent) {
+        btnToggleStylingDrawer.addEventListener('click', () => {
+          const isExpanded = btnToggleStylingDrawer.getAttribute('aria-expanded') === 'true';
+          btnToggleStylingDrawer.setAttribute('aria-expanded', !isExpanded);
+          panelStylingContent.classList.toggle('hidden', isExpanded);
+        });
+      }
+
+      if (btnToggleBloggerGuide && panelBloggerGuide) {
+        btnToggleBloggerGuide.addEventListener('click', () => {
+          const isExpanded = btnToggleBloggerGuide.getAttribute('aria-expanded') === 'true';
+          btnToggleBloggerGuide.setAttribute('aria-expanded', !isExpanded);
+          panelBloggerGuide.classList.toggle('hidden', isExpanded);
+        });
+      }
+
+      if (btnToggleRawCode && rawCodeContainer) {
+        btnToggleRawCode.addEventListener('click', () => {
+          const isHidden = rawCodeContainer.classList.contains('hidden');
+          rawCodeContainer.classList.toggle('hidden', !isHidden);
+          if (toggleRawCodeText) toggleRawCodeText.textContent = isHidden ? 'Hide Code' : 'View Code';
+          if (isHidden && unifiedCodeViewer) {
+            unifiedCodeViewer.value = getActiveStudioWidgetHtml(chkMinifyEmbedCode && chkMinifyEmbedCode.checked);
+          }
+        });
+      }
+
+      if (chkMinifyEmbedCode) {
+        chkMinifyEmbedCode.addEventListener('change', () => {
+          if (unifiedCodeViewer && rawCodeContainer && !rawCodeContainer.classList.contains('hidden')) {
+            unifiedCodeViewer.value = getActiveStudioWidgetHtml(chkMinifyEmbedCode.checked);
+          }
+        });
+      }
+
+      if (btnCopyFromViewer && unifiedCodeViewer) {
+        btnCopyFromViewer.addEventListener('click', async () => {
+          try {
+            await navigator.clipboard.writeText(unifiedCodeViewer.value);
+            showToast("Raw code copied to clipboard!", "success");
+          } catch(e) {
+            fallbackCopyText(unifiedCodeViewer.value);
+            showToast("Code copied!", "success");
+          }
+        });
+      }
+
+      // -----------------------------------------------------------
+      // Exporter Actions (Unified Copy Embed & Preview)
+      // -----------------------------------------------------------
+      if (btnUnifiedCopyEmbed) {
+        btnUnifiedCopyEmbed.addEventListener('click', async () => {
+          const isMin = chkMinifyEmbedCode ? chkMinifyEmbedCode.checked : false;
+          const code = getActiveStudioWidgetHtml(isMin);
+          try {
+            await navigator.clipboard.writeText(code);
+          } catch(e) {
+            fallbackCopyText(code);
+          }
+
+          // Visual feedback on the button
+          if (btnUnifiedCopyEmbedText) {
+            const originalText = btnUnifiedCopyEmbedText.textContent;
+            btnUnifiedCopyEmbedText.innerHTML = '<i class="fa-solid fa-check text-emerald-300"></i> Copied to Clipboard!';
+            btnUnifiedCopyEmbed.classList.add('bg-emerald-600');
+            setTimeout(() => {
+              btnUnifiedCopyEmbedText.textContent = originalText;
+              btnUnifiedCopyEmbed.classList.remove('bg-emerald-600');
+            }, 2500);
+          }
+
+          showToast("Embed Code Copied! Paste directly in Blogger HTML view.", "success");
+        });
+      }
+
+      if (btnUnifiedCopyCompose) {
+        btnUnifiedCopyCompose.addEventListener('click', () => {
+          const code = getActiveStudioWidgetHtml(false);
+          const names = {
+            flipcards: 'Interactive Flip Cards',
+            codestepper: 'Code Stepper Card',
+            cheatsheet: 'Cheatsheet Grid',
+            buttons: 'Social Button Bar',
+            callout: 'Notice Callout Box',
+            grid: 'Resource Grid'
+          };
+          copyWidgetToBlogger(code, names[activeStudioWidgetType] || 'Widget');
+        });
+      }
+
+      if (btnUnifiedPreviewNewTab) {
+        btnUnifiedPreviewNewTab.addEventListener('click', () => {
+          const code = getActiveStudioWidgetHtml(false);
+          const previewHtml = '<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Widget Standalone Preview</title><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"><style>body{font-family:sans-serif;background:#f8fafc;padding:32px 16px;margin:0;display:flex;justify-content:center;align-items:center;min-height:100vh;}</style></head><body>' + code + '</body></html>';
+          const blob = new Blob([previewHtml], { type: 'text/html' });
+          const url = URL.createObjectURL(blob);
+          window.open(url, '_blank');
+        });
+      }
+
+      // Initial Renders for Studio
+      renderFcEditor();
+      renderCodeStepperEditor();
+      renderCheatsheetEditor();
+      setActiveStudioWidgetType('flipcards');
+`;
+
+fs.writeFileSync('C:\\Users\\Ravindra Khillare\\.gemini\\antigravity\\brain\\677182ab-f536-4555-a2fa-ef1eaa3523d9\\scratch\\full_controller.js', completeController, 'utf8');
+console.log("Full controller script saved.");
+
 
       // -------------------------------------------------------------
       // 10. JSON Manager Module (Drag & Drop + Editor + Format)
