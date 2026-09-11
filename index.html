@@ -2040,8 +2040,17 @@
       // 7. Dynamic Question Cards Renderer (Quiz Builder)
       // -------------------------------------------------------------
       function renderAllQuestions() {
+        if (!questionsContainer) return;
         questionsContainer.innerHTML = '';
-        questionCountBadge.textContent = `${currentQuiz.questions.length} Question${currentQuiz.questions.length !== 1 ? 's' : ''}`;
+        if (!currentQuiz || typeof currentQuiz !== 'object') {
+          currentQuiz = JSON.parse(JSON.stringify(defaultQuizState));
+        }
+        if (!Array.isArray(currentQuiz.questions)) {
+          currentQuiz.questions = [];
+        }
+        if (questionCountBadge) {
+          questionCountBadge.textContent = `${currentQuiz.questions.length} Question${currentQuiz.questions.length !== 1 ? 's' : ''}`;
+        }
         updateSlugDisplay();
 
         currentQuiz.questions.forEach((q, qIndex) => {
@@ -2945,8 +2954,13 @@
       function renderGroupTabs() {
         if (!btnGroupTabsContainer) return;
         btnGroupTabsContainer.innerHTML = '';
+        if (!Array.isArray(currentButtonGroups)) {
+          currentButtonGroups = getDefaultButtonGroups();
+        }
 
         currentButtonGroups.forEach(grp => {
+          if (!grp) return;
+          if (!Array.isArray(grp.buttons)) grp.buttons = [];
           const isActive = (grp.id === activeGroupId);
           const tabBtn = document.createElement('button');
           tabBtn.type = 'button';
@@ -2956,8 +2970,8 @@
               : 'bg-slate-100 hover:bg-slate-200 text-slate-700 border border-border-light'
           }`;
           tabBtn.innerHTML = `
-            <span>${escapeHtml(grp.name)}</span>
-            <span class="px-1.5 py-0.2 rounded-full text-[10px] ${isActive ? 'bg-white/20 text-white' : 'bg-slate-200 text-slate-600'}">${grp.buttons.length}</span>
+            <span>${escapeHtml(grp.name || grp.groupName || 'Button Group')}</span>
+            <span class="px-1.5 py-0.2 rounded-full text-[10px] ${isActive ? 'bg-white/20 text-white' : 'bg-slate-200 text-slate-600'}">${grp.buttons ? grp.buttons.length : 0}</span>
           `;
           tabBtn.addEventListener('click', () => {
             activeGroupId = grp.id;
@@ -2970,12 +2984,13 @@
       function renderActiveGroup() {
         const group = getActiveGroup();
         if (!group) return;
+        if (!Array.isArray(group.buttons)) group.buttons = [];
         activeGroupId = group.id;
 
         renderGroupTabs();
 
         if (activeGroupNameInput) {
-          activeGroupNameInput.value = group.name;
+          activeGroupNameInput.value = group.name || group.groupName || '';
         }
 
         // Layout Radios
@@ -3001,8 +3016,8 @@
 
         if (grpStyleSelect) grpStyleSelect.value = group.style || 'pill_glow';
         if (grpFormatSelect) grpFormatSelect.value = group.format || 'both';
-        if (grpButtonsCount) grpButtonsCount.textContent = group.buttons.length;
-        if (previewGroupBadge) previewGroupBadge.textContent = `${group.layout.toUpperCase()} • ${group.buttons.length} ITEMS`;
+        if (grpButtonsCount) grpButtonsCount.textContent = group.buttons ? group.buttons.length : 0;
+        if (previewGroupBadge) previewGroupBadge.textContent = `${(group.layout || 'horizontal').toUpperCase()} • ${group.buttons ? group.buttons.length : 0} ITEMS`;
 
         renderButtonsEditorList(group);
         updateGroupPreview(group);
@@ -3012,8 +3027,10 @@
       function renderButtonsEditorList(group) {
         if (!groupButtonsListContainer) return;
         groupButtonsListContainer.innerHTML = '';
+        if (!group) return;
+        if (!Array.isArray(group.buttons)) group.buttons = [];
 
-        if (group.buttons.length === 0) {
+        if (!group.buttons || group.buttons.length === 0) {
           groupButtonsListContainer.innerHTML = `
             <div class="p-6 text-center rounded-2xl border-2 border-dashed border-slate-200 bg-slate-50/50">
               <i class="fa-solid fa-layer-group text-slate-300 text-2xl mb-2"></i>
@@ -4350,21 +4367,26 @@ reorder,"Arrange the IPO cycle steps in order.","Input","Process","Output","Stor
       function loadQuizIntoEditor(id) {
         const list = getSavedQuizzes();
         const item = list.find(q => q.id === id);
-        if (!item || !item.data) {
-          showToast("Could not load quiz data!", "danger");
+        if (!item) {
+          showToast("Could not find quiz in library!", "danger");
           return;
         }
 
-        currentQuiz = JSON.parse(JSON.stringify(item.data));
-        metaQuizTitle.value = currentQuiz.title || '';
-        metaCategory.value = currentQuiz.category || '';
+        const quizObj = item.data || item;
+        currentQuiz = JSON.parse(JSON.stringify(quizObj));
+        if (!Array.isArray(currentQuiz.questions)) {
+          currentQuiz.questions = [];
+        }
+
+        metaQuizTitle.value = currentQuiz.title || item.title || '';
+        metaCategory.value = currentQuiz.category || item.category || '';
         metaToggleTimer.checked = !!currentQuiz.timer;
         metaToggleFeedback.checked = (currentQuiz.instantFeedback !== false);
 
         renderAllQuestions();
         triggerPreviewUpdate();
         switchTab('quiz');
-        showToast(`Loaded "${currentQuiz.title}" into Quiz Builder!`, "success");
+        showToast(`Loaded "${currentQuiz.title || 'Quiz'}" into Quiz Builder!`, "success");
       }
 
       function renderSavedQuizzesList(filterTerm = '') {
@@ -5988,9 +6010,10 @@ ${jsonString}
         updateSyncStatusText("Connecting...");
         try {
           await fetchGoogleUserProfile(googleAccessToken);
-          await discoverOrCreateSpreadsheet();
-          // Auto-pull from master store immediately on login to sync across computers
-          await pullMasterSnapshotFromCloud(false);
+          const sheetId = await discoverOrCreateSpreadsheet();
+          if (sheetId) {
+            await pullMasterSnapshotFromCloud(false);
+          }
         } catch (e) {
           console.error("handlePostLoginSync error:", e);
         }
@@ -6034,16 +6057,57 @@ ${jsonString}
       // -------------------------------------------------------------
       // SINGLE-PAYLOAD MASTER SNAPSHOT BUILDER
       // -------------------------------------------------------------
+      // -------------------------------------------------------------
+      // SINGLE-PAYLOAD MASTER SNAPSHOT BUILDER
+      // -------------------------------------------------------------
       function createMasterSnapshot() {
-        const quizzes = getSavedQuizzes();
-        const widgetGroups = getButtonGroups();
-        const socialProfiles = getSocialProfiles();
+        const rawQuizzes = getSavedQuizzes();
+        const rawWidgets = getButtonGroups();
+        const rawProfiles = getSocialProfiles();
+
+        const cleanQuizzes = (Array.isArray(rawQuizzes) ? rawQuizzes : []).map(q => {
+          if (!q) return null;
+          const qData = q.data || q;
+          const questionsList = Array.isArray(qData.questions) ? qData.questions : (Array.isArray(q.questions) ? q.questions : []);
+          return {
+            id: q.id || ('quiz_' + Date.now() + '_' + Math.random().toString(36).substr(2, 5)),
+            title: q.title || qData.title || "Untitled Quiz",
+            category: q.category || qData.category || "General",
+            slug: q.slug || qData.slug || "quiz",
+            questionCount: questionsList.length,
+            updatedAt: q.updatedAt || new Date().toISOString(),
+            data: {
+              id: q.id || qData.id,
+              title: q.title || qData.title || "Untitled Quiz",
+              category: q.category || qData.category || "General",
+              slug: q.slug || qData.slug || "quiz",
+              timer: qData.timer !== undefined ? qData.timer : true,
+              instantFeedback: qData.instantFeedback !== undefined ? qData.instantFeedback : true,
+              questions: questionsList
+            }
+          };
+        }).filter(Boolean);
+
+        const cleanWidgets = (Array.isArray(rawWidgets) ? rawWidgets : []).map(w => {
+          if (!w) return null;
+          return {
+            id: w.id || ('grp_' + Date.now() + '_' + Math.random().toString(36).substr(2, 5)),
+            name: w.name || w.groupName || "Button Group",
+            groupName: w.groupName || w.name || "Button Group",
+            layout: w.layout || "horizontal",
+            style: w.style || "pill_glow",
+            format: w.format || "both",
+            buttons: Array.isArray(w.buttons) ? w.buttons : [],
+            updatedAt: w.updatedAt || new Date().toISOString()
+          };
+        }).filter(Boolean);
+
         return {
           version: "2.0",
           updatedAt: new Date().toISOString(),
-          quizzes: Array.isArray(quizzes) ? quizzes : [],
-          widgetGroups: Array.isArray(widgetGroups) ? widgetGroups : [],
-          socialProfiles: (socialProfiles && typeof socialProfiles === 'object') ? socialProfiles : {}
+          quizzes: cleanQuizzes,
+          widgetGroups: cleanWidgets,
+          socialProfiles: (rawProfiles && typeof rawProfiles === 'object') ? rawProfiles : {}
         };
       }
 
@@ -6121,7 +6185,9 @@ ${jsonString}
 
           const snapshot = createMasterSnapshot();
           const payloadJson = JSON.stringify(snapshot);
-          const summaryStr = `Quizzes: ${snapshot.quizzes.length}, Widgets: ${snapshot.widgetGroups.length}`;
+          const quizLen = Array.isArray(snapshot.quizzes) ? snapshot.quizzes.length : 0;
+          const widgetLen = Array.isArray(snapshot.widgetGroups) ? snapshot.widgetGroups.length : 0;
+          const summaryStr = `Quizzes: ${quizLen}, Widgets: ${widgetLen}`;
 
           // Atomic single-row update to BSP_MASTER_STORE!A2:D2
           const masterRes = await fetch(`https://sheets.googleapis.com/v4/spreadsheets/${activeSpreadsheetId}/values/${MASTER_STORE_SHEET_NAME}!A2:D2?valueInputOption=RAW`, {
@@ -6153,7 +6219,7 @@ ${jsonString}
           localStorage.setItem("bsp_last_uploaded_time", now.toISOString());
 
           if (!silent) {
-            showToast(`✓ Cloud Upload Success: ${snapshot.quizzes.length} Quizzes & ${snapshot.widgetGroups.length} Widget Groups!`, "success");
+            showToast(`✓ Cloud Upload Success: ${quizLen} Quizzes & ${widgetLen} Widget Groups!`, "success");
           }
           return true;
 
@@ -6177,20 +6243,24 @@ ${jsonString}
       async function writeLegacyMultiTabs(snapshot) {
         if (!activeSpreadsheetId || !googleAccessToken) return;
         try {
-          const quizValues = (snapshot.quizzes || []).map(q => [
-            q.id || "",
-            q.title || "",
-            q.category || "General",
-            q.questionCount || (q.data && q.data.questions ? q.data.questions.length : 0),
-            JSON.stringify(q.data || q),
-            q.updatedAt || new Date().toISOString()
-          ]);
+          const quizValues = (Array.isArray(snapshot.quizzes) ? snapshot.quizzes : []).map(q => {
+            const qData = q.data || q;
+            const qList = Array.isArray(qData.questions) ? qData.questions : [];
+            return [
+              q.id || "",
+              q.title || qData.title || "",
+              q.category || qData.category || "General",
+              qList.length,
+              JSON.stringify(qData),
+              q.updatedAt || new Date().toISOString()
+            ];
+          });
 
-          const widgetValues = (snapshot.widgetGroups || []).map(w => [
+          const widgetValues = (Array.isArray(snapshot.widgetGroups) ? snapshot.widgetGroups : []).map(w => [
             w.id || "",
             w.groupName || w.name || "Button Group",
             w.layout || "horizontal",
-            JSON.stringify(w.buttons || []),
+            JSON.stringify(Array.isArray(w.buttons) ? w.buttons : []),
             w.updatedAt || new Date().toISOString()
           ]);
 
@@ -6239,49 +6309,98 @@ ${jsonString}
 
         try {
           // 1. Try reading BSP_MASTER_STORE!A2:D2
-          const masterUrl = `https://sheets.googleapis.com/v4/spreadsheets/${activeSpreadsheetId}/values/${MASTER_STORE_SHEET_NAME}!A2:D2`;
-          const res = await fetch(masterUrl, {
-            headers: { Authorization: `Bearer ${googleAccessToken}` }
-          });
-
           let parsedSnapshot = null;
+          try {
+            const masterUrl = `https://sheets.googleapis.com/v4/spreadsheets/${activeSpreadsheetId}/values/${MASTER_STORE_SHEET_NAME}!A2:D2`;
+            const res = await fetch(masterUrl, {
+              headers: { Authorization: `Bearer ${googleAccessToken}` }
+            });
 
-          if (res.ok) {
-            const data = await res.json();
-            const cellValue = data.values && data.values[0] && data.values[0][0];
-            if (cellValue) {
-              try {
-                parsedSnapshot = JSON.parse(cellValue);
-              } catch (parseErr) {
-                console.warn("Could not parse BSP_MASTER_STORE payload:", parseErr);
+            if (res.ok) {
+              const data = await res.json();
+              const cellValue = data.values && data.values[0] && data.values[0][0];
+              if (cellValue && typeof cellValue === 'string') {
+                try {
+                  parsedSnapshot = JSON.parse(cellValue);
+                } catch (parseErr) {
+                  console.warn("Could not parse BSP_MASTER_STORE payload:", parseErr);
+                }
               }
             }
+          } catch (fetchErr) {
+            console.warn("BSP_MASTER_STORE fetch error (will fallback to legacy tabs):", fetchErr);
           }
 
           // 2. If Master Store has valid snapshot, unpack everything!
-          if (parsedSnapshot && (parsedSnapshot.quizzes || parsedSnapshot.widgetGroups || parsedSnapshot.socialProfiles)) {
+          if (parsedSnapshot && (Array.isArray(parsedSnapshot.quizzes) || Array.isArray(parsedSnapshot.widgetGroups) || parsedSnapshot.socialProfiles)) {
+            let loadedQuizCount = 0;
+            let loadedWidgetCount = 0;
+
             // Restore Quizzes
             if (Array.isArray(parsedSnapshot.quizzes) && parsedSnapshot.quizzes.length > 0) {
               const localQuizzes = getSavedQuizzes();
               const map = new Map();
-              localQuizzes.forEach(q => map.set(q.id, q));
-              parsedSnapshot.quizzes.forEach(q => map.set(q.id, q));
+              localQuizzes.forEach(q => { if (q && q.id) map.set(q.id, q); });
+
+              parsedSnapshot.quizzes.forEach(q => {
+                if (q && typeof q === 'object') {
+                  const qId = q.id || ('quiz_' + Date.now() + '_' + Math.random().toString(36).substr(2, 5));
+                  const qData = q.data || q;
+                  const qList = Array.isArray(qData.questions) ? qData.questions : (Array.isArray(q.questions) ? q.questions : []);
+                  map.set(qId, {
+                    id: qId,
+                    title: q.title || qData.title || "Untitled Quiz",
+                    category: q.category || qData.category || "General",
+                    slug: q.slug || qData.slug || "quiz",
+                    questionCount: qList.length,
+                    updatedAt: q.updatedAt || new Date().toISOString(),
+                    data: {
+                      id: qId,
+                      title: q.title || qData.title || "Untitled Quiz",
+                      category: q.category || qData.category || "General",
+                      slug: q.slug || qData.slug || "quiz",
+                      timer: qData.timer !== undefined ? qData.timer : true,
+                      instantFeedback: qData.instantFeedback !== undefined ? qData.instantFeedback : true,
+                      questions: qList
+                    }
+                  });
+                }
+              });
+
               const merged = Array.from(map.values());
               setSavedQuizzes(merged);
               renderSavedQuizzesList();
               updateLibraryCountBadge();
+              loadedQuizCount = merged.length;
 
-              // Auto-load latest quiz into editor if editor has default questions
-              if (!currentQuiz.questions || currentQuiz.questions.length <= 1 || currentQuiz.title === "Computer Networking & Web Essentials") {
-                loadQuizIntoEditor(parsedSnapshot.quizzes[0].id);
+              // Auto-load latest quiz into editor safely
+              if (merged.length > 0 && (!currentQuiz || !Array.isArray(currentQuiz.questions) || currentQuiz.questions.length <= 1 || currentQuiz.title === "Computer Networking & Web Essentials")) {
+                loadQuizIntoEditor(merged[0].id);
               }
             }
 
             // Restore Widget Groups
             if (Array.isArray(parsedSnapshot.widgetGroups) && parsedSnapshot.widgetGroups.length > 0) {
-              currentButtonGroups = parsedSnapshot.widgetGroups;
-              saveButtonGroups(currentButtonGroups);
-              activeGroupId = currentButtonGroups[0]?.id || 'grp_top_social';
+              const sanitizedGroups = parsedSnapshot.widgetGroups.map(grp => {
+                if (!grp || typeof grp !== 'object') return null;
+                return {
+                  id: grp.id || ('grp_' + Math.random().toString(36).substr(2, 9)),
+                  name: grp.name || grp.groupName || "Custom Buttons",
+                  groupName: grp.groupName || grp.name || "Custom Buttons",
+                  layout: grp.layout || "horizontal",
+                  style: grp.style || "pill_glow",
+                  format: grp.format || "both",
+                  buttons: Array.isArray(grp.buttons) ? grp.buttons : [],
+                  updatedAt: grp.updatedAt || new Date().toISOString()
+                };
+              }).filter(Boolean);
+
+              if (sanitizedGroups.length > 0) {
+                currentButtonGroups = sanitizedGroups;
+                saveButtonGroups(currentButtonGroups);
+                activeGroupId = currentButtonGroups[0]?.id || 'grp_top_social';
+                loadedWidgetCount = sanitizedGroups.length;
+              }
             }
 
             // Restore Social Profiles
@@ -6289,7 +6408,7 @@ ${jsonString}
               saveSocialProfiles(parsedSnapshot.socialProfiles);
             }
 
-            // Trigger Full UI Re-Render
+            // Trigger Full UI Re-Render safely
             if (typeof renderWidgetGroups === 'function') renderWidgetGroups();
             if (typeof populateSocialInputs === 'function') populateSocialInputs();
             if (typeof populateProfilesInputs === 'function') populateProfilesInputs();
@@ -6297,15 +6416,12 @@ ${jsonString}
             if (typeof updateAllWidgetPreviews === 'function') updateAllWidgetPreviews();
             updateIframePreview();
 
-            const quizCount = parsedSnapshot.quizzes ? parsedSnapshot.quizzes.length : 0;
-            const widgetCount = parsedSnapshot.widgetGroups ? parsedSnapshot.widgetGroups.length : 0;
-
             const now = new Date();
             const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
             updateSyncStatusText(`Synced ${timeStr}`);
 
             if (!silent) {
-              showToast(`✓ Cloud Sync Complete: Restored ${quizCount} Quizzes & ${widgetCount} Widget Groups!`, "success");
+              showToast(`✓ Cloud Sync Complete: Restored ${loadedQuizCount} Quizzes & ${loadedWidgetCount} Widget Groups!`, "success");
             }
             return true;
           }
@@ -6314,8 +6430,8 @@ ${jsonString}
           console.log("Master store empty or not found, falling back to legacy multi-tab pull...");
           const legacySuccess = await pullAllFromSheetLegacy();
           if (legacySuccess) {
-            // Auto-migrate local state to BSP_MASTER_STORE
-            pushMasterSnapshotToCloud(true);
+            // Auto-migrate local state to BSP_MASTER_STORE (without blocking)
+            pushMasterSnapshotToCloud(true).catch(e => console.warn("Auto-migration push warning:", e));
           }
           return legacySuccess;
 
@@ -6344,48 +6460,61 @@ ${jsonString}
           });
           if (!res.ok) return false;
           const data = await res.json();
-          const valueRanges = data.valueRanges || [];
+          const valueRanges = (data && Array.isArray(data.valueRanges)) ? data.valueRanges : [];
 
           // 1. Quizzes
-          const quizRows = (valueRanges[0] && valueRanges[0].values) || [];
+          const quizRows = (valueRanges[0] && Array.isArray(valueRanges[0].values)) ? valueRanges[0].values : [];
           if (quizRows.length > 0) {
             const pulledQuizzes = [];
             quizRows.forEach(row => {
+              if (!Array.isArray(row)) return;
               const id = row[0];
               const title = row[1];
               const category = row[2];
               const questionCount = parseInt(row[3]) || 0;
               let quizData = null;
-              try { quizData = JSON.parse(row[4]); } catch (e) {}
+              try { quizData = row[4] ? JSON.parse(row[4]) : null; } catch (e) {}
               const updatedAt = row[5] || new Date().toISOString();
               if (id) {
+                const qList = (quizData && Array.isArray(quizData.questions)) ? quizData.questions : [];
                 pulledQuizzes.push({
                   id,
                   title: title || (quizData && quizData.title) || "Untitled Quiz",
                   category: category || (quizData && quizData.category) || "General",
                   slug: (quizData && quizData.slug) || "",
-                  questionCount: questionCount || (quizData && quizData.questions ? quizData.questions.length : 0),
+                  questionCount: questionCount || qList.length,
                   updatedAt,
-                  data: quizData || { title, category, questions: [] }
+                  data: (quizData && typeof quizData === 'object') ? {
+                    ...quizData,
+                    title: quizData.title || title || "Untitled Quiz",
+                    category: quizData.category || category || "General",
+                    questions: qList
+                  } : { title, category, questions: [] }
                 });
               }
             });
             if (pulledQuizzes.length > 0) {
               const localQuizzes = getSavedQuizzes();
               const map = new Map();
-              localQuizzes.forEach(q => map.set(q.id, q));
-              pulledQuizzes.forEach(q => map.set(q.id, q));
-              setSavedQuizzes(Array.from(map.values()));
+              localQuizzes.forEach(q => { if (q && q.id) map.set(q.id, q); });
+              pulledQuizzes.forEach(q => { if (q && q.id) map.set(q.id, q); });
+              const merged = Array.from(map.values());
+              setSavedQuizzes(merged);
               renderSavedQuizzesList();
               updateLibraryCountBadge();
+
+              if (merged.length > 0 && (!currentQuiz || !Array.isArray(currentQuiz.questions) || currentQuiz.questions.length <= 1 || currentQuiz.title === "Computer Networking & Web Essentials")) {
+                loadQuizIntoEditor(merged[0].id);
+              }
             }
           }
 
           // 2. Widgets
-          const widgetRows = (valueRanges[1] && valueRanges[1].values) || [];
+          const widgetRows = (valueRanges[1] && Array.isArray(valueRanges[1].values)) ? valueRanges[1].values : [];
           if (widgetRows.length > 0) {
             const pulledGroups = [];
             widgetRows.forEach(row => {
+              if (!Array.isArray(row)) return;
               if (row[0] && row[1]) {
                 const id = row[0];
                 const groupName = row[1];
@@ -6413,9 +6542,10 @@ ${jsonString}
           }
 
           // 3. Settings
-          const settingRows = (valueRanges[2] && valueRanges[2].values) || [];
+          const settingRows = (valueRanges[2] && Array.isArray(valueRanges[2].values)) ? valueRanges[2].values : [];
           if (settingRows.length > 0) {
             settingRows.forEach(row => {
+              if (!Array.isArray(row)) return;
               if (row[0] === 'social_profiles' && row[1]) {
                 try {
                   const profs = JSON.parse(row[1]);
@@ -6441,17 +6571,10 @@ ${jsonString}
 
       // Automated Drive Discovery & Sheet Creation Logic
       async function discoverOrCreateSpreadsheet() {
-        if (!googleAccessToken) return;
+        if (!googleAccessToken) return null;
 
         if (activeSpreadsheetId) {
-          updateSyncStatusText("Connecting Sheet...");
-          try {
-            await pullMasterSnapshotFromCloud(true);
-            updateSyncStatusText("Connected: Google Sheets");
-            return;
-          } catch (e) {
-            console.warn("Cached sheet pull failed, falling back to Drive search:", e);
-          }
+          return activeSpreadsheetId;
         }
 
         updateSyncStatusText("Searching Drive...");
@@ -6474,9 +6597,10 @@ ${jsonString}
             localStorage.setItem("bsp_active_sheet_id", activeSpreadsheetId);
             updateSyncStatusText("Connected: Google Sheets");
             showToast(`✓ Connected to "${DB_SPREADSHEET_NAME}" in your Google Drive!`, "success");
-            await pullMasterSnapshotFromCloud(false);
+            return activeSpreadsheetId;
           } else {
             await createInitialSpreadsheet();
+            return activeSpreadsheetId;
           }
         } catch (err) {
           console.error("discoverOrCreateSpreadsheet error:", err);
@@ -6487,6 +6611,7 @@ ${jsonString}
           } else {
             showToast("Drive discovery error: " + msg, "danger");
           }
+          return null;
         }
       }
 
