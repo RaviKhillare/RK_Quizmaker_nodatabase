@@ -1433,6 +1433,36 @@
           </p>
         </div>
 
+        <!-- Required APIs Section -->
+        <div class="p-3.5 rounded-2xl bg-amber-50 border border-amber-200 text-amber-900 space-y-2">
+          <div class="font-bold flex items-center gap-1.5 text-xs">
+            <i class="fa-solid fa-triangle-exclamation text-amber-600"></i> Required Google Cloud APIs
+          </div>
+          <p class="text-[11px] leading-relaxed text-amber-800">
+            Make sure both APIs are <strong>Enabled</strong> in your Google Cloud Project:
+          </p>
+          <div class="flex flex-wrap gap-2 pt-0.5">
+            <a href="https://console.cloud.google.com/apis/library/drive.googleapis.com" target="_blank" class="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-white border border-amber-300 text-amber-950 hover:bg-amber-100 font-bold text-[11px] transition">
+              <i class="fab fa-google-drive text-emerald-600"></i> Enable Drive API <i class="fa-solid fa-arrow-up-right-from-square text-[9px] text-slate-400"></i>
+            </a>
+            <a href="https://console.cloud.google.com/apis/library/sheets.googleapis.com" target="_blank" class="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-white border border-amber-300 text-amber-950 hover:bg-amber-100 font-bold text-[11px] transition">
+              <i class="fa-solid fa-table text-emerald-600"></i> Enable Sheets API <i class="fa-solid fa-arrow-up-right-from-square text-[9px] text-slate-400"></i>
+            </a>
+          </div>
+        </div>
+
+        <!-- Optional Spreadsheet ID / URL -->
+        <div class="space-y-1.5">
+          <label class="font-bold text-slate-700 uppercase tracking-wider text-[11px] flex items-center justify-between">
+            <span>Custom Google Sheet ID / Link (Optional)</span>
+            <span class="text-slate-400 font-normal">Auto-created if empty</span>
+          </label>
+          <input type="text" id="inputGoogleSheetId" class="w-full px-3.5 py-2.5 rounded-xl border border-border-light bg-slate-50 focus:bg-white text-xs font-semibold focus:border-primary outline-none font-mono" placeholder="https://docs.google.com/spreadsheets/d/... OR sheet ID">
+          <p class="text-[11px] text-slate-500">
+            Leave blank to automatically find or create &quot;Blogger Suite Pro Database&quot; in Google Drive.
+          </p>
+        </div>
+
         <div class="p-3.5 rounded-2xl bg-slate-50 border border-border-light space-y-2 text-[11px] text-slate-600">
           <div class="font-bold text-slate-800 flex items-center gap-1.5">
             <i class="fa-solid fa-shield-halved text-emerald-600"></i> Client-Side Direct & Secure
@@ -1449,7 +1479,80 @@
           Cancel
         </button>
         <button id="btnSaveGoogleClientId" type="button" class="tactile-btn px-4 py-2 rounded-xl bg-primary hover:bg-primary-dark text-white font-bold text-xs flex items-center gap-1.5 shadow-sm shadow-primary/20">
-          <i class="fa-solid fa-floppy-disk"></i> Save Client ID
+          <i class="fa-solid fa-floppy-disk"></i> Save Settings
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================= -->
+  <!-- MODAL: GOOGLE CLOUD APIS REQUIRED / ENABLE HELPER             -->
+  <!-- ============================================================= -->
+  <div id="googleApiEnableModal" class="fixed inset-0 z-50 bg-slate-900/70 backdrop-blur-sm hidden flex items-center justify-center p-4">
+    <div class="bg-white w-full max-w-lg rounded-3xl shadow-2xl border border-rose-200 overflow-hidden flex flex-col animate-[fadeIn_0.2s_ease-out]">
+      <div class="p-5 bg-gradient-to-r from-rose-900 via-slate-900 to-rose-900 text-white flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl bg-rose-500/20 text-rose-300 flex items-center justify-center text-lg">
+            <i class="fa-solid fa-triangle-exclamation"></i>
+          </div>
+          <div>
+            <h3 class="font-extrabold text-base sm:text-lg">Google Cloud API Required</h3>
+            <p class="text-xs text-rose-200">Action needed in your Google Cloud Console</p>
+          </div>
+        </div>
+        <button id="btnCloseGoogleApiModal" class="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition">
+          <i class="fa-solid fa-times"></i>
+        </button>
+      </div>
+      <div class="p-5 sm:p-6 space-y-4 text-xs">
+        <p id="googleApiErrorMessage" class="p-3 bg-rose-50 border border-rose-200 rounded-xl text-rose-800 leading-relaxed font-medium">
+          Google Drive API or Google Sheets API is not enabled for your project. Click the buttons below to enable them.
+        </p>
+
+        <div class="space-y-2.5">
+          <p class="font-bold text-slate-700">Click both links below to enable the required APIs in your Google project:</p>
+          
+          <a id="btnLinkEnableDriveApi" href="https://console.cloud.google.com/apis/library/drive.googleapis.com" target="_blank" class="flex items-center justify-between p-3.5 rounded-2xl bg-slate-50 border border-slate-200 hover:border-primary hover:bg-sky-50/50 transition group">
+            <div class="flex items-center gap-3">
+              <div class="w-8 h-8 rounded-xl bg-amber-100 text-amber-600 flex items-center justify-center text-sm">
+                <i class="fab fa-google-drive"></i>
+              </div>
+              <div>
+                <div class="font-bold text-slate-800">1. Google Drive API</div>
+                <div class="text-[11px] text-slate-500">Allows finding & managing your database sheet</div>
+              </div>
+            </div>
+            <span class="px-3 py-1.5 rounded-xl bg-primary text-white font-bold text-xs group-hover:bg-primary-dark">
+              Enable <i class="fa-solid fa-arrow-up-right-from-square ml-1 text-[10px]"></i>
+            </span>
+          </a>
+
+          <a id="btnLinkEnableSheetsApi" href="https://console.cloud.google.com/apis/library/sheets.googleapis.com" target="_blank" class="flex items-center justify-between p-3.5 rounded-2xl bg-slate-50 border border-slate-200 hover:border-primary hover:bg-sky-50/50 transition group">
+            <div class="flex items-center gap-3">
+              <div class="w-8 h-8 rounded-xl bg-emerald-100 text-emerald-600 flex items-center justify-center text-sm">
+                <i class="fa-solid fa-table"></i>
+              </div>
+              <div>
+                <div class="font-bold text-slate-800">2. Google Sheets API</div>
+                <div class="text-[11px] text-slate-500">Allows reading & saving quiz and widget data</div>
+              </div>
+            </div>
+            <span class="px-3 py-1.5 rounded-xl bg-primary text-white font-bold text-xs group-hover:bg-primary-dark">
+              Enable <i class="fa-solid fa-arrow-up-right-from-square ml-1 text-[10px]"></i>
+            </span>
+          </a>
+        </div>
+
+        <div class="p-3 bg-slate-100 rounded-xl text-slate-600 text-[11px] leading-relaxed">
+          <strong>Tip:</strong> After clicking <strong>&quot;ENABLE&quot;</strong> in Google Cloud Console, wait ~1 minute for Google to activate the service, then click <strong>&quot;Retry Connection&quot;</strong> below.
+        </div>
+      </div>
+      <div class="p-4 sm:p-5 bg-slate-50 border-t border-border-light flex items-center justify-end gap-2">
+        <button id="btnDismissApiModal" type="button" class="tactile-btn px-4 py-2 rounded-xl bg-white hover:bg-slate-100 text-slate-700 font-bold text-xs border border-border-light">
+          Close
+        </button>
+        <button id="btnRetryApiConnection" type="button" class="tactile-btn px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs flex items-center gap-1.5 shadow-sm">
+          <i class="fa-solid fa-rotate"></i> Retry Connection
         </button>
       </div>
     </div>
@@ -5549,6 +5652,33 @@ ${jsonString}
       const btnCancelGoogleSettings = document.getElementById('btnCancelGoogleSettings');
       const btnSaveGoogleClientId = document.getElementById('btnSaveGoogleClientId');
       const inputGoogleClientId = document.getElementById('inputGoogleClientId');
+      const inputGoogleSheetId = document.getElementById('inputGoogleSheetId');
+
+      // DOM Elements: Google API Enable Helper Modal
+      const googleApiEnableModal = document.getElementById('googleApiEnableModal');
+      const googleApiErrorMessage = document.getElementById('googleApiErrorMessage');
+      const btnLinkEnableDriveApi = document.getElementById('btnLinkEnableDriveApi');
+      const btnLinkEnableSheetsApi = document.getElementById('btnLinkEnableSheetsApi');
+      const btnCloseGoogleApiModal = document.getElementById('btnCloseGoogleApiModal');
+      const btnDismissApiModal = document.getElementById('btnDismissApiModal');
+      const btnRetryApiConnection = document.getElementById('btnRetryApiConnection');
+
+      function showApiEnableModal(errorMsg) {
+        if (googleApiErrorMessage) {
+          googleApiErrorMessage.textContent = errorMsg || "Google Cloud API is disabled. Please enable Google Drive and Google Sheets APIs in your Google Cloud Console.";
+        }
+        const projMatch = (errorMsg || '').match(/project[=:\s]+(\d+)/i);
+        const projNum = projMatch ? projMatch[1] : null;
+        if (projNum) {
+          if (btnLinkEnableDriveApi) btnLinkEnableDriveApi.href = `https://console.developers.google.com/apis/api/drive.googleapis.com/overview?project=${projNum}`;
+          if (btnLinkEnableSheetsApi) btnLinkEnableSheetsApi.href = `https://console.developers.google.com/apis/api/sheets.googleapis.com/overview?project=${projNum}`;
+        }
+        if (googleApiEnableModal) googleApiEnableModal.classList.remove('hidden');
+      }
+
+      function closeApiEnableModal() {
+        if (googleApiEnableModal) googleApiEnableModal.classList.add('hidden');
+      }
 
       // State
       let googleTokenClient = null;
@@ -5568,6 +5698,9 @@ ${jsonString}
         if (inputGoogleClientId) {
           const id = localStorage.getItem(GOOGLE_CLIENT_ID_KEY) || '';
           inputGoogleClientId.value = id === DEFAULT_GOOGLE_CLIENT_ID ? '' : id;
+        }
+        if (inputGoogleSheetId) {
+          inputGoogleSheetId.value = activeSpreadsheetId || '';
         }
         if (googleAuthSettingsModal) googleAuthSettingsModal.classList.remove('hidden');
       }
@@ -5703,6 +5836,20 @@ ${jsonString}
       // Step 4: Automated Drive Discovery & Sheet Creation Logic
       async function discoverOrCreateSpreadsheet() {
         if (!googleAccessToken) return;
+
+        // If spreadsheet ID is already configured / cached, directly pull and connect!
+        if (activeSpreadsheetId) {
+          updateSyncStatusText("Connecting Sheet...");
+          try {
+            await pullAllFromSheet();
+            updateSyncStatusText("Connected: Google Sheets");
+            showToast("✓ Connected to Google Sheet database!", "success");
+            return;
+          } catch (e) {
+            console.warn("Cached sheet pull failed, falling back to Drive search:", e);
+          }
+        }
+
         updateSyncStatusText("Searching Drive...");
         try {
           const q = encodeURIComponent(`name = '${DB_SPREADSHEET_NAME}' and mimeType = 'application/vnd.google-apps.spreadsheet' and trashed = false`);
@@ -5713,7 +5860,8 @@ ${jsonString}
 
           if (!res.ok) {
             const err = await res.json();
-            throw new Error((err.error && err.error.message) || "Drive search error");
+            const errMsg = (err.error && err.error.message) || "Drive search error";
+            throw new Error(errMsg);
           }
 
           const data = await res.json();
@@ -5731,7 +5879,12 @@ ${jsonString}
         } catch (err) {
           console.error("discoverOrCreateSpreadsheet error:", err);
           updateSyncStatusText("Connection error");
-          showToast("Drive discovery error: " + err.message, "danger");
+          const msg = err.message || "";
+          if (msg.includes("has not been used in project") || msg.includes("drive.googleapis.com") || msg.includes("disabled")) {
+            showApiEnableModal(msg);
+          } else {
+            showToast("Drive discovery error: " + msg, "danger");
+          }
         }
       }
 
@@ -5817,7 +5970,12 @@ ${jsonString}
         } catch (err) {
           console.error("createInitialSpreadsheet error:", err);
           updateSyncStatusText("Creation error");
-          showToast("Could not create Google Sheet: " + err.message, "danger");
+          const msg = err.message || "";
+          if (msg.includes("has not been used in project") || msg.includes("sheets.googleapis.com") || msg.includes("disabled")) {
+            showApiEnableModal(msg);
+          } else {
+            showToast("Could not create Google Sheet: " + msg, "danger");
+          }
         }
       }
 
@@ -6050,10 +6208,34 @@ ${jsonString}
             return;
           }
           localStorage.setItem(GOOGLE_CLIENT_ID_KEY, val);
-          showToast("✓ Saved Google OAuth Client ID!", "success");
+
+          const sheetVal = (inputGoogleSheetId ? inputGoogleSheetId.value.trim() : '');
+          if (sheetVal) {
+            const match = sheetVal.match(/\/spreadsheets\/d\/([a-zA-Z0-9-_]+)/);
+            activeSpreadsheetId = match ? match[1] : sheetVal;
+            localStorage.setItem("bsp_active_sheet_id", activeSpreadsheetId);
+          }
+
+          showToast("✓ Saved Google Cloud Settings!", "success");
           closeGoogleSettingsModal();
           initGoogleTokenClient();
           handleSignInClick();
+        });
+      }
+
+      // Event Listeners for Google API Enable Modal
+      if (btnCloseGoogleApiModal) btnCloseGoogleApiModal.addEventListener('click', closeApiEnableModal);
+      if (btnDismissApiModal) btnDismissApiModal.addEventListener('click', closeApiEnableModal);
+      if (googleApiEnableModal) {
+        googleApiEnableModal.addEventListener('click', (e) => {
+          if (e.target === googleApiEnableModal) closeApiEnableModal();
+        });
+      }
+      if (btnRetryApiConnection) {
+        btnRetryApiConnection.addEventListener('click', () => {
+          closeApiEnableModal();
+          showToast("Retrying connection to Google Cloud...", "info");
+          discoverOrCreateSpreadsheet();
         });
       }
 
