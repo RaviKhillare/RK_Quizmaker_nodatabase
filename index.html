@@ -5663,15 +5663,44 @@ ${jsonString}
       const btnDismissApiModal = document.getElementById('btnDismissApiModal');
       const btnRetryApiConnection = document.getElementById('btnRetryApiConnection');
 
-      function showApiEnableModal(errorMsg) {
+      function showApiEnableModal(errorOrMsg) {
+        let errorMsg = typeof errorOrMsg === 'string' ? errorOrMsg : ((errorOrMsg && errorOrMsg.message) || '');
+        let directDriveUrl = null;
+        let directSheetsUrl = null;
+        let projNum = null;
+
+        if (typeof errorOrMsg === 'object' && errorOrMsg !== null) {
+          if (errorOrMsg.details && Array.isArray(errorOrMsg.details)) {
+            for (const d of errorOrMsg.details) {
+              if (d.links && Array.isArray(d.links)) {
+                for (const l of d.links) {
+                  if (l.url && l.url.includes('drive.googleapis.com')) directDriveUrl = l.url;
+                  if (l.url && l.url.includes('sheets.googleapis.com')) directSheetsUrl = l.url;
+                }
+              }
+              if (d.metadata && d.metadata.consumer) {
+                const match = d.metadata.consumer.match(/projects?\/(\d+)/i);
+                if (match) projNum = match[1];
+              }
+            }
+          }
+        }
+
+        if (!projNum) {
+          const projMatch = errorMsg.match(/project[=:\s/]+(\d+)/i);
+          projNum = projMatch ? projMatch[1] : null;
+        }
+
+        if (projNum) {
+          if (!directDriveUrl) directDriveUrl = `https://console.developers.google.com/apis/api/drive.googleapis.com/overview?project=${projNum}`;
+          if (!directSheetsUrl) directSheetsUrl = `https://console.developers.google.com/apis/api/sheets.googleapis.com/overview?project=${projNum}`;
+        }
+
+        if (directDriveUrl && btnLinkEnableDriveApi) btnLinkEnableDriveApi.href = directDriveUrl;
+        if (directSheetsUrl && btnLinkEnableSheetsApi) btnLinkEnableSheetsApi.href = directSheetsUrl;
+
         if (googleApiErrorMessage) {
           googleApiErrorMessage.textContent = errorMsg || "Google Cloud API is disabled. Please enable Google Drive and Google Sheets APIs in your Google Cloud Console.";
-        }
-        const projMatch = (errorMsg || '').match(/project[=:\s]+(\d+)/i);
-        const projNum = projMatch ? projMatch[1] : null;
-        if (projNum) {
-          if (btnLinkEnableDriveApi) btnLinkEnableDriveApi.href = `https://console.developers.google.com/apis/api/drive.googleapis.com/overview?project=${projNum}`;
-          if (btnLinkEnableSheetsApi) btnLinkEnableSheetsApi.href = `https://console.developers.google.com/apis/api/sheets.googleapis.com/overview?project=${projNum}`;
         }
         if (googleApiEnableModal) googleApiEnableModal.classList.remove('hidden');
       }
@@ -5987,7 +6016,14 @@ ${jsonString}
           const res = await fetch(url, {
             headers: { Authorization: `Bearer ${googleAccessToken}` }
           });
-          if (!res.ok) return;
+          if (!res.ok) {
+            const err = await res.json();
+            const errMsg = (err.error && err.error.message) || "Batch get failed";
+            if (res.status === 403 || errMsg.includes("has not been used in project") || errMsg.includes("sheets.googleapis.com") || errMsg.includes("disabled")) {
+              showApiEnableModal(err.error || errMsg);
+            }
+            return false;
+          }
           const data = await res.json();
           const valueRanges = data.valueRanges || [];
 
@@ -6161,7 +6197,11 @@ ${jsonString}
 
             if (!updateRes.ok) {
               const err = await updateRes.json();
-              throw new Error((err.error && err.error.message) || "Batch update failed");
+              const errMsg = (err.error && err.error.message) || "Batch update failed";
+              if (updateRes.status === 403 || errMsg.includes("has not been used in project") || errMsg.includes("sheets.googleapis.com") || errMsg.includes("disabled")) {
+                showApiEnableModal(err.error || errMsg);
+              }
+              throw new Error(errMsg);
             }
           }
 
@@ -6176,7 +6216,12 @@ ${jsonString}
 
         } catch (err) {
           console.error("uploadAllToSheet error:", err);
-          showToast("Upload to Google Sheet failed: " + err.message, "danger");
+          const msg = err.message || "";
+          if (msg.includes("has not been used in project") || msg.includes("sheets.googleapis.com") || msg.includes("disabled")) {
+            showApiEnableModal(msg);
+          } else {
+            showToast("Upload to Google Sheet failed: " + msg, "danger");
+          }
         } finally {
           if (uploadBtnIcon) uploadBtnIcon.className = "fas fa-cloud-upload-alt text-white";
           if (uploadBtnText) uploadBtnText.textContent = "Upload All to Google Sheet";
