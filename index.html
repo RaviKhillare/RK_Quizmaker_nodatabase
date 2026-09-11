@@ -254,117 +254,104 @@
   <div class="pl-72">
 
     <!-- Top Sticky Header -->
-    <header class="fixed top-0 left-72 right-0 h-16 bg-surface/85 backdrop-blur-xl z-40 border-b border-outline-variant/20 shadow-lg">
-      <div class="h-16 w-full px-space-lg flex items-center justify-between gap-space-md">
-        <!-- Brand Logo & Studio Tag -->
-        <div class="flex items-center gap-space-md">
-          <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-primary-container to-secondary-container text-white flex items-center justify-center shadow-md shadow-primary-container/30">
-            <span class="material-symbols-outlined text-[22px]">auto_awesome</span>
-          </div>
-          <div class="flex flex-col">
-            <span class="font-headline-sm text-headline-sm tracking-tight text-on-surface leading-none font-bold">RK Quizmaker</span>
-            <span class="font-label-sm text-label-sm uppercase tracking-wider text-outline leading-tight">Blogger Suite Pro</span>
-          </div>
-          <div class="h-4 w-px bg-outline-variant mx-space-xs hidden sm:block"></div>
-          <span class="hidden sm:inline-flex items-center px-space-sm py-1 rounded-full bg-surface-container-high text-primary font-label-sm text-label-sm uppercase tracking-wider font-bold">CREATOR STUDIO PRO</span>
+    <header class="fixed top-0 left-72 right-0 h-16 bg-surface/90 backdrop-blur-xl z-40 border-b border-outline-variant/20 shadow-lg px-space-md lg:px-space-lg flex items-center justify-between gap-2 overflow-hidden">
+      <!-- Left: Brand Logo & Studio Tag -->
+      <div class="flex items-center gap-2 sm:gap-space-md shrink-0">
+        <div class="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-gradient-to-tr from-primary-container to-secondary-container text-white flex items-center justify-center shadow-md shadow-primary-container/30 shrink-0">
+          <span class="material-symbols-outlined text-[20px] sm:text-[22px]">auto_awesome</span>
+        </div>
+        <div class="flex flex-col">
+          <span class="font-headline-sm text-headline-sm tracking-tight text-on-surface leading-none font-bold">RK Quizmaker</span>
+          <span class="font-label-sm text-label-sm uppercase tracking-wider text-outline leading-tight text-[10px]">Blogger Suite Pro</span>
+        </div>
+        <div class="h-4 w-px bg-outline-variant mx-space-xs hidden md:block"></div>
+        <span class="hidden md:inline-flex items-center px-space-xs py-0.5 rounded-full bg-surface-container-high text-primary font-label-sm text-[10px] uppercase tracking-wider font-bold">PRO</span>
+      </div>
+
+      <!-- Center / Right: Quick Action Buttons & Google Sheet Sync Hub -->
+      <div class="flex items-center gap-1.5 sm:gap-2 shrink-0">
+        <!-- Sheet Sync Control Group -->
+        <div class="flex items-center gap-1 bg-surface-container-lowest p-1 rounded-xl border border-outline-variant/30">
+          <button id="btnHeaderSendToSheet" type="button" class="px-2.5 sm:px-3 py-1 rounded-lg bg-secondary-container hover:bg-secondary text-on-secondary-container font-label-md text-xs font-bold transition flex items-center gap-1 shadow-sm" title="Send (Upload) all Questions & Widgets to Google Sheet">
+            <span class="material-symbols-outlined text-[16px]">cloud_upload</span>
+            <span class="hidden sm:inline">Send</span>
+          </button>
+          <button id="btnHeaderReceiveFromSheet" type="button" class="px-2.5 sm:px-3 py-1 rounded-lg bg-primary-container hover:bg-inverse-primary text-on-primary-container font-label-md text-xs font-bold transition flex items-center gap-1 shadow-sm" title="Receive (Download) all Questions & Widgets from Google Sheet">
+            <span class="material-symbols-outlined text-[16px]">cloud_download</span>
+            <span class="hidden sm:inline">Receive</span>
+          </button>
+          <button id="btnOpenSheetSyncHub" type="button" class="px-2 py-1 rounded-lg bg-surface-container hover:bg-surface-bright text-secondary font-label-md text-xs font-bold transition flex items-center gap-1" title="Open Google Sheet Sync Hub Modal">
+            <span class="material-symbols-outlined text-[16px]">sync_alt</span>
+            <span class="hidden lg:inline">Sync Hub</span>
+          </button>
         </div>
 
-        <!-- Right Header Actions & Cloud Sync -->
-        <div class="flex items-center gap-space-md">
-          <!-- Sheets Sync Status Pill -->
-          <div class="hidden md:flex items-center gap-space-xs px-space-md py-1.5 rounded-full bg-surface-container-lowest text-secondary border border-outline-variant/30">
-            <span class="material-symbols-outlined text-[16px] text-secondary">cloud_done</span>
-            <span class="font-label-sm text-label-sm uppercase tracking-wider font-bold">Sheets/Drive Synced</span>
-          </div>
+        <!-- Export Embed & Build Actions -->
+        <button id="btnCopyHtml" type="button" class="px-2.5 sm:px-3 py-1.5 rounded-lg bg-surface-container-high hover:bg-surface-bright text-on-surface font-label-md text-xs transition flex items-center gap-1 border border-outline-variant/30 font-bold" title="Copy raw Instant Standalone iFrame HTML">
+          <span class="material-symbols-outlined text-[16px]">code</span>
+          <span class="hidden md:inline">Export</span>
+        </button>
+        <button id="btnOpenPublishModal" type="button" class="px-2.5 sm:px-3.5 py-1.5 rounded-lg bg-primary-container hover:bg-inverse-primary text-on-primary-container font-label-md text-xs transition flex items-center gap-1 shadow-[0_0_0_1px_#2563eb,0_4px_16px_-2px_rgba(37,99,235,0.35)] font-bold">
+          <span class="material-symbols-outlined text-[16px]">bolt</span>
+          <span>Build &amp; Run</span>
+        </button>
 
-          <!-- Quick Action Buttons -->
-          <div class="flex items-center gap-space-xs">
-            <!-- Google Sheet Send / Receive Quick Triggers -->
-            <button id="btnHeaderSendToSheet" type="button" class="px-space-md py-2 rounded-lg bg-secondary-container hover:bg-secondary text-on-secondary-container font-label-md text-label-md transition-all flex items-center gap-space-xs shadow-md font-bold" title="Send (Upload) all Questions & Widgets to Google Sheet">
-              <span class="material-symbols-outlined text-[18px]">cloud_upload</span>
-              <span class="hidden sm:inline">Send to Sheet</span>
+        <!-- Hidden backward-compatibility triggers -->
+        <button id="btnCopyCompose" type="button" class="hidden"></button>
+        <button id="btnOpenInlineModal" type="button" class="hidden"></button>
+
+        <div class="h-6 w-px bg-outline-variant mx-0.5 sm:mx-1"></div>
+
+        <!-- Google Auth Container (Always Visible & Pinned) -->
+        <div id="googleAuthContainer" class="flex items-center gap-1 shrink-0">
+          <!-- Logged Out View -->
+          <div id="googleLoggedOutView" class="flex items-center gap-1">
+            <button id="btnGoogleSignIn" type="button" class="px-2.5 sm:px-3 py-1.5 rounded-lg bg-surface-container-high hover:bg-surface-bright text-on-surface font-label-md text-xs flex items-center gap-1.5 border border-outline-variant/40 shadow-sm transition font-bold" title="Sign in with Google">
+              <svg class="w-3.5 h-3.5 shrink-0" viewBox="0 0 24 24">
+                <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/>
+                <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/>
+              </svg>
+              <span class="hidden sm:inline">Sign in</span>
             </button>
-            <button id="btnHeaderReceiveFromSheet" type="button" class="px-space-md py-2 rounded-lg bg-primary-container hover:bg-inverse-primary text-on-primary-container font-label-md text-label-md transition-all flex items-center gap-space-xs shadow-md font-bold" title="Receive (Download) all Questions & Widgets from Google Sheet">
-              <span class="material-symbols-outlined text-[18px]">cloud_download</span>
-              <span class="hidden sm:inline">Receive from Sheet</span>
-            </button>
-            <button id="btnOpenSheetSyncHub" type="button" class="px-space-sm py-2 rounded-lg bg-surface-container-high hover:bg-surface-bright text-on-surface font-label-md text-label-md transition-all flex items-center gap-1 border border-outline-variant/30 shadow-sm font-bold" title="Open Google Sheet Sync Hub">
-              <span class="material-symbols-outlined text-[18px] text-secondary">sync_alt</span>
-              <span class="hidden xl:inline">Sync Hub</span>
-            </button>
-            <button id="btnCopyHtml" type="button" class="px-space-md py-2 rounded-lg bg-surface-container-high hover:bg-surface-bright text-on-surface font-label-lg text-label-lg transition-all flex items-center gap-space-xs shadow-sm border border-outline-variant/30" title="Copy raw Instant Standalone iFrame HTML">
-              <span class="material-symbols-outlined text-[18px]">code</span>
-              <span class="hidden lg:inline">Export Embed</span>
-            </button>
-            <button id="btnCopyCompose" type="button" class="hidden sm:flex px-space-md py-2 rounded-lg bg-surface-container-high hover:bg-surface-bright text-on-surface font-label-lg text-label-lg transition-all items-center gap-space-xs shadow-sm border border-outline-variant/30" title="Copy for Blogger Compose View">
-              <span class="material-symbols-outlined text-[18px]">wand_magic_sparkles</span>
-              <span class="hidden xl:inline">Compose View</span>
-            </button>
-            <button id="btnOpenInlineModal" type="button" class="hidden md:flex px-space-md py-2 rounded-lg bg-surface-container-high hover:bg-surface-bright text-on-surface font-label-lg text-label-lg transition-all items-center gap-space-xs shadow-sm border border-outline-variant/30" title="Native Question Paper Generator">
-              <span class="material-symbols-outlined text-[18px]">description</span>
-              <span class="hidden xl:inline">Question Paper</span>
-            </button>
-            <button id="btnOpenPublishModal" type="button" class="px-space-md py-2 rounded-lg bg-primary-container hover:bg-inverse-primary text-on-primary-container font-label-lg text-label-lg transition-all flex items-center gap-space-xs shadow-[0_0_0_1px_#2563eb,0_4px_16px_-2px_rgba(37,99,235,0.35)] font-bold">
-              <span class="material-symbols-outlined text-[18px]">bolt</span>
-              <span class="hidden lg:inline">Build &amp; Run</span>
+            <button id="btnOpenGoogleSettings" type="button" class="p-1.5 rounded-lg bg-surface-container-high hover:bg-surface-bright text-outline hover:text-on-surface transition" title="Google OAuth Client ID Settings">
+              <span class="material-symbols-outlined text-[16px]">settings</span>
             </button>
           </div>
 
-          <div class="h-6 w-px bg-outline-variant mx-space-xs"></div>
-
-          <!-- Google Auth Container -->
-          <div id="googleAuthContainer" class="flex items-center gap-space-xs">
-            <!-- Logged Out View -->
-            <div id="googleLoggedOutView" class="flex items-center gap-1.5">
-              <button id="btnGoogleSignIn" type="button" class="px-space-md py-1.5 rounded-lg bg-surface-container-high hover:bg-surface-bright text-on-surface font-label-md text-label-md flex items-center gap-2 border border-outline-variant/40 shadow-sm transition">
-                <svg class="w-4 h-4 shrink-0" viewBox="0 0 24 24">
-                  <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
-                  <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
-                  <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/>
-                  <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/>
-                </svg>
-                <span class="hidden sm:inline">Sign in with Google</span>
-              </button>
-              <button id="btnOpenGoogleSettings" type="button" class="p-1.5 rounded-lg bg-surface-container-high hover:bg-surface-bright text-outline hover:text-on-surface transition" title="Google OAuth Client ID Settings">
-                <span class="material-symbols-outlined text-[18px]">settings</span>
-              </button>
-            </div>
-
-            <!-- Logged In View -->
-            <div id="googleLoggedInView" class="hidden flex items-center gap-space-xs">
-              <div class="hidden xl:flex items-center gap-2 px-space-sm py-1 rounded-lg bg-surface-container-low border border-outline-variant/30 text-xs">
-                <img id="googleUserAvatar" src="" alt="Avatar" class="w-6 h-6 rounded-full object-cover border border-outline hidden">
-                <div id="googleAvatarPlaceholder" class="w-6 h-6 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center font-bold text-[11px]">
-                  <span class="material-symbols-outlined text-[14px]">person</span>
-                </div>
-                <div class="flex flex-col leading-tight">
-                  <span id="googleUserName" class="font-bold text-[11px] text-on-surface truncate max-w-[100px]">User</span>
-                  <span id="googleSyncStatusText" class="text-[9px] text-secondary font-bold font-mono">Synced</span>
-                </div>
+          <!-- Logged In View -->
+          <div id="googleLoggedInView" class="hidden flex items-center gap-1">
+            <div class="flex items-center gap-1.5 px-2 py-1 rounded-lg bg-surface-container-lowest border border-outline-variant/30 text-xs">
+              <img id="googleUserAvatar" src="" alt="Avatar" class="w-5 h-5 rounded-full object-cover border border-outline hidden">
+              <div id="googleAvatarPlaceholder" class="w-5 h-5 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center font-bold text-[10px]">
+                <span class="material-symbols-outlined text-[12px]">person</span>
               </div>
-
-              <!-- Push / Upload Button -->
-              <button id="btnPushToCloud" type="button" class="px-space-sm py-1.5 rounded-lg bg-secondary-container hover:bg-secondary text-on-secondary-container font-label-md text-label-md transition-all flex items-center gap-1 shadow-md" title="Upload master snapshot to Google Drive">
-                <i id="pushBtnIcon" class="fas fa-cloud-arrow-up text-xs"></i>
-                <span id="pushBtnText" class="hidden sm:inline">Upload</span>
-              </button>
-
-              <!-- Pull / Download Button -->
-              <button id="btnPullFromCloud" type="button" class="px-space-sm py-1.5 rounded-lg bg-primary-container hover:bg-inverse-primary text-on-primary-container font-label-md text-label-md transition-all flex items-center gap-1 shadow-md" title="Pull master snapshot from Google Drive">
-                <i id="pullBtnIcon" class="fas fa-cloud-arrow-down text-xs"></i>
-                <span id="pullBtnText" class="hidden sm:inline">Pull</span>
-              </button>
-
-              <button id="btnOpenCloudInspector" type="button" class="p-1.5 rounded-lg bg-surface-container-high hover:bg-surface-bright text-outline hover:text-on-surface transition" title="Inspect Cloud Payload">
-                <span class="material-symbols-outlined text-[18px]">terminal</span>
-              </button>
-              <button id="btnOpenGoogleSettingsLoggedIn" type="button" class="p-1.5 rounded-lg bg-surface-container-high hover:bg-surface-bright text-outline hover:text-on-surface transition" title="Google Settings">
-                <span class="material-symbols-outlined text-[18px]">settings</span>
-              </button>
-              <button id="btnGoogleSignOut" type="button" class="p-1.5 rounded-lg bg-surface-container-high hover:bg-error-container text-outline hover:text-error transition" title="Sign out">
-                <span class="material-symbols-outlined text-[18px]">logout</span>
-              </button>
+              <span id="googleUserName" class="font-bold text-[11px] text-on-surface truncate max-w-[80px]">User</span>
+              <span id="googleSyncStatusText" class="text-[9px] text-secondary font-bold font-mono">Synced</span>
             </div>
+
+            <!-- Push / Upload Button -->
+            <button id="btnPushToCloud" type="button" class="p-1.5 rounded-lg bg-secondary-container hover:bg-secondary text-on-secondary-container transition shadow-md" title="Upload snapshot to Google Drive">
+              <i id="pushBtnIcon" class="fas fa-cloud-arrow-up text-xs"></i>
+              <span id="pushBtnText" class="hidden">Upload</span>
+            </button>
+
+            <!-- Pull / Download Button -->
+            <button id="btnPullFromCloud" type="button" class="p-1.5 rounded-lg bg-primary-container hover:bg-inverse-primary text-on-primary-container transition shadow-md" title="Pull snapshot from Google Drive">
+              <i id="pullBtnIcon" class="fas fa-cloud-arrow-down text-xs"></i>
+              <span id="pullBtnText" class="hidden">Pull</span>
+            </button>
+
+            <button id="btnOpenCloudInspector" type="button" class="p-1.5 rounded-lg bg-surface-container-high hover:bg-surface-bright text-outline hover:text-on-surface transition" title="Inspect Cloud Payload">
+              <span class="material-symbols-outlined text-[16px]">terminal</span>
+            </button>
+            <button id="btnOpenGoogleSettingsLoggedIn" type="button" class="p-1.5 rounded-lg bg-surface-container-high hover:bg-surface-bright text-outline hover:text-on-surface transition" title="Google Settings">
+              <span class="material-symbols-outlined text-[16px]">settings</span>
+            </button>
+            <button id="btnGoogleSignOut" type="button" class="p-1.5 rounded-lg bg-surface-container-high hover:bg-error-container text-outline hover:text-error transition" title="Sign out">
+              <span class="material-symbols-outlined text-[16px]">logout</span>
+            </button>
           </div>
         </div>
       </div>
@@ -475,28 +462,28 @@
                 </div>
 
                 <!-- Master Action Toolbar -->
-                <div class="mt-space-md pt-space-md flex flex-wrap items-center justify-between gap-space-sm border-t border-outline-variant/20">
-                  <div class="flex flex-wrap items-center gap-space-xs">
-                    <button id="btnPodSendQuestions" type="button" class="px-space-md py-2 rounded-lg bg-secondary-container hover:bg-secondary text-on-secondary-container font-label-md text-label-md transition-all flex items-center gap-space-xs shadow-md font-bold" title="Send (Upload) current quiz & questions to Google Sheet">
-                      <span class="material-symbols-outlined text-[18px]">cloud_upload</span>
+                <div class="mt-space-md pt-space-md flex flex-wrap items-center justify-between gap-2 border-t border-outline-variant/20">
+                  <div class="flex flex-wrap items-center gap-1.5">
+                    <button id="btnPodSendQuestions" type="button" class="px-3 py-1.5 rounded-lg bg-secondary-container hover:bg-secondary text-on-secondary-container font-label-md text-xs transition-all flex items-center gap-1 shadow-md font-bold" title="Send (Upload) current quiz & questions to Google Sheet">
+                      <span class="material-symbols-outlined text-[16px]">cloud_upload</span>
                       <span>Send to Sheet</span>
                     </button>
-                    <button id="btnOpenBulkImport" type="button" class="px-space-md py-2 rounded-lg bg-primary-container hover:bg-inverse-primary text-on-primary-container font-label-md text-label-md transition-all flex items-center gap-space-xs shadow-md font-bold" title="Receive (Import) questions from Google Sheet">
-                      <span class="material-symbols-outlined text-[18px]">cloud_download</span>
+                    <button id="btnOpenBulkImport" type="button" class="px-3 py-1.5 rounded-lg bg-primary-container hover:bg-inverse-primary text-on-primary-container font-label-md text-xs transition-all flex items-center gap-1 shadow-md font-bold" title="Receive (Import) questions from Google Sheet">
+                      <span class="material-symbols-outlined text-[16px]">cloud_download</span>
                       <span>Receive from Sheet</span>
                     </button>
-                    <button id="btnSaveCurrentToLibrary" type="button" class="px-space-md py-2 rounded-lg bg-surface-container-high hover:bg-surface-bright text-on-surface font-label-md text-label-md transition-all flex items-center gap-space-xs shadow-sm border border-outline-variant/30 font-bold">
-                      <span class="material-symbols-outlined text-[18px]">bookmark_add</span>
+                    <button id="btnSaveCurrentToLibrary" type="button" class="px-3 py-1.5 rounded-lg bg-surface-container-high hover:bg-surface-bright text-on-surface font-label-md text-xs transition-all flex items-center gap-1 shadow-sm border border-outline-variant/30 font-bold">
+                      <span class="material-symbols-outlined text-[16px]">bookmark_add</span>
                       <span>Save to Library</span>
                     </button>
-                    <button id="btnNewBlankQuiz" type="button" class="px-space-md py-2 rounded-lg bg-surface-container-low hover:bg-surface-container-high text-on-surface-variant font-label-md text-label-md transition-all flex items-center gap-space-xs border border-outline-variant/20 font-bold">
-                      <span class="material-symbols-outlined text-[18px]">restart_alt</span>
+                    <button id="btnNewBlankQuiz" type="button" class="px-3 py-1.5 rounded-lg bg-surface-container-low hover:bg-surface-container-high text-on-surface-variant font-label-md text-xs transition-all flex items-center gap-1 border border-outline-variant/20 font-bold">
+                      <span class="material-symbols-outlined text-[16px]">restart_alt</span>
                       <span>Blank Quiz</span>
                     </button>
                   </div>
-                  <div class="flex items-center gap-space-xs">
-                    <button type="button" onclick="document.getElementById('btnCopyHtml').click()" class="px-space-md py-2 rounded-lg bg-primary-container hover:bg-inverse-primary text-on-primary-container font-label-md text-label-md transition-all flex items-center gap-space-xs shadow-md font-bold">
-                      <span class="material-symbols-outlined text-[18px]">flash_on</span>
+                  <div>
+                    <button type="button" onclick="document.getElementById('btnCopyHtml').click()" class="px-3.5 py-1.5 rounded-lg bg-primary-container hover:bg-inverse-primary text-on-primary-container font-label-md text-xs transition-all flex items-center gap-1.5 shadow-md font-bold">
+                      <span class="material-symbols-outlined text-[16px]">flash_on</span>
                       <span>Instant Blogger Embed</span>
                     </button>
                   </div>
